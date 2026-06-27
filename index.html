@@ -103,126 +103,60 @@
     </section>
 
     <!-- 5. AI native -->
-    <section class="slide" data-bg="dark">
-      <div class="slide__inner">
-        <span class="kicker">柱 02 / AI Native</span>
-        <h2 class="slide__title">むずかしいことや面倒なことはAIにおまかせ</h2>
-        <svg class="ai-illus" viewBox="0 0 1120 400" role="img"
-             font-family="'Inter','Noto Sans JP',sans-serif"
-             aria-label="ユーザーが自然言語で依頼し、AI が MCP / CLI 経由で GeonicDB を操作して結果を返す流れ">
-          <defs>
-            <marker id="arrowO" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#fc6c00"/>
-            </marker>
-            <marker id="arrowT" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#39d6c6"/>
-            </marker>
-            <linearGradient id="aiAgentGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#fc6c00" stop-opacity="0.32"/>
-              <stop offset="1" stop-color="#e8401e" stop-opacity="0.07"/>
-            </linearGradient>
-            <linearGradient id="aiCardGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#ffffff" stop-opacity="0.11"/>
-              <stop offset="1" stop-color="#ffffff" stop-opacity="0.025"/>
-            </linearGradient>
-            <radialGradient id="aiAura" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stop-color="#fc6c00" stop-opacity="0.5"/>
-              <stop offset="0.55" stop-color="#fc6c00" stop-opacity="0.12"/>
-              <stop offset="1" stop-color="#fc6c00" stop-opacity="0"/>
-            </radialGradient>
-            <linearGradient id="aiReq" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#fc6c00" stop-opacity="0.08"/>
-              <stop offset="1" stop-color="#fc6c00" stop-opacity="0.8"/>
-            </linearGradient>
-            <linearGradient id="aiRes" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#39d6c6" stop-opacity="0.8"/>
-              <stop offset="1" stop-color="#39d6c6" stop-opacity="0.08"/>
-            </linearGradient>
-            <filter id="aiGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="4.5" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-
-          <!-- soft aura behind the AI agent (the hero) -->
-          <ellipse cx="560" cy="234" rx="205" ry="180" fill="url(#aiAura)">
-            <animate attributeName="rx" values="195;225;195" dur="3.6s" repeatCount="indefinite"/>
-            <animate attributeName="ry" values="168;196;168" dur="3.6s" repeatCount="indefinite"/>
-          </ellipse>
-
-          <!-- ===== connectors ===== -->
-          <!-- request (orange, →) -->
-          <line x1="252" y1="222" x2="424" y2="222" stroke="url(#aiReq)" stroke-width="2.5" marker-end="url(#arrowO)"/>
-          <line x1="692" y1="222" x2="864" y2="222" stroke="url(#aiReq)" stroke-width="2.5" marker-end="url(#arrowO)"/>
-          <!-- response (teal, ←) -->
-          <line x1="864" y1="288" x2="692" y2="288" stroke="url(#aiRes)" stroke-width="2.5" marker-end="url(#arrowT)"/>
-          <line x1="424" y1="288" x2="252" y2="288" stroke="url(#aiRes)" stroke-width="2.5" marker-end="url(#arrowT)"/>
-
-          <!-- flowing dots: request (orange) — size grows/shrinks while travelling -->
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" repeatCount="indefinite" path="M252,222 L424,222"/><animate attributeName="r" dur="1.6s" values="2;7;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" begin="-0.55s" repeatCount="indefinite" path="M252,222 L424,222"/><animate attributeName="r" dur="1.6s" begin="-0.55s" values="2.5;4.5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" begin="-1.1s" repeatCount="indefinite" path="M252,222 L424,222"/><animate attributeName="r" dur="1.6s" begin="-1.1s" values="2;6;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" repeatCount="indefinite" path="M692,222 L864,222"/><animate attributeName="r" dur="1.6s" values="2.5;6.5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" begin="-0.55s" repeatCount="indefinite" path="M692,222 L864,222"/><animate attributeName="r" dur="1.6s" begin="-0.55s" values="2;5;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#fc6c00"><animateMotion dur="1.6s" begin="-1.1s" repeatCount="indefinite" path="M692,222 L864,222"/><animate attributeName="r" dur="1.6s" begin="-1.1s" values="2.5;7;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <!-- flowing dots: response (teal) -->
-          <circle fill="#39d6c6"><animateMotion dur="1.8s" repeatCount="indefinite" path="M864,288 L692,288"/><animate attributeName="r" dur="1.8s" values="2;6;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#39d6c6"><animateMotion dur="1.8s" begin="-0.9s" repeatCount="indefinite" path="M864,288 L692,288"/><animate attributeName="r" dur="1.8s" begin="-0.9s" values="2.5;4.5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#39d6c6"><animateMotion dur="1.8s" repeatCount="indefinite" path="M424,288 L252,288"/><animate attributeName="r" dur="1.8s" values="2.5;5.5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle fill="#39d6c6"><animateMotion dur="1.8s" begin="-0.9s" repeatCount="indefinite" path="M424,288 L252,288"/><animate attributeName="r" dur="1.8s" begin="-0.9s" values="2;6.5;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-
-
-          <!-- ===== USER ===== -->
-          <g>
-            <!-- speech bubble (message cycles via script) -->
-            <g id="ai-bubble">
-              <rect id="ai-bubble-rect" x="30" y="44" width="320" height="52" rx="13" fill="#ffffff"/>
-              <path d="M132,96 L160,96 L140,116 Z" fill="#ffffff"/>
-              <text id="ai-bubble-text" x="46" y="77" text-anchor="start" fill="#1b1b22" font-size="16" font-weight="700">「市内のAED設置場所を地図に出して」</text>
-            </g>
-            <!-- node -->
-            <rect x="40" y="126" width="210" height="250" rx="16" fill="url(#aiCardGrad)" stroke="rgba(255,255,255,.18)"/>
-            <circle cx="145" cy="216" r="23" fill="#cdd6e4"/>
-            <path d="M111 280 a34 34 0 0 1 68 0 Z" fill="#cdd6e4"/>
-            <text x="145" y="324" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">ご担当者</text>
-            <text x="145" y="342" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="11">自治体・行政・企業</text>
-          </g>
-
-          <!-- ===== AI AGENT (hero) ===== -->
-          <g>
-            <rect x="428" y="100" width="264" height="276" rx="18" fill="url(#aiAgentGrad)" stroke="#fc6c00" stroke-opacity="0.65" stroke-width="1.5"/>
-            <text x="560" y="142" text-anchor="middle" fill="#fc6c00" font-size="20" font-weight="800">AI エージェント</text>
-            <!-- expanding pulse ring around the sparkle -->
-            <circle cx="560" cy="232" r="30" fill="none" stroke="#fc6c00" stroke-width="1.5">
-              <animate attributeName="r" values="26;48;26" dur="2.8s" repeatCount="indefinite"/>
-              <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/>
-            </circle>
-            <!-- particles orbiting the agent -->
-            <g fill="#ffd9a0">
-              <circle r="2.6"><animateMotion dur="5s" repeatCount="indefinite" path="M560,186 a46,46 0 1,1 -0.1,0 Z"/></circle>
-              <circle r="2" opacity="0.85"><animateMotion dur="5s" begin="-2.5s" repeatCount="indefinite" path="M560,186 a46,46 0 1,1 -0.1,0 Z"/></circle>
-            </g>
-            <!-- sparkle (AI motif): glowing + pulse -->
-            <g filter="url(#aiGlow)">
-              <path fill="#fc6c00" d="M560,201 Q565,227 591,232 Q565,237 560,263 Q555,237 529,232 Q555,227 560,201 Z">
-                <animate attributeName="opacity" values="0.75;1;0.75" dur="2.2s" repeatCount="indefinite"/>
-              </path>
-              <path fill="#ffb35e" d="M598,207 Q600,217 610,219 Q600,221 598,231 Q596,221 586,219 Q596,217 598,207 Z">
-                <animate attributeName="opacity" values="0.3;0.95;0.3" dur="2.2s" begin="0.6s" repeatCount="indefinite"/>
-              </path>
-            </g>
-            <text x="560" y="328" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">主要な AI アシスタントに対応</text>
-            <text x="560" y="348" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="12">Claude・ChatGPT・Gemini など</text>
-          </g>
-
-          <!-- ===== GeonicDB ===== -->
-          <g>
-            <rect x="870" y="126" width="210" height="250" rx="16" fill="url(#aiCardGrad)" stroke="rgba(252,108,0,.4)"/>
-            <image href="assets/geonic-mark.svg" x="924" y="194" width="104" height="72"/>
-            <text x="976" y="324" text-anchor="middle" fill="#fff" font-size="18" font-weight="800">GeonicDB</text>
-            <text x="976" y="342" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="12">Context Broker</text>
-          </g>
-        </svg>
+    <!-- 5. AI Native — natural-language request → AI agent creates data on the map -->
+    <section class="slide slide--ai" data-bg="dark">
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">柱 02 / AI Native</span>
+          <h2 class="slide__title map-title">むずかしいことや面倒なことはAIにおまかせ</h2>
+          <p class="map-desc">自然言語で頼むだけ。<strong>AI エージェント</strong>が MCP / CLI 経由で GeonicDB を操作し、データの作成・登録・公開まで自動で実行します。</p>
+        </div>
+        <div class="ai-stage">
+          <div class="ai-chat">
+            <div class="ai-chat__head">
+              <span class="ai-chat__avatar">✦</span>
+              <span class="ai-chat__name">AI エージェント</span>
+              <span class="ai-chat__model">Claude・ChatGPT・Gemini など</span>
+            </div>
+            <div class="ai-chat__log" id="ai-log"></div>
+            <div class="ai-chat__bar">
+              <span class="ai-chat__text" id="ai-input"></span><span class="ai-caret" id="ai-caret"></span>
+              <span class="ai-chat__send" id="ai-send" aria-hidden="true">➤</span>
+            </div>
+          </div>
+          <div class="ai-map">
+            <svg class="ai-map__svg" viewBox="0 0 620 460" preserveAspectRatio="xMidYMid slice" role="img" aria-label="AI が作成したデータが地図上にマーカーとして現れる様子">
+              <defs>
+                <linearGradient id="aiMapBg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#12121a"/>
+                  <stop offset="1" stop-color="#191926"/>
+                </linearGradient>
+              </defs>
+              <rect width="620" height="460" fill="url(#aiMapBg)"/>
+              <!-- river -->
+              <path d="M-20,90 C140,150 180,250 120,330 C80,400 160,450 260,470" stroke="#243150" stroke-width="34" fill="none" stroke-linecap="round" opacity="0.5"/>
+              <!-- roads -->
+              <g stroke="rgba(255,255,255,0.09)" stroke-width="9" stroke-linecap="round" fill="none">
+                <path d="M0,150 H620"/>
+                <path d="M0,300 H620"/>
+                <path d="M180,0 V460"/>
+                <path d="M420,0 V460"/>
+                <path d="M40,40 L300,300"/>
+                <path d="M620,60 L320,360"/>
+              </g>
+              <g stroke="rgba(255,255,255,0.05)" stroke-width="5" stroke-linecap="round" fill="none">
+                <path d="M0,75 H620"/>
+                <path d="M0,225 H620"/>
+                <path d="M0,375 H620"/>
+                <path d="M100,0 V460"/>
+                <path d="M300,0 V460"/>
+                <path d="M520,0 V460"/>
+              </g>
+              <g id="ai-markers"></g>
+            </svg>
+            <div class="ai-map__badge" id="ai-badge"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -604,41 +538,8 @@
   <script src="aed-map.js"></script>
   <script src="temporal.js"></script>
   <script src="survey.js"></script>
+  <script src="ai-native.js"></script>
   <script src="slides.js"></script>
-  <!-- AI-native slide: cycle the natural-language request (gov / enterprise personas) -->
-  <script>
-    (function () {
-      var MSGS = [
-        "「市内のAED設置場所を地図に出して」",
-        "「避難所の混雑状況をリアルタイムで」",
-        "「センサーの異常をすぐ通知して」",
-        "「人流データを月次で集計して」",
-        "「庁内ダッシュボードに繋ぎたい」",
-        "「他システムとデータ連携したい」",
-      ];
-      var txt = document.getElementById("ai-bubble-text");
-      var rect = document.getElementById("ai-bubble-rect");
-      var bubble = document.getElementById("ai-bubble");
-      if (!txt || !rect || !bubble) return;
-      var i = 0;
-      function fit() {
-        txt.textContent = MSGS[i];
-        // resize the bubble to the text (left edge fixed at x=30, 16px padding each side)
-        var w = 32;
-        try { w = txt.getComputedTextLength() + 32; } catch (e) {}
-        rect.setAttribute("width", Math.max(140, Math.round(w)));
-      }
-      fit();
-      setInterval(function () {
-        bubble.style.opacity = "0";
-        setTimeout(function () {
-          i = (i + 1) % MSGS.length;
-          fit();
-          bubble.style.opacity = "1";
-        }, 360);
-      }, 3000);
-    })();
-  </script>
   <!-- PWA: register the service worker (offline shell) -->
   <script>
     if ("serviceWorker" in navigator) {
