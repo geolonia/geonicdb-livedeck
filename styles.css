@@ -891,7 +891,98 @@ html, body {
 }
 .hint.is-hidden { opacity: 0; pointer-events: none; }
 
+/* ===== Slide 5 — AI-native: chat → markers on the map ===== */
+.slide--ai .ai-stage { flex: 1 1 auto; display: flex; gap: 26px; min-height: 0; }
+
+/* chat panel */
+.ai-chat {
+  flex: 0 0 38%; display: flex; flex-direction: column; min-height: 0;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; padding: 18px 18px 16px;
+}
+.ai-chat__head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.ai-chat__avatar {
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+  font-size: 16px; color: #fff; background: linear-gradient(135deg,#fc6c00,#e63c24);
+  box-shadow: 0 0 14px rgba(252,108,0,.5);
+}
+.ai-chat__name { font-weight: 800; font-size: 16px; color: #fff; }
+.ai-chat__model { margin-left: auto; font-size: 11px; color: rgba(255,255,255,.5); }
+
+.ai-chat__log {
+  flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end;
+  gap: 12px; padding: 16px 2px; min-height: 0; overflow: hidden;
+}
+.ai-bubble {
+  max-width: 88%; padding: 11px 15px; border-radius: 15px; font-size: 16px; line-height: 1.5;
+  opacity: 0; transform: translateY(8px); animation: aiBubbleIn .3s var(--ease) forwards;
+}
+.ai-bubble--user {
+  align-self: flex-end; background: linear-gradient(135deg,#fc6c00,#e8451f); color: #fff;
+  border-bottom-right-radius: 5px; font-weight: 700;
+}
+.ai-bubble--ai {
+  align-self: flex-start; background: rgba(255,255,255,.08); color: #f3f3f7;
+  border: 1px solid rgba(255,255,255,.08); border-bottom-left-radius: 5px;
+}
+.ai-bubble--ai .ai-ok { color: #39d6c6; font-weight: 800; margin-right: 5px; }
+@keyframes aiBubbleIn { to { opacity: 1; transform: none; } }
+
+.ai-typing { display: inline-flex; gap: 5px; align-items: center; }
+.ai-typing span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.6); animation: aiTyping 1s infinite ease-in-out; }
+.ai-typing span:nth-child(2) { animation-delay: .15s; }
+.ai-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes aiTyping { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+.ai-chat__bar {
+  display: flex; align-items: center; gap: 4px; margin-top: 14px; padding: 12px 14px;
+  border-radius: 13px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+}
+.ai-chat__text { font-size: 16px; color: #fff; white-space: nowrap; overflow: hidden; min-height: 19px; }
+.ai-caret { width: 2px; height: 19px; flex: 0 0 auto; background: #fc6c00; animation: aiCaret 1s step-end infinite; }
+@keyframes aiCaret { 50% { opacity: 0; } }
+.ai-chat__send {
+  margin-left: auto; width: 30px; height: 30px; flex: 0 0 auto; border-radius: 9px;
+  display: grid; place-items: center; color: #fff; font-size: 14px;
+  background: rgba(252,108,0,.35); transition: background .2s, transform .2s;
+}
+.ai-chat__send.is-fire { background: #fc6c00; transform: scale(1.12); }
+
+/* map panel */
+.ai-map {
+  position: relative; flex: 1 1 auto; min-height: 0; border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.ai-map__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#ai-markers { transition: opacity .4s; }
+.ai-map__badge {
+  position: absolute; top: 14px; left: 14px; padding: 7px 13px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; color: #fff; background: rgba(15,15,22,.72);
+  border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(4px);
+  opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s;
+}
+.ai-map__badge.is-on { opacity: 1; transform: none; }
+.ai-map__badge .ai-map__n { color: #39d6c6; }
+
+/* markers (SVG) */
+.ai-mk__drop {
+  transform-box: fill-box; transform-origin: 50% 100%;
+  animation: aiDrop .62s var(--ease) both; animation-delay: var(--d, 0s);
+}
+.ai-mk__shadow { fill: rgba(0,0,0,.4); }
+.ai-mk__pin { filter: drop-shadow(0 3px 4px rgba(0,0,0,.45)); }
+@keyframes aiDrop {
+  0%   { transform: translateY(-58px) scale(.5); opacity: 0; }
+  55%  { transform: translateY(4px) scale(1);    opacity: 1; }
+  72%  { transform: translateY(-4px); }
+  88%  { transform: translateY(2px); }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .slide { transition: opacity .2s; }
+  .ai-mk__drop { animation: none; }
+  .ai-bubble { animation: none; opacity: 1; transform: none; }
+  .ai-caret { animation: none; }
 }
