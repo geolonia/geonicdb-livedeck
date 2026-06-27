@@ -11,6 +11,30 @@
   <link rel="stylesheet" href="styles.css" />
   <!-- warm static demo assets (auth-free); entity data is prefetched via JS -->
   <link rel="prefetch" href="assets/map-style.json" as="fetch" crossorigin="anonymous" />
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#17171d" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/icon-180.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GeonicDB" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="GeonicDB" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="GeonicDB — FIWARE Orion 互換のフルマネージド Context Broker サービス" />
+  <meta property="og:description" content="NGSIv2 ＋ NGSI-LD デュアルプロトコル／AI・地理空間ネイティブ／運用レス。実接続のライブデモ入り製品紹介デッキ。" />
+  <meta property="og:url" content="https://geolonia.github.io/geonicdb-livedeck/" />
+  <meta property="og:image" content="https://geolonia.github.io/geonicdb-livedeck/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GeonicDB — フルマネージド Context Broker サービス" />
+  <meta name="twitter:description" content="NGSIv2 ＋ NGSI-LD デュアルプロトコル／AI・地理空間ネイティブ／運用レス。実接続のライブデモ入り製品紹介デッキ。" />
+  <meta name="twitter:image" content="https://geolonia.github.io/geonicdb-livedeck/assets/og-image.png" />
 </head>
 <body>
   <!-- ===== Deck ===== -->
@@ -613,6 +637,14 @@
         }, 360);
       }, 3000);
     })();
+  </script>
+  <!-- PWA: register the service worker (offline shell) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
   </script>
 </body>
 </html>
