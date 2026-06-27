@@ -713,7 +713,28 @@ html, body {
 .metrics--ha .metric__num { font-size: 48px; }
 
 /* ===== Metrics ===== */
+/* availability hero (slide 6) */
+.ha-hero {
+  display: flex; align-items: center; gap: 44px;
+  margin: 14px 0 28px; padding: 24px 30px;
+  background: linear-gradient(120deg, rgba(252,108,0,.14), rgba(252,108,0,.04));
+  border: 1px solid rgba(252,108,0,.4); border-radius: 18px;
+}
+.ha-hero__main { flex: 0 0 auto; text-align: center; }
+.ha-hero__num { display: block; font-family: var(--font-mono); font-weight: 900; font-size: 92px; line-height: .95; color: var(--cyan); }
+.ha-hero__num small { font-size: 36px; font-weight: 800; }
+.ha-hero__label { display: block; margin-top: 10px; font-size: 16px; font-weight: 700; color: rgba(255,255,255,.85); }
+.ha-hero__desc { flex: 1 1 auto; }
+.ha-hero__desc p { font-size: 19px; line-height: 1.7; color: rgba(255,255,255,.9); }
+.ha-hero__desc strong { color: var(--cyan); font-weight: 800; }
+.ha-hero__note { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.55); }
+.ha-found-label { font-size: 13px; letter-spacing: .06em; color: rgba(255,255,255,.5); margin-bottom: 12px; }
+
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.metrics--sm { gap: 18px; }
+.metrics--sm .metric { padding: 18px 14px; }
+.metrics--sm .metric__num { font-size: 38px; }
+.metrics--sm .metric__label { font-size: 13px; }
 .metric {
   text-align: center;
   background: rgba(255,255,255,.04);

@@ -202,28 +202,36 @@
       </div>
     </section>
 
-    <!-- 10. Quality metrics -->
+    <!-- 10. Reliability / availability -->
     <section class="slide" data-bg="dark">
       <div class="slide__inner">
-        <span class="kicker">品質・信頼性 / Quality</span>
-        <h2 class="slide__title">数字で示す、エンタープライズ品質</h2>
-        <p class="lead">これらの数値は、コードを変更するたびに自動でテスト・検証している実績です。徹底的にテストすることで、不具合が少なく安定して動き続けるサービスを保っています。</p>
-        <div class="metrics">
+        <span class="kicker">信頼性 / Reliability</span>
+        <h2 class="slide__title">止まらないことを、最優先に。</h2>
+        <div class="ha-hero">
+          <div class="ha-hero__main">
+            <span class="ha-hero__num">99.95<small>%+</small></span>
+            <span class="ha-hero__label">想定可用性（稼働率）</span>
+          </div>
+          <div class="ha-hero__desc">
+            <p>フルマネージドのサーバーレス基盤が、アクセス量に応じて<strong>自動スケール</strong>。<strong>冗長構成</strong>で動くため、サーバー管理やダウンタイムを気にせず使えます。</p>
+            <p class="ha-hero__note">99.95% は月間ダウンタイム約 22 分以下に相当（想定値）。</p>
+          </div>
+        </div>
+        <p class="ha-found-label">その安定を支える、開発の品質</p>
+        <div class="metrics metrics--sm">
           <div class="metric">
             <span class="metric__num">94.0<small>%</small></span>
-            <span class="metric__label">コードカバレッジ<br />（Statements）</span>
+            <span class="metric__label">コードカバレッジ</span>
           </div>
           <div class="metric">
             <span class="metric__num">1.69<small>:1</small></span>
-            <span class="metric__label">テスト密度<br />（テスト:実装 行数比）</span>
+            <span class="metric__label">テスト密度（テスト:実装）</span>
           </div>
           <div class="metric">
             <span class="metric__num">~3,229</span>
-            <span class="metric__label">E2E（BDD）<br />シナリオ数</span>
+            <span class="metric__label">E2E（BDD）シナリオ数</span>
           </div>
         </div>
-        <p class="lead avail-note"><strong>止まりにくさ（高可用性）も特長。</strong>フルマネージドのサーバーレス基盤が、アクセス量に応じて自動でスケールし、冗長構成で動きます。サーバーの管理やダウンタイムを気にせず使えます。</p>
-        <p class="footnote">本体ソース 93,798 行 / ユニットテスト 158,637 行。CI = lint · build · SAM 検証 · ユニット · E2E · カバレッジ · Docker。</p>
       </div>
     </section>
 
