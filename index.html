@@ -124,53 +124,27 @@
               <span class="ai-chat__send" id="ai-send" aria-hidden="true">➤</span>
             </div>
           </div>
-          <div class="ai-build">
-            <!-- (1) data -->
-            <div class="ai-step" id="ai-step-data">
-              <div class="ai-step__head">
-                <span class="ai-step__stat"></span>
-                <span class="ai-step__no">STEP 1</span>
-                <span class="ai-step__name">避難所データ</span>
-                <span class="ai-step__tag" id="ai-data-tag"></span>
-              </div>
-              <div class="ai-dots" id="ai-data-dots"></div>
+          <div class="ai-browser" id="ai-browser">
+            <div class="ai-browser__bar">
+              <span class="ai-browser__btns"><i></i><i></i><i></i></span>
+              <div class="ai-browser__addr"><span class="ai-browser__lock">🔒</span>shelter-map.geonicdb.app</div>
             </div>
-            <!-- (2) API key -->
-            <div class="ai-step" id="ai-step-key">
-              <div class="ai-step__head">
-                <span class="ai-step__stat"></span>
-                <span class="ai-step__no">STEP 2</span>
-                <span class="ai-step__name">APIキー</span>
-              </div>
-              <div class="ai-key" id="ai-key">
-                <span class="ai-key__icon">🔑</span>
-                <span class="ai-key__val" id="ai-key-val"></span>
-                <span class="ai-key__badges"><span class="ai-key__b">DPoP必須</span><span class="ai-key__b">origin制限</span></span>
-              </div>
-            </div>
-            <!-- (3) app -->
-            <div class="ai-step ai-step--app" id="ai-step-app">
-              <div class="ai-step__head">
-                <span class="ai-step__stat"></span>
-                <span class="ai-step__no">STEP 3</span>
-                <span class="ai-step__name">避難所マップアプリ</span>
-              </div>
+            <div class="ai-browser__progress" id="ai-progress"></div>
+            <div class="ai-browser__view">
+              <div class="ai-browser__ph" id="ai-ph">アプリのプレビュー</div>
               <div class="ai-app" id="ai-app">
-                <div class="ai-app__chrome"><span></span><span></span><span></span><em>避難所マップ</em></div>
-                <div class="ai-app__screen">
-                  <div class="ai-app__map">
-                    <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                      <rect width="320" height="220" fill="#12121d"/>
-                      <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" fill="none">
-                        <path d="M0,80 H320"/><path d="M0,150 H320"/><path d="M110,0 V220"/><path d="M220,0 V220"/>
-                      </g>
-                      <path d="M-10,40 C70,70 60,140 130,170 C190,196 220,210 330,200" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
-                      <g id="ai-app-pins"></g>
-                    </svg>
-                    <div class="ai-app__count">近くの避難所 <b>10</b> 件</div>
-                  </div>
-                  <div class="ai-app__side" id="ai-app-side"></div>
+                <div class="ai-app__map">
+                  <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <rect width="320" height="220" fill="#12121d"/>
+                    <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" fill="none">
+                      <path d="M0,80 H320"/><path d="M0,150 H320"/><path d="M110,0 V220"/><path d="M220,0 V220"/>
+                    </g>
+                    <path d="M-10,40 C70,70 60,140 130,170 C190,196 220,210 330,200" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
+                    <g id="ai-app-pins"></g>
+                  </svg>
+                  <div class="ai-app__count">近くの避難所 <b>10</b> 件</div>
                 </div>
+                <div class="ai-app__side" id="ai-app-side"></div>
               </div>
             </div>
           </div>

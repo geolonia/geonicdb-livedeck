@@ -72,50 +72,21 @@
   }
   function reply(html) { addBubble("ai-bubble--ai", html); }
 
-  // ---- build-pipeline helpers ----
-  function setStep(id, state) {
-    var el = $(id);
-    if (!el) return;
-    el.classList.remove("is-pending", "is-active", "is-done");
-    el.classList.add("is-" + state);
-    var stat = el.querySelector(".ai-step__stat");
-    if (stat) stat.textContent = state === "done" ? "✓" : "";
-  }
+  // ---- browser-preview helpers ----
 
-  // STEP 1 — entities pop into the data row
-  async function fillDots(n, my) {
-    var g = $("ai-data-dots");
-    if (!g) return;
-    g.innerHTML = "";
-    for (var i = 0; i < n; i++) {
-      if (!alive(my)) return;
-      var d = document.createElement("i");
-      d.style.animationDelay = (i * 0.05).toFixed(2) + "s";
-      g.appendChild(d);
-    }
-    await sleep(reduced() ? 0 : n * 50 + 250);
-  }
+  // The final request loads the app inside the browser: a progress sweep, then
+  // the map renders — pins drop in, the list slides in, realtime turns on.
+  async function loadApp(my) {
+    var prog = $("ai-progress");
+    if (prog) prog.classList.add("is-on"); // sweep the loading bar
+    await sleep(reduced() ? 0 : 700);
+    if (!alive(my)) return;
 
-  // STEP 2 — type the key, then reveal the security badges
-  async function typeKey(my) {
-    var el = $("ai-key-val");
-    if (!el) return;
-    el.textContent = "";
-    for (var i = 1; i <= KEY_VALUE.length; i++) {
-      if (!alive(my)) return;
-      el.textContent = KEY_VALUE.slice(0, i);
-      await sleep(reduced() ? 0 : 26);
-    }
-    var key = $("ai-key");
-    if (key) key.classList.add("is-on");
-    await sleep(reduced() ? 0 : 250);
-  }
-
-  // STEP 3 — the app frame assembles: pins drop, list slides in, realtime on
-  async function buildApp(my) {
+    var ph = $("ai-ph"); if (ph) ph.classList.add("is-hidden");
     var app = $("ai-app");
     if (app) app.classList.add("is-on");
-    await sleep(reduced() ? 0 : 350);
+    if (prog) { prog.classList.remove("is-on"); prog.classList.add("is-done"); }
+    await sleep(reduced() ? 0 : 320);
     if (!alive(my)) return;
 
     var pins = $("ai-app-pins");
@@ -169,13 +140,8 @@
   function reset() {
     clearLog(); setInput("");
     var caret = $("ai-caret"); if (caret) caret.style.display = "";
-    setStep("ai-step-data", "pending");
-    setStep("ai-step-key", "pending");
-    setStep("ai-step-app", "pending");
-    var dots = $("ai-data-dots"); if (dots) dots.innerHTML = "";
-    var tag = $("ai-data-tag"); if (tag) tag.textContent = "";
-    var keyVal = $("ai-key-val"); if (keyVal) keyVal.textContent = "";
-    var key = $("ai-key"); if (key) key.classList.remove("is-on");
+    var ph = $("ai-ph"); if (ph) ph.classList.remove("is-hidden");
+    var prog = $("ai-progress"); if (prog) prog.classList.remove("is-on", "is-done");
     var app = $("ai-app"); if (app) app.classList.remove("is-on");
     var pins = $("ai-app-pins"); if (pins) pins.innerHTML = "";
     var side = $("ai-app-side"); if (side) side.innerHTML = "";
@@ -188,30 +154,21 @@
 
     // STEP 1 — create data
     await ask("避難所のデータを作って", my); if (!alive(my)) return;
-    setStep("ai-step-data", "active");
     await think(my, 800); if (!alive(my)) return;
     reply('<span class="ai-ok">✓</span>避難所を <strong>10 件</strong> 作成しました');
-    await fillDots(10, my); if (!alive(my)) return;
-    var tag = $("ai-data-tag"); if (tag) tag.textContent = "10 件";
-    setStep("ai-step-data", "done");
-    await sleep(reduced() ? 0 : 480); if (!alive(my)) return;
+    await sleep(reduced() ? 0 : 620); if (!alive(my)) return;
 
-    // STEP 2 — issue API key
+    // STEP 2 — issue API key (shown inline in the chat)
     await ask("アプリからアクセスするための API キーを発行して", my); if (!alive(my)) return;
-    setStep("ai-step-key", "active");
     await think(my, 800); if (!alive(my)) return;
-    reply('<span class="ai-ok">✓</span>API キーを発行しました <span class="ai-mini">DPoP必須・origin制限</span>');
-    await typeKey(my); if (!alive(my)) return;
-    setStep("ai-step-key", "done");
-    await sleep(reduced() ? 0 : 480); if (!alive(my)) return;
+    reply('<span class="ai-ok">✓</span>API キーを発行しました<br><code class="ai-key">' + KEY_VALUE + '</code> <span class="ai-mini">DPoP必須・origin制限</span>');
+    await sleep(reduced() ? 0 : 620); if (!alive(my)) return;
 
-    // STEP 3 — build the app
+    // STEP 3 — build the app → it loads in the browser
     await ask("避難所のアプリを作って", my); if (!alive(my)) return;
-    setStep("ai-step-app", "active");
     await think(my, 900); if (!alive(my)) return;
     reply('<span class="ai-ok">✓</span>避難所マップアプリができました');
-    await buildApp(my); if (!alive(my)) return;
-    setStep("ai-step-app", "done");
+    await loadApp(my); if (!alive(my)) return;
 
     // hold, then fade out and reset for the next loop
     await sleep(hold); if (!alive(my)) return;
