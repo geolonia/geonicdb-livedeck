@@ -318,11 +318,11 @@ html, body {
 .svy-total { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.5); margin-left: 4px; }
 /* distribute rows evenly so 4 bars always fit the chart area (no overflow on short devices) */
 .svy-chart { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-evenly; gap: 8px; padding: 4px 0; }
-.svy-row__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
-.svy-row__label { font-size: 16px; font-weight: 700; color: rgba(255,255,255,.9); }
+.svy-row__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.svy-row__label { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.9); }
 .svy-row__val { font-family: var(--font-mono); }
-.svy-row__n { font-size: 20px; font-weight: 800; color: #fff; }
-.svy-row__pct { font-size: 13px; color: rgba(255,255,255,.5); margin-left: 8px; }
+.svy-row__n { font-size: 16px; font-weight: 800; color: #fff; }
+.svy-row__pct { font-size: 11px; color: rgba(255,255,255,.5); margin-left: 7px; }
 .svy-bar { height: 18px; border-radius: 9px; background: rgba(255,255,255,.08); overflow: hidden; }
 .svy-bar__fill {
   height: 100%; width: 0; border-radius: 9px;
