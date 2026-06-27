@@ -82,6 +82,9 @@ html, body {
 .map-title { font-size: 30px; margin-bottom: 0; max-width: none; }
 .map-desc { margin-top: 8px; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.72); max-width: 1000px; }
 .map-desc strong { color: var(--cyan); font-weight: 700; }
+/* survey slide: smaller header text to give the chart more vertical room */
+.slide--svy .map-title { font-size: 25px; }
+.slide--svy .map-desc { font-size: 13px; line-height: 1.55; }
 .demo-body { flex: 1 1 auto; display: flex; gap: 16px; min-height: 0; }
 .demo-body .map-wrap { flex: 1 1 auto; }
 .map-wrap {
