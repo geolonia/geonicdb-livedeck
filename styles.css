@@ -986,33 +986,44 @@ html, body {
 }
 .ai-browser__ph.is-hidden { opacity: 0; }
 
-/* the app itself fills the browser view */
+/* the app itself fills the browser view — full-screen map + UI overlay */
 .ai-app {
-  position: absolute; inset: 0; display: flex; min-height: 0;
+  position: absolute; inset: 0; min-height: 0;
   opacity: 0; transform: scale(.99); transition: opacity .4s, transform .4s;
 }
 .ai-app.is-on { opacity: 1; transform: none; }
-.ai-app__map { position: relative; flex: 1 1 60%; min-width: 0; }
+.ai-app__map { position: absolute; inset: 0; }
 .ai-app__map svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.ai-app__count {
-  position: absolute; left: 12px; bottom: 12px; font-size: 13px; color: #fff;
-  background: rgba(12,12,18,.72); padding: 5px 12px; border-radius: 9px;
+
+/* app-like chrome overlaid on the map */
+.ai-app__ui { position: absolute; inset: 0; pointer-events: none; }
+.ai-app__top { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; align-items: center; gap: 8px; }
+.ai-app__icon {
+  width: 36px; height: 36px; flex: 0 0 auto; border-radius: 10px; display: grid; place-items: center;
+  font-size: 16px; color: #fff; background: rgba(18,18,26,.82); border: 1px solid rgba(255,255,255,.12);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
-.ai-app__count b { color: #39d6c6; }
-.ai-app__side {
-  flex: 0 0 40%; padding: 14px 15px; display: flex; flex-direction: column; gap: 11px;
-  border-left: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.02);
+.ai-app__search {
+  flex: 1 1 auto; min-width: 0; height: 36px; display: flex; align-items: center; gap: 8px; padding: 0 13px;
+  border-radius: 10px; font-size: 13px; color: rgba(255,255,255,.55);
+  background: rgba(18,18,26,.82); border: 1px solid rgba(255,255,255,.12);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  white-space: nowrap; overflow: hidden;
 }
-.ai-app__item {
-  display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #e8e8ef;
-  opacity: 0; transform: translateX(8px); animation: aiSlideIn .3s var(--ease) forwards;
+.ai-app__searchicon { font-size: 12px; opacity: .85; }
+.ai-app__chip {
+  position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px;
+  padding: 7px 13px; border-radius: 10px; font-size: 13px; color: #fff;
+  background: rgba(12,12,18,.78); border: 1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
 }
-.ai-app__bullet { width: 7px; height: 7px; border-radius: 50%; background: #39d6c6; flex: 0 0 auto; }
-.ai-app__more { font-size: 12px; color: rgba(255,255,255,.5); opacity: 0; animation: aiSlideIn .3s var(--ease) forwards; }
-@keyframes aiSlideIn { to { opacity: 1; transform: none; } }
-.ai-app__live { margin-top: auto; display: flex; align-items: center; gap: 7px; font-size: 13px; color: #39d6c6; opacity: 0; transition: opacity .3s; }
-.ai-app__live.is-on { opacity: 1; }
-.ai-app__live .dot { width: 8px; height: 8px; border-radius: 50%; background: #39d6c6; box-shadow: 0 0 8px rgba(57,214,198,.8); animation: demoPulse 1.6s ease-in-out infinite; }
+.ai-app__chip b { color: #39d6c6; }
+.ai-app__livedot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #39d6c6; box-shadow: 0 0 8px rgba(57,214,198,.8); animation: demoPulse 1.6s ease-in-out infinite; }
+.ai-app__fab {
+  position: absolute; right: 14px; bottom: 14px; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 24px; color: #fff; line-height: 1;
+  background: linear-gradient(135deg, #fc6c00, #e8451f); box-shadow: 0 6px 16px rgba(0,0,0,.42);
+}
 
 /* app pins drop in */
 .ai-pin {
@@ -1030,7 +1041,7 @@ html, body {
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .slide { transition: opacity .2s; }
-  .ai-pin, .ai-app__item, .ai-app__more { animation: none; opacity: 1; transform: none; }
+  .ai-pin { animation: none; opacity: 1; transform: none; }
   .ai-bubble { animation: none; opacity: 1; transform: none; }
   .ai-caret { animation: none; }
 }

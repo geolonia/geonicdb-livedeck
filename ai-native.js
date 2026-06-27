@@ -12,9 +12,9 @@
 
   var AI_SLIDE_INDEX = 4; // 0-based index of the AI-native slide
 
-  // app-preview shelter pin positions (viewBox 320x220)
-  var APP_PINS = [[70, 72], [150, 56], [232, 82], [98, 142], [196, 150], [262, 128]];
-  var APP_ITEMS = ["○○小学校", "△△公民館", "□□市民体育館"];
+  // app-preview shelter pin positions (viewBox 360x220), kept clear of the
+  // search bar (top) and the count chip / FAB (bottom corners).
+  var APP_PINS = [[70, 78], [160, 66], [250, 84], [320, 74], [110, 128], [205, 116], [292, 134], [150, 168]];
   var KEY_VALUE = "gdb_a9d3••••••••••••";
 
   var gen = 0;        // bumped to cancel an in-flight loop when leaving the slide
@@ -108,32 +108,6 @@
       pins.innerHTML = html;
     }
     await sleep(reduced() ? 0 : 350);
-    if (!alive(my)) return;
-
-    var side = $("ai-app-side");
-    if (side) {
-      side.innerHTML = "";
-      for (var j = 0; j < APP_ITEMS.length; j++) {
-        if (!alive(my)) return;
-        var it = document.createElement("div");
-        it.className = "ai-app__item";
-        it.style.animationDelay = (j * 0.12).toFixed(2) + "s";
-        it.innerHTML = '<span class="ai-app__bullet"></span>' + APP_ITEMS[j];
-        side.appendChild(it);
-      }
-      var more = document.createElement("div");
-      more.className = "ai-app__more";
-      more.style.animationDelay = "0.4s";
-      more.textContent = "ほか 7 件";
-      side.appendChild(more);
-      var live = document.createElement("div");
-      live.className = "ai-app__live";
-      live.innerHTML = '<span class="dot"></span>リアルタイム更新中';
-      side.appendChild(live);
-      await sleep(reduced() ? 0 : 500);
-      live.classList.add("is-on");
-    }
-    await sleep(reduced() ? 0 : 350);
   }
 
   // ---- reset everything between loops ----
@@ -144,7 +118,6 @@
     var prog = $("ai-progress"); if (prog) prog.classList.remove("is-on", "is-done");
     var app = $("ai-app"); if (app) app.classList.remove("is-on");
     var pins = $("ai-app-pins"); if (pins) pins.innerHTML = "";
-    var side = $("ai-app-side"); if (side) side.innerHTML = "";
   }
 
   // ---- one full story ----
