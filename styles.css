@@ -316,7 +316,8 @@ html, body {
 }
 .svy-chart-title { font-size: 17px; font-weight: 800; color: #fff; }
 .svy-total { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.5); margin-left: 4px; }
-.svy-chart { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; gap: 20px; padding: 6px 0; }
+/* distribute rows evenly so 4 bars always fit the chart area (no overflow on short devices) */
+.svy-chart { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-evenly; gap: 8px; padding: 4px 0; }
 .svy-row__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
 .svy-row__label { font-size: 16px; font-weight: 700; color: rgba(255,255,255,.9); }
 .svy-row__val { font-family: var(--font-mono); }
