@@ -45,20 +45,29 @@ python3 -m http.server 8745
 ### 1. 読み取り専用ポリシー＋キー（スライド 9 / 10 / 11 で共用）
 
 ```bash
-# policy: /ngsi-ld/** と /v2/** に対し GET と WS のみ許可
+# policy: GET 読み取りのみ。さらに必要なエンティティタイプだけに限定
+#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EnvironmentSensor / WeatherObserved）
+#   - ID 指定 GET は entityType が認可に乗らないため、パスで個別に許可
 cat > readonly-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-readonly",
-  "description": "geonicdb-livedeck: readonly (GET + WS)",
+  "description": "geonicdb-livedeck: readonly GET, limited to the demo entity types",
   "target": { "resources": [
     {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
     {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
   ]},
   "ruleCombiningAlgorithm": "first-applicable",
   "rules": [
-    {"ruleId":"allow-read","effect":"Permit","target":{"actions":[
-      {"attributeId":"method","matchValue":"GET"},
-      {"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"allow-by-type","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved)$","matchFunction":"string-regexp"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-by-path","effect":"Permit","target":{
+      "resources":[
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*AedLocation*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/v2/entities/env-sensor-001","matchFunction":"glob"}
+      ],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"deny-others","effect":"Deny"}
   ]
 }
