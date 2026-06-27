@@ -713,7 +713,7 @@ html, body {
 .metrics--ha .metric__num { font-size: 48px; }
 
 /* ===== Metrics ===== */
-.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .metric {
   text-align: center;
   background: rgba(255,255,255,.04);
