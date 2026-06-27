@@ -7,15 +7,17 @@
 (function () {
   "use strict";
 
+  // values come from config.js (window.DECK_CONFIG)
+  var CFG = window.DECK_CONFIG || {};
+  var DM = (CFG.demos || {}).map || {};
   var CONFIG = {
-    baseUrl: "https://geonicdb.geolonia.com",
-    tenant: "miya",
-    // DPoP-required, readonly (presentation-aed-readonly policy), origin-restricted key.
-    apiKey: "gdb_fc49b6790379e8d28bddb21801b597dcbb8a721e498ce30c8a94b1bea0faa9d4",
-    type: "AedLocation",
+    baseUrl: CFG.baseUrl,
+    tenant: CFG.tenant,
+    apiKey: (CFG.keys || {}).readonly, // readonly (GET + WS), origin-restricted
+    type: DM.type,
     limit: 1000,
-    center: [134.0475, 34.34], // 高松市あたり。fitToData() が実データに合わせて調整
-    zoom: 11,
+    center: DM.center, // fitToData() が実データに合わせて再調整
+    zoom: DM.zoom,
   };
   var MAP_SLIDE_INDEX = 9; // 0-based index of the map slide (after the dual-API demo)
 

@@ -7,14 +7,15 @@
 (function () {
   "use strict";
 
+  // values come from config.js (window.DECK_CONFIG)
+  var CFG = window.DECK_CONFIG || {};
+  var DS = (CFG.demos || {}).survey || {};
   var CONFIG = {
-    baseUrl: "https://geonicdb.geolonia.com",
-    tenant: "miya",
-    // DPoP-required, origin-restricted key. Policy `presentation-survey`
-    // permits GET + WS streaming + POST limited to PollVote in miya.
-    apiKey: "gdb_a9d30ecf8ec3dfc402dd45549c5894588206150e72e6d83463763dc11b0903a8",
-    type: "PollVote",
-    poll: "features-2026", // poll id this slide aggregates
+    baseUrl: CFG.baseUrl,
+    tenant: CFG.tenant,
+    apiKey: (CFG.keys || {}).survey, // GET|WS + POST PollVote, origin-restricted
+    type: DS.type,
+    poll: DS.poll, // poll id this slide aggregates
   };
   var SVY_SLIDE_INDEX = 12; // 0-based index of the survey slide
 
