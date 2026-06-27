@@ -134,17 +134,25 @@
               <div class="ai-browser__ph" id="ai-ph">アプリのプレビュー</div>
               <div class="ai-app" id="ai-app">
                 <div class="ai-app__map">
-                  <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                    <rect width="320" height="220" fill="#12121d"/>
+                  <svg viewBox="0 0 360 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <rect width="360" height="220" fill="#12121d"/>
                     <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" fill="none">
-                      <path d="M0,80 H320"/><path d="M0,150 H320"/><path d="M110,0 V220"/><path d="M220,0 V220"/>
+                      <path d="M0,78 H360"/><path d="M0,150 H360"/><path d="M120,0 V220"/><path d="M250,0 V220"/>
                     </g>
-                    <path d="M-10,40 C70,70 60,140 130,170 C190,196 220,210 330,200" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
+                    <path d="M-10,40 C80,70 70,140 150,168 C220,192 250,206 370,196" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
                     <g id="ai-app-pins"></g>
                   </svg>
-                  <div class="ai-app__count">近くの避難所 <b>10</b> 件</div>
                 </div>
-                <div class="ai-app__side" id="ai-app-side"></div>
+                <!-- app-like UI overlay -->
+                <div class="ai-app__ui">
+                  <div class="ai-app__top">
+                    <span class="ai-app__icon" aria-hidden="true">☰</span>
+                    <span class="ai-app__search"><span class="ai-app__searchicon" aria-hidden="true">🔍</span>避難所を検索</span>
+                    <span class="ai-app__icon" aria-hidden="true">⚙</span>
+                  </div>
+                  <div class="ai-app__chip"><span class="ai-app__livedot"></span>近くの避難所 <b>10</b> 件</div>
+                  <span class="ai-app__fab" aria-hidden="true">＋</span>
+                </div>
               </div>
             </div>
           </div>
