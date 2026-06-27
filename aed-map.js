@@ -73,9 +73,6 @@
       countText.textContent = (inGeo ? "範囲内 " : "") + n + " 件";
     }
     countEl.classList.toggle("done", !loading);
-    // keep the progress bar visible (as a 範囲内/全件 gauge) while filtering;
-    // it otherwise fades out once initial loading is done.
-    countEl.classList.toggle("is-geo", inGeo);
   }
 
   function esc(s) {

@@ -176,8 +176,6 @@ html, body {
   background: rgba(252,108,0,.35); transition: width .3s ease-out, opacity .4s ease-out;
 }
 .aed-count.done .aed-count-bar { opacity: 0; }
-/* while a near-query is active, keep the bar visible as a 範囲内/全件 gauge */
-.aed-count.is-geo .aed-count-bar { opacity: 1; }
 .aed-count-text { position: relative; z-index: 1; text-align: center; padding: 6px 14px; white-space: nowrap; }
 
 /* ===== Live room-reservation demo (WebSocket) ===== */
