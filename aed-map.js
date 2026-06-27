@@ -29,6 +29,7 @@
   var geoRadiusKm = 10;
   var pickMode = false;
   var geoActive = false;          // a near-query filter is currently applied
+  var geoCount = null;            // # entities returned by the active near-query
   var mapEl = null;
   var total = null;     // total entity count (from db.count)
   var loading = true;   // true while paginating
@@ -53,14 +54,18 @@
   function setCountStatus() {
     countRefs();
     if (!countEl) return;
-    var n = Object.keys(byId).length;
     countEl.classList.add("visible");
     countEl.classList.remove("is-error");
+    // While a near-query filter is active, the map only shows the in-radius
+    // subset — so report that count (not the full loaded set) to match what's
+    // actually drawn.
+    var inGeo = geoActive && geoCount != null;
+    var n = inGeo ? geoCount : Object.keys(byId).length;
     if (total != null) {
-      countText.textContent = n + " / " + total;
+      countText.textContent = (inGeo ? "範囲内 " : "") + n + " / " + total;
       countBar.style.width = (total > 0 ? Math.min(100, (n / total) * 100) : 100) + "%";
     } else {
-      countText.textContent = n + " 件";
+      countText.textContent = (inGeo ? "範囲内 " : "") + n + " 件";
     }
     countEl.classList.toggle("done", !loading);
   }
@@ -183,7 +188,7 @@
     if (mapEl) mapEl.style.cursor = on ? "crosshair" : "";
   }
 
-  function runGeoQuery() {
+  function runGeoQuery(doFit) {
     if (!geoCenter || !db) return;
     var meters = Math.round(geoRadiusKm * 1000);
     var path = "/ngsi-ld/v1/entities?type=" + encodeURIComponent(CONFIG.type) + "&limit=1000" +
@@ -195,16 +200,19 @@
         list = Array.isArray(list) ? list : (list && list.entities) || [];
         var fc = toFC(list);
         geoActive = true;
+        geoCount = fc.features.length;
         var src = map.getSource("aed");
         if (src) src.setData(fc);
         setGeoResult("範囲内: <strong>" + fc.features.length + "</strong> 件<br><span style=\"opacity:.7\">半径 " + geoRadiusKm + " km の near クエリ</span>");
-        fitToCircle();
+        setCountStatus(); // keep the bottom bar in sync with what's shown
+        if (doFit) fitToCircle();
       })
       .catch(function (e) { setGeoResult("エラー: " + (e && e.message ? e.message : e)); });
   }
 
   function clearGeo() {
     geoActive = false;
+    geoCount = null;
     geoCenter = null;
     setPick(false);
     drawGeo();
@@ -223,13 +231,18 @@
     var clear = document.getElementById("geo-clear");
     if (!pick || !radius || !clear) return;
     pick.addEventListener("click", function () { setPick(!pickMode); });
+    var radiusTimer = null;
     radius.addEventListener("input", function () {
       geoRadiusKm = +radius.value;
       radiusVal.textContent = geoRadiusKm;
       updateQueryView();
-      if (geoCenter) drawGeo();
+      if (geoCenter) {
+        drawGeo(); // grow/shrink the circle immediately
+        // re-run the near-query (debounced) so the markers + count track the slider
+        clearTimeout(radiusTimer);
+        radiusTimer = setTimeout(function () { runGeoQuery(false); }, 220);
+      }
     });
-    radius.addEventListener("change", function () { if (geoCenter) runGeoQuery(); });
     clear.addEventListener("click", clearGeo);
     updateQueryView();
   }
@@ -318,7 +331,7 @@
         setPick(false);
         updateQueryView();
         drawGeo();
-        runGeoQuery();
+        runGeoQuery(true); // frame the map to the circle on the initial pick
         return;
       }
       var clusters = map.queryRenderedFeatures(pt, { layers: ["aed-clusters"] });
