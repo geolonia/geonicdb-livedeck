@@ -161,8 +161,3 @@ geonic -s miya temporal entities create @weather-temporal.json
 | `survey.js` | スライド 13 ライブアンケートの WebSocket デモ |
 | `manifest.webmanifest` / `sw.js` | PWA（インストール対応・オフラインシェル） |
 | `assets/` | ロゴ・イラスト SVG・地図スタイル・GeonicDB SDK（IIFE）・OGP/アイコン画像 |
-
-## メモ
-
-- 埋め込みの API キーは **DPoP 必須・origin 制限**の設計で、クライアントバンドルに含めてよい前提です（他 origin からの流用はサーバ側 origin 検証で防止）。
-- デモのキー／ポリシー／カスタムデータモデルは `geonic` CLI で発行・管理しています。
