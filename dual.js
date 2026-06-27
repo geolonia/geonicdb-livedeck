@@ -8,14 +8,17 @@
 (function () {
   "use strict";
 
+  // values come from config.js (window.DECK_CONFIG). GeonicDB keeps NGSIv2 and
+  // NGSI-LD entities in separate spaces, so this demo shows one real entity per
+  // protocol (one broker serving both APIs).
+  var CFG = window.DECK_CONFIG || {};
+  var DD = (CFG.demos || {}).dual || {};
   var CONFIG = {
-    baseUrl: "https://geonicdb.geolonia.com",
-    tenant: "miya",
-    apiKey: "gdb_fc49b6790379e8d28bddb21801b597dcbb8a721e498ce30c8a94b1bea0faa9d4",
-    // GeonicDB keeps NGSIv2 and NGSI-LD entities in separate spaces, so this
-    // demo shows one real entity per protocol (one broker serving both APIs).
-    ldId: "urn:ngsi-ld:AedLocation:1",
-    v2Id: "env-sensor-001",
+    baseUrl: CFG.baseUrl,
+    tenant: CFG.tenant,
+    apiKey: (CFG.keys || {}).readonly,
+    ldId: DD.ldId,
+    v2Id: DD.v2Id,
   };
   var DUAL_SLIDE_INDEX = 8; // 0-based index of this demo (before the map slide)
 

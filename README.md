@@ -42,12 +42,16 @@ python3 -m http.server 8745
 
 | ファイル | 役割 |
 |---|---|
+| `config.js` | **設定ファイル**（テナント名・API キー・各デモのエンティティタイプ/ID など。ここを書き換えれば全デモに反映） |
 | `index.html` | デッキ本体（全スライドのマークアップ） |
 | `styles.css` | テーマ・レイアウト・アニメーション |
 | `slides.js` | スライドエンジン（ナビゲーション・背景同期・スケーリング） |
-| `aed-map.js` | スライド 9 ジオクエリの地図デモ |
-| `survey.js` | スライド 11 ライブアンケートの WebSocket デモ |
-| `assets/` | ロゴ・イラスト SVG・地図スタイル・GeonicDB SDK（IIFE） |
+| `dual.js` | スライド 9 標準API（NGSIv2 / NGSI-LD 二面取得）デモ |
+| `aed-map.js` | スライド 10 ジオクエリの地図デモ |
+| `temporal.js` | スライド 11 時系列（Temporal API）デモ |
+| `survey.js` | スライド 13 ライブアンケートの WebSocket デモ |
+| `manifest.webmanifest` / `sw.js` | PWA（インストール対応・オフラインシェル） |
+| `assets/` | ロゴ・イラスト SVG・地図スタイル・GeonicDB SDK（IIFE）・OGP/アイコン画像 |
 
 ## メモ
 

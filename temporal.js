@@ -8,14 +8,16 @@
 (function () {
   "use strict";
 
+  // values come from config.js (window.DECK_CONFIG)
+  var CFG = window.DECK_CONFIG || {};
+  var DT = (CFG.demos || {}).temporal || {};
   var CONFIG = {
-    baseUrl: "https://geonicdb.geolonia.com",
-    tenant: "miya",
-    // readonly DPoP key (policy presentation-aed-readonly: GET on /ngsi-ld/**)
-    apiKey: "gdb_fc49b6790379e8d28bddb21801b597dcbb8a721e498ce30c8a94b1bea0faa9d4",
-    entityId: "urn:ngsi-ld:WeatherObserved:takamatsu-1",
-    from: "2026-06-26T00:00:00Z",
-    to: "2026-06-27T00:30:00Z",
+    baseUrl: CFG.baseUrl,
+    tenant: CFG.tenant,
+    apiKey: (CFG.keys || {}).readonly, // readonly (GET on /ngsi-ld/**)
+    entityId: DT.entityId,
+    from: DT.from,
+    to: DT.to,
   };
   var TMP_SLIDE_INDEX = 10; // 0-based index of the temporal slide
 
