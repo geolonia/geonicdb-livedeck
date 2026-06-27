@@ -490,13 +490,20 @@
       });
   }
 
+  // Run heavy work (DPoP token exchange does a synchronous proof-of-work solve)
+  // when the browser is idle, so it can't jank the in-flight slide transition.
+  function whenIdle(fn) {
+    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 800 });
+    else setTimeout(fn, 600);
+  }
+
   document.addEventListener("slidechange", function (e) {
     if (!e.detail) return;
     var i = e.detail.index;
     if (i === MAP_SLIDE_INDEX - 1) {
-      prefetch(); // warm DPoP token + load entities on the prior slide
+      whenIdle(prefetch); // warm DPoP token + load entities on the prior slide (after the transition)
     } else if (i === MAP_SLIDE_INDEX) {
-      prefetch(); // ensure data is loading even if the user jumped straight here
+      whenIdle(prefetch); // ensure data is loading even if the user jumped straight here
       start();
       if (map) setTimeout(function () { map.resize(); }, 60);
     }

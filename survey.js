@@ -196,10 +196,17 @@
     if (opts) opts.addEventListener("click", onOptionsClick);
   }
 
+  function whenIdle(fn) {
+    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 800 });
+    else setTimeout(fn, 600);
+  }
+
   document.addEventListener("slidechange", function (e) {
     if (!e.detail) return;
     var i = e.detail.index;
-    // Prefetch (votes + WS + initial chart) one slide early so this is instant.
-    if (i === SVY_SLIDE_INDEX - 1 || i === SVY_SLIDE_INDEX) start();
+    // Prefetch one slide early; defer the heavy DPoP/token work to idle so it
+    // doesn't jank the slide transition.
+    if (i === SVY_SLIDE_INDEX - 1) whenIdle(start);
+    else if (i === SVY_SLIDE_INDEX) start();
   });
 })();

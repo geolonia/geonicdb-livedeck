@@ -194,11 +194,18 @@
     if (btn) btn.addEventListener("click", play);
   }
 
+  function whenIdle(fn) {
+    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 800 });
+    else setTimeout(fn, 600);
+  }
+
   document.addEventListener("slidechange", function (e) {
     if (!e.detail) return;
     var i = e.detail.index;
-    // Prefetch + draw one slide early so arriving here is instant.
-    if (i === TMP_SLIDE_INDEX - 1 || i === TMP_SLIDE_INDEX) start();
+    // Prefetch + draw one slide early so arriving here is instant. Defer the
+    // heavy DPoP/token work to idle so it doesn't jank the slide transition.
+    if (i === TMP_SLIDE_INDEX - 1) whenIdle(start);
+    else if (i === TMP_SLIDE_INDEX) start();
     else stop(); // pause playback when leaving the slide
   });
 })();
