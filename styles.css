@@ -78,9 +78,9 @@ html, body {
 
 /* ===== Live map slide (slide 5) ===== */
 .slide__inner--map { padding: 36px 46px; height: 100%; display: flex; flex-direction: column; }
-.map-head { flex: 0 0 auto; margin-bottom: 14px; }
+.map-head { flex: 0 0 auto; margin-bottom: 26px; }
 .map-title { font-size: 30px; margin-bottom: 0; max-width: none; }
-.map-desc { margin-top: 8px; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.72); max-width: 1000px; }
+.map-desc { margin-top: 2px; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.72); max-width: 1000px; }
 .map-desc strong { color: var(--cyan); font-weight: 700; }
 .demo-body { flex: 1 1 auto; display: flex; gap: 16px; min-height: 0; }
 .demo-body .map-wrap { flex: 1 1 auto; }
@@ -461,6 +461,11 @@ html, body {
 
 .accent { color: var(--cyan); }
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
+
+/* when a description directly follows the title: tighten the gap above it,
+   add breathing room below it (mirrors the .map-head layout) */
+.slide__title:has(+ .map-desc), .slide__title:has(+ .lead) { margin-bottom: 2px; }
+.slide__inner > .map-desc { margin-bottom: 24px; }
 
 .lead { font-size: 21px; line-height: 1.7; margin-bottom: 22px; color: rgba(255,255,255,.88); }
 .avail-note { font-size: 16px; line-height: 1.65; margin-top: 22px; margin-bottom: 10px; color: rgba(255,255,255,.78); }
