@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Generate config.js from the committed template, injecting the API keys
+      # from repository secrets (so the source repo never contains the keys).
+      - name: Inject API keys from secrets
+        env:
+          READONLY_KEY: ${{ secrets.GEONICDB_READONLY_KEY }}
+          SURVEY_KEY: ${{ secrets.GEONICDB_SURVEY_KEY }}
+        run: |
+          cp config.template.js config.js
+          sed -i "s|__GEONICDB_READONLY_KEY__|${READONLY_KEY}|g; s|__GEONICDB_SURVEY_KEY__|${SURVEY_KEY}|g" config.js
+          # fail the build if any placeholder is left (missing secret)
+          if grep -q '__GEONICDB_.*_KEY__' config.js; then
+            echo "::error::API key placeholder was not replaced — is the secret set?"; exit 1
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
