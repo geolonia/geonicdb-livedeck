@@ -23,6 +23,7 @@
     { choice: "geoquery", label: "ジオクエリ", color: "#fc6c00" },
     { choice: "realtime", label: "リアルタイム通知", color: "#fba40c" },
     { choice: "reactivecore", label: "ReactiveCore Rules", color: "#39d6c6" },
+    { choice: "standards", label: "標準準拠（NGSI-LD）", color: "#e8401e" },
   ];
 
   var db = null;
