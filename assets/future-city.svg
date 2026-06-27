@@ -1,0 +1,396 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -70 1200 795" width="1200" height="795" font-family="'Helvetica Neue', 'Hiragino Sans', sans-serif">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1626"/>
+      <stop offset="100%" stop-color="#172138"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#172138"/>
+      <stop offset="100%" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF2CC"/>
+      <stop offset="35%" stop-color="#FF540D"/>
+      <stop offset="100%" stop-color="#E8412F"/>
+    </radialGradient>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF540D" stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#FF540D" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="cardShadow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#8fa6c2" flood-opacity="0.35"/>
+    </filter>
+    <filter id="lbl" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.7" flood-color="#5a1205" flood-opacity="0.95"/>
+    </filter>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#28344c"/><stop offset="100%" stop-color="#18223a"/>
+    </linearGradient>
+    <linearGradient id="glass2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#313e58"/><stop offset="100%" stop-color="#1e2840"/>
+    </linearGradient>
+    <radialGradient id="scrim" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a0f1c" stop-opacity="0.78"/>
+      <stop offset="62%" stop-color="#0a0f1c" stop-opacity="0.66"/>
+      <stop offset="100%" stop-color="#0a0f1c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Sky: transparent so the page background shows through -->
+
+  <!-- distant stars / data points -->
+  <g fill="#9fc0e6">
+    <circle cx="120" cy="80" r="1.4" opacity="0.7"/>
+    <circle cx="300" cy="50" r="1" opacity="0.5"/>
+    <circle cx="520" cy="110" r="1.6" opacity="0.8"/>
+    <circle cx="760" cy="60" r="1" opacity="0.5"/>
+    <circle cx="980" cy="95" r="1.4" opacity="0.7"/>
+    <circle cx="1100" cy="55" r="1" opacity="0.5"/>
+    <circle cx="660" cy="150" r="1" opacity="0.4"/>
+    <circle cx="200" cy="170" r="1" opacity="0.4"/>
+  </g>
+
+  <!-- Spatial-ID mesh ground (digital twin foundation / ZFXY tilehash nod) -->
+  <g opacity="0.5">
+    <!-- ground fill removed: transparent (page background shows through) -->
+    <!-- perspective grid -->
+    <g stroke="#33486a" stroke-width="1" opacity="0.45">
+      <!-- horizontal lines -->
+      <line x1="0" y1="585" x2="1200" y2="585"/>
+      <line x1="0" y1="615" x2="1200" y2="615"/>
+      <line x1="0" y1="655" x2="1200" y2="655"/>
+      <line x1="0" y1="705" x2="1200" y2="705"/>
+      <line x1="0" y1="765" x2="1200" y2="765"/>
+      <!-- converging verticals -->
+      <line x1="600" y1="580" x2="-200" y2="800"/>
+      <line x1="600" y1="580" x2="120" y2="800"/>
+      <line x1="600" y1="580" x2="360" y2="800"/>
+      <line x1="600" y1="580" x2="600" y2="800"/>
+      <line x1="600" y1="580" x2="840" y2="800"/>
+      <line x1="600" y1="580" x2="1080" y2="800"/>
+      <line x1="600" y1="580" x2="1400" y2="800"/>
+    </g>
+  </g>
+
+  <!-- City skyline -->
+  <g>
+    <!-- back row -->
+    <rect x="60"  y="380" width="70"  height="200" fill="url(#glass2)"/>
+    <rect x="150" y="330" width="60"  height="250" fill="url(#glass)"/>
+    <rect x="1000" y="360" width="74" height="220" fill="url(#glass2)"/>
+    <rect x="1090" y="320" width="64" height="260" fill="url(#glass)"/>
+    <!-- mid towers -->
+    <rect x="250" y="280" width="80" height="300" fill="url(#glass)"/>
+    <rect x="350" y="350" width="64" height="230" fill="url(#glass2)"/>
+    <rect x="820" y="300" width="80" height="280" fill="url(#glass)"/>
+    <rect x="910" y="360" width="60" height="220" fill="url(#glass2)"/>
+    <!-- central tall towers framing the core -->
+    <rect x="440" y="240" width="78" height="340" fill="url(#glass)"/>
+    <rect x="690" y="220" width="84" height="360" fill="url(#glass)"/>
+    <rect x="560" y="300" width="66" height="280" fill="url(#glass2)"/>
+    <!-- green rooftops (near-future eco) -->
+    <rect x="250" y="272" width="80" height="10" rx="3" fill="#1fd39a"/>
+    <rect x="440" y="232" width="78" height="10" rx="3" fill="#1fd39a"/>
+    <rect x="690" y="212" width="84" height="10" rx="3" fill="#1fd39a"/>
+    <rect x="820" y="292" width="80" height="10" rx="3" fill="#1fd39a"/>
+
+    <!-- lit windows -->
+    <g fill="#6fa6d8" opacity="0.85">
+      <rect x="262" y="300" width="8" height="10"/><rect x="282" y="300" width="8" height="10"/><rect x="302" y="300" width="8" height="10"/>
+      <rect x="262" y="330" width="8" height="10"/><rect x="302" y="330" width="8" height="10"/>
+      <rect x="262" y="380" width="8" height="10"/><rect x="282" y="380" width="8" height="10"/>
+      <rect x="452" y="270" width="8" height="10"/><rect x="472" y="270" width="8" height="10"/><rect x="492" y="270" width="8" height="10"/>
+      <rect x="452" y="310" width="8" height="10"/><rect x="492" y="310" width="8" height="10"/>
+      <rect x="452" y="360" width="8" height="10"/><rect x="472" y="360" width="8" height="10"/>
+      <rect x="702" y="250" width="8" height="10"/><rect x="722" y="250" width="8" height="10"/><rect x="742" y="250" width="8" height="10"/>
+      <rect x="702" y="290" width="8" height="10"/><rect x="742" y="290" width="8" height="10"/>
+      <rect x="702" y="350" width="8" height="10"/><rect x="722" y="350" width="8" height="10"/>
+      <rect x="832" y="320" width="8" height="10"/><rect x="852" y="320" width="8" height="10"/>
+      <rect x="832" y="360" width="8" height="10"/>
+    </g>
+    <!-- rooftop sensor antennas -->
+    <g stroke="#58708e" stroke-width="1.5">
+      <line x1="481" y1="232" x2="481" y2="210"/><circle cx="481" cy="207" r="3" fill="#E8412F"/>
+      <line x1="732" y1="212" x2="732" y2="186"/><circle cx="732" cy="183" r="3" fill="#E8412F"/>
+      <line x1="290" y1="272" x2="290" y2="254"/><circle cx="290" cy="251" r="3" fill="#E8412F"/>
+    </g>
+  </g>
+
+  <!-- Holographic data layer (NGSI-LD context layer over the city) -->
+  <!-- connection lines from data nodes to the GeonicDB core (600,360) -->
+  <g stroke="#FF6A2C" stroke-width="1.6" fill="none" opacity="0.5">
+    <path d="M 220,200 Q 420,250 600,360"/>
+    <path d="M 980,180 Q 780,260 600,360"/>
+    <path d="M 150,470 Q 380,420 600,360"/>
+    <path d="M 1050,470 Q 820,420 600,360"/>
+    <path d="M 360,560 Q 480,470 600,360"/>
+    <path d="M 860,560 Q 720,470 600,360"/>
+  </g>
+  <!-- animated data packets flowing inbound -->
+  <g fill="#E8412F">
+    <circle r="3.5">
+      <animateMotion dur="3.2s" repeatCount="indefinite" path="M 220,200 Q 420,250 600,360"/>
+    </circle>
+    <circle r="3.5">
+      <animateMotion dur="3.6s" repeatCount="indefinite" path="M 980,180 Q 780,260 600,360"/>
+    </circle>
+    <circle r="3.5">
+      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 150,470 Q 380,420 600,360"/>
+    </circle>
+    <circle r="3.5">
+      <animateMotion dur="3.4s" repeatCount="indefinite" path="M 1050,470 Q 820,420 600,360"/>
+    </circle>
+    <circle r="3.5">
+      <animateMotion dur="3.0s" repeatCount="indefinite" path="M 360,560 Q 480,470 600,360"/>
+    </circle>
+    <circle r="3.5">
+      <animateMotion dur="3.8s" repeatCount="indefinite" path="M 860,560 Q 720,470 600,360"/>
+    </circle>
+  </g>
+
+  <!-- connections for added labeled domains -->
+  <g stroke="#FF6A2C" stroke-width="1.6" fill="none" opacity="0.5">
+    <path d="M 600,92 Q 558,220 600,360"/>
+    <path d="M 88,300 Q 330,360 600,360"/>
+    <path d="M 1112,300 Q 860,350 600,360"/>
+    <path d="M 1118,570 Q 840,470 600,360"/>
+    <path d="M 250,360 Q 420,330 600,360"/>
+  </g>
+  <g fill="#E8412F">
+    <circle r="3.5"><animateMotion dur="3.1s" repeatCount="indefinite" path="M 600,92 Q 558,220 600,360"/></circle>
+    <circle r="3.5"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 88,300 Q 330,360 600,360"/></circle>
+    <circle r="3.5"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 1112,300 Q 860,350 600,360"/></circle>
+    <circle r="3.5"><animateMotion dur="3.7s" repeatCount="indefinite" path="M 1118,570 Q 840,470 600,360"/></circle>
+    <circle r="3.5"><animateMotion dur="2.7s" repeatCount="indefinite" path="M 250,360 Q 420,330 600,360"/></circle>
+  </g>
+  <!-- Data domain nodes (the urban entities GeonicDB unifies) -->
+  <!-- helper style: chip with label -->
+  <g font-size="13" fill="#e7eef7" text-anchor="middle">
+    <!-- 環境センサー -->
+    <g transform="translate(220,200)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M0,-9 v18 M-9,0 h18" stroke="#1fd39a" stroke-width="2"/>
+      <circle r="11" fill="none" stroke="#1fd39a" stroke-width="2"/>
+      <text y="42">環境センサー</text>
+    </g>
+    <!-- AI / カメラ -->
+    <g transform="translate(980,180)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <rect x="-10" y="-7" width="20" height="14" rx="3" fill="none" stroke="#F2933C" stroke-width="2"/>
+      <circle r="4" fill="#F2933C"/>
+      <text y="42">AI カメラ</text>
+    </g>
+    <!-- AED -->
+    <g transform="translate(150,470)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M-3,-10 l-4,12 h6 l-4,10 12,-16 h-6 z" fill="#E8412F"/>
+      <text y="42">AED</text>
+    </g>
+    <!-- 避難所 -->
+    <g transform="translate(1050,470)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M-10,2 l10,-12 l10,12 z" fill="none" stroke="#1fd39a" stroke-width="2"/>
+      <rect x="-4" y="2" width="8" height="7" fill="#1fd39a"/>
+      <text y="42">避難所</text>
+    </g>
+    <!-- 交通 -->
+    <g transform="translate(360,560)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <rect x="-9" y="-4" width="18" height="9" rx="2" fill="#F2933C"/>
+      <circle cx="-5" cy="7" r="2.5" fill="#e7eef7"/><circle cx="5" cy="7" r="2.5" fill="#e7eef7"/>
+      <text y="42">交通</text>
+    </g>
+    <!-- エネルギー -->
+    <g transform="translate(860,560)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M2,-11 l-8,13 h6 l-2,9 8,-13 h-6 z" fill="#F2933C"/>
+      <text y="42">エネルギー</text>
+    </g>
+    <!-- 気象 -->
+    <g transform="translate(600,92)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="6" cy="-6" r="6" fill="#F2933C"/>
+      <g fill="#b9cbe2"><circle cx="-7" cy="4" r="6"/><circle cx="1" cy="5" r="7"/><circle cx="9" cy="4" r="5"/><rect x="-7" y="5" width="16" height="7"/></g>
+      <text y="42">気象</text>
+    </g>
+    <!-- 人流データ -->
+    <g transform="translate(88,300)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <g fill="#1fd39a"><circle cx="-8" cy="2" r="3"/><circle cx="0" cy="2" r="3"/><circle cx="8" cy="2" r="3"/></g>
+      <path d="M-11,-6 Q0,-12 11,-6" fill="none" stroke="#F2933C" stroke-width="2"/>
+      <path d="M11,-6 l-4,-1 m4,1 l-1,4" fill="none" stroke="#F2933C" stroke-width="2"/>
+      <text y="42">人流データ</text>
+    </g>
+    <!-- 地域幸福度 -->
+    <g transform="translate(1112,300)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle r="11" fill="none" stroke="#F2933C" stroke-width="2"/>
+      <circle cx="-4" cy="-3" r="1.6" fill="#F2933C"/><circle cx="4" cy="-3" r="1.6" fill="#F2933C"/>
+      <path d="M-5,3 Q0,8 5,3" fill="none" stroke="#F2933C" stroke-width="2"/>
+      <text y="42">地域幸福度</text>
+    </g>
+    <!-- 防災 -->
+    <g transform="translate(1118,570)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M0,-11 l10,4 v5 q0,8 -10,12 q-10,-4 -10,-12 v-5 z" fill="none" stroke="#E8412F" stroke-width="2"/>
+      <path d="M0,-6 v6" stroke="#E8412F" stroke-width="2"/><circle cx="0" cy="4" r="1.4" fill="#E8412F"/>
+      <text y="42">防災</text>
+    </g>
+    <!-- 医療 -->
+    <g transform="translate(250,360)">
+      <circle r="22" fill="#1a2438" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
+      <path d="M-3,-10 h6 v7 h7 v6 h-7 v7 h-6 v-7 h-7 v-6 h7 z" fill="#E8412F"/>
+      <text y="42">医療</text>
+    </g>
+  </g>
+
+  <!-- Additional data sources: vast inbound streams -->
+  <g fill="none">
+    <path d="M 703,194 Q 630.5,252.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.3"/>
+    <path d="M 138,114 Q 391.0,260.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.43"/>
+    <path d="M 232,414 Q 429.0,391.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.36"/>
+    <path d="M 158,559 Q 404.0,489.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.44"/>
+    <path d="M 928,468 Q 730.0,413.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.52"/>
+    <path d="M 532,132 Q 597.0,241.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.37"/>
+    <path d="M 909,100 Q 765.5,203.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.31"/>
+    <path d="M 293,268 Q 462.5,294.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.28"/>
+    <path d="M 141,266 Q 343.5,283.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.42"/>
+    <path d="M 312,336 Q 494.0,319.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.27"/>
+    <path d="M 410,145 Q 497.0,244.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.43"/>
+    <path d="M 424,421 Q 534.0,389.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.39"/>
+    <path d="M 461,548 Q 533.5,471.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.33"/>
+    <path d="M 1128,477 Q 844.0,421.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.26"/>
+    <path d="M 780,346 Q 717.0,346.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.29"/>
+    <path d="M 408,289 Q 531.0,313.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.54"/>
+    <path d="M 654,577 Q 620.0,471.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.36"/>
+    <path d="M 743,499 Q 699.5,433.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.48"/>
+    <path d="M 377,390 Q 472.5,396.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.32"/>
+    <path d="M 974,110 Q 772.0,238.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.4"/>
+    <path d="M 750,63 Q 638.0,231.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.33"/>
+    <path d="M 767,212 Q 687.5,284.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.49"/>
+    <path d="M 279,545 Q 443.5,445.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.27"/>
+    <path d="M 854,440 Q 730.0,383.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.39"/>
+    <path d="M 609,180 Q 642.5,293.0 600,360" stroke="#FF540D" stroke-width="1" opacity="0.25"/>
+    <path d="M 774,429 Q 691.0,415.5 600,360" stroke="#FF540D" stroke-width="1" opacity="0.44"/>
+  </g>
+  <g>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.8s" repeatCount="indefinite" path="M 703,194 Q 630.5,252.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 138,114 Q 391.0,260.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="4.1s" repeatCount="indefinite" path="M 232,414 Q 429.0,391.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 532,132 Q 597.0,241.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="4.1s" repeatCount="indefinite" path="M 141,266 Q 343.5,283.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.1s" repeatCount="indefinite" path="M 312,336 Q 494.0,319.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.6s" repeatCount="indefinite" path="M 410,145 Q 497.0,244.5 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.7s" repeatCount="indefinite" path="M 424,421 Q 534.0,389.5 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 780,346 Q 717.0,346.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 654,577 Q 620.0,471.5 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="2.8s" repeatCount="indefinite" path="M 743,499 Q 699.5,433.5 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 377,390 Q 472.5,396.0 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 750,63 Q 638.0,231.5 600,360"/></circle>
+    <circle r="2.6" fill="#E8412F" opacity="0.85"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 279,545 Q 443.5,445.5 600,360"/></circle>
+  </g>
+  <g>
+    <circle cx="703" cy="194" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="138" cy="114" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="232" cy="414" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="158" cy="559" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="928" cy="468" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="532" cy="132" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="909" cy="100" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="293" cy="268" r="6" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="141" cy="266" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="312" cy="336" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="410" cy="145" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="424" cy="421" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="461" cy="548" r="6" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="1128" cy="477" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="780" cy="346" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="408" cy="289" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="654" cy="577" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="743" cy="499" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="377" cy="390" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="974" cy="110" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="750" cy="63" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="767" cy="212" r="5" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="279" cy="545" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="854" cy="440" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="609" cy="180" r="4" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="774" cy="429" r="3" fill="#1a2438" stroke="#FF9E5C" stroke-width="1.5" opacity="0.9"/>
+  </g>
+  <!-- GeonicDB hub glow -->
+  <g>
+    <circle cx="600" cy="360" r="120" fill="url(#coreGlow)">
+      <animate attributeName="r" values="106;134;106" dur="4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Output side: applications born from accessing GeonicDB -->
+  <g fill="none">
+    <path d="M 600,360 Q 490,478 380,630" stroke="#1fd39a" stroke-width="1.8" opacity="0.55"/>
+    <path d="M 600,360 Q 555,471 510,617" stroke="#1fd39a" stroke-width="1.8" opacity="0.55"/>
+    <path d="M 600,360 Q 620,468 640,611" stroke="#1fd39a" stroke-width="1.8" opacity="0.55"/>
+    <path d="M 600,360 Q 685,471 770,617" stroke="#1fd39a" stroke-width="1.8" opacity="0.55"/>
+    <path d="M 600,360 Q 750,478 900,630" stroke="#1fd39a" stroke-width="1.8" opacity="0.55"/>
+  </g>
+  <g>
+    <circle r="3.2" fill="#2fe0a8"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 600,360 Q 490,478 380,630"/></circle>
+    <circle r="3.2" fill="#2fe0a8"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 600,360 Q 555,471 510,617"/></circle>
+    <circle r="3.2" fill="#2fe0a8"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 600,360 Q 620,468 640,611"/></circle>
+    <circle r="3.2" fill="#2fe0a8"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 600,360 Q 685,471 770,617"/></circle>
+    <circle r="3.2" fill="#2fe0a8"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 600,360 Q 750,478 900,630"/></circle>
+  </g>
+  <text x="640" y="600" text-anchor="middle" font-size="13" fill="#37d6a0" font-weight="600">GeonicDB から多様なアプリが生まれる</text>
+  <g font-family="'Helvetica Neue','Hiragino Sans',sans-serif">
+    <g transform="translate(380,655)">
+      <rect x="-50" y="-25" width="100" height="50" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="-46" y="-21" width="92" height="5" rx="2" fill="#FF540D"/>
+      <g fill="#1fd39a"><rect x="-15" y="3" width="6" height="9"/><rect x="-6" y="-2" width="6" height="14"/><rect x="3" y="-6" width="6" height="18"/><rect x="12" y="0" width="6" height="12"/></g>
+      <text y="42" text-anchor="middle" font-size="12.5" fill="#e7eef7">防災DX</text>
+    </g>
+    <g transform="translate(510,642)">
+      <rect x="-50" y="-25" width="100" height="50" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="-46" y="-21" width="92" height="5" rx="2" fill="#FF540D"/>
+      <path d="M0,-8 a8,8 0 1,1 -0.1,0 z" fill="none" stroke="#E8412F" stroke-width="2"/><path d="M-6,2 Q0,16 6,2" fill="#E8412F" stroke="none"/><circle cx="0" cy="-1" r="3" fill="#ffffff"/>
+      <text y="42" text-anchor="middle" font-size="12.5" fill="#e7eef7">AEDマップ</text>
+    </g>
+    <g transform="translate(640,636)">
+      <rect x="-50" y="-25" width="100" height="50" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="-46" y="-21" width="92" height="5" rx="2" fill="#FF540D"/>
+      <path d="M-14,8 q6,-18 14,-10 q8,8 14,-6" fill="none" stroke="#F2933C" stroke-width="2" stroke-dasharray="3 3"/><circle cx="-14" cy="8" r="3" fill="#1fd39a"/><circle cx="14" cy="-8" r="3" fill="#E8412F"/>
+      <text y="42" text-anchor="middle" font-size="12.5" fill="#e7eef7">観光ナビ</text>
+    </g>
+    <g transform="translate(770,642)">
+      <rect x="-50" y="-25" width="100" height="50" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="-46" y="-21" width="92" height="5" rx="2" fill="#FF540D"/>
+      <path d="M-14,-8 h24 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-16 l-6,5 v-5 a4,4 0 0 1 -2,-3 v-9 a4,4 0 0 1 0,-4 z" fill="none" stroke="#1fd39a" stroke-width="2"/><path d="M14,-12 l1.5,4 4,1.5 -4,1.5 -1.5,4 -1.5,-4 -4,-1.5 4,-1.5 z" fill="#F2933C"/>
+      <text y="42" text-anchor="middle" font-size="12.5" fill="#e7eef7">AIエージェント</text>
+    </g>
+    <g transform="translate(900,655)">
+      <rect x="-50" y="-25" width="100" height="50" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="-46" y="-21" width="92" height="5" rx="2" fill="#FF540D"/>
+      <g fill="none" stroke="#F2933C" stroke-width="2"><path d="M-12,-2 L0,-9 L12,-2 L0,5 Z"/><path d="M-12,4 L0,11 L12,4" opacity="0.7"/></g>
+      <text y="42" text-anchor="middle" font-size="12.5" fill="#e7eef7">都市計画</text>
+    </g>
+  </g>
+  <!-- GeonicDB logo hub (top-most) -->
+  <ellipse cx="600" cy="358" rx="120" ry="96" fill="url(#scrim)"/>
+  <svg x="520" y="280" width="160" height="160" viewBox="0 0 512 512" overflow="visible">
+  <defs>
+    <style>
+      .cls-1{fill:#ff6d00}.cls-2{fill:#ee730d}.cls-3{fill:#ffa714}.cls-4{fill:#e84130}.cls-5{fill:#ffffff}
+    </style>
+  </defs>
+  <path d="M5.04 496.46C1.68 493.14 0 488.7 0 483.16v-41.83c0-5.55 1.68-9.98 5.04-13.3q5.04-4.98 13.47-4.98c8.43 0 10.13 1.68 13.52 5.04 3.4 3.36 5.09 7.81 5.09 13.36v4.71c0 .73-.37 1.09-1.09 1.09h-5.58c-.73 0-1.1-.36-1.1-1.09v-4.93c0-3.43-.99-6.19-2.96-8.27s-4.6-3.12-7.88-3.12-5.82 1.06-7.83 3.17c-2.01 2.12-3.01 4.86-3.01 8.21v42.04c0 3.36 1 6.1 3.01 8.21q3.015 3.18 7.83 3.18c4.815 0 5.91-1.04 7.88-3.12s2.96-4.83 2.96-8.27v-14.02c0-.29-.15-.44-.44-.44h-9.42c-.73 0-1.09-.36-1.09-1.09v-4.6c0-.73.36-1.1 1.09-1.1h16.53c.73 0 1.09.37 1.09 1.1v20.04c0 5.55-1.7 9.98-5.09 13.3s-7.9 4.98-13.52 4.98-10.11-1.66-13.47-4.98ZM102.49 475.82H77.53c-.29 0-.44.15-.44.44v7.99c0 3.07.86 5.57 2.57 7.5s3.96 2.9 6.73 2.9c2.34 0 4.33-.71 5.97-2.14s2.72-3.27 3.23-5.53q.33-.99 1.2-.99l5.47.22c.29 0 .55.11.77.33s.29.51.22.88c-.58 4.31-2.35 7.72-5.31 10.24q-4.44 3.78-11.55 3.78c-5.18 0-9.33-1.53-12.43-4.6q-4.65-4.605-4.65-12.15v-23.65c0-4.96 1.55-9 4.65-12.1s7.24-4.65 12.43-4.65 9.43 1.55 12.54 4.65c3.1 3.1 4.65 7.14 4.65 12.1v13.69c0 .73-.37 1.09-1.09 1.09m-22.83-21.85c-1.72 1.93-2.57 4.47-2.57 7.61v7.34c0 .29.15.44.44.44h17.96c.29 0 .44-.15.44-.44v-7.34c0-3.14-.88-5.68-2.63-7.61s-4.05-2.9-6.9-2.9-5.02.97-6.73 2.9ZM140.42 496.84q-4.65-4.605-4.65-12.15v-23.54c0-4.96 1.57-9.02 4.71-12.15q4.71-4.71 12.48-4.71c7.77 0 9.45 1.57 12.59 4.71q4.71 4.71 4.71 12.15v23.54q0 7.56-4.71 12.15c-3.14 3.07-7.34 4.6-12.59 4.6s-9.43-1.53-12.54-4.6m19.39-5.15c1.79-1.9 2.68-4.42 2.68-7.55v-22.56c0-3.14-.89-5.68-2.68-7.61s-4.07-2.9-6.84-2.9-5.04.97-6.79 2.9-2.63 4.47-2.63 7.61v22.56c0 3.14.88 5.66 2.63 7.55 1.75 1.9 4.01 2.85 6.79 2.85s5.05-.95 6.84-2.85M234.37 448.99c2.44 3.07 3.67 7.34 3.67 12.81v37.67c0 .73-.37 1.09-1.1 1.09h-5.58c-.73 0-1.09-.36-1.09-1.09v-37.01c0-3.58-.79-6.35-2.35-8.32-1.57-1.97-3.74-2.96-6.51-2.96q-4.38 0-6.84 3.18c-2.46 3.18-2.46 5-2.46 8.65v36.46c0 .73-.37 1.09-1.09 1.09h-5.58c-.73 0-1.1-.36-1.1-1.09v-53.21c0-.73.36-1.09 1.1-1.09h5.58c.73 0 1.09.37 1.09 1.09v3.5c0 .15.07.26.22.33.14.07.26 0 .33-.22q1.965-2.73 4.98-4.11c2.01-.91 4.14-1.37 6.41-1.37 4.45 0 7.9 1.53 10.35 4.6ZM272.91 433.33c-1.13-1.17-1.7-2.63-1.7-4.38s.56-3.3 1.7-4.43c1.13-1.13 2.61-1.7 4.43-1.7s3.19.57 4.33 1.7c1.13 1.13 1.7 2.61 1.7 4.43s-.57 3.21-1.7 4.38-2.57 1.75-4.33 1.75-3.3-.58-4.43-1.75m.6 66.14v-53.21c0-.73.36-1.09 1.09-1.09h5.59c.73 0 1.09.37 1.09 1.09v53.21c0 .73-.37 1.09-1.09 1.09h-5.59c-.73 0-1.09-.36-1.09-1.09M320.76 496.84q-4.65-4.605-4.65-12.15v-23.65c0-4.96 1.57-9 4.71-12.1s7.26-4.65 12.37-4.65c3.43 0 6.46.69 9.09 2.08s4.65 3.23 6.08 5.53c1.42 2.3 2.14 4.84 2.14 7.61v1.1c0 .73-.37 1.09-1.1 1.09l-5.58.22c-.73 0-1.09-.36-1.09-1.09v-.77c0-2.41-.89-4.51-2.68-6.3s-4.07-2.68-6.84-2.68-5.02.97-6.73 2.9c-1.72 1.93-2.57 4.47-2.57 7.61v22.56c0 3.14.86 5.68 2.57 7.61s3.96 2.9 6.73 2.9 5.05-.89 6.84-2.68 2.68-3.89 2.68-6.3v-.77c0-.73.36-1.09 1.09-1.09l5.58.11c.73 0 1.1.37 1.1 1.09v1.2c0 4.38-1.59 8.01-4.76 10.89-3.18 2.88-7.35 4.33-12.54 4.33s-9.33-1.53-12.43-4.6Z" class="cls-5"/>
+  <path d="M387.71 499.47v-74.46c0-.73.36-1.09 1.09-1.09h17.96c6.06 0 10.88 1.86 14.45 5.58 3.58 3.72 5.37 8.76 5.37 15.11v35.26c0 6.35-1.79 11.39-5.37 15.11s-8.4 5.58-14.45 5.58H388.8c-.73 0-1.09-.36-1.09-1.09m10.95-8 7.99-.11c2.77 0 5-1.08 6.68-3.23s2.55-5.09 2.63-8.81v-34.16c0-3.72-.84-6.68-2.52-8.87s-3.94-3.29-6.79-3.29h-7.99c-.29 0-.44.15-.44.44v57.59c0 .29.14.44.44.44M494.52 495.09c-3.76 3.65-8.7 5.48-14.84 5.48h-18.29c-.73 0-1.09-.36-1.09-1.09v-74.46c0-.73.36-1.09 1.09-1.09h16.75c6.64 0 11.84 1.73 15.6 5.2s5.64 8.52 5.64 15.17c0 7.88-2.81 13.32-8.43 16.31-.37.22-.4.4-.11.55 2.92 1.75 5.2 4.2 6.84 7.34s2.46 6.86 2.46 11.17c0 6.64-1.88 11.79-5.64 15.44Zm-23.7-61.65v23.21c0 .29.14.44.44.44h7.01c3.43 0 6.09-1.04 7.99-3.12q2.85-3.12 2.85-8.7c0-5.58-.95-6.88-2.85-9.03s-4.56-3.23-7.99-3.23h-7.01c-.29 0-.44.15-.44.44Zm15.93 54.53c1.93-2.26 2.9-5.48 2.9-9.64s-.95-7.54-2.85-9.91-4.53-3.56-7.88-3.56h-7.67c-.29 0-.44.15-.44.44v25.62c0 .29.14.44.44.44h7.55c3.36 0 6-1.13 7.94-3.39Z" class="cls-1"/>
+  <path d="M314.41 222.46H166.95l73.73 73.73z" class="cls-4"/>
+  <path d="M501.83 222.46H341.74L240.68 323.52l-100.5-100.5c-9.73 1.62-20.92 6.96-27 13.31L10.65 343.29c-7.31 7.62-4.58 13.86 6.07 13.86h356.02c10.64 0 25.33-6.24 32.64-13.86l102.53-106.97c7.31-7.62 4.58-13.86-6.07-13.86Z" class="cls-4"/>
+  <path d="M346.6 116.26h-55.26l-9.49 9.49c4.39 7.26 6.97 15.74 6.97 24.85 0 26.59-21.55 48.14-48.14 48.14s-48.14-21.55-48.14-48.14c0-13.45 5.53-25.61 14.43-34.34h-61.16c-4.16 0-8.93.97-13.64 2.59l-34.42 34.42 97.69 97.7h90.46l97.69-97.7-37-37ZM80.93 163.77 10.65 237.1c-7.31 7.62-4.58 13.86 6.07 13.86h151.41l-87.19-87.19Z" class="cls-2"/>
+  <path d="M501.83 116.26h-127.9l37 37-97.7 97.7h59.5c10.64 0 25.33-6.24 32.64-13.86L507.9 130.13c7.31-7.62 4.58-13.86-6.07-13.86Z" class="cls-2"/>
+  <path d="M501.83 10.56H240.46l-134.7 134.7h87.09c2.66-24.07 23.05-42.8 47.83-42.8 10.48 0 20.15 3.39 28.06 9.08l50.23-50.23 77.04 77.03c3.65-2.05 6.93-4.4 9.37-6.94L507.91 24.43c7.31-7.62 4.58-13.86-6.07-13.86ZM213.13 10.56h-67.32c-10.65 0-25.33 6.24-32.64 13.86L10.65 131.4c-7.31 7.62-4.58 13.86 6.07 13.86h61.72z" class="cls-3"/>
+  <path d="m375.42 145.08-56.44-56.44-37.12 37.12c3.52 5.81 5.79 12.43 6.59 19.51h84.29c.86 0 1.78-.1 2.68-.18Z" class="cls-3"/>
+</svg>
+  <text x="600" y="452" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="1.6"
+    fill="#c7d6e8" filter="url(#lbl)" font-family="'Helvetica Neue','Hiragino Sans',sans-serif">NGSI-LD CONTEXT BROKER</text>
+</svg>
