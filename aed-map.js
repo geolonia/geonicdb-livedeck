@@ -67,10 +67,10 @@
     // full entity count.
     var denom = inGeo ? geoTotal : total;
     if (denom != null) {
-      countText.textContent = (inGeo ? "範囲内 " : "") + n + " / " + denom;
+      countText.textContent = n + " / " + denom;
       countBar.style.width = (denom > 0 ? Math.min(100, (n / denom) * 100) : 100) + "%";
     } else {
-      countText.textContent = (inGeo ? "範囲内 " : "") + n + " 件";
+      countText.textContent = n + " 件";
     }
     countEl.classList.toggle("done", !loading);
   }
