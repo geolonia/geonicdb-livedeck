@@ -16,7 +16,7 @@
     type: "PollVote",
     poll: "features-2026", // poll id this slide aggregates
   };
-  var SVY_SLIDE_INDEX = 10; // 0-based index of slide 11 (this demo)
+  var SVY_SLIDE_INDEX = 11; // 0-based index of the survey slide (shifted +1 after the Temporal slide)
 
   // The options shown + their bar colors (must match the buttons in index.html).
   var OPTIONS = [

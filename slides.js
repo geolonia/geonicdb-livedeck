@@ -104,7 +104,7 @@
 
   // スライド本体のクリックでも進む (UI コントロール・リンク以外)
   deck.addEventListener("click", (e) => {
-    if (e.target.closest("a, button, .code, table, .map-wrap, .geo-panel, .svy-body, input, select, textarea, label")) return;
+    if (e.target.closest("a, button, .code, table, .map-wrap, .geo-panel, .svy-body, .tmp-body, input, select, textarea, label")) return;
     // 左 1/4 をクリックしたら戻る、それ以外は進む
     if (e.clientX < window.innerWidth * 0.25) prev();
     else next();

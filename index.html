@@ -308,6 +308,45 @@
       </div>
     </section>
 
+    <!-- 10. Temporal time-machine (live) -->
+    <section class="slide slide--tmp" data-bg="dark">
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">時系列 / Temporal API</span>
+          <h2 class="slide__title map-title">時間を巻き戻して、状態を確かめる</h2>
+          <p class="map-desc">GeonicDB はすべての変化を履歴として保持。<strong>Temporal API</strong> で「いつ・どの瞬間の状態だったか」を期間指定で問い合わせられます。下のスライダーで時刻をさかのぼれます。</p>
+        </div>
+        <div class="demo-body tmp-body">
+          <!-- LEFT: snapshot at the selected time -->
+          <div class="tmp-panel">
+            <div class="tmp-snap-label">この時刻の状態</div>
+            <div id="tmp-time" class="tmp-time">--:--</div>
+            <div class="tmp-readout">
+              <div class="tmp-metric"><span class="tmp-metric__v" id="tmp-temp">--</span><span class="tmp-metric__u">°C</span><span class="tmp-metric__k">気温</span></div>
+              <div class="tmp-metric"><span class="tmp-metric__v" id="tmp-hum">--</span><span class="tmp-metric__u">%</span><span class="tmp-metric__k">湿度</span></div>
+            </div>
+            <div class="tmp-controls">
+              <button id="tmp-play" class="geo-btn">▶ 再生</button>
+              <input id="tmp-slider" class="geo-range" type="range" min="0" max="0" value="0" step="1" />
+            </div>
+            <pre id="tmp-query" class="tmp-query"></pre>
+          </div>
+          <!-- RIGHT: temperature history chart -->
+          <div class="tmp-chart-wrap">
+            <div class="tmp-chart-head">
+              <span class="tmp-chart-title">気温の推移 <span id="tmp-range" class="tmp-range"></span></span>
+              <span class="rsv-live"><span class="rsv-live__dot" id="tmp-dot"></span><span id="tmp-conn">接続中…</span></span>
+            </div>
+            <svg id="tmp-chart" class="tmp-chart" viewBox="0 0 760 360" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          グラフは GeonicDB の Temporal API から取得した実際の履歴データです
+        </div>
+      </div>
+    </section>
+
     <!-- 10. ReactiveCore Rules -->
     <section class="slide" data-bg="dark">
       <div class="slide__inner">
@@ -502,6 +541,7 @@
   <!-- GeonicDB SDK (handles DPoP key-pair, PoW, and api_key→JWT token exchange transparently) -->
   <script src="assets/geonicdb-sdk.iife.js"></script>
   <script src="aed-map.js"></script>
+  <script src="temporal.js"></script>
   <script src="survey.js"></script>
   <script src="slides.js"></script>
   <!-- AI-native slide: cycle the natural-language request (gov / enterprise personas) -->

@@ -334,6 +334,50 @@ html, body {
   100% { transform: scale(1); color: #fff; }
 }
 
+/* ===== Temporal time-machine demo ===== */
+.tmp-body { align-items: stretch; gap: 18px; }
+
+/* left: snapshot + controls */
+.tmp-panel {
+  flex: 0 0 320px; width: 320px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(252,108,0,.25);
+  border-radius: 14px; padding: 20px 20px 18px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.tmp-snap-label { font-size: 12px; letter-spacing: .06em; color: rgba(255,255,255,.55); }
+.tmp-time { font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: #39d6c6; margin-top: -6px; }
+.tmp-readout { display: flex; gap: 14px; }
+.tmp-metric {
+  flex: 1 1 0; background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 12px 8px 10px; text-align: center; position: relative;
+}
+.tmp-metric__v { font-family: var(--font-mono); font-size: 30px; font-weight: 800; color: #fff; }
+.tmp-metric__u { font-size: 14px; color: rgba(255,255,255,.6); margin-left: 2px; }
+.tmp-metric__k { display: block; font-size: 11px; color: rgba(255,255,255,.5); margin-top: 4px; }
+.tmp-controls { display: flex; flex-direction: column; gap: 10px; margin-top: 2px; }
+.tmp-query {
+  margin: auto 0 0; font-family: var(--font-mono); font-size: 8px; line-height: 1.5;
+  color: #d6e4f0; white-space: pre-wrap; word-break: break-all;
+  background: rgba(0,0,0,.4); border: 1px solid rgba(252,108,0,.22);
+  border-radius: 8px; padding: 10px 12px;
+}
+
+/* right: history chart */
+.tmp-chart-wrap {
+  flex: 1 1 auto; min-width: 0;
+  background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px; padding: 16px 18px;
+  display: flex; flex-direction: column; min-height: 0;
+}
+.tmp-chart-head {
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 12px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.tmp-chart-title { font-size: 16px; font-weight: 800; color: #fff; }
+.tmp-range { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); margin-left: 4px; }
+.tmp-chart { flex: 1 1 auto; min-height: 0; width: 100%; display: block; }
+
 /* ===== Full-bleed illustration slide ===== */
 .slide--illus { padding: 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }
