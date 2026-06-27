@@ -123,7 +123,7 @@
   // ---- one full story ----
   async function runStory(my) {
     reset();
-    var hold = reduced() ? 1200 : 3400;
+    var hold = reduced() ? 800 : 1500;
 
     // STEP 1 — create data
     await ask("避難所のデータを作って", my); if (!alive(my)) return;
