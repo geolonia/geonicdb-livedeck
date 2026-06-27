@@ -103,13 +103,13 @@
     </section>
 
     <!-- 5. AI native -->
-    <!-- 5. AI Native — natural-language request → AI agent creates data on the map -->
+    <!-- 5. AI Native — natural-language: create data → issue API key → build the app -->
     <section class="slide slide--ai" data-bg="dark">
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">柱 02 / AI Native</span>
           <h2 class="slide__title map-title">むずかしいことや面倒なことはAIにおまかせ</h2>
-          <p class="map-desc">自然言語で頼むだけ。<strong>AI エージェント</strong>が MCP / CLI 経由で GeonicDB を操作し、データの作成・登録・公開まで自動で実行します。</p>
+          <p class="map-desc">自然言語で頼むだけ。<strong>データの作成</strong>から<strong>APIキーの発行</strong>、<strong>アプリの構築</strong>まで、AI エージェントが通しで実行します。</p>
         </div>
         <div class="ai-stage">
           <div class="ai-chat">
@@ -124,37 +124,55 @@
               <span class="ai-chat__send" id="ai-send" aria-hidden="true">➤</span>
             </div>
           </div>
-          <div class="ai-map">
-            <svg class="ai-map__svg" viewBox="0 0 620 460" preserveAspectRatio="xMidYMid slice" role="img" aria-label="AI が作成したデータが地図上にマーカーとして現れる様子">
-              <defs>
-                <linearGradient id="aiMapBg" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#12121a"/>
-                  <stop offset="1" stop-color="#191926"/>
-                </linearGradient>
-              </defs>
-              <rect width="620" height="460" fill="url(#aiMapBg)"/>
-              <!-- river -->
-              <path d="M-20,90 C140,150 180,250 120,330 C80,400 160,450 260,470" stroke="#243150" stroke-width="34" fill="none" stroke-linecap="round" opacity="0.5"/>
-              <!-- roads -->
-              <g stroke="rgba(255,255,255,0.09)" stroke-width="9" stroke-linecap="round" fill="none">
-                <path d="M0,150 H620"/>
-                <path d="M0,300 H620"/>
-                <path d="M180,0 V460"/>
-                <path d="M420,0 V460"/>
-                <path d="M40,40 L300,300"/>
-                <path d="M620,60 L320,360"/>
-              </g>
-              <g stroke="rgba(255,255,255,0.05)" stroke-width="5" stroke-linecap="round" fill="none">
-                <path d="M0,75 H620"/>
-                <path d="M0,225 H620"/>
-                <path d="M0,375 H620"/>
-                <path d="M100,0 V460"/>
-                <path d="M300,0 V460"/>
-                <path d="M520,0 V460"/>
-              </g>
-              <g id="ai-markers"></g>
-            </svg>
-            <div class="ai-map__badge" id="ai-badge"></div>
+          <div class="ai-build">
+            <!-- (1) data -->
+            <div class="ai-step" id="ai-step-data">
+              <div class="ai-step__head">
+                <span class="ai-step__stat"></span>
+                <span class="ai-step__no">STEP 1</span>
+                <span class="ai-step__name">避難所データ</span>
+                <span class="ai-step__tag" id="ai-data-tag"></span>
+              </div>
+              <div class="ai-dots" id="ai-data-dots"></div>
+            </div>
+            <!-- (2) API key -->
+            <div class="ai-step" id="ai-step-key">
+              <div class="ai-step__head">
+                <span class="ai-step__stat"></span>
+                <span class="ai-step__no">STEP 2</span>
+                <span class="ai-step__name">APIキー</span>
+              </div>
+              <div class="ai-key" id="ai-key">
+                <span class="ai-key__icon">🔑</span>
+                <span class="ai-key__val" id="ai-key-val"></span>
+                <span class="ai-key__badges"><span class="ai-key__b">DPoP必須</span><span class="ai-key__b">origin制限</span></span>
+              </div>
+            </div>
+            <!-- (3) app -->
+            <div class="ai-step ai-step--app" id="ai-step-app">
+              <div class="ai-step__head">
+                <span class="ai-step__stat"></span>
+                <span class="ai-step__no">STEP 3</span>
+                <span class="ai-step__name">避難所マップアプリ</span>
+              </div>
+              <div class="ai-app" id="ai-app">
+                <div class="ai-app__chrome"><span></span><span></span><span></span><em>避難所マップ</em></div>
+                <div class="ai-app__screen">
+                  <div class="ai-app__map">
+                    <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                      <rect width="320" height="220" fill="#12121d"/>
+                      <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" fill="none">
+                        <path d="M0,80 H320"/><path d="M0,150 H320"/><path d="M110,0 V220"/><path d="M220,0 V220"/>
+                      </g>
+                      <path d="M-10,40 C70,70 60,140 130,170 C190,196 220,210 330,200" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
+                      <g id="ai-app-pins"></g>
+                    </svg>
+                    <div class="ai-app__count">近くの避難所 <b>10</b> 件</div>
+                  </div>
+                  <div class="ai-app__side" id="ai-app-side"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
