@@ -28,15 +28,108 @@ python3 -m http.server 8745
 
 いずれも `https://geonicdb.geolonia.com`（テナント `miya`）へ DPoP 認証で接続します。
 
-### スライド 9 — ジオクエリ（`aed-map.js`）
-- Geolonia Maps（MapLibre GL）+ GeonicDB SDK。`AedLocation` を地図表示し、中心点＋半径で **NGSI-LD `georel=near` 検索**。
-- ページネーション取得（`count` → `getEntities` を 100 件ずつ）。
-- 認可: ポリシー `presentation-aed-readonly`（GET + WS のみ）／キー `presentation-aed-map`（DPoP 必須・origin 制限）。
+### スライド 9 — 標準API（`dual.js`） / 10 — ジオクエリ（`aed-map.js`） / 11 — 時系列（`temporal.js`）
+- いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、同一エンティティの NGSIv2/NGSI-LD 二面取得、`WeatherObserved` の **Temporal API** 履歴など。
+- 認可: ポリシー／キー **`geonicdb-livedeck-readonly`**（GET + WS のみ、DPoP 必須・origin 制限）を共用。
 
-### スライド 11 — ライブアンケート（`survey.js`）
+### スライド 13 — ライブアンケート（`survey.js`）
 - 投票で `PollVote` エンティティを作成 → **WebSocket で全クライアントのバーチャートにリアルタイム集計**。
-- 認可: ポリシー `presentation-survey`（GET|WS + `PollVote` への POST のみ）／キー `presentation-survey`（DPoP 必須・origin 制限）。
+- 認可: ポリシー／キー **`geonicdb-livedeck-survey`**（GET|WS + `PollVote` への POST のみ、DPoP 必須・origin 制限）。
 - カスタムデータモデル `PollVote`（`poll` 必須・`choice` は enum 制約）でサーバ側バリデーション。
+
+## セットアップ（`geonic` CLI）
+
+ライブデモが使う XACML ポリシー・API キー・デモ用データは [`geonic` CLI](https://github.com/geolonia/geonicdb-cli) で作成します。
+前提: 対象テナント（例 `miya`）の `tenant_admin` として認証済み（`geonic auth login` → `geonic profile use <profile>`）。以下は `-s <tenant>` でテナントを明示する例です。
+
+### 1. 読み取り専用ポリシー＋キー（スライド 9 / 10 / 11 で共用）
+
+```bash
+# policy: /ngsi-ld/** と /v2/** に対し GET と WS のみ許可
+cat > readonly-policy.json <<'JSON'
+{
+  "policyId": "geonicdb-livedeck-readonly",
+  "description": "geonicdb-livedeck: readonly (GET + WS)",
+  "target": { "resources": [
+    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
+  ]},
+  "ruleCombiningAlgorithm": "first-applicable",
+  "rules": [
+    {"ruleId":"allow-read","effect":"Permit","target":{"actions":[
+      {"attributeId":"method","matchValue":"GET"},
+      {"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"deny-others","effect":"Deny"}
+  ]
+}
+JSON
+geonic -s miya me policies create @readonly-policy.json
+
+# key（DPoP 必須・origin 制限）。出力された gdb_… を config.js の keys.readonly へ
+geonic -s miya me api-keys create \
+  --name geonicdb-livedeck-readonly \
+  --policy geonicdb-livedeck-readonly \
+  --origins "http://localhost:8745,https://geolonia.github.io" \
+  --dpop-required
+```
+
+### 2. 投票用ポリシー＋キー（スライド 13）
+
+```bash
+# policy: GET|WS ＋ PollVote への POST のみ許可
+cat > survey-policy.json <<'JSON'
+{
+  "policyId": "geonicdb-livedeck-survey",
+  "description": "geonicdb-livedeck: live-poll (GET|WS + POST PollVote)",
+  "target": { "resources": [
+    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
+  ]},
+  "ruleCombiningAlgorithm": "first-applicable",
+  "rules": [
+    {"ruleId":"allow-read-stream","effect":"Permit","target":{"actions":[
+      {"attributeId":"method","matchValue":"GET|WS","matchFunction":"string-regexp"}]}},
+    {"ruleId":"allow-vote","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"PollVote"}],
+      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
+    {"ruleId":"deny-others","effect":"Deny"}
+  ]
+}
+JSON
+geonic -s miya me policies create @survey-policy.json
+
+# key（出力された gdb_… を config.js の keys.survey へ）
+geonic -s miya me api-keys create \
+  --name geonicdb-livedeck-survey \
+  --policy geonicdb-livedeck-survey \
+  --origins "http://localhost:8745,https://geolonia.github.io" \
+  --dpop-required
+```
+
+> ポリシーは個人ポリシーとして作成され、priority は 100・scope は personal に固定されます。
+> 作成したキー値（`gdb_…`）は二度と表示されないため、その場で `config.js` に転記してください。
+
+### 3. デモ用データ
+
+```bash
+# 投票エンティティのスキーマ（choice を enum 制約）
+geonic -s miya custom-data-models create '{
+  "type":"PollVote","domain":"Survey",
+  "propertyDetails":{
+    "poll":{"ngsiType":"Property","valueType":"string","required":true},
+    "choice":{"ngsiType":"Property","valueType":"string","required":true,
+      "validation":{"enum":["geoquery","realtime","reactivecore","standards"]}}
+  }
+}'
+
+# 地図デモ用 AedLocation（NGSI-LD）
+geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLocation","name":{"type":"Property","value":"…"},"location":{"type":"GeoProperty","value":{"type":"Point","coordinates":[134.045,34.341]}}}'
+
+# 時系列デモ用 WeatherObserved（observedAt 付きの配列）
+geonic -s miya temporal entities create @weather-temporal.json
+```
+
+> 標準APIデモの NGSIv2 側エンティティ（`env-sensor-001`）は NGSIv2 API（`POST /v2/entities`、ヘッダー `Fiware-Service: miya`）で作成します。GeonicDB は NGSIv2 と NGSI-LD のエンティティを別空間で保持するため、デモは各プロトコルに 1 件ずつ用意しています。
 
 ## ファイル
 
