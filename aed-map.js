@@ -291,6 +291,26 @@
         "circle-stroke-width": 2, "circle-stroke-color": "#fff", "circle-opacity": 0.95,
       },
     });
+    // per-feature name labels (same style as geonicdb-pulse)
+    map.addLayer({
+      id: "aed-labels", type: "symbol", source: "aed", filter: ["!", ["has", "point_count"]],
+      layout: {
+        "text-field": ["get", "name"],
+        "text-size": 11,
+        "text-font": ["Noto Sans CJK JP Bold"],
+        "text-offset": [0, -1.5],
+        "text-allow-overlap": false,
+        "text-ignore-placement": false,
+        "text-max-width": 10,
+        "text-variable-anchor": ["top", "bottom", "left", "right"],
+        "text-radial-offset": 1.2,
+      },
+      paint: {
+        "text-color": "rgba(224,247,250,0.9)",
+        "text-halo-color": "rgba(6,10,23,0.85)",
+        "text-halo-width": 1.5,
+      },
+    });
 
     // geo-query visualization: radius circle (under markers) + center dot (on top)
     map.addSource("geo-circle", { type: "geojson", data: emptyFC() });
