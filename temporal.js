@@ -195,7 +195,10 @@
   }
 
   document.addEventListener("slidechange", function (e) {
-    if (e.detail && e.detail.index === TMP_SLIDE_INDEX) start();
+    if (!e.detail) return;
+    var i = e.detail.index;
+    // Prefetch + draw one slide early so arriving here is instant.
+    if (i === TMP_SLIDE_INDEX - 1 || i === TMP_SLIDE_INDEX) start();
     else stop(); // pause playback when leaving the slide
   });
 })();

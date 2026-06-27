@@ -197,6 +197,9 @@
   }
 
   document.addEventListener("slidechange", function (e) {
-    if (e.detail && e.detail.index === SVY_SLIDE_INDEX) start();
+    if (!e.detail) return;
+    var i = e.detail.index;
+    // Prefetch (votes + WS + initial chart) one slide early so this is instant.
+    if (i === SVY_SLIDE_INDEX - 1 || i === SVY_SLIDE_INDEX) start();
   });
 })();

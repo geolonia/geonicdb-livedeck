@@ -23,7 +23,8 @@
   var map = null;
   var db = null;
   var byId = Object.create(null); // entity id -> NGSI-LD entity
-  var started = false;
+  var started = false;     // map initialized
+  var dataStarted = false; // entity fetch kicked off (prefetch or on map init)
   // geo-query (near) state
   var geoCenter = null;           // [lng, lat] or null
   var geoRadiusKm = 10;
@@ -391,16 +392,24 @@
   // Load entities page-by-page (like geonicdb-pulse): first fetch the total count,
   // then pull pages of PAGE_SIZE sequentially, updating the map + a "loaded / total"
   // progress readout as each page arrives.
+  // Fetch all entities into byId. Map-independent: it can run on the PREVIOUS
+  // slide (prefetch) — the map.setData / fitToData calls are guarded so they
+  // only fire once the map exists. Runs at most once (prefetch or map-init).
   function loadAllPages() {
+    if (dataStarted) return; // already prefetched / loading
+    dataStarted = true;
     loading = true;
+    function applyToMap(firstFit) {
+      var src = map && map.getSource("aed");
+      if (src) src.setData(buildGeoJSON());
+      if (firstFit && map) fitToData();
+    }
     function loadPage(offset, firstFit) {
       return db.getEntities({ type: CONFIG.type, limit: PAGE_SIZE, offset: offset }).then(function (res) {
         var list = Array.isArray(res) ? res : res && Array.isArray(res.entities) ? res.entities : [];
         list.forEach(function (e) { if (e && e.id) byId[e.id] = e; });
-        var src = map.getSource("aed");
-        if (src) src.setData(buildGeoJSON());
-        setCountStatus(); // "N / total" + progress bar
-        if (firstFit) fitToData(); // frame the map after the first page
+        applyToMap(firstFit);   // no-op while prefetching (map not built yet)
+        setCountStatus();
         if (list.length < PAGE_SIZE) return; // last page reached
         return loadPage(offset + PAGE_SIZE, false);
       });
@@ -409,21 +418,36 @@
     return db.count({ type: CONFIG.type })
       .then(function (c) { total = c; }, function () { total = null; })
       .then(function () { return loadPage(0, true); })
-      .then(function () { loading = false; setCountStatus(); });
+      .then(function () { loading = false; setCountStatus(); })
+      .catch(function (err) {
+        console.error("[aed-map]", err);
+        setStatus("データ取得に失敗: " + (err && err.message ? err.message : err), "is-error");
+      });
+  }
+
+  // Create the SDK client once (creating it is cheap; the DPoP token exchange
+  // happens lazily on the first request inside loadAllPages).
+  function ensureDb() {
+    if (db) return db;
+    if (typeof window.GeonicDB !== "function") return null;
+    db = new window.GeonicDB({ apiKey: CONFIG.apiKey, tenant: CONFIG.tenant, baseUrl: CONFIG.baseUrl });
+    return db;
+  }
+
+  // Prefetch entities (+ warm the DPoP token) without the map — call this on
+  // the slide BEFORE the demo so arriving on slide 9 renders instantly.
+  function prefetch() {
+    if (!ensureDb()) return;
+    loadAllPages();
   }
 
   function loadAndRender() {
-    setStatus("GeonicDB に接続中（DPoP 認証）…");
-    if (typeof window.GeonicDB !== "function") {
+    if (!ensureDb()) {
       setStatus("GeonicDB SDK が読み込まれていません", "is-error");
       return;
     }
-    db = new window.GeonicDB({ apiKey: CONFIG.apiKey, tenant: CONFIG.tenant, baseUrl: CONFIG.baseUrl });
-    addLayers(); // create the (empty) source + layers + interactions up front
-    loadAllPages().catch(function (err) {
-      console.error("[aed-map]", err);
-      setStatus("データ取得に失敗: " + (err && err.message ? err.message : err), "is-error");
-    });
+    addLayers();        // source initial data = whatever byId already holds
+    loadAllPages();     // no-op if prefetch already started it
   }
 
   function start() {
@@ -454,7 +478,12 @@
   }
 
   document.addEventListener("slidechange", function (e) {
-    if (e.detail && e.detail.index === MAP_SLIDE_INDEX) {
+    if (!e.detail) return;
+    var i = e.detail.index;
+    if (i === MAP_SLIDE_INDEX - 1) {
+      prefetch(); // warm DPoP token + load entities on the prior slide
+    } else if (i === MAP_SLIDE_INDEX) {
+      prefetch(); // ensure data is loading even if the user jumped straight here
       start();
       if (map) setTimeout(function () { map.resize(); }, 60);
     }
