@@ -949,6 +949,7 @@ html, body {
 .ai-chat__send.is-fire { background: #fc6c00; transform: scale(1.12); }
 
 .slide--ai .ai-stage { transition: opacity .4s; }
+.ai-note { flex: 0 0 auto; margin: 14px 0 0; font-size: 13px; color: rgba(255,255,255,.45); }
 
 /* inline API-key chip inside a chat bubble */
 .ai-bubble code.ai-key {
