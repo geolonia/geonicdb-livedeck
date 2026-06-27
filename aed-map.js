@@ -30,7 +30,8 @@
   var geoRadiusKm = 10;
   var pickMode = false;
   var geoActive = false;          // a near-query filter is currently applied
-  var geoCount = null;            // # entities returned by the active near-query
+  var geoCount = null;            // # entities rendered for the active near-query
+  var geoTotal = null;            // # entities matching the near-query (NGSILD-Results-Count)
   var mapEl = null;
   var total = null;     // total entity count (from db.count)
   var loading = true;   // true while paginating
@@ -62,9 +63,12 @@
     // actually drawn.
     var inGeo = geoActive && geoCount != null;
     var n = inGeo ? geoCount : Object.keys(byId).length;
-    if (total != null) {
-      countText.textContent = (inGeo ? "範囲内 " : "") + n + " / " + total;
-      countBar.style.width = (total > 0 ? Math.min(100, (n / total) * 100) : 100) + "%";
+    // denominator: the near-query's matching total while filtering, else the
+    // full entity count.
+    var denom = inGeo ? geoTotal : total;
+    if (denom != null) {
+      countText.textContent = (inGeo ? "範囲内 " : "") + n + " / " + denom;
+      countBar.style.width = (denom > 0 ? Math.min(100, (n / denom) * 100) : 100) + "%";
     } else {
       countText.textContent = (inGeo ? "範囲内 " : "") + n + " 件";
     }
@@ -195,20 +199,28 @@
   function runGeoQuery(doFit) {
     if (!geoCenter || !db) return;
     var meters = Math.round(geoRadiusKm * 1000);
-    var path = "/ngsi-ld/v1/entities?type=" + encodeURIComponent(CONFIG.type) + "&limit=1000" +
+    // count=true → server returns the NGSILD-Results-Count header = the total
+    // number of entities matching THIS near-query (our denominator).
+    var path = "/ngsi-ld/v1/entities?type=" + encodeURIComponent(CONFIG.type) + "&limit=1000&count=true" +
       "&georel=" + encodeURIComponent("near;maxDistance==" + meters) +
       "&geometry=Point&coordinates=" + encodeURIComponent("[" + geoCenter[0] + "," + geoCenter[1] + "]");
     setGeoResult("検索中…");
-    db.request("GET", path)
-      .then(function (list) {
-        list = Array.isArray(list) ? list : (list && list.entities) || [];
+    db.requestRaw("GET", path)
+      .then(function (res) {
+        var h = res.headers.get("NGSILD-Results-Count");
+        var matching = h != null ? parseInt(h, 10) : NaN;
+        return res.json().then(function (body) { return { body: body, matching: matching }; });
+      })
+      .then(function (r) {
+        var list = Array.isArray(r.body) ? r.body : (r.body && r.body.entities) || [];
         var fc = toFC(list);
         geoActive = true;
         geoCount = fc.features.length;
+        geoTotal = !isNaN(r.matching) ? r.matching : geoCount; // query-result denominator
         var src = map.getSource("aed");
         if (src) src.setData(fc);
-        setGeoResult("範囲内: <strong>" + fc.features.length + "</strong> 件<br><span style=\"opacity:.7\">半径 " + geoRadiusKm + " km の near クエリ</span>");
-        setCountStatus(); // keep the bottom bar in sync with what's shown
+        setGeoResult("範囲内: <strong>" + geoCount + "</strong> 件<br><span style=\"opacity:.7\">半径 " + geoRadiusKm + " km の near クエリ</span>");
+        setCountStatus(); // bottom bar: 範囲内 N / 該当総数
         if (doFit) fitToCircle();
       })
       .catch(function (e) { setGeoResult("エラー: " + (e && e.message ? e.message : e)); });
@@ -217,6 +229,7 @@
   function clearGeo() {
     geoActive = false;
     geoCount = null;
+    geoTotal = null;
     geoCenter = null;
     setPick(false);
     drawGeo();
