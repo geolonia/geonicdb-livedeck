@@ -159,7 +159,7 @@
     await sleep(reduced() ? 0 : 620); if (!alive(my)) return;
 
     // STEP 2 — issue API key (shown inline in the chat)
-    await ask("アプリからアクセスするための API キーを発行して", my); if (!alive(my)) return;
+    await ask("アプリのためのAPIキーを発行して", my); if (!alive(my)) return;
     await think(my, 800); if (!alive(my)) return;
     reply('<span class="ai-ok">✓</span>API キーを発行しました<br><code class="ai-key">' + KEY_VALUE + '</code> <span class="ai-mini">DPoP必須・origin制限</span>');
     await sleep(reduced() ? 0 : 620); if (!alive(my)) return;
