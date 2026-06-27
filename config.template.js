@@ -18,10 +18,10 @@ window.DECK_CONFIG = {
   keys: {
     // 読み取り専用（GET + WS）。地図 / 標準API / 時系列 の各デモで共用
     //   policy: presentation-aed-readonly
-    readonly: "gdb_fc49b6790379e8d28bddb21801b597dcbb8a721e498ce30c8a94b1bea0faa9d4",
+    readonly: "__GEONICDB_READONLY_KEY__",
     // 投票用（GET|WS ＋ PollVote への POST のみ）。ライブアンケートで使用
     //   policy: presentation-survey
-    survey: "gdb_a9d30ecf8ec3dfc402dd45549c5894588206150e72e6d83463763dc11b0903a8",
+    survey: "__GEONICDB_SURVEY_KEY__",
   },
 
   // 各ライブデモで使用するエンティティ
