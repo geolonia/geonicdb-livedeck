@@ -17,7 +17,7 @@
     from: "2026-06-26T00:00:00Z",
     to: "2026-06-27T00:30:00Z",
   };
-  var TMP_SLIDE_INDEX = 9; // 0-based index of slide 10 (this demo)
+  var TMP_SLIDE_INDEX = 10; // 0-based index of the temporal slide
 
   var db = null, started = false;
   var series = [];     // [{iso, date, time, temp, hum}]

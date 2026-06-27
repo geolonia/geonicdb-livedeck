@@ -284,6 +284,34 @@
       </div>
     </section>
 
+    <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
+    <section class="slide slide--dual" data-bg="dark">
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">標準API / Dual Protocol</span>
+          <h2 class="slide__title map-title">NGSIv2 も NGSI-LD も、そのまま取得。</h2>
+          <p class="map-desc"><strong>1 つのブローカー</strong>で <strong>NGSIv2</strong> と <strong>NGSI-LD</strong> の両方の標準 API に対応。用途に合わせてどちらの形式でもエンティティを取得できます（FIWARE Orion は製品が分離）。下のボタンで実際の API レスポンスを取得します。</p>
+        </div>
+        <div class="demo-body dual-body">
+          <div class="dual-col">
+            <div class="dual-col__head"><span class="dual-badge">NGSI-LD</span><span class="dual-sub">ETSI GS CIM 009</span></div>
+            <pre class="dual-req" id="dual-ld-req">GET /ngsi-ld/v1/entities/{id}</pre>
+            <pre class="dual-json" id="dual-ld-json">取得を待機中…</pre>
+          </div>
+          <div class="dual-col">
+            <div class="dual-col__head"><span class="dual-badge dual-badge--v2">NGSIv2</span><span class="dual-sub">FIWARE NGSIv2</span></div>
+            <pre class="dual-req" id="dual-v2-req">GET /v2/entities/{id}</pre>
+            <pre class="dual-json" id="dual-v2-json">取得を待機中…</pre>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          <span id="dual-entity">GeonicDB に実接続し、実際の API レスポンスを表示しています</span>
+          <button id="dual-run" class="geo-btn dual-run">▶ GET 実行</button>
+        </div>
+      </div>
+    </section>
+
     <!-- 9. Live demo — Cafe map (Geolonia Maps + GeonicDB DPoP) -->
     <section class="slide slide--map" data-bg="dark">
       <div class="slide__inner slide__inner--map">
@@ -547,6 +575,7 @@
   <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=YOUR-API-KEY"></script>
   <!-- GeonicDB SDK (handles DPoP key-pair, PoW, and api_key→JWT token exchange transparently) -->
   <script src="assets/geonicdb-sdk.iife.js"></script>
+  <script src="dual.js"></script>
   <script src="aed-map.js"></script>
   <script src="temporal.js"></script>
   <script src="survey.js"></script>

@@ -378,6 +378,38 @@ html, body {
 .tmp-range { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); margin-left: 4px; }
 .tmp-chart { flex: 1 1 auto; min-height: 0; width: 100%; display: block; }
 
+/* ===== Dual-protocol entity API demo (slide 9a) ===== */
+.dual-body { gap: 20px; }
+.dual-col {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; min-height: 0;
+  background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.12); border-radius: 14px;
+  padding: 14px 16px;
+}
+.dual-col__head { flex: 0 0 auto; display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.dual-badge {
+  font-weight: 800; font-size: 15px; color: #1b1b22; background: var(--cyan);
+  padding: 4px 12px; border-radius: 8px;
+}
+.dual-badge--v2 { background: #39d6c6; }
+.dual-sub { font-size: 12px; color: rgba(255,255,255,.5); }
+.dual-req {
+  flex: 0 0 auto; margin: 0 0 10px; font-family: var(--font-mono); font-size: 11px;
+  color: #d6e4f0; background: rgba(0,0,0,.4); border: 1px solid rgba(252,108,0,.22);
+  border-radius: 8px; padding: 8px 10px; white-space: nowrap; overflow-x: auto;
+}
+.dual-json {
+  flex: 1 1 auto; min-height: 0; margin: 0; overflow: auto;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5;
+  color: rgba(255,255,255,.8); white-space: pre; tab-size: 2;
+}
+.dual-json.is-fresh { animation: dualFlash .5s ease-out; }
+@keyframes dualFlash { 0% { background: rgba(57,214,198,.16); } 100% { background: transparent; } }
+.dual-json .j-key { color: #fc9a4c; }
+.dual-json .j-str { color: #9fe0c8; }
+.dual-json .j-num { color: #f2c14e; }
+.dual-json .j-lit { color: #c89bff; }
+.dual-run { margin-left: auto; font-size: 13px; padding: 8px 16px; }
+
 /* ===== Full-bleed illustration slide ===== */
 .slide--illus { padding: 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }

@@ -17,7 +17,7 @@
     center: [134.0475, 34.34], // 高松市あたり。fitToData() が実データに合わせて調整
     zoom: 11,
   };
-  var MAP_SLIDE_INDEX = 8; // 0-based index of slide 9 (the live demo slide)
+  var MAP_SLIDE_INDEX = 9; // 0-based index of the map slide (after the dual-API demo)
 
   var GL = null;
   var map = null;
