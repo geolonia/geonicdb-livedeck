@@ -430,6 +430,8 @@ html, body {
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
 
 .lead { font-size: 21px; line-height: 1.7; margin-bottom: 22px; color: rgba(255,255,255,.88); }
+.avail-note { font-size: 16px; line-height: 1.65; margin-top: 22px; margin-bottom: 10px; color: rgba(255,255,255,.78); }
+.avail-note strong { color: var(--cyan); font-weight: 800; }
 
 .footnote {
   margin-top: 32px;
