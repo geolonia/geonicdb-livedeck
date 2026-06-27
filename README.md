@@ -85,19 +85,26 @@ geonic -s miya me api-keys create \
 ### 2. 投票用ポリシー＋キー（スライド 13）
 
 ```bash
-# policy: GET|WS ＋ PollVote への POST のみ許可
+# policy: 読み書きを PollVote に限定。WS 接続だけは仕様上「type なしの
+# GET /v2/entities」許可が必要（WS ⊂ GET。接続ハンドシェイクの認可で評価される）
 cat > survey-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-survey",
-  "description": "geonicdb-livedeck: live-poll (GET|WS + POST PollVote)",
+  "description": "geonicdb-livedeck: live-poll — WS + PollVote read/write",
   "target": { "resources": [
     {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
     {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
   ]},
   "ruleCombiningAlgorithm": "first-applicable",
   "rules": [
-    {"ruleId":"allow-read-stream","effect":"Permit","target":{"actions":[
-      {"attributeId":"method","matchValue":"GET|WS","matchFunction":"string-regexp"}]}},
+    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[
+      {"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
+      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-poll-read","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"PollVote"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"allow-vote","effect":"Permit","target":{
       "resources":[{"attributeId":"entityType","matchValue":"PollVote"}],
       "actions":[{"attributeId":"method","matchValue":"POST"}]}},
