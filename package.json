@@ -1,0 +1,14 @@
+{
+  "name": "geonicdb-livedeck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GeonicDB の製品紹介スライドデッキ（ビルド不要の静的サイト）",
+  "scripts": {
+    "start": "python3 -m http.server 8745"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geolonia/geonicdb-livedeck.git"
+  },
+  "license": "UNLICENSED"
+}
