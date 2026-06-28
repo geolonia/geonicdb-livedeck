@@ -770,6 +770,16 @@ html, body {
 .ha-hero__desc strong { color: var(--cyan); font-weight: 800; }
 .ha-hero__note { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.55); }
 .ha-found-label { font-size: 13px; letter-spacing: .06em; color: rgba(255,255,255,.5); margin-bottom: 12px; }
+/* reliability: availability hero + architecture diagram side by side */
+.ha-layout { display: flex; gap: 40px; align-items: center; margin-top: 4px; }
+.ha-layout .ha-hero__main { flex: 0 0 300px; text-align: left; }
+.ha-layout .ha-hero__num { font-size: 76px; }
+.ha-layout .ha-hero__label { font-size: 15px; }
+.ha-points { list-style: none; margin: 18px 0 0; padding: 0; }
+.ha-points li { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,.85); padding-left: 18px; position: relative; }
+.ha-points li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 800; }
+.ha-points strong { color: var(--cyan); font-weight: 800; }
+.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; }
 
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .metrics--sm { gap: 18px; }
