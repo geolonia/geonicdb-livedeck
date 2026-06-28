@@ -954,17 +954,21 @@
   <script src="survey.js"></script>
   <script src="ai-native.js"></script>
   <script src="slides.js"></script>
-  <!-- Service worker disabled: unregister any previously-installed SW and clear its caches
-       (the SW caching kept serving stale JS/CSS during development). -->
+  <!-- Service worker disabled: unregister this deck's previously-installed SW and clear
+       its caches (the SW caching kept serving stale JS/CSS during development). Scoped to
+       THIS app only — by SW scope and the "geonicdb-livedeck" cache-name prefix — so other
+       same-origin apps/PWAs (e.g. other projects on geolonia.github.io) are left intact. -->
   <script>
+    var DECK_SCOPE = new URL("./", location.href).href;
+    var CACHE_PREFIX = "geonicdb-livedeck";
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then(function (regs) {
-        regs.forEach(function (r) { r.unregister(); });
+        regs.forEach(function (r) { if (r.scope.indexOf(DECK_SCOPE) === 0) r.unregister(); });
       }).catch(function () {});
     }
     if (window.caches && caches.keys) {
       caches.keys().then(function (keys) {
-        keys.forEach(function (k) { caches.delete(k); });
+        keys.forEach(function (k) { if (k.indexOf(CACHE_PREFIX) === 0) caches.delete(k); });
       }).catch(function () {});
     }
   </script>
