@@ -647,6 +647,191 @@
       </div>
     </section>
 
+    <!-- Appendix: Feature catalog (1/2) -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">全機能カタログ / Feature Catalog</span>
+        <h2 class="slide__title">全機能カタログ ①</h2>
+        <div class="cat-grid">
+          <div class="cat-card">
+            <div class="cat-card__title">NGSIv2 API</div>
+            <ul class="cat-list">
+              <li>エンティティ CRUD（一覧・ページング・フィルタ・ソート）</li>
+              <li>バッチ操作 <code>POST /v2/op/update</code>（append/update/delete/replace）</li>
+              <li>属性レベル操作（get/set/delete・値のみ）</li>
+              <li>型管理（型一覧・メタデータ）</li>
+              <li>サブスクリプション（Webhook/MQTT・条件・スロットリング）</li>
+              <li>レジストレーション／フェデレーション</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">NGSI-LD API（ETSI CIM 009）</div>
+            <ul class="cat-list">
+              <li>作成／取得／置換(PUT)／マージ(PATCH)／属性追加</li>
+              <li>マルチ属性（<code>datasetId</code>）</li>
+              <li>バッチ create/upsert/update/merge/delete/purge</li>
+              <li>サブスクリプション（cooldown・showChanges・指数バックオフ）</li>
+              <li>Context Source Registration（CSR）</li>
+              <li>型・属性・JSON-LD コンテキスト管理</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">Temporal API（時系列）</div>
+            <ul class="cat-list">
+              <li>時系列データの作成・取得・バッチ操作</li>
+              <li>時間演算子 <code>timerel</code>（after/before/between）・<code>lastN</code></li>
+              <li>集約 <code>aggrMethods</code>（count/sum/avg/min/max/stddev…）</li>
+              <li><code>temporalValues</code> 簡易表現</li>
+              <li>MongoDB Time Series 格納・プラン別上限</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">地理空間（差別化の柱）</div>
+            <ul class="cat-list">
+              <li>Geo クエリ <code>georel</code>（near/within/intersects/…）</li>
+              <li>空間 ID（ZFXY）・<code>spatialIdDepth</code> 階層</li>
+              <li>CRS 変換（EPSG:4326／3857・URN）</li>
+              <li>GeoJSON 出力（<code>options=geojson</code>）</li>
+              <li>ベクトルタイル（TileJSON 3.0・自動クラスタリング）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">データモデル・知識管理</div>
+            <ul class="cat-list">
+              <li>Smart Data Models（8+ ドメイン／50+ 型）</li>
+              <li>カスタムデータモデル（JSON Schema 自動生成・検証）</li>
+              <li>データカタログ（DCAT／CKAN・全文検索）</li>
+              <li>CADDE 連携（ブローカー間データ交換）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">イベント・リアルタイム</div>
+            <ul class="cat-list">
+              <li>WebSocket ストリーミング（JWT/APIKey/DPoP・フィルタ・自動再接続）</li>
+              <li>MQTT サブスクリプション（3.1.1／5.0・QoS・TLS・retain）</li>
+              <li>ReactiveCore Rules（CEL 条件・アクション・クールダウン）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appendix: Feature catalog (2/2) -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">全機能カタログ / Feature Catalog</span>
+        <h2 class="slide__title">全機能カタログ ②</h2>
+        <div class="cat-grid">
+          <div class="cat-card">
+            <div class="cat-card__title">分散・フェデレーション</div>
+            <ul class="cat-list">
+              <li>レジストレーション（外部プロバイダ登録・転送）</li>
+              <li>CSR／Subscription（NGSI-LD・ループ検知・警告伝播）</li>
+              <li>エンティティマップ（クエリ結果キャッシュ）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">AI / LLM 統合（AI ネイティブ）</div>
+            <ul class="cat-list">
+              <li>AI Plugin Manifest（<code>/.well-known/ai-plugin.json</code>）</li>
+              <li><code>llms.txt</code> ／ <code>tools.json</code> ／ OpenAPI</li>
+              <li>MCP サーバ（<code>POST /mcp</code>）・A2A（<code>POST /a2a</code>）</li>
+              <li>統一 5 ツール（entities/batch/temporal/config/admin）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">SDK・CLI・開発者体験</div>
+            <ul class="cat-list">
+              <li>JavaScript SDK（<code>@geolonia/geonicdb-sdk</code>）</li>
+              <li>公式 CLI（<code>geonic</code>）— 管理・認証・JSON/YAML 出力</li>
+              <li>OpenAPI／Swagger（<code>/openapi.json</code>・<code>/api.json</code>）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">マルチテナント・運用</div>
+            <ul class="cat-list">
+              <li>マルチテナンシー（Fiware-Service／NGSILD-Tenant）</li>
+              <li>サービスパス階層・クォータ＆レート制限</li>
+              <li>High Availability／フェイルオーバー（マルチリージョン）</li>
+              <li>ヘルスチェック・監視（Prometheus／X-Ray）</li>
+              <li>スナップショット・バックアップ</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">入力検証・制限値</div>
+            <ul class="cat-list">
+              <li>文字列長（ID/型/属性名 256・クエリ 2000）</li>
+              <li>配列要素数（attrs/pick/omit 各 50・バッチ 100）</li>
+              <li>数値境界（throttling・timeout・lastN）</li>
+              <li>ネスト深度 10・ReDoS 対策（正規表現 200 字）</li>
+              <li>全入力を Zod スキーマで検証</li>
+            </ul>
+          </div>
+        </div>
+        <p class="cat-foot">※ 出典: GeonicDB プロダクトリファレンス「全機能カタログ（網羅的）」</p>
+      </div>
+    </section>
+
+    <!-- Appendix: Administration features -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">管理機能 / Administration</span>
+        <h2 class="slide__title">管理機能</h2>
+        <div class="cat-grid">
+          <div class="cat-card">
+            <div class="cat-card__title">テナント管理</div>
+            <ul class="cat-list">
+              <li>テナントの作成／更新／削除・有効化／無効化</li>
+              <li>クォータ・使用量（取得／更新・履歴）</li>
+              <li>per-tenant IP 制限（allowlist）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">ユーザー・メンバーシップ</div>
+            <ul class="cat-list">
+              <li>ユーザー CRUD・有効化／無効化・ロック解除</li>
+              <li>テナントへの所属追加／削除・所属一覧</li>
+              <li>パスワードポリシー（最小 12 文字）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">認証情報の管理</div>
+            <ul class="cat-list">
+              <li>API キー（作成／更新／失効／リフレッシュ）</li>
+              <li>OAuth クライアント（作成／更新／Secret 再生成／削除）</li>
+              <li>本人用 <code>/me</code> 配下のキー・クライアント・ポリシー</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">ポリシー管理（XACML 3.0）</div>
+            <ul class="cat-list">
+              <li>ポリシー CRUD・有効化／無効化</li>
+              <li>ポリシーセット・優先度・deny-fence</li>
+              <li>XACML エクスポート／インポート</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">監査ログ（Audit Log）</div>
+            <ul class="cat-list">
+              <li>「いつ・誰が・何を」を構造化記録（<code>level=AUDIT</code>）</li>
+              <li>対象: エンティティ／バッチ・購読・<strong>管理操作</strong>・ログイン／トークン更新・特権読み取り</li>
+              <li>記録項目: actor(id/email/role)・tenant・servicePath・resourceId・statusCode・clientIp・correlator/traceId</li>
+              <li><code>LOG_LEVEL=SILENT</code> でも必ず出力（コンプライアンス用途）</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">監視・運用</div>
+            <ul class="cat-list">
+              <li>メトリクス（<code>/admin/metrics</code>・API 呼び出し）・Prometheus・OpenTelemetry/X-Ray</li>
+              <li>ヘルスチェック（<code>/health</code>・<code>/health/ready</code>）</li>
+              <li>テナント削除＋暗号消去（crypto-shred・KMS 鍵失効）＋削除レポート</li>
+              <li>CADDE 設定管理</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Appendix: Reliability / availability -->
     <section class="slide" data-bg="dark">
       <div class="slide__inner">
@@ -735,6 +920,72 @@
           <div class="std-card">
             <span class="std-card__name">データの盗み見・改ざん</span>
             <span class="std-card__desc">保存データはテナントごとに <strong>AES-256-GCM</strong> で暗号化（鍵は <strong>AWS KMS</strong> で管理・自動ローテーション）。作成・更新・削除はすべて<strong>監査ログ</strong>に記録し、漏れたトークンは<strong>失効リスト</strong>で無効化できる。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appendix: query parameters -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">API リファレンス / Query Parameters</span>
+        <h2 class="slide__title">クエリで使えるパラメータ</h2>
+        <div class="param-grid">
+          <div class="param-group">
+            <div class="param-group__title">ページング・件数</div>
+            <ul class="param-list">
+              <li><code>limit</code> 取得件数（既定 20・最大 1000）</li>
+              <li><code>offset</code> オフセット（最大 10000）</li>
+              <li><code>count</code> 総件数を返却</li>
+              <li><code>options</code> keyValues / sysAttrs 等のフラグ</li>
+            </ul>
+          </div>
+          <div class="param-group">
+            <div class="param-group__title">フィルタリング</div>
+            <ul class="param-list">
+              <li><code>type</code> / <code>id</code> タイプ・ID（,区切り 各最大 100）</li>
+              <li><code>idPattern</code> ID 正規表現（最大 200 字）</li>
+              <li><code>q</code> 属性条件（例 <code>temp&gt;20;hum&lt;80</code>）</li>
+              <li><code>mq</code> メタデータ条件（NGSIv2）</li>
+              <li><code>attrs</code> 取得属性（最大 50）</li>
+            </ul>
+          </div>
+          <div class="param-group">
+            <div class="param-group__title">属性選択・整形（NGSI-LD）</div>
+            <ul class="param-list">
+              <li><code>pick</code> / <code>omit</code> 属性の選択・除外</li>
+              <li><code>lang</code> 言語フィルタ</li>
+              <li><code>scopeQ</code> スコープ条件</li>
+              <li><code>orderBy</code> / <code>orderDirection</code> 並び替え</li>
+            </ul>
+          </div>
+          <div class="param-group">
+            <div class="param-group__title">ジオクエリ</div>
+            <ul class="param-list">
+              <li><code>georel</code> 関係（<code>near;maxDistance==</code>, within 等）</li>
+              <li><code>geometry</code> 形状（Point / Polygon 等）</li>
+              <li><code>coordinates</code>（LD）/ <code>coords</code>（v2）座標</li>
+              <li><code>geoproperty</code> 対象プロパティ（既定 location）</li>
+              <li><code>orderByDistance</code> 距離順</li>
+            </ul>
+          </div>
+          <div class="param-group">
+            <div class="param-group__title">空間 ID・連携</div>
+            <ul class="param-list">
+              <li><code>spatialId</code> / <code>spatialIdDepth</code> 空間 ID</li>
+              <li><code>crs</code> 座標参照系</li>
+              <li><code>localOnly</code> フェデレーション除外</li>
+              <li><code>join</code> / <code>joinLevel</code> 関連エンティティ結合</li>
+            </ul>
+          </div>
+          <div class="param-group">
+            <div class="param-group__title">主な制限値</div>
+            <ul class="param-list">
+              <li>バッチ最大 <strong>100</strong> 件 / 最大 Limit <strong>1000</strong>（Admin 100）</li>
+              <li>ID・型・属性名 最大 <strong>256</strong> 字</li>
+              <li>クエリ文字列 最大 <strong>2000</strong> 字 / 正規表現 <strong>200</strong> 字</li>
+              <li>属性リスト（attrs/pick/omit）最大 <strong>50</strong></li>
+            </ul>
           </div>
         </div>
       </div>
