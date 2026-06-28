@@ -414,6 +414,8 @@ html, body {
 /* ===== Full-bleed illustration slide ===== */
 .slide--illus { padding: 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+/* inlined illustration SVG: use the deck's sans stack so its text matches the other slides */
+.illus-svg text { font-family: var(--font-sans); }
 
 /* full-bleed illustration with the title overlaid in the top-left */
 .slide--illus .illus-overlay {
