@@ -1,5 +1,5 @@
 /* GeonicDB live-deck — service worker (PWA offline shell) */
-var CACHE = "geonicdb-livedeck-v9";
+var CACHE = "geonicdb-livedeck-v10";
 
 // App shell precached on install. Live-demo data (GeonicDB API, map tiles,
 // fonts, SDK CDN) is cross-origin and intentionally left to the network.
@@ -17,7 +17,6 @@ var CORE = [
   "manifest.webmanifest",
   "assets/geonicdb-sdk.iife.js",
   "assets/map-style.json",
-  "assets/context-broker-illustration.svg",
   "assets/future-city.svg",
   "assets/geonic-logo-dark.svg",
   "assets/geonic-logo-h-dark.svg",

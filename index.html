@@ -63,10 +63,209 @@
       <div class="title__foot mono">v0.11.0 · Context Broker</div>
     </section>
 
-    <!-- 2. What is a Context Broker (illustration) -->
+    <!-- 2. What is a Context Broker (illustration, inlined so it uses the deck's fonts) -->
     <section class="slide slide--illus" data-bg="illus">
-      <img class="illus-img" src="assets/context-broker-illustration.svg"
-           alt="コンテキストブローカーとは — 街じゅうのデータをつなぐデータの中継役" />
+      <svg class="illus-img illus-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800"
+           role="img" aria-label="コンテキストブローカーとは — 街じゅうのデータをつなぐデータの中継役">
+  <title>コンテキストブローカーとは — 街じゅうのデータをつなぐデータの中継役</title>
+  <defs>
+    <linearGradient id="hubGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF6A2B"/>
+      <stop offset="1" stop-color="#E8412F"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#FBF4E7"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#B79B73"/>
+    </marker>
+    <marker id="arrowO" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#FF540D"/>
+    </marker>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#9C7A45" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="800" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="640" y="58" text-anchor="middle" font-size="36" font-weight="800" fill="#2A2A2A">コンテキストブローカーとは？</text>
+  <text x="640" y="92" text-anchor="middle" font-size="18" fill="#7A6A4F">— 街じゅうのデータをつなぐ「データの中継役」 —</text>
+
+  <!-- Column headers -->
+  <text x="180" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="#5C5142">さまざまなデータ</text>
+  <text x="180" y="172" text-anchor="middle" font-size="13" fill="#9A8A6E">形式やルールがバラバラ</text>
+
+  <text x="640" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="#E8412F">コンテキストブローカー</text>
+  <text x="640" y="172" text-anchor="middle" font-size="13" fill="#C77A45">受け取って・そろえて・届ける</text>
+
+  <text x="1100" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="#5C5142">さまざまなサービス</text>
+  <text x="1100" y="172" text-anchor="middle" font-size="13" fill="#9A8A6E">同じ形でかんたんに利用</text>
+
+  <!-- ===== Arrows (drawn first, under cards) ===== -->
+  <g stroke-width="3" fill="none">
+    <line x1="312" y1="227" x2="462" y2="240" stroke="#C9B492" marker-end="url(#arrow)"/>
+    <line x1="312" y1="337" x2="462" y2="345" stroke="#C9B492" marker-end="url(#arrow)"/>
+    <line x1="312" y1="447" x2="462" y2="440" stroke="#C9B492" marker-end="url(#arrow)"/>
+    <line x1="312" y1="557" x2="462" y2="540" stroke="#C9B492" marker-end="url(#arrow)"/>
+
+    <line x1="818" y1="240" x2="968" y2="227" stroke="#FF8A5C" marker-end="url(#arrowO)"/>
+    <line x1="818" y1="345" x2="968" y2="337" stroke="#FF8A5C" marker-end="url(#arrowO)"/>
+    <line x1="818" y1="440" x2="968" y2="447" stroke="#FF8A5C" marker-end="url(#arrowO)"/>
+    <line x1="818" y1="540" x2="968" y2="557" stroke="#FF8A5C" marker-end="url(#arrowO)"/>
+  </g>
+
+  <!-- ===== Flowing data dots: heterogeneous in (varied colors) → unified out (orange) ===== -->
+  <g>
+    <circle r="4" fill="#4F9DDE"><animateMotion dur="1.9s" repeatCount="indefinite" path="M312,227 L462,240"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#4F9DDE"><animateMotion dur="1.9s" begin="-0.95s" repeatCount="indefinite" path="M312,227 L462,240"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-0.95s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#5BB98C"><animateMotion dur="1.9s" begin="-0.3s" repeatCount="indefinite" path="M312,337 L462,345"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-0.3s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#5BB98C"><animateMotion dur="1.9s" begin="-1.25s" repeatCount="indefinite" path="M312,337 L462,345"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-1.25s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#D2A33F"><animateMotion dur="1.9s" begin="-0.6s" repeatCount="indefinite" path="M312,447 L462,440"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-0.6s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#D2A33F"><animateMotion dur="1.9s" begin="-1.55s" repeatCount="indefinite" path="M312,447 L462,440"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-1.55s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#A06FD0"><animateMotion dur="1.9s" begin="-0.15s" repeatCount="indefinite" path="M312,557 L462,540"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-0.15s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#A06FD0"><animateMotion dur="1.9s" begin="-1.1s" repeatCount="indefinite" path="M312,557 L462,540"/><animate attributeName="r" values="2.5;5;2.5" dur="1.9s" begin="-1.1s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-0.2s" repeatCount="indefinite" path="M818,240 L968,227"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-0.2s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-1.15s" repeatCount="indefinite" path="M818,240 L968,227"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-1.15s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-0.5s" repeatCount="indefinite" path="M818,345 L968,337"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-0.5s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-1.45s" repeatCount="indefinite" path="M818,345 L968,337"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-1.45s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-0.8s" repeatCount="indefinite" path="M818,440 L968,447"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-0.8s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-1.75s" repeatCount="indefinite" path="M818,440 L968,447"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-1.75s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-0.35s" repeatCount="indefinite" path="M818,540 L968,557"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-0.35s" repeatCount="indefinite"/></circle>
+    <circle r="4" fill="#FF6A2B"><animateMotion dur="1.9s" begin="-1.3s" repeatCount="indefinite" path="M818,540 L968,557"/><animate attributeName="r" values="2.5;5.5;2.5" dur="1.9s" begin="-1.3s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- ===== LEFT: data sources ===== -->
+  <!-- Card 1: Sensor -->
+  <g filter="url(#soft)">
+    <rect x="50" y="185" width="260" height="85" rx="14" fill="#FFFFFF" stroke="#E6F4F2" stroke-width="2"/>
+  </g>
+  <circle cx="92" cy="227" r="22" fill="#3AA8A0"/>
+  <rect x="89" y="215" width="6" height="16" rx="3" fill="#fff"/>
+  <circle cx="92" cy="234" r="6" fill="#fff"/>
+  <text x="128" y="222" font-size="18" font-weight="700" fill="#2A2A2A">センサー</text>
+  <text x="128" y="246" font-size="13" fill="#7A6A4F">気温・降雨・水位 など</text>
+
+  <!-- Card 2: Systems -->
+  <g filter="url(#soft)">
+    <rect x="50" y="295" width="260" height="85" rx="14" fill="#FFFFFF" stroke="#E9ECF9" stroke-width="2"/>
+  </g>
+  <circle cx="92" cy="337" r="22" fill="#5B6BC0"/>
+  <ellipse cx="92" cy="327" rx="11" ry="4.5" fill="#fff"/>
+  <path d="M81,327 v18 a11,4.5 0 0 0 22,0 v-18" fill="none" stroke="#fff" stroke-width="2.5"/>
+  <ellipse cx="92" cy="336" rx="11" ry="4.5" fill="none" stroke="#fff" stroke-width="2"/>
+  <text x="128" y="332" font-size="18" font-weight="700" fill="#2A2A2A">業務システム</text>
+  <text x="128" y="356" font-size="13" fill="#7A6A4F">住民・施設・税 など</text>
+
+  <!-- Card 3: Open data -->
+  <g filter="url(#soft)">
+    <rect x="50" y="405" width="260" height="85" rx="14" fill="#FFFFFF" stroke="#FBF1DD" stroke-width="2"/>
+  </g>
+  <circle cx="92" cy="447" r="22" fill="#E0A732"/>
+  <rect x="83" y="436" width="18" height="22" rx="3" fill="#fff"/>
+  <line x1="87" y1="442" x2="97" y2="442" stroke="#E0A732" stroke-width="2"/>
+  <line x1="87" y1="447" x2="97" y2="447" stroke="#E0A732" stroke-width="2"/>
+  <line x1="87" y1="452" x2="94" y2="452" stroke="#E0A732" stroke-width="2"/>
+  <text x="128" y="442" font-size="18" font-weight="700" fill="#2A2A2A">オープンデータ</text>
+  <text x="128" y="466" font-size="13" fill="#7A6A4F">公開された統計 など</text>
+
+  <!-- Card 4: IoT / camera -->
+  <g filter="url(#soft)">
+    <rect x="50" y="515" width="260" height="85" rx="14" fill="#FFFFFF" stroke="#FAE7E9" stroke-width="2"/>
+  </g>
+  <circle cx="92" cy="557" r="22" fill="#D9646E"/>
+  <rect x="80" y="550" width="24" height="16" rx="3" fill="#fff"/>
+  <rect x="86" y="546" width="8" height="5" rx="1.5" fill="#fff"/>
+  <circle cx="92" cy="558" r="4.5" fill="#D9646E"/>
+  <text x="128" y="552" font-size="18" font-weight="700" fill="#2A2A2A">IoT機器・カメラ</text>
+  <text x="128" y="576" font-size="13" fill="#7A6A4F">現場の機器 など</text>
+
+  <!-- ===== CENTER: the broker hub ===== -->
+  <g filter="url(#soft)">
+    <rect x="470" y="185" width="340" height="415" rx="22" fill="url(#hubGrad)"/>
+  </g>
+  <!-- network icon -->
+  <g stroke="#fff" stroke-width="2.5">
+    <line x1="640" y1="250" x2="600" y2="222"/>
+    <line x1="640" y1="250" x2="680" y2="222"/>
+    <line x1="640" y1="250" x2="604" y2="288"/>
+    <line x1="640" y1="250" x2="676" y2="288"/>
+  </g>
+  <!-- pulsing ping from the hub node -->
+  <circle cx="640" cy="250" r="15" fill="none" stroke="#fff" stroke-width="2.5">
+    <animate attributeName="r" values="15;48;48" keyTimes="0;0.75;1" dur="2.6s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-opacity" values="0.7;0;0" keyTimes="0;0.75;1" dur="2.6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="640" cy="250" r="15" fill="#fff"/>
+  <circle cx="600" cy="220" r="8" fill="#FFE3D5"/>
+  <circle cx="680" cy="220" r="8" fill="#FFE3D5"/>
+  <circle cx="604" cy="290" r="8" fill="#FFE3D5"/>
+  <circle cx="676" cy="290" r="8" fill="#FFE3D5"/>
+
+  <text x="640" y="345" text-anchor="middle" font-size="24" font-weight="700" fill="#fff">コンテキスト</text>
+  <text x="640" y="378" text-anchor="middle" font-size="24" font-weight="700" fill="#fff">ブローカー</text>
+  <text x="640" y="402" text-anchor="middle" font-size="13" fill="#FFE0D2" letter-spacing="1">Context Broker</text>
+
+  <line x1="510" y1="425" x2="770" y2="425" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5"/>
+
+  <g font-size="14.5" fill="#fff">
+    <circle cx="520" cy="456" r="3.5" fill="#FFF2CC"/>
+    <text x="534" y="461">バラバラな形式を共通ルールに統一</text>
+    <circle cx="520" cy="496" r="3.5" fill="#FFF2CC"/>
+    <text x="534" y="501">最新の状態をリアルタイムに一元管理</text>
+    <circle cx="520" cy="536" r="3.5" fill="#FFF2CC"/>
+    <text x="534" y="541">誰でも同じ方法で取り出せる</text>
+  </g>
+
+  <!-- ===== RIGHT: services (uniform style = standardized) ===== -->
+  <!-- Card 1: disaster map -->
+  <g filter="url(#soft)">
+    <rect x="970" y="185" width="260" height="85" rx="14" fill="#FFF8EC" stroke="#FFD9B8" stroke-width="2"/>
+  </g>
+  <circle cx="1012" cy="227" r="22" fill="#FF540D"/>
+  <path d="M1012,215 a9,9 0 0 1 9,9 c0,7 -9,15 -9,15 c0,0 -9,-8 -9,-15 a9,9 0 0 1 9,-9 z" fill="#fff"/>
+  <circle cx="1012" cy="224" r="3.5" fill="#FF540D"/>
+  <text x="1048" y="233" font-size="18" font-weight="700" fill="#2A2A2A">防災・避難マップ</text>
+
+  <!-- Card 2: dashboard -->
+  <g filter="url(#soft)">
+    <rect x="970" y="295" width="260" height="85" rx="14" fill="#FFF8EC" stroke="#FFD9B8" stroke-width="2"/>
+  </g>
+  <circle cx="1012" cy="337" r="22" fill="#FF540D"/>
+  <rect x="1002" y="338" width="5" height="10" fill="#fff"/>
+  <rect x="1010" y="332" width="5" height="16" fill="#fff"/>
+  <rect x="1018" y="328" width="5" height="20" fill="#fff"/>
+  <text x="1048" y="343" font-size="18" font-weight="700" fill="#2A2A2A">庁内ダッシュボード</text>
+
+  <!-- Card 3: citizen app -->
+  <g filter="url(#soft)">
+    <rect x="970" y="405" width="260" height="85" rx="14" fill="#FFF8EC" stroke="#FFD9B8" stroke-width="2"/>
+  </g>
+  <circle cx="1012" cy="447" r="22" fill="#FF540D"/>
+  <rect x="1004" y="435" width="16" height="24" rx="3" fill="#fff"/>
+  <circle cx="1012" cy="455" r="1.8" fill="#FF540D"/>
+  <text x="1048" y="453" font-size="18" font-weight="700" fill="#2A2A2A">市民向けアプリ</text>
+
+  <!-- Card 4: AI -->
+  <g filter="url(#soft)">
+    <rect x="970" y="515" width="260" height="85" rx="14" fill="#FFF8EC" stroke="#FFD9B8" stroke-width="2"/>
+  </g>
+  <circle cx="1012" cy="557" r="22" fill="#FF540D"/>
+  <text x="1012" y="563" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">AI</text>
+  <text x="1048" y="563" font-size="18" font-weight="700" fill="#2A2A2A">AI分析・予測</text>
+
+  <!-- ===== Bottom summary banner ===== -->
+  <g filter="url(#soft)">
+    <rect x="50" y="650" width="1180" height="86" rx="16" fill="#FFF2CC" stroke="#F0D89A" stroke-width="2"/>
+  </g>
+  <text x="640" y="686" text-anchor="middle" font-size="19" font-weight="700" fill="#A8400F">いわば、街じゅうの情報の「交換台」</text>
+  <text x="640" y="714" text-anchor="middle" font-size="14.5" fill="#6B5B3E">あちこちのバラバラなデータを共通のルールに翻訳してまとめ、使いたいサービスへ同じ形で届けます。</text>
+
+  <!-- footer note -->
+  <text x="640" y="772" text-anchor="middle" font-size="12" fill="#A89878">※ データは国際標準のルール（NGSI-LD など）で表現・管理されます。</text>
+      </svg>
     </section>
 
     <!-- 3. Future city scene (full-bleed, overlaid title) -->
