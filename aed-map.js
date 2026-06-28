@@ -16,10 +16,11 @@
     apiKey: (CFG.keys || {}).readonly, // readonly (GET + WS), origin-restricted
     type: DM.type,
     limit: 1000,
-    center: DM.center, // fitToData() が実データに合わせて再調整
+    center: DM.center, // 初期表示はこの座標・ズーム固定（ロード後の自動フィットなし）
     zoom: DM.zoom,
   };
-  var MAP_SLIDE_INDEX = 9; // 0-based index of the map slide (after the dual-API demo)
+  // 0-based index of the map slide, derived from its class so slide reordering can't break it
+  var MAP_SLIDE_INDEX = Array.prototype.indexOf.call(document.querySelectorAll(".slide"), document.querySelector(".slide--map"));
 
   var GL = null;
   var map = null;
@@ -254,9 +255,11 @@
       updateQueryView();
       if (geoCenter) {
         drawGeo(); // grow/shrink the circle immediately
-        // re-run the near-query (debounced) so the markers + count track the slider
         clearTimeout(radiusTimer);
-        radiusTimer = setTimeout(function () { runGeoQuery(false); }, 220);
+        radiusTimer = setTimeout(function () {
+          fitToCircle();      // first move the map to fit the new circle…
+          runGeoQuery(false); // …then download the entities for the new radius (no re-fit)
+        }, 220);
       }
     });
     clear.addEventListener("click", clearGeo);
@@ -407,9 +410,13 @@
     }, { passive: false });
 
     wireGeoPanel();
-    fitToData();
+    // No initial fitToData() — keep the map at its default center/zoom (CONFIG.center
+    // / CONFIG.zoom) so it doesn't jump when prefetched entities finish loading.
   }
 
+  // Frame the map to all loaded entities. Only used by the "全件表示に戻す" reset
+  // action (a deliberate user action); the initial/auto load intentionally does not
+  // call this so the view stays at the default center/zoom.
   function fitToData() {
     var ids = Object.keys(byId);
     if (!ids.length) return;
@@ -417,7 +424,6 @@
     ids.forEach(function (id) { var c = coordsOf(byId[id]); if (c) b.extend(c); });
     if (!b.isEmpty()) map.fitBounds(b, { padding: 50, maxZoom: 14, duration: 0 });
   }
-
 
   var PAGE_SIZE = 100;
 
@@ -431,25 +437,27 @@
     if (dataStarted) return; // already prefetched / loading
     dataStarted = true;
     loading = true;
-    function applyToMap(firstFit) {
+    function applyToMap() {
       var src = map && map.getSource("aed");
       if (src) src.setData(buildGeoJSON());
-      if (firstFit && map) fitToData();
+      // Intentionally keep the map at its default center/zoom (CONFIG.center /
+      // CONFIG.zoom) after entities load — no fitToData() — so the view doesn't
+      // make an awkward little jump once the download finishes.
     }
-    function loadPage(offset, firstFit) {
+    function loadPage(offset) {
       return db.getEntities({ type: CONFIG.type, limit: PAGE_SIZE, offset: offset }).then(function (res) {
         var list = Array.isArray(res) ? res : res && Array.isArray(res.entities) ? res.entities : [];
         list.forEach(function (e) { if (e && e.id) byId[e.id] = e; });
-        applyToMap(firstFit);   // no-op while prefetching (map not built yet)
+        applyToMap();   // no-op while prefetching (map not built yet)
         setCountStatus();
         if (list.length < PAGE_SIZE) return; // last page reached
-        return loadPage(offset + PAGE_SIZE, false);
+        return loadPage(offset + PAGE_SIZE);
       });
     }
     setStatus("件数を取得中…");
     return db.count({ type: CONFIG.type })
       .then(function (c) { total = c; }, function () { total = null; })
-      .then(function () { return loadPage(0, true); })
+      .then(function () { return loadPage(0); })
       .then(function () { loading = false; setCountStatus(); })
       .catch(function (err) {
         console.error("[aed-map]", err);
@@ -495,6 +503,10 @@
     fetch("assets/map-style.json")
       .then(function (r) { return r.json(); })
       .then(function (style) {
+        // Point the style at the locally-bundled GSI sprite (same as geonicdb-pulse).
+        // Without this the base-map symbol layers reference icons that aren't in any
+        // sprite, which floods the console with "Image '…' could not be loaded" warnings.
+        style.sprite = new URL("assets/sprites/gsi", location.href).href;
         map = new GL.Map({
           // Controls are configured via the container's data-* attributes
           // (data-navigation-control="off"), the same way geonicdb-pulse does it.

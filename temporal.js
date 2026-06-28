@@ -19,7 +19,8 @@
     from: DT.from,
     to: DT.to,
   };
-  var TMP_SLIDE_INDEX = 10; // 0-based index of the temporal slide
+  // 0-based index of the temporal slide, derived from its class so slide reordering can't break it
+  var TMP_SLIDE_INDEX = Array.prototype.indexOf.call(document.querySelectorAll(".slide"), document.querySelector(".slide--tmp"));
 
   var db = null, started = false;
   var series = [];     // [{iso, date, time, temp, hum}]

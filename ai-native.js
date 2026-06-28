@@ -10,7 +10,8 @@
 (function () {
   "use strict";
 
-  var AI_SLIDE_INDEX = 4; // 0-based index of the AI-native slide
+  // 0-based index of the AI-native slide, derived from its class so slide reordering can't break it
+  var AI_SLIDE_INDEX = Array.prototype.indexOf.call(document.querySelectorAll(".slide"), document.querySelector(".slide--ai"));
 
   // app-preview shelter pin positions (viewBox 360x220), kept clear of the
   // search bar (top) and the count chip / FAB (bottom corners).
