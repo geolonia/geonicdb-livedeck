@@ -423,7 +423,7 @@ html, body {
   pointer-events: none;
 }
 .slide--illus .illus-overlay .slide__title {
-  font-size: 38px; margin-bottom: 4px; text-shadow: 0 2px 18px rgba(0,0,0,.6);
+  font-size: 44px; margin-bottom: 4px; text-shadow: 0 2px 18px rgba(0,0,0,.6);
 }
 .slide--illus .illus-overlay .lead {
   font-size: 14px; margin: 0; color: rgba(255,255,255,.78);
@@ -513,6 +513,7 @@ html, body {
 }
 .slide[data-bg="light"]::after { opacity: .82; }
 .slide--title::after, .slide--closing::after, .slide--illus::after,
+.slide--appendix::after,
 .slide[data-bg="illus-dark"]::after { content: none; }
 
 /* ===== Title slide ===== */
@@ -845,6 +846,29 @@ html, body {
 .closing__sub { font-size: 21px; color: rgba(255,255,255,.75); margin-bottom: 38px; }
 .closing__cta { margin-bottom: 50px; }
 .closing__foot { font-size: 14px; color: rgba(255,255,255,.4); }
+
+/* ===== Appendix divider (section cover) ===== */
+.slide--appendix { text-align: center; }
+.appendix__inner { padding: 70px; }
+.appendix__headline {
+  font-size: 88px;
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  margin-bottom: 18px;
+}
+.appendix__sub {
+  font-size: 21px;
+  line-height: 1.6;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .02em;
+}
+
+/* ===== Glossary ===== */
+.glossary { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 44px; }
+.glossary__item { display: block; }
+.glossary__term { display: block; font-size: 15px; font-weight: 800; color: var(--amber); margin-bottom: 3px; }
+.glossary__def { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.72); }
 
 /* ===== UI overlay ===== */
 .ui {

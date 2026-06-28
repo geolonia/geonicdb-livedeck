@@ -17,7 +17,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
   <link rel="apple-touch-icon" href="assets/icon-180.png" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="GeonicDB" />
 
@@ -91,7 +91,7 @@
   <rect width="1280" height="800" fill="url(#bgGrad)"/>
 
   <!-- Title -->
-  <text x="640" y="58" text-anchor="middle" font-size="36" font-weight="800" fill="#2A2A2A">コンテキストブローカーとは？</text>
+  <text x="640" y="58" text-anchor="middle" font-size="48.89" font-weight="800" fill="#2A2A2A">コンテキストブローカーとは？</text>
   <text x="640" y="92" text-anchor="middle" font-size="18" fill="#7A6A4F">— 街じゅうのデータをつなぐ「データの中継役」 —</text>
 
   <!-- Column headers -->
@@ -360,95 +360,13 @@
       </div>
     </section>
 
-    <!-- 10. Reliability / availability -->
-    <section class="slide" data-bg="dark">
-      <div class="slide__inner">
-        <span class="kicker">信頼性 / Reliability</span>
-        <h2 class="slide__title">止まらないことを最優先に</h2>
-        <div class="ha-hero">
-          <div class="ha-hero__main">
-            <span class="ha-hero__num">99.95<small>%+</small></span>
-            <span class="ha-hero__label">想定可用性（稼働率）</span>
-          </div>
-          <div class="ha-hero__desc">
-            <p>フルマネージドのサーバーレス基盤が、アクセス量に応じて<strong>自動スケール</strong>。<strong>冗長構成</strong>で動くため、サーバー管理やダウンタイムを気にせず使えます。</p>
-          </div>
-        </div>
-        <p class="ha-found-label">その安定を支える、開発の品質</p>
-        <div class="metrics metrics--sm">
-          <div class="metric">
-            <span class="metric__num">94.0<small>%</small></span>
-            <span class="metric__label">コードカバレッジ</span>
-          </div>
-          <div class="metric">
-            <span class="metric__num">1.69<small>:1</small></span>
-            <span class="metric__label">テスト密度（テスト:実装）</span>
-          </div>
-          <div class="metric">
-            <span class="metric__num">~3,229</span>
-            <span class="metric__label">E2E（BDD）シナリオ数</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 11. Auth / XACML -->
-    <section class="slide" data-bg="accent">
-      <div class="slide__inner">
-        <span class="kicker">セキュリティ / Auth & Authz</span>
-        <h2 class="slide__title">ブローカー単体でゼロトラスト相当の認可</h2>
-        <div class="split">
-          <div class="split__text">
-            <ul class="ticks">
-              <li><strong>5 種の認証</strong> — JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）</li>
-              <li><strong>XACML 3.0 単一レイヤ</strong> — 5 ロール × 属性ベースのきめ細かいポリシー</li>
-              <li><strong>per-tenant IP 制限</strong>・監査ログ・トークン失効</li>
-              <li>PEP プロキシ（Wilma 等）を別途立てる必要がない</li>
-            </ul>
-          </div>
-          <div class="split__visual">
-            <pre class="code"><code><span class="c-key">Policy</span>: owner-only-access
-<span class="c-key">target</span>: entity.owner == <span class="c-str">${subject.userId}</span>
-<span class="c-key">rules</span>:
-  - <span class="c-ok">Permit</span> read   if owner
-  - <span class="c-ok">Permit</span> write  if owner
-  - <span class="c-no">Deny</span>   *      otherwise
-<span class="c-cmt"># 所有者のみがアクセス可能</span></code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Comparison vs Orion -->
-    <section class="slide" data-bg="light">
-      <div class="slide__inner">
-        <span class="kicker">競合比較 / vs FIWARE Orion</span>
-        <h2 class="slide__title">機能の充実度で大きく差がつく</h2>
-        <table class="cmp">
-          <thead>
-            <tr><th>機能</th><th>GeonicDB</th><th>FIWARE Orion</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>NGSIv2 / NGSI-LD</td><td class="yes">◎ 両対応（1 エンジン）</td><td class="part">○ 製品が分離</td></tr>
-            <tr><td>Temporal API</td><td class="yes">◎ フル</td><td class="part">△ 限定的</td></tr>
-            <tr><td>WebSocket / ベクトルタイル / 空間 ID</td><td class="yes">◎</td><td class="no">✕</td></tr>
-            <tr><td>組込み JWT / RBAC / XACML</td><td class="yes">◎</td><td class="no">✕ プロキシ別途</td></tr>
-            <tr><td>外部 OIDC / IP 制限 / DPoP</td><td class="yes">◎</td><td class="no">✕</td></tr>
-            <tr><td>DCAT-AP / CKAN / CADDE</td><td class="yes">◎</td><td class="no">✕</td></tr>
-            <tr><td>スケーリング</td><td class="yes">オートスケール</td><td class="part">手動</td></tr>
-          </tbody>
-        </table>
-        <p class="footnote">出典: <span class="mono">docs/FIWARE_ORION_COMPARISON.md</span>。Orion はオンプレ／マルチクラウド／FIWARE スタック実績で優位。</p>
-      </div>
-    </section>
-
     <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
     <section class="slide slide--dual" data-bg="dark">
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">標準API / Dual Protocol</span>
-          <h2 class="slide__title map-title">NGSIv2 も NGSI-LD も、そのまま取得</h2>
-          <p class="map-desc"><strong>1 つのブローカー</strong>で <strong>NGSIv2</strong> と <strong>NGSI-LD</strong> の両方の標準 API に対応。用途に合わせてどちらの形式でもエンティティを取得できます（FIWARE Orion は製品が分離）。下のボタンで実際の API レスポンスを取得します。</p>
+          <h2 class="slide__title map-title">NGSIv2 と NGSI-LD に対応</h2>
+          <p class="map-desc"><strong>1 つのブローカー</strong>で <strong>NGSIv2</strong> と <strong>NGSI-LD</strong> の両方の標準 API に対応。用途に合わせてどちらの形式でもエンティティを取得できます。下のボタンで実際の API レスポンスを取得します。</p>
         </div>
         <div class="demo-body dual-body">
           <div class="dual-col">
@@ -696,7 +614,303 @@
       </div>
     </section>
 
-    <!-- 14. Closing -->
+    <!-- Comparison vs Orion -->
+    <section class="slide" data-bg="light">
+      <div class="slide__inner">
+        <span class="kicker">競合比較 / vs FIWARE Orion</span>
+        <h2 class="slide__title">機能の充実度で大きく差がつく</h2>
+        <table class="cmp">
+          <thead>
+            <tr><th>機能</th><th>GeonicDB</th><th>FIWARE Orion</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>NGSIv2 / NGSI-LD</td><td class="yes">◎ 両対応（1 エンジン）</td><td class="part">○ 製品が分離</td></tr>
+            <tr><td>Temporal API</td><td class="yes">◎ フル</td><td class="part">△ 限定的</td></tr>
+            <tr><td>WebSocket / ベクトルタイル / 空間 ID</td><td class="yes">◎</td><td class="no">✕</td></tr>
+            <tr><td>組込み JWT / RBAC / XACML</td><td class="yes">◎</td><td class="no">✕ プロキシ別途</td></tr>
+            <tr><td>外部 OIDC / IP 制限 / DPoP</td><td class="yes">◎</td><td class="no">✕</td></tr>
+            <tr><td>DCAT-AP / CKAN / CADDE</td><td class="yes">◎</td><td class="no">✕</td></tr>
+            <tr><td>スケーリング</td><td class="yes">オートスケール</td><td class="part">手動</td></tr>
+          </tbody>
+        </table>
+        <p class="footnote">出典: <span class="mono">docs/FIWARE_ORION_COMPARISON.md</span>。Orion はオンプレ／マルチクラウド／FIWARE スタック実績で優位。</p>
+      </div>
+    </section>
+
+    <!-- 15. Appendix — section cover -->
+    <section class="slide slide--appendix" data-bg="title">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="slide__inner appendix__inner">
+        <span class="kicker">補足資料 / Appendix</span>
+        <h2 class="appendix__headline">Appendix</h2>
+        <p class="appendix__sub">技術詳細・補足データ・参考情報</p>
+      </div>
+    </section>
+
+    <!-- Appendix: Reliability / availability -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">信頼性 / Reliability</span>
+        <h2 class="slide__title">信頼性</h2>
+        <div class="ha-hero">
+          <div class="ha-hero__main">
+            <span class="ha-hero__num">99.95<small>%+</small></span>
+            <span class="ha-hero__label">想定可用性（稼働率）</span>
+          </div>
+          <div class="ha-hero__desc">
+            <p>フルマネージドのサーバーレス基盤が、アクセス量に応じて<strong>自動スケール</strong>。<strong>冗長構成</strong>で動くため、サーバー管理やダウンタイムを気にせず使えます。</p>
+          </div>
+        </div>
+        <p class="ha-found-label">その安定を支える、開発の品質</p>
+        <div class="metrics metrics--sm">
+          <div class="metric">
+            <span class="metric__num">94.0<small>%</small></span>
+            <span class="metric__label">コードカバレッジ</span>
+          </div>
+          <div class="metric">
+            <span class="metric__num">1.69<small>:1</small></span>
+            <span class="metric__label">テスト密度（テスト:実装）</span>
+          </div>
+          <div class="metric">
+            <span class="metric__num">~3,229</span>
+            <span class="metric__label">E2E（BDD）シナリオ数</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appendix: Auth / XACML -->
+    <section class="slide" data-bg="accent">
+      <div class="slide__inner">
+        <span class="kicker">セキュリティ / Auth & Authz</span>
+        <h2 class="slide__title">認証・認可</h2>
+        <div class="split">
+          <div class="split__text">
+            <ul class="ticks">
+              <li><strong>5 種の認証</strong> — JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）</li>
+              <li><strong>XACML 3.0 単一レイヤ</strong> — 5 ロール × 属性ベースのきめ細かいポリシー</li>
+              <li><strong>per-tenant IP 制限</strong>・監査ログ・トークン失効</li>
+              <li>PEP プロキシ（Wilma 等）を別途立てる必要がない</li>
+            </ul>
+          </div>
+          <div class="split__visual">
+            <pre class="code"><code><span class="c-key">Policy</span>: owner-only-access
+<span class="c-key">target</span>: entity.owner == <span class="c-str">${subject.userId}</span>
+<span class="c-key">rules</span>:
+  - <span class="c-ok">Permit</span> read   if owner
+  - <span class="c-ok">Permit</span> write  if owner
+  - <span class="c-no">Deny</span>   *      otherwise
+<span class="c-cmt"># 所有者のみがアクセス可能</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appendix: Abuse / brute-force protection -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">セキュリティ詳細 / Security</span>
+        <h2 class="slide__title">セキュリティ</h2>
+        <div class="std-grid">
+          <div class="std-card">
+            <span class="std-card__name">パスワードの総当たり</span>
+            <span class="std-card__desc">アカウント単位で連続失敗を検知し、<strong>5 回で 60 秒ロック</strong>＋指数バックオフ（試行のたびに待ち時間が倍増）。同一 IP から多数のアカウントを狙う<strong>パスワードスプレー</strong>も <strong>20 回 / 15 分</strong>で遮断。ロック判定にも遅延を入れタイミング分析を防止。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">アクセス集中による停止</span>
+            <span class="std-card__desc">プラン別の<strong>レート制限</strong>（トークンバケット方式、FREE 60 〜 ENTERPRISE 12,000 req/min）。操作の重さで重み付け（参照 1・書込 3・一括 5）。認証前の公開 API は IP 単位で個別制限し、リクエスト/レスポンスのサイズ上限も設定。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">プログラムによる自動攻撃</span>
+            <span class="std-card__desc">API キー → アクセストークン交換時に <strong>Proof of Work</strong>（16 bit 相当の計算）と、<strong>Origin に紐づく使い捨て Nonce</strong>（有効 60 秒）を要求。機械的な大量試行のコストを引き上げ、API キーの他サイト流用も防止。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">不正データの送り込み</span>
+            <span class="std-card__desc">全入力をスキーマで<strong>厳格検証</strong>（文字数・要素数・型の上限を強制）。正規表現を悪用した攻撃（<strong>ReDoS</strong>）を検出し、通知先 URL は社内ネットワークやクラウド管理情報を狙う <strong>SSRF</strong> を IP・DNS 再解決まで含めて遮断。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">パスワードの漏えい</span>
+            <span class="std-card__desc">パスワードは復元不可能な一方向変換で保存（<strong>PBKDF2-SHA512・10 万回反復・ランダムソルト</strong>付き）。万一 DB が流出しても総当たり解読は非現実的。照合は <strong>timingSafeEqual</strong> で時間差攻撃を防止。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">データの盗み見・改ざん</span>
+            <span class="std-card__desc">保存データはテナントごとに <strong>AES-256-GCM</strong> で暗号化（鍵は <strong>AWS KMS</strong> で管理・自動ローテーション）。作成・更新・削除はすべて<strong>監査ログ</strong>に記録し、漏れたトークンは<strong>失効リスト</strong>で無効化できる。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glossary — section cover -->
+    <section class="slide slide--appendix" data-bg="title">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="slide__inner appendix__inner">
+        <span class="kicker">用語集 / Glossary</span>
+        <h2 class="appendix__headline">用語集</h2>
+        <p class="appendix__sub">本資料で用いた専門用語の説明</p>
+      </div>
+    </section>
+
+    <!-- 19. Glossary — page 1 (A–Z) -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">AES-256-GCM／AWS KMS</span>
+            <span class="glossary__def">AES-256-GCM は強力な共通鍵暗号方式。AWS KMS はその暗号鍵を安全に保管・管理するクラウドサービス。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">API キー</span>
+            <span class="glossary__def">プログラムからサービスを利用する際に使う、認証用の鍵。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">CADDE</span>
+            <span class="glossary__def">分野を越えてデータを安全に流通・連携させる、日本のデータ連携基盤。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">CKAN／DCAT-AP</span>
+            <span class="glossary__def">オープンデータを公開・検索するためのカタログの標準と代表的ソフトウェア。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Context Broker</span>
+            <span class="glossary__def">さまざまなデータを共通ルールで受け取り・整え・配る「中継役」のソフトウェア。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">DoS（サービス妨害）</span>
+            <span class="glossary__def">大量のアクセスを集中させ、サービスを停止に追い込む攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">DPoP（RFC 9449）</span>
+            <span class="glossary__def">トークンの持ち主であることの証明を求め、盗まれたトークンの悪用を防ぐ仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ETSI GS CIM 009</span>
+            <span class="glossary__def">NGSI-LD を定める、欧州 ETSI の国際標準仕様。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">FIWARE</span>
+            <span class="glossary__def">スマートシティ／IoT 向けのオープンソース基盤群。NGSIv2 などの API を定義。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Geo-query（ジオクエリー）</span>
+            <span class="glossary__def">「この範囲内」「近い順」など、位置情報でデータを絞り込む検索。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">JSON-LD</span>
+            <span class="glossary__def">意味づけ（リンクトデータ）を持たせた JSON 形式。NGSI-LD の土台。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">JWT</span>
+            <span class="glossary__def">改ざん検知の署名が付いた認証トークン。ログイン状態の受け渡しに使う。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 20. Glossary — page 2 (A–Z) -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">MCP（Model Context Protocol）</span>
+            <span class="glossary__def">AI（LLM）が外部のツールやデータへ安全に接続するための標準プロトコル。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">NGSI-LD</span>
+            <span class="glossary__def">コンテキスト情報を相互運用可能に表現する国際標準 API（ETSI）。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">NGSIv2</span>
+            <span class="glossary__def">FIWARE が定めるコンテキスト API 仕様。GeonicDB は NGSI-LD と両対応。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Nonce／Origin</span>
+            <span class="glossary__def">Nonce は一度きり有効な使い捨ての値（リプレイ防止）。Origin はアクセス元のドメイン。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">OAuth 2.0／OIDC</span>
+            <span class="glossary__def">OAuth 2.0 はアクセス権限の委譲、OIDC はそこに本人確認を加えた認証の標準。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">OpenAPI</span>
+            <span class="glossary__def">API の仕様を機械可読に記述するための標準フォーマット。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">PBKDF2・ハッシュ・ソルト</span>
+            <span class="glossary__def">パスワードを復元できない形へ変換（ハッシュ）して保存する技術。ソルトは各パスワードに加える個別の値。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">PoW（Proof of Work）</span>
+            <span class="glossary__def">処理の前に一定量の計算を求め、機械的な大量実行を割に合わなくする仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ReactiveCore Rules</span>
+            <span class="glossary__def">条件が満たされると自動で処理を実行する、GeonicDB のルールエンジン。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ReDoS</span>
+            <span class="glossary__def">正規表現の弱点を突き、処理を極端に遅延させてサービスを止める攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">SSRF</span>
+            <span class="glossary__def">サーバーをだまし、内部ネットワークやクラウド管理情報など内部資源へアクセスさせる攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Temporal API</span>
+            <span class="glossary__def">データの過去の変化（時系列）を遡って取得できる API。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 21. Glossary — page 3 (A–Z → あいうえお) -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">WebSocket</span>
+            <span class="glossary__def">サーバーとブラウザが双方向にリアルタイム通信する仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">XACML</span>
+            <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">監査ログ／トークン失効</span>
+            <span class="glossary__def">監査ログは「いつ・誰が・何をしたか」の証跡。トークン失効は漏れた認証情報を無効化する仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">指数バックオフ</span>
+            <span class="glossary__def">失敗のたびに待ち時間を倍々に延ばし、連続した試行を成立しにくくする手法。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">自動スケール</span>
+            <span class="glossary__def">アクセス量に応じて、処理能力を自動で増減させる仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">冗長構成</span>
+            <span class="glossary__def">同じ機能を複数用意し、一部が壊れても止まらないようにする構成。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">タイミング攻撃</span>
+            <span class="glossary__def">処理にかかる時間のわずかな差から、秘密情報を推測しようとする攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">フルマネージド</span>
+            <span class="glossary__def">サーバー運用・保守を提供側が引き受け、利用者は運用不要で使える形態。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ブルートフォース／パスワードスプレー</span>
+            <span class="glossary__def">前者はパスワードを総当たりで試す攻撃。後者はありがちなパスワードを多数のアカウントへ広く試す攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">レート制限（トークンバケット）</span>
+            <span class="glossary__def">一定時間あたりの利用回数に上限を設ける仕組み。許容量を超えると一時的に拒否する。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing (last slide) -->
     <section class="slide slide--closing" data-bg="title">
       <div class="grid-bg" aria-hidden="true"></div>
       <div class="slide__inner closing__inner">
@@ -740,12 +954,18 @@
   <script src="survey.js"></script>
   <script src="ai-native.js"></script>
   <script src="slides.js"></script>
-  <!-- PWA: register the service worker (offline shell) -->
+  <!-- Service worker disabled: unregister any previously-installed SW and clear its caches
+       (the SW caching kept serving stale JS/CSS during development). -->
   <script>
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
-      });
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        regs.forEach(function (r) { r.unregister(); });
+      }).catch(function () {});
+    }
+    if (window.caches && caches.keys) {
+      caches.keys().then(function (keys) {
+        keys.forEach(function (k) { caches.delete(k); });
+      }).catch(function () {});
     }
   </script>
 </body>

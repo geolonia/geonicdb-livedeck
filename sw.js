@@ -1,69 +1,29 @@
-/* GeonicDB live-deck — service worker (PWA offline shell) */
-var CACHE = "geonicdb-livedeck-v10";
-
-// App shell precached on install. Live-demo data (GeonicDB API, map tiles,
-// fonts, SDK CDN) is cross-origin and intentionally left to the network.
-var CORE = [
-  "./",
-  "index.html",
-  "styles.css",
-  "config.js",
-  "slides.js",
-  "aed-map.js",
-  "temporal.js",
-  "survey.js",
-  "dual.js",
-  "ai-native.js",
-  "manifest.webmanifest",
-  "assets/geonicdb-sdk.iife.js",
-  "assets/map-style.json",
-  "assets/future-city.svg",
-  "assets/geonic-logo-dark.svg",
-  "assets/geonic-logo-h-dark.svg",
-  "assets/geonic-mark.svg",
-  "assets/icon-192.png",
-  "assets/icon-512.png",
-  "assets/icon-180.png",
-  "assets/og-image.png"
-];
-
-self.addEventListener("install", function (e) {
-  e.waitUntil(
-    caches.open(CACHE)
-      .then(function (c) { return c.addAll(CORE); })
-      .then(function () { return self.skipWaiting(); })
-  );
+/* GeonicDB live-deck — service worker DISABLED (self-destroying kill switch).
+   The previous SW cached the app shell and kept serving stale JS/CSS during
+   development. This replacement registers NO fetch handler, so it never serves
+   anything from cache. On activation it deletes every cache, takes control of
+   open tabs, unregisters itself, and reloads those tabs so they pick up fresh,
+   network-served files. Browsers automatically re-fetch sw.js on navigation, so
+   any browser that still has the old caching SW will receive this kill switch on
+   its next visit and clean itself up. */
+self.addEventListener("install", function () {
+  self.skipWaiting();
 });
 
-self.addEventListener("activate", function (e) {
-  e.waitUntil(
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
     caches.keys()
       .then(function (keys) {
-        return Promise.all(keys.filter(function (k) { return k !== CACHE; })
-          .map(function (k) { return caches.delete(k); }));
+        return Promise.all(keys.map(function (k) { return caches.delete(k); }));
       })
       .then(function () { return self.clients.claim(); })
-  );
-});
-
-self.addEventListener("fetch", function (e) {
-  var req = e.request;
-  if (req.method !== "GET") return;
-  var url = new URL(req.url);
-  if (url.origin !== self.location.origin) return; // network for API / tiles / CDN
-  e.respondWith(
-    caches.match(req).then(function (hit) {
-      if (hit) return hit;
-      return fetch(req).then(function (res) {
-        if (res && res.status === 200 && res.type === "basic") {
-          var copy = res.clone();
-          caches.open(CACHE).then(function (c) { c.put(req, copy); });
-        }
-        return res;
-      }).catch(function () {
-        // offline navigation fallback to the app shell
-        if (req.mode === "navigate") return caches.match("index.html");
-      });
-    })
+      .then(function () { return self.registration.unregister(); })
+      .then(function () { return self.clients.matchAll({ type: "window" }); })
+      .then(function (clients) {
+        clients.forEach(function (c) {
+          if (c.navigate) c.navigate(c.url); // reload tabs so SW control is dropped
+        });
+      })
+      .catch(function () {})
   );
 });

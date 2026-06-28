@@ -20,7 +20,8 @@
     ldId: DD.ldId,
     v2Id: DD.v2Id,
   };
-  var DUAL_SLIDE_INDEX = 8; // 0-based index of this demo (before the map slide)
+  // 0-based index of this demo slide, derived from its class so slide reordering can't break it
+  var DUAL_SLIDE_INDEX = Array.prototype.indexOf.call(document.querySelectorAll(".slide"), document.querySelector(".slide--dual"));
 
   var db = null, started = false, running = false;
 

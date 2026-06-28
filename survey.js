@@ -17,7 +17,8 @@
     type: DS.type,
     poll: DS.poll, // poll id this slide aggregates
   };
-  var SVY_SLIDE_INDEX = 12; // 0-based index of the survey slide
+  // 0-based index of the survey slide, derived from its class so slide reordering can't break it
+  var SVY_SLIDE_INDEX = Array.prototype.indexOf.call(document.querySelectorAll(".slide"), document.querySelector(".slide--svy"));
 
   // The options shown + their bar colors (must match the buttons in index.html).
   var OPTIONS = [
