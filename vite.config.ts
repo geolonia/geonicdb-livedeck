@@ -13,13 +13,17 @@ export default defineConfig({
   },
   plugins: [
     {
-      // index.html の Geolonia CDN キーを .env の値に置換（pulse と同じ手法）。
+      // index.html の Geolonia CDN キー（%GEOLONIA_KEY%）を埋め込む。
+      // VITE_GEOLONIA_API_KEY が未設定／空なら YOUR-API-KEY（localhost / *.github.io で
+      // 動く公開デモキー）にフォールバック。order:'pre' で Vite の %VITE_*% 置換より先に走らせ、
+      // 本番で空キーになる問題を防ぐ（自動置換対象外の %GEOLONIA_KEY% を使うのも同じ理由）。
       name: "html-env-defaults",
-      transformIndexHtml(html) {
-        return html.replace(
-          /%VITE_GEOLONIA_API_KEY%/g,
-          process.env.VITE_GEOLONIA_API_KEY || "YOUR-API-KEY",
-        );
+      transformIndexHtml: {
+        order: "pre",
+        handler(html) {
+          const key = process.env.VITE_GEOLONIA_API_KEY || "YOUR-API-KEY";
+          return html.replace(/%GEOLONIA_KEY%/g, key);
+        },
       },
     },
     ViteMinifyPlugin({

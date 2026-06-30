@@ -34,7 +34,18 @@ npm run dev        # → http://localhost:8745
 | `VITE_GEONICDB_FEEDBACK_KEY` | NGSI-LD フィードバック（Feedback POST + WS） |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
 
-非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。本番デプロイ（GitHub Pages）ではキーをリポジトリシークレットから注入します（`.github/workflows/deploy.yml`）。
+非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
+
+本番デプロイ（GitHub Pages）ではキーを**リポジトリシークレット**からビルド時に注入します（`.github/workflows/deploy.yml`）。必要なシークレット:
+
+| シークレット名 | 対応する env | 必須 |
+|---|---|---|
+| `GEONICDB_READONLY_KEY` | `VITE_GEONICDB_READONLY_KEY` | ✅（標準API/地図/時系列デモ） |
+| `GEONICDB_SURVEY_KEY` | `VITE_GEONICDB_SURVEY_KEY` | ✅（ライブアンケート） |
+| `GEONICDB_FEEDBACK_KEY` | `VITE_GEONICDB_FEEDBACK_KEY` | ✅（NGSI-LD フィードバック） |
+| `VITE_GEOLONIA_API_KEY` | `VITE_GEOLONIA_API_KEY` | 任意（未設定なら `YOUR-API-KEY` にフォールバック。`*.github.io` で動作） |
+
+> いずれかの GeonicDB キーが未設定だと、そのデモが `AuthenticationError`（空キー）で動かない。新しいライブデモを足したら deploy.yml の env とこの表も更新すること。
 
 ## 操作
 
