@@ -30,6 +30,21 @@ interface FbEvent {
 
 const CORE_CONTEXT = "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld";
 
+// サーバ登録済みのカスタムデータモデル（custom-data-models get Feedback の定義部分と一致）。
+// id / contextUrl / jsonSchema / タイムスタンプ等の自動生成フィールドは冗長なので表示しない。
+const FEEDBACK_MODEL = {
+  type: "Feedback",
+  domain: "Survey",
+  description: "geonicdb-livedeck: 発表フィードバック（NGSI-LD リンクトデータデモ）",
+  propertyDetails: {
+    role: { ngsiType: "Property", valueType: "string", example: "municipality", required: true, description: "回答者の所属" },
+    expectation: { ngsiType: "Property", valueType: "number", example: 5, required: true, description: "GeonicDB への期待度(1-5)" },
+    interestedIn: { ngsiType: "Relationship", valueType: "uri", example: "urn:ngsi-ld:UseCase:disaster", required: true, description: "関心のあるユースケースへの参照" },
+    region: { ngsiType: "Relationship", valueType: "uri", example: "urn:ngsi-ld:AdministrativeArea:13", required: true, description: "お住まいの地域への参照" },
+    location: { ngsiType: "GeoProperty", valueType: "geojson", example: { type: "Point", coordinates: [134.0475, 34.34] }, required: true, description: "会場の位置" },
+  },
+};
+
 export function initFeedback(): void {
   const FB = config.demos.feedback;
   const slides = Array.from(document.querySelectorAll(".slide"));
@@ -42,10 +57,6 @@ export function initFeedback(): void {
 
   // ---- helpers ----
   const sel = (id: string) => byId<HTMLSelectElement>(id);
-  const selText = (id: string) => {
-    const el = sel(id);
-    return el ? el.options[el.selectedIndex]?.text ?? "" : "";
-  };
   const nowIso = () => new Date().toISOString();
 
   function setConn(state: "on" | "off" | "wait"): void {
@@ -56,15 +67,24 @@ export function initFeedback(): void {
       conn.textContent =
         state === "on" ? "リアルタイム接続中" : state === "off" ? "切断 — 再接続中…" : "接続中…";
   }
-  function setMsg(text: string, kind?: string): void {
-    const el = byId("fb-msg");
-    if (!el) return;
-    el.textContent = text || "";
-    el.className = "fb-msg" + (kind ? " fb-msg--" + kind : "");
-  }
   function setCount(): void {
     const el = byId("fb-count");
     if (el) el.textContent = "これまでの回答 " + Object.keys(seen).length + " 件";
+  }
+  // 送信の成否はメッセージではなくボタン内の表示で示す（数秒で元に戻る）。
+  const SUBMIT_LABEL = "▶ NGSI-LD で送信";
+  let btnTimer = 0;
+  function buttonState(cls: "is-ok" | "is-err", label: string): void {
+    const btn = byId("fb-submit");
+    if (!btn) return;
+    btn.classList.remove("is-ok", "is-err");
+    btn.classList.add(cls);
+    btn.textContent = label;
+    if (btnTimer) window.clearTimeout(btnTimer);
+    btnTimer = window.setTimeout(() => {
+      btn.classList.remove("is-ok", "is-err");
+      btn.textContent = SUBMIT_LABEL;
+    }, 2400);
   }
 
   // ---- 期待度（星）----
@@ -146,44 +166,42 @@ export function initFeedback(): void {
     void pre.offsetWidth;
     pre.classList.add("is-fresh");
   }
-
-  // ---- ナレッジグラフ ----
-  // 中央: 回答(Feedback)。右上: 地域(AdministrativeArea)。右下: ユースケース(UseCase)。
-  // 送信のたびにエッジを描き直してリンクト構造を直感的に見せる。
-  function node(x: number, y: number, w: number, h: number, t1: string, t2: string, cls: string): string {
-    return (
-      '<g class="fb-gnode ' + cls + '">' +
-      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="9"></rect>' +
-      '<text x="' + (x + w / 2) + '" y="' + (y + 19) + '" class="fb-gn-type">' + escapeHtml(t1) + "</text>" +
-      '<text x="' + (x + w / 2) + '" y="' + (y + 37) + '" class="fb-gn-val">' + escapeHtml(t2) + "</text>" +
-      "</g>"
-    );
+  // カスタムデータモデルを表示（注釈チップなしの素のハイライト）。
+  function renderModelObj(model: unknown): void {
+    const pre = byId("fb-model");
+    if (!pre) return;
+    // 巨大な派生スキーマ(jsonSchema)は省いて読みやすくする。
+    let view = model;
+    if (model && typeof model === "object") {
+      const m = { ...(model as Record<string, unknown>) };
+      delete m.jsonSchema;
+      view = m;
+    }
+    pre.innerHTML = JSON.stringify(view, null, 2).split("\n").map(highlightLine).join("\n");
   }
-  function renderGraph(): void {
-    const svg = byId("fb-graph");
-    if (!svg) return;
-    const region = selText("fb-region");
-    const interest = selText("fb-interest");
-    // 座標（viewBox 560x150）
-    const fb = { x: 30, y: 50, w: 160, h: 50 };
-    const rg = { x: 380, y: 12, w: 165, h: 50 };
-    const uc = { x: 380, y: 88, w: 165, h: 50 };
-    const edges =
-      '<path class="fb-edge fb-edge--rel" d="M' + (fb.x + fb.w) + "," + (fb.y + 18) +
-      " C300," + (fb.y + 10) + " 320," + (rg.y + rg.h / 2) + " " + rg.x + "," + (rg.y + rg.h / 2) + '"></path>' +
-      '<text class="fb-elabel" x="300" y="40">region</text>' +
-      '<path class="fb-edge fb-edge--rel" d="M' + (fb.x + fb.w) + "," + (fb.y + 32) +
-      " C300," + (fb.y + 40) + " 320," + (uc.y + uc.h / 2) + " " + uc.x + "," + (uc.y + uc.h / 2) + '"></path>' +
-      '<text class="fb-elabel" x="296" y="112">interestedIn</text>';
-    svg.innerHTML =
-      edges +
-      node(fb.x, fb.y, fb.w, fb.h, "Feedback", "📍 location", "fb-gnode--self") +
-      node(rg.x, rg.y, rg.w, rg.h, "AdministrativeArea", region, "fb-gnode--ref") +
-      node(uc.x, uc.y, uc.w, uc.h, "UseCase", interest, "fb-gnode--ref");
-    // 再描画でエッジ draw アニメを発火
-    svg.classList.remove("is-drawn");
-    void (svg as unknown as HTMLElement).offsetWidth;
-    svg.classList.add("is-drawn");
+  // まず埋め込み定義を即時表示し、API から取得できたら実データに差し替える。
+  function loadModel(): void {
+    renderModelObj(FEEDBACK_MODEL);
+    if (!db) return;
+    db.request("GET", "/custom-data-models/" + FB.type)
+      .then((live) => renderModelObj(live))
+      .catch((e: unknown) => console.warn("[feedback] custom-data-model fetch failed", e));
+  }
+  // タブ切り替え（NGSI-LD エンティティ / カスタムデータモデル）。
+  function initTabs(): void {
+    const root = document.querySelector(".slide--fb");
+    if (!root) return;
+    const tabs = Array.from(root.querySelectorAll<HTMLElement>(".fb-tab"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>(".fb-panel"));
+    tabs.forEach((t) =>
+      t.addEventListener("click", () => {
+        const panel = t.getAttribute("data-panel");
+        tabs.forEach((x) => x.classList.toggle("is-active", x === t));
+        panels.forEach((p) => {
+          p.hidden = p.getAttribute("data-panel") !== panel;
+        });
+      }),
+    );
   }
 
   // ---- 件数集計（WS / 起動時ロード）----
@@ -203,26 +221,48 @@ export function initFeedback(): void {
     if (!db) return;
     const entity = buildEntity();
     const btn = byId<HTMLButtonElement>("fb-submit");
-    if (btn) btn.disabled = true;
-    setMsg("送信中…");
+    if (btnTimer) window.clearTimeout(btnTimer);
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.remove("is-ok", "is-err");
+      btn.textContent = "送信中…";
+    }
     db.createEntity(entity)
       .then(() => {
-        setMsg("作成しました ✓ — WebSocket で受信し件数に反映されます", "ok");
         renderJson(entity);
-        renderGraph();
         tally(entity.id as string); // 楽観集計。WS エコー（同 id）は冪等。
+        buttonState("is-ok", "✓ 作成しました"); // 成功はボタン内に表示
       })
       .catch((err: unknown) => {
-        setMsg("失敗: " + (err instanceof Error ? err.message : String(err)), "err");
+        console.warn("[feedback] create failed", err);
+        buttonState("is-err", "✗ 作成に失敗"); // 失敗もボタン内に表示
       })
       .finally(() => {
         if (btn) btn.disabled = false;
       });
   }
 
+  // 並べ替え用のタイムスタンプ（expectation.observedAt、無ければ id を使う）。
+  function latestTs(e: Record<string, unknown>): string {
+    const exp = e.expectation as { observedAt?: unknown } | undefined;
+    if (exp && typeof exp.observedAt === "string") return exp.observedAt;
+    return typeof e.id === "string" ? e.id : "";
+  }
   function load(): Promise<void> {
     return db!.getEntities({ type: FB.type, limit: 1000 }).then((res) => {
-      (Array.isArray(res) ? res : []).forEach((e) => tally(e.id as string));
+      const list = Array.isArray(res) ? res : [];
+      list.forEach((e) => tally(e.id as string));
+      // デフォルト表示として、最後（最新）の回答エンティティを出す。
+      let latest: Record<string, unknown> | null = null;
+      let best = "";
+      for (const e of list) {
+        const t = latestTs(e);
+        if (t > best) {
+          best = t;
+          latest = e;
+        }
+      }
+      if (latest) renderJson(latest);
     });
   }
 
@@ -244,9 +284,10 @@ export function initFeedback(): void {
     if (started) return;
     started = true;
     paintStars();
-    renderGraph(); // 送信前でも構造（雛形）を見せる
+    initTabs();
     setCount();
     db = createClient("feedback");
+    loadModel(); // 埋め込み即時表示 → API 実データに差し替え
     load()
       .then(connect)
       .catch((err: unknown) => {
@@ -254,8 +295,6 @@ export function initFeedback(): void {
         connect();
       });
     byId("fb-expect")?.addEventListener("click", onStarsClick as EventListener);
-    byId("fb-region")?.addEventListener("change", renderGraph);
-    byId("fb-interest")?.addEventListener("change", renderGraph);
     byId("fb-form")?.addEventListener("submit", (ev) => {
       ev.preventDefault();
       submit();

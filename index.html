@@ -401,7 +401,7 @@
         <div class="map-head">
           <span class="kicker">リンクトデータ / NGSI-LD</span>
           <h2 class="slide__title map-title">回答が「つながるデータ」になる</h2>
-          <p class="map-desc">フォームの回答を<strong>カスタムデータモデル</strong>の NGSI-LD エンティティとして作成します。値は <strong>Property</strong>、地域や関心は他エンティティへの <strong>Relationship</strong>、位置は <strong>GeoProperty</strong>。作成結果は <strong>WebSocket</strong> で受け取り、右に実エンティティとグラフで表示します。</p>
+          <p class="map-desc"><strong>NGSI-LD</strong> は ETSI が定める国際標準。データを孤立した値ではなく、エンティティ同士が <strong>Relationship</strong> で結びつく<strong>リンクトデータ</strong>として表現できるのが強みです。各属性は観測時刻などの<strong>メタデータ</strong>を持ち、位置は <strong>GeoProperty</strong> でネイティブに扱え、<strong>JSON-LD の @context</strong>（カスタムデータモデル）で語彙を共有。だから組織やシステムを越えても、意味を保ったままデータを連携できます。</p>
         </div>
         <div class="demo-body fb-body">
           <!-- LEFT: form -->
@@ -430,12 +430,52 @@
               <span class="fb-field__label">お住まいの地域</span>
               <select id="fb-region" class="fb-select">
                 <option value="01">北海道</option>
+                <option value="02">青森県</option>
+                <option value="03">岩手県</option>
+                <option value="04">宮城県</option>
+                <option value="05">秋田県</option>
+                <option value="06">山形県</option>
+                <option value="07">福島県</option>
+                <option value="08">茨城県</option>
+                <option value="09">栃木県</option>
+                <option value="10">群馬県</option>
+                <option value="11">埼玉県</option>
+                <option value="12">千葉県</option>
                 <option value="13" selected>東京都</option>
                 <option value="14">神奈川県</option>
+                <option value="15">新潟県</option>
+                <option value="16">富山県</option>
+                <option value="17">石川県</option>
+                <option value="18">福井県</option>
+                <option value="19">山梨県</option>
+                <option value="20">長野県</option>
+                <option value="21">岐阜県</option>
+                <option value="22">静岡県</option>
                 <option value="23">愛知県</option>
+                <option value="24">三重県</option>
+                <option value="25">滋賀県</option>
+                <option value="26">京都府</option>
                 <option value="27">大阪府</option>
+                <option value="28">兵庫県</option>
+                <option value="29">奈良県</option>
+                <option value="30">和歌山県</option>
+                <option value="31">鳥取県</option>
+                <option value="32">島根県</option>
+                <option value="33">岡山県</option>
+                <option value="34">広島県</option>
+                <option value="35">山口県</option>
+                <option value="36">徳島県</option>
                 <option value="37">香川県</option>
+                <option value="38">愛媛県</option>
+                <option value="39">高知県</option>
                 <option value="40">福岡県</option>
+                <option value="41">佐賀県</option>
+                <option value="42">長崎県</option>
+                <option value="43">熊本県</option>
+                <option value="44">大分県</option>
+                <option value="45">宮崎県</option>
+                <option value="46">鹿児島県</option>
+                <option value="47">沖縄県</option>
               </select>
             </label>
             <div class="fb-field">
@@ -449,25 +489,16 @@
               </div>
             </div>
             <button type="submit" id="fb-submit" class="geo-btn fb-submit">▶ NGSI-LD で送信</button>
-            <div id="fb-msg" class="fb-msg"></div>
           </form>
-          <!-- RIGHT: knowledge graph + annotated entity -->
+          <!-- RIGHT: annotated entity -->
           <div class="fb-result">
-            <div class="fb-graph-wrap">
-              <span class="fb-panel-title">ナレッジグラフ <span class="fb-hint">— 回答が他エンティティと Relationship でつながる</span></span>
-              <svg id="fb-graph" class="fb-graph" viewBox="0 0 560 150" role="img" aria-label="作成したエンティティのグラフ"></svg>
-            </div>
             <div class="fb-json-wrap">
-              <div class="fb-json-head">
-                <span class="fb-panel-title">作成された NGSI-LD エンティティ</span>
-                <span class="fb-tags">
-                  <span class="fb-tag fb-tag--ctx">🧩 カスタムデータモデル</span>
-                  <span class="fb-tag fb-tag--rel">🔗 Relationship</span>
-                  <span class="fb-tag fb-tag--geo">📍 GeoProperty</span>
-                  <span class="fb-tag fb-tag--prop">🏷 Property</span>
-                </span>
+              <div class="fb-tabs" role="tablist">
+                <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
+                <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
               </div>
-              <pre id="fb-json" class="fb-json">送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
             </div>
           </div>
         </div>
@@ -1215,6 +1246,10 @@
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
+            <span class="glossary__term">A2A（Agent-to-Agent）</span>
+            <span class="glossary__def">AI エージェント同士が直接やり取りするための標準プロトコル。GeonicDB は Agent Card と JSON-RPC で対応。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">AES-256-GCM／AWS KMS</span>
             <span class="glossary__def">AES-256-GCM は強力な共通鍵暗号方式。AWS KMS はその暗号鍵を安全に保管・管理するクラウドサービス。</span>
           </div>
@@ -1303,6 +1338,10 @@
             <span class="glossary__def">処理の前に一定量の計算を求め、機械的な大量実行を割に合わなくする仕組み。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">Property／Relationship／GeoProperty</span>
+            <span class="glossary__def">NGSI-LD の属性タイプ。値は Property、他エンティティへの参照は Relationship、位置は GeoProperty で表す。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">ReactiveCore Rules</span>
             <span class="glossary__def">条件が満たされると自動で処理を実行する、GeonicDB のルールエンジン。</span>
           </div>
@@ -1335,6 +1374,14 @@
             <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">エンティティ（Entity）</span>
+            <span class="glossary__def">NGSI-LD でデータを表す単位。型と id を持ち、属性や Relationship で他のエンティティとつながる。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">カスタムデータモデル</span>
+            <span class="glossary__def">型・属性・制約を独自に定義したデータ構造。サーバー側でバリデーションに使われる。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">監査ログ／トークン失効</span>
             <span class="glossary__def">監査ログは「いつ・誰が・何をしたか」の証跡。トークン失効は漏れた認証情報を無効化する仕組み。</span>
           </div>
@@ -1365,6 +1412,10 @@
           <div class="glossary__item">
             <span class="glossary__term">レート制限（トークンバケット）</span>
             <span class="glossary__def">一定時間あたりの利用回数に上限を設ける仕組み。許容量を超えると一時的に拒否する。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">リンクトデータ</span>
+            <span class="glossary__def">データ同士を参照で結びつけ、意味を保ったままつなげる考え方。NGSI-LD の核となる発想。</span>
           </div>
         </div>
       </div>

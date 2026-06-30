@@ -60,9 +60,10 @@ npm run dev        # → http://localhost:8745
 - カスタムデータモデル `PollVote`（`poll` 必須・`choice` は enum 制約）でサーバ側バリデーション。
 
 ### NGSI-LD フィードバック（`src/demos/feedback.ts`）
-- フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。右に注釈付き JSON とナレッジグラフを表示。
+- フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
+- 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）と「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）。
 - 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
-- 認可: ポリシー／キー **`geonicdb-livedeck-feedback`**（GET|WS + `Feedback` への POST のみ、DPoP 必須・origin 制限）。
+- 認可: ポリシー／キー **`geonicdb-livedeck-feedback`**（GET|WS + `Feedback` への POST、`/custom-data-models/**` の GET、DPoP 必須・origin 制限）。
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
 
 ## セットアップ（`geonic` CLI）
@@ -156,14 +157,16 @@ geonic -s miya me api-keys create \
 ### 3. フィードバック用ポリシー＋キー＋データモデル（NGSI-LD デモ）
 
 ```bash
-# policy: WS + Feedback の読み書きに限定（survey と同じ構造で type だけ Feedback）
+# policy: WS + Feedback の読み書き、加えてカスタムデータモデルの参照を許可
+# （「カスタムデータモデル」タブが GET /custom-data-models/Feedback で実データを取得するため）
 cat > feedback-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-feedback",
-  "description": "geonicdb-livedeck: NGSI-LD feedback — WS + Feedback read/write",
+  "description": "geonicdb-livedeck: NGSI-LD feedback — WS + Feedback read/write + custom-data-model read",
   "target": { "resources": [
     {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
   ]},
   "ruleCombiningAlgorithm": "first-applicable",
   "rules": [
@@ -178,6 +181,9 @@ cat > feedback-policy.json <<'JSON'
     {"ruleId":"allow-feedback-write","effect":"Permit","target":{
       "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
       "actions":[{"attributeId":"method","matchValue":"POST"}]}},
+    {"ruleId":"allow-cdm-read","effect":"Permit","target":{
+      "resources":[{"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"deny-others","effect":"Deny"}
   ]
 }
