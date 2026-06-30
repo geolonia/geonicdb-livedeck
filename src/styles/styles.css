@@ -76,6 +76,25 @@ html, body {
 /* matches future-city.svg's vertical sky→ground profile so the side margins blend */
 .slide[data-bg="illus-dark"] { background: linear-gradient(180deg, #0e1626 0%, #172138 70%, #0a0f1c 100%); }
 
+/* ===== Live demo badge（GeonicDB に実接続しているスライドの右上に表示） ===== */
+.live-badge {
+  position: absolute; top: 30px; right: 46px; z-index: 7;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px 5px 10px; border-radius: 999px;
+  background: rgba(52,199,89,.14); border: 1px solid rgba(52,199,89,.55);
+  color: #5fe08a; font-size: 12px; font-weight: 800; letter-spacing: .14em;
+  font-family: var(--mono, ui-monospace, monospace);
+}
+.live-badge__dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #34c759;
+  box-shadow: 0 0 0 0 rgba(52,199,89,.6); animation: livePulse 1.6s ease-out infinite;
+}
+@keyframes livePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(52,199,89,.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(52,199,89,0); }
+  100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); }
+}
+
 /* ===== Live map slide (slide 5) ===== */
 .slide__inner--map { padding: 36px 46px; height: 100%; display: flex; flex-direction: column; }
 .map-head { flex: 0 0 auto; margin-bottom: 26px; }
@@ -411,6 +430,65 @@ html, body {
 .dual-json .j-lit { color: #c89bff; }
 .dual-run { margin-left: auto; font-size: 13px; padding: 8px 16px; }
 
+/* ===== NGSI-LD feedback slide (linked data) ===== */
+.fb-body { gap: 22px; }
+/* LEFT: form */
+.fb-form { flex: 0 0 300px; display: flex; flex-direction: column; gap: 15px; min-height: 0; }
+.fb-field { display: flex; flex-direction: column; gap: 6px; }
+.fb-field__label { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.62); letter-spacing: .02em; }
+.fb-select {
+  appearance: none; -webkit-appearance: none;
+  background: rgba(255,255,255,.05) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23aeb8c8' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid rgba(255,255,255,.16); border-radius: 9px;
+  color: #eef2f8; font-size: 14px; font-family: inherit; padding: 10px 30px 10px 12px; cursor: pointer;
+}
+.fb-select:focus { outline: none; border-color: var(--cyan); }
+.fb-stars { display: flex; gap: 4px; }
+.fb-star {
+  background: none; border: none; cursor: pointer; padding: 2px 3px;
+  font-size: 26px; line-height: 1; color: rgba(255,255,255,.18); transition: color .12s, transform .12s;
+}
+.fb-star:hover { transform: scale(1.12); }
+.fb-star.is-on { color: #fba40c; }
+.fb-submit { margin-top: 2px; font-size: 14px; padding: 11px 16px; transition: background .18s ease, border-color .18s ease, color .18s ease; }
+/* 送信の成否はボタン内に表示（数秒で元に戻る） */
+.fb-submit.is-ok { background: #2bb8a8; border-color: #2bb8a8; color: #04201c; }
+.fb-submit.is-err { background: #e8401e; border-color: #e8401e; color: #fff; }
+.fb-submit.is-ok:hover, .fb-submit.is-err:hover { filter: none; }
+/* RIGHT: graph + entity */
+.fb-result { flex: 1 1 auto; display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.fb-panel-title { font-size: 13px; font-weight: 800; color: rgba(255,255,255,.85); }
+/* entity JSON */
+.fb-json-wrap { flex: 1 1 auto; display: flex; flex-direction: column; gap: 7px; min-height: 0; }
+.fb-tabs { display: flex; gap: 18px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.fb-tab {
+  background: none; border: none; cursor: pointer; padding: 4px 2px 8px;
+  font-size: 13px; font-weight: 800; color: rgba(255,255,255,.45);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s ease, border-color .15s ease;
+}
+.fb-tab:hover { color: rgba(255,255,255,.7); }
+.fb-tab.is-active { color: #fff; border-bottom-color: var(--cyan); }
+.fb-panel[hidden] { display: none; }
+.fb-tag { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.fb-tag--ctx { background: rgba(200,155,255,.16); color: #d7b8ff; }
+.fb-tag--rel { background: rgba(57,214,198,.16); color: #7fe9d6; }
+.fb-tag--geo { background: rgba(252,108,0,.18); color: #ffb277; }
+.fb-tag--prop { background: rgba(242,193,78,.16); color: #f2d28a; }
+.fb-json {
+  flex: 1 1 auto; min-height: 0; margin: 0; overflow: auto;
+  background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.22); border-radius: 10px; padding: 12px 14px;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.65;
+  color: rgba(255,255,255,.8); white-space: pre; tab-size: 2;
+}
+.fb-json.is-fresh { animation: dualFlash .5s ease-out; }
+.fb-json .j-key { color: #fc9a4c; }
+.fb-json .j-str { color: #9fe0c8; }
+.fb-json .j-num { color: #f2c14e; }
+.fb-json .j-lit { color: #c89bff; }
+.fb-json .fb-tag { margin-left: 6px; }
+.fb-count { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--cyan); }
+.fb-note-text { font-size: 13px; color: rgba(255,255,255,.55); }
+
 /* ===== Full-bleed illustration slide ===== */
 .slide--illus { padding: 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -517,13 +595,42 @@ html, body {
 .slide[data-bg="illus-dark"]::after { content: none; }
 
 /* ===== Title slide ===== */
-.title__inner { padding: 80px; }
+.title__inner { padding: 80px; max-width: 600px; }
+
+/* QR to the live deck — large card pinned to the right */
+.title__qr {
+  position: absolute;
+  top: 50%; right: 56px;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.title__qr-card {
+  width: 520px; height: 520px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(252,108,0,.25);
+}
+.title__qr-img { width: 100%; height: 100%; display: block; }
+.title__qr-cap {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: rgba(255,255,255,.92);
+}
+.title__qr-cap .mono { font-size: 14px; font-weight: 500; color: var(--cyan); }
 .title__headline {
-  font-size: 60px;
+  font-size: 56px;
   font-weight: 900;
   line-height: 1.18;
   letter-spacing: -.02em;
   margin-bottom: 30px;
+  white-space: nowrap;
 }
 .title__sub {
   font-size: 20px;
@@ -779,7 +886,10 @@ html, body {
 .ha-points li { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,.85); padding-left: 18px; position: relative; }
 .ha-points li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 800; }
 .ha-points strong { color: var(--cyan); font-weight: 800; }
-.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; }
+/* SVG は viewBox 内で中央寄せ（レターボックス）されるため左に大きな余白ができる。
+   構成図を左へシフトして 99.95% ブロックとの余白を約半分に詰めつつ、
+   タイトルが短く右側が空くので上方向にも引き上げてスペースを有効活用する。 */
+.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; transform: translate(-42px, -40px); }
 
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .metrics--sm { gap: 18px; }
@@ -1097,4 +1207,5 @@ html, body {
   .ai-pin { animation: none; opacity: 1; transform: none; }
   .ai-bubble { animation: none; opacity: 1; transform: none; }
   .ai-caret { animation: none; }
+  .live-badge__dot { animation: none; }
 }

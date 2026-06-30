@@ -15,6 +15,8 @@ export interface DeckConfig {
     readonly: string;
     /** 投票用（GET|WS ＋ PollVote への POST）。ライブアンケートで使用 */
     survey: string;
+    /** フィードバック用（GET|WS ＋ Feedback への POST）。NGSI-LD デモで使用 */
+    feedback: string;
   };
   demos: {
     /** スライド: 標準API（NGSIv2 / NGSI-LD 二面取得） */
@@ -25,6 +27,13 @@ export interface DeckConfig {
     temporal: { entityId: string; from: string; to: string };
     /** スライド: ライブアンケート（WebSocket） */
     survey: { type: string; poll: string };
+    /** スライド: NGSI-LD フィードバック（カスタムデータモデル Feedback + WebSocket） */
+    feedback: {
+      /** カスタムデータモデルの型（サーバ側に custom-data-model 登録） */
+      type: string;
+      /** 会場の位置（GeoProperty 用の固定座標 [lng, lat]） */
+      venue: { name: string; coordinates: [number, number] };
+    };
   };
 }
 
@@ -34,6 +43,7 @@ export const config: DeckConfig = {
   keys: {
     readonly: import.meta.env.VITE_GEONICDB_READONLY_KEY ?? "",
     survey: import.meta.env.VITE_GEONICDB_SURVEY_KEY ?? "",
+    feedback: import.meta.env.VITE_GEONICDB_FEEDBACK_KEY ?? "",
   },
   demos: {
     dual: { ldId: "urn:ngsi-ld:AedLocation:1", v2Id: "env-sensor-001" },
@@ -44,5 +54,9 @@ export const config: DeckConfig = {
       to: "2026-06-27T00:30:00Z",
     },
     survey: { type: "PollVote", poll: "features-2026" },
+    feedback: {
+      type: "Feedback",
+      venue: { name: "会場（高松）", coordinates: [134.0475, 34.34] },
+    },
   },
 };

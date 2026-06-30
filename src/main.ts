@@ -8,7 +8,9 @@
    FOUC＝一瞬スタイル無しで表示される問題を防ぐ）。
    =================================================================== */
 import { initAiNative } from "./demos/aiNative";
+import { initTitleQr } from "./demos/titleQr";
 import { initDual } from "./demos/dual";
+import { initFeedback } from "./demos/feedback";
 import { initTemporal } from "./demos/temporal";
 import { initSurvey } from "./demos/survey";
 import { initMap } from "./demos/map";
@@ -16,8 +18,10 @@ import { initDeck } from "./deck/slides";
 
 function boot(): void {
   // 1) 各デモが slidechange を購読（順不同で可）。
+  initTitleQr();
   initAiNative();
   initDual();
+  initFeedback();
   initTemporal();
   initSurvey();
   initMap();

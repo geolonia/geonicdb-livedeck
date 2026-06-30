@@ -48,9 +48,8 @@
       <div class="slide__inner title__inner">
         <img class="brand-logo brand-logo--h" src="assets/geonic-logo-h-dark.svg" alt="GeonicDB" />
         <h1 class="title__headline">
-          FIWARE Orion 互換の<br />
           <span class="accent">フルマネージド</span><br />
-          Context Broker サービス
+          コンテキストブローカー
         </h1>
         <p class="title__sub">
           NGSIv2 ＋ NGSI-LD デュアルプロトコル／AI・地理空間ネイティブ／エンタープライズ認証認可／運用レス
@@ -62,6 +61,10 @@
           <span class="chip">Geolonia</span>
         </div>
       </div>
+      <aside class="title__qr" aria-label="ライブデッキを開く QR コード">
+        <div class="title__qr-card" id="titleQr"></div>
+        <p class="title__qr-cap"><span class="mono" id="titleQrUrl"></span></p>
+      </aside>
       <div class="title__foot mono">v0.11.0 · Context Broker</div>
     </section>
 
@@ -364,6 +367,7 @@
 
     <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
     <section class="slide slide--dual" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">標準API / Dual Protocol</span>
@@ -390,12 +394,129 @@
       </div>
     </section>
 
+    <!-- 8. NGSI-LD live demo — フィードバックをカスタムデータモデルで作成し WS で受信 -->
+    <section class="slide slide--fb" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">リンクトデータ / NGSI-LD</span>
+          <h2 class="slide__title map-title">回答が「つながるデータ」になる</h2>
+          <p class="map-desc"><strong>NGSI-LD</strong> は ETSI が定める国際標準。データを孤立した値ではなく、エンティティ同士が <strong>Relationship</strong> で結びつく<strong>リンクトデータ</strong>として表現できるのが強みです。各属性は観測時刻などの<strong>メタデータ</strong>を持ち、位置は <strong>GeoProperty</strong> でネイティブに扱え、<strong>JSON-LD の @context</strong>（カスタムデータモデル）で語彙を共有。だから組織やシステムを越えても、意味を保ったままデータを連携できます。</p>
+        </div>
+        <div class="demo-body fb-body">
+          <!-- LEFT: form -->
+          <form id="fb-form" class="fb-form" autocomplete="off">
+            <label class="fb-field">
+              <span class="fb-field__label">ご所属</span>
+              <select id="fb-role" class="fb-select">
+                <option value="municipality">自治体</option>
+                <option value="sier">SIer・受託開発</option>
+                <option value="startup">スタートアップ</option>
+                <option value="research">研究・教育</option>
+                <option value="other">その他</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">関心のあるユースケース</span>
+              <select id="fb-interest" class="fb-select">
+                <option value="disaster">防災・減災</option>
+                <option value="environment">環境モニタリング</option>
+                <option value="mobility">交通・モビリティ</option>
+                <option value="energy">エネルギー</option>
+                <option value="opendata">オープンデータ</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">お住まいの地域</span>
+              <select id="fb-region" class="fb-select">
+                <option value="01">北海道</option>
+                <option value="02">青森県</option>
+                <option value="03">岩手県</option>
+                <option value="04">宮城県</option>
+                <option value="05">秋田県</option>
+                <option value="06">山形県</option>
+                <option value="07">福島県</option>
+                <option value="08">茨城県</option>
+                <option value="09">栃木県</option>
+                <option value="10">群馬県</option>
+                <option value="11">埼玉県</option>
+                <option value="12">千葉県</option>
+                <option value="13" selected>東京都</option>
+                <option value="14">神奈川県</option>
+                <option value="15">新潟県</option>
+                <option value="16">富山県</option>
+                <option value="17">石川県</option>
+                <option value="18">福井県</option>
+                <option value="19">山梨県</option>
+                <option value="20">長野県</option>
+                <option value="21">岐阜県</option>
+                <option value="22">静岡県</option>
+                <option value="23">愛知県</option>
+                <option value="24">三重県</option>
+                <option value="25">滋賀県</option>
+                <option value="26">京都府</option>
+                <option value="27">大阪府</option>
+                <option value="28">兵庫県</option>
+                <option value="29">奈良県</option>
+                <option value="30">和歌山県</option>
+                <option value="31">鳥取県</option>
+                <option value="32">島根県</option>
+                <option value="33">岡山県</option>
+                <option value="34">広島県</option>
+                <option value="35">山口県</option>
+                <option value="36">徳島県</option>
+                <option value="37">香川県</option>
+                <option value="38">愛媛県</option>
+                <option value="39">高知県</option>
+                <option value="40">福岡県</option>
+                <option value="41">佐賀県</option>
+                <option value="42">長崎県</option>
+                <option value="43">熊本県</option>
+                <option value="44">大分県</option>
+                <option value="45">宮崎県</option>
+                <option value="46">鹿児島県</option>
+                <option value="47">沖縄県</option>
+              </select>
+            </label>
+            <div class="fb-field">
+              <span class="fb-field__label">GeonicDB への期待度</span>
+              <div id="fb-expect" class="fb-stars" role="radiogroup" aria-label="期待度">
+                <button type="button" class="fb-star" data-val="1" role="radio" aria-checked="false" aria-label="1">★</button>
+                <button type="button" class="fb-star" data-val="2" role="radio" aria-checked="false" aria-label="2">★</button>
+                <button type="button" class="fb-star" data-val="3" role="radio" aria-checked="false" aria-label="3">★</button>
+                <button type="button" class="fb-star" data-val="4" role="radio" aria-checked="false" aria-label="4">★</button>
+                <button type="button" class="fb-star" data-val="5" role="radio" aria-checked="false" aria-label="5">★</button>
+              </div>
+            </div>
+            <button type="submit" id="fb-submit" class="geo-btn fb-submit">▶ NGSI-LD で送信</button>
+          </form>
+          <!-- RIGHT: annotated entity -->
+          <div class="fb-result">
+            <div class="fb-json-wrap">
+              <div class="fb-tabs" role="tablist">
+                <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
+                <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
+              </div>
+              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
+            </div>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="rsv-live"><span class="rsv-live__dot" id="fb-dot"></span><span id="fb-conn">接続中…</span></span>
+          <span class="fb-note-text">回答は GeonicDB に実接続して作成し、WebSocket で受信しています</span>
+          <span id="fb-count" class="fb-count">これまでの回答 0 件</span>
+        </div>
+      </div>
+    </section>
+
     <!-- 9. Live demo — Cafe map (Geolonia Maps + GeonicDB DPoP) -->
     <section class="slide slide--map" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">ジオクエリー / Geo-Query</span>
-          <h2 class="slide__title map-title">場所でデータを絞り込む</h2>
+          <h2 class="slide__title map-title">Geo クエリーでデータを絞り込む</h2>
         </div>
         <div class="demo-body">
           <div class="map-wrap">
@@ -423,6 +544,7 @@
 
     <!-- 10. Temporal time-machine (live) -->
     <section class="slide slide--tmp" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">時系列 / Temporal API</span>
@@ -566,6 +688,7 @@
 
     <!-- 11. WebSocket live demo — ライブアンケート -->
     <section class="slide slide--svy" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
       <div class="slide__inner slide__inner--map">
         <div class="map-head">
           <span class="kicker">リアルタイム / WebSocket</span>
@@ -771,6 +894,73 @@
           </div>
         </div>
         <p class="cat-foot">※ 出典: GeonicDB プロダクトリファレンス「全機能カタログ（網羅的）」</p>
+      </div>
+    </section>
+
+    <!-- Appendix: AI integration spec -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">AI 連携 / AI Integration</span>
+        <h2 class="slide__title">AI 連携の仕様</h2>
+        <div class="cat-grid">
+          <div class="cat-card">
+            <div class="cat-card__title">ディスカバリ（自律発見）</div>
+            <ul class="cat-list">
+              <li><code>/.well-known/ai-plugin.json</code> AI プラグインマニフェスト</li>
+              <li><code>/llms.txt</code> LLM 向け概要（llmstxt.org 準拠）</li>
+              <li><code>/openapi.json</code>・<code>/api.json</code>（OpenAPI 3.0）</li>
+              <li><code>/tools.json</code> Tool Use / Function Calling スキーマ</li>
+              <li>いずれも未認証で取得可 → エージェントが自力で把握</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">MCP サーバー</div>
+            <ul class="cat-list">
+              <li><code>POST /mcp</code>（Model Context Protocol）</li>
+              <li>Streamable HTTP トランスポート（ステートレス）</li>
+              <li>Claude / Cursor など MCP クライアントから直結</li>
+              <li>認証: Bearer（JWT）— ロールに応じた認可</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">A2A（Agent-to-Agent）</div>
+            <ul class="cat-list">
+              <li><code>POST /a2a</code>（JSON-RPC 2.0・protocol 0.2.2）</li>
+              <li>Agent Card <code>/.well-known/agent-card.json</code></li>
+              <li>同期リクエスト/レスポンス（タスク状態管理あり）</li>
+              <li>認証: Bearer / API Key / OAuth2 / DPoP</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">統一 5 ツール（MCP・A2A・tools.json 共通）</div>
+            <ul class="cat-list">
+              <li><code>entities</code> — CRUD・型・属性・geo 検索</li>
+              <li><code>batch</code> — 一括操作（最大 100 件）</li>
+              <li><code>temporal</code> — 時系列・履歴</li>
+              <li><code>config</code> — Rules・JSON-LD・Data Models</li>
+              <li><code>admin</code> — ユーザー・テナント・ポリシー</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">認可（ロール連動）</div>
+            <ul class="cat-list">
+              <li>ツール実行はアクセス主体の<strong>ロール</strong>に従う</li>
+              <li><code>config</code> / <code>admin</code> は tenant_admin / super_admin のみ</li>
+              <li><strong>XACML 3.0</strong> ポリシーをそのまま適用</li>
+              <li>エージェント経由でも権限は越えられない</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">相互運用</div>
+            <ul class="cat-list">
+              <li>MCP 対応ツール（Claude Desktop / Code 等）</li>
+              <li>A2A 対応エージェント基盤</li>
+              <li><code>tools.json</code> で OpenAI Function Calling 互換</li>
+              <li>SDK / CLI と<strong>同じ API・同じ認可</strong>で動作</li>
+            </ul>
+          </div>
+        </div>
+        <p class="cat-foot">※ エンドポイント定数は本体 <code>src/config/defaults.ts</code>（MCP_PATH / A2A_PATH / AGENT_CARD_PATH ほか）に準拠</p>
       </div>
     </section>
 
@@ -1056,6 +1246,10 @@
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
+            <span class="glossary__term">A2A（Agent-to-Agent）</span>
+            <span class="glossary__def">AI エージェント同士が直接やり取りするための標準プロトコル。GeonicDB は Agent Card と JSON-RPC で対応。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">AES-256-GCM／AWS KMS</span>
             <span class="glossary__def">AES-256-GCM は強力な共通鍵暗号方式。AWS KMS はその暗号鍵を安全に保管・管理するクラウドサービス。</span>
           </div>
@@ -1144,6 +1338,10 @@
             <span class="glossary__def">処理の前に一定量の計算を求め、機械的な大量実行を割に合わなくする仕組み。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">Property／Relationship／GeoProperty</span>
+            <span class="glossary__def">NGSI-LD の属性タイプ。値は Property、他エンティティへの参照は Relationship、位置は GeoProperty で表す。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">ReactiveCore Rules</span>
             <span class="glossary__def">条件が満たされると自動で処理を実行する、GeonicDB のルールエンジン。</span>
           </div>
@@ -1176,6 +1374,14 @@
             <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">エンティティ（Entity）</span>
+            <span class="glossary__def">NGSI-LD でデータを表す単位。型と id を持ち、属性や Relationship で他のエンティティとつながる。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">カスタムデータモデル</span>
+            <span class="glossary__def">型・属性・制約を独自に定義したデータ構造。サーバー側でバリデーションに使われる。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">監査ログ／トークン失効</span>
             <span class="glossary__def">監査ログは「いつ・誰が・何をしたか」の証跡。トークン失効は漏れた認証情報を無効化する仕組み。</span>
           </div>
@@ -1206,6 +1412,10 @@
           <div class="glossary__item">
             <span class="glossary__term">レート制限（トークンバケット）</span>
             <span class="glossary__def">一定時間あたりの利用回数に上限を設ける仕組み。許容量を超えると一時的に拒否する。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">リンクトデータ</span>
+            <span class="glossary__def">データ同士を参照で結びつけ、意味を保ったままつなげる考え方。NGSI-LD の核となる発想。</span>
           </div>
         </div>
       </div>

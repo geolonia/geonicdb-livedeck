@@ -31,6 +31,7 @@ npm run dev        # → http://localhost:8745
 |---|---|
 | `VITE_GEONICDB_READONLY_KEY` | 読み取り専用（地図・標準API・時系列デモ） |
 | `VITE_GEONICDB_SURVEY_KEY` | ライブアンケートの投票（PollVote POST） |
+| `VITE_GEONICDB_FEEDBACK_KEY` | NGSI-LD フィードバック（Feedback POST + WS） |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。本番デプロイ（GitHub Pages）ではキーをリポジトリシークレットから注入します（`.github/workflows/deploy.yml`）。
@@ -58,12 +59,19 @@ npm run dev        # → http://localhost:8745
 - 認可: ポリシー／キー **`geonicdb-livedeck-survey`**（GET|WS + `PollVote` への POST のみ、DPoP 必須・origin 制限）。
 - カスタムデータモデル `PollVote`（`poll` 必須・`choice` は enum 制約）でサーバ側バリデーション。
 
+### NGSI-LD フィードバック（`src/demos/feedback.ts`）
+- フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
+- 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）と「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）。
+- 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
+- 認可: ポリシー／キー **`geonicdb-livedeck-feedback`**（GET|WS + `Feedback` への POST、`/custom-data-models/**` の GET、DPoP 必須・origin 制限）。
+- カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
+
 ## セットアップ（`geonic` CLI）
 
 ライブデモが使う XACML ポリシー・API キー・デモ用データは [`geonic` CLI](https://github.com/geolonia/geonicdb-cli) で作成します。
 前提: 対象テナント（例 `miya`）の `tenant_admin` として認証済み（`geonic auth login` → `geonic profile use <profile>`）。以下は `-s <tenant>` でテナントを明示する例です。
 
-### 1. 読み取り専用ポリシー＋キー（スライド 9 / 10 / 11 で共用）
+### 1. 読み取り専用ポリシー＋キー（標準API・ジオクエリ・時系列デモで共用）
 
 ```bash
 # policy: GET 読み取りのみ。さらに必要なエンティティタイプだけに限定
@@ -103,7 +111,7 @@ geonic -s miya me api-keys create \
   --dpop-required
 ```
 
-### 2. 投票用ポリシー＋キー（スライド 13）
+### 2. 投票用ポリシー＋キー（ライブアンケート）
 
 ```bash
 # policy: 読み書きを PollVote に限定。WS 接続だけは仕様上「type なしの
@@ -146,7 +154,63 @@ geonic -s miya me api-keys create \
 > ポリシーは個人ポリシーとして作成され、priority は 100・scope は personal に固定されます。
 > 作成したキー値（`gdb_…`）は二度と表示されないため、その場で `.env`（VITE_GEONICDB_*_KEY）に転記してください。
 
-### 3. デモ用データ
+### 3. フィードバック用ポリシー＋キー＋データモデル（NGSI-LD デモ）
+
+```bash
+# policy: WS + Feedback の読み書き、加えてカスタムデータモデルの参照を許可
+# （「カスタムデータモデル」タブが GET /custom-data-models/Feedback で実データを取得するため）
+cat > feedback-policy.json <<'JSON'
+{
+  "policyId": "geonicdb-livedeck-feedback",
+  "description": "geonicdb-livedeck: NGSI-LD feedback — WS + Feedback read/write + custom-data-model read",
+  "target": { "resources": [
+    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
+  ]},
+  "ruleCombiningAlgorithm": "first-applicable",
+  "rules": [
+    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[
+      {"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
+      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-feedback-read","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-feedback-write","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
+      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
+    {"ruleId":"allow-cdm-read","effect":"Permit","target":{
+      "resources":[{"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"deny-others","effect":"Deny"}
+  ]
+}
+JSON
+geonic -s miya me policies create @feedback-policy.json
+
+# key（出力された gdb_… を .env の VITE_GEONICDB_FEEDBACK_KEY へ）
+geonic -s miya me api-keys create \
+  --name geonicdb-livedeck-feedback \
+  --policy geonicdb-livedeck-feedback \
+  --origins "http://localhost:8745,https://geolonia.github.io" \
+  --dpop-required
+
+# カスタムデータモデル Feedback（関心・地域は Relationship、位置は GeoProperty）
+geonic -s miya custom-data-models create '{
+  "type":"Feedback","domain":"Survey",
+  "propertyDetails":{
+    "role":{"ngsiType":"Property","valueType":"string","required":true},
+    "expectation":{"ngsiType":"Property","valueType":"number","required":true},
+    "interestedIn":{"ngsiType":"Relationship","required":true},
+    "region":{"ngsiType":"Relationship","required":true},
+    "location":{"ngsiType":"GeoProperty","required":true}
+  }
+}'
+```
+
+### 4. デモ用データ
 
 ```bash
 # 投票エンティティのスキーマ（choice を enum 制約）
@@ -179,6 +243,7 @@ geonic -s miya temporal entities create @weather-temporal.json
 | `src/demos/map.ts` | ジオクエリの地図デモ（Geolonia Maps + near 検索） |
 | `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
 | `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
+| `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |
 | `src/lib/client.ts` | GeonicDB SDK クライアントの生成を集約 |
 | `src/lib/config.ts` | 型付き設定（非秘密値＋ env からのキー） |
