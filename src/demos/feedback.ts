@@ -8,11 +8,12 @@
      - 関心ユースケース     → Relationship（urn:ngsi-ld:UseCase:*）
      - お住まいの地域       → Relationship（urn:ngsi-ld:AdministrativeArea:*）
      - 会場の位置           → GeoProperty（固定座標）
-     - 型と語彙             → カスタム @context（独自データモデル）
 
-   右には作成結果を「ナレッジグラフ（回答→他エンティティの参照）」と
-   「注釈付き NGSI-LD JSON」で表示し、件数は WebSocket の entityCreated で集計する。
-   POST 権限はアンケートと同じ survey キーを流用（origin 制限あり）。
+   右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」と
+   「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」を表示し、
+   件数は WebSocket の entityCreated で集計する。
+   認可は専用キー geonicdb-livedeck-feedback（VITE_GEONICDB_FEEDBACK_KEY）。
+   Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { config } from "../lib/config";
@@ -93,7 +94,8 @@ export function initFeedback(): void {
       ?.querySelectorAll<HTMLElement>(".fb-star")
       .forEach((b) => {
         const v = Number(b.getAttribute("data-val"));
-        b.classList.toggle("is-on", v <= stars);
+        b.classList.toggle("is-on", v <= stars); // 見た目は選択値までを塗る
+        b.setAttribute("aria-checked", v === stars ? "true" : "false"); // 選択値のみ checked
       });
   }
   function onStarsClick(ev: MouseEvent): void {
