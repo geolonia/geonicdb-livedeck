@@ -5,17 +5,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# gh-pages ブランチへ publish するためソースへの書き込み権限のみ。
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +23,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Vite ビルド。BASE_URL は GitHub Pages のサブパス、API キーはリポジトリ
+      # Vite ビルド。BASE_URL は Pages のサブパス、API キーはリポジトリ
       # シークレットを VITE_* 環境変数として注入する（バンドルへ埋め込み）。
       - run: npm run build
         env:
@@ -32,17 +31,10 @@ jobs:
           VITE_GEONICDB_READONLY_KEY: ${{ secrets.GEONICDB_READONLY_KEY }}
           VITE_GEONICDB_SURVEY_KEY: ${{ secrets.GEONICDB_SURVEY_KEY }}
           VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      # ビルド成果物（dist/）だけを gh-pages ブランチへ公開（.nojekyll 自動付与）。
+      # ソース側（main）にはビルド出力を残さない。
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
