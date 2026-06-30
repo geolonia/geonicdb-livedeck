@@ -777,6 +777,73 @@
       </div>
     </section>
 
+    <!-- Appendix: AI integration spec -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">AI 連携 / AI Integration</span>
+        <h2 class="slide__title">AI 連携の仕様</h2>
+        <div class="cat-grid">
+          <div class="cat-card">
+            <div class="cat-card__title">ディスカバリ（自律発見）</div>
+            <ul class="cat-list">
+              <li><code>/.well-known/ai-plugin.json</code> AI プラグインマニフェスト</li>
+              <li><code>/llms.txt</code> LLM 向け概要（llmstxt.org 準拠）</li>
+              <li><code>/openapi.json</code>・<code>/api.json</code>（OpenAPI 3.0）</li>
+              <li><code>/tools.json</code> Tool Use / Function Calling スキーマ</li>
+              <li>いずれも未認証で取得可 → エージェントが自力で把握</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">MCP サーバー</div>
+            <ul class="cat-list">
+              <li><code>POST /mcp</code>（Model Context Protocol）</li>
+              <li>Streamable HTTP トランスポート（ステートレス）</li>
+              <li>Claude / Cursor など MCP クライアントから直結</li>
+              <li>認証: Bearer（JWT）— ロールに応じた認可</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">A2A（Agent-to-Agent）</div>
+            <ul class="cat-list">
+              <li><code>POST /a2a</code>（JSON-RPC 2.0・protocol 0.2.2）</li>
+              <li>Agent Card <code>/.well-known/agent-card.json</code></li>
+              <li>同期リクエスト/レスポンス（タスク状態管理あり）</li>
+              <li>認証: Bearer / API Key / OAuth2 / DPoP</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">統一 5 ツール（MCP・A2A・tools.json 共通）</div>
+            <ul class="cat-list">
+              <li><code>entities</code> — CRUD・型・属性・geo 検索</li>
+              <li><code>batch</code> — 一括操作（最大 1000 件）</li>
+              <li><code>temporal</code> — 時系列・履歴</li>
+              <li><code>config</code> — Rules・JSON-LD・Data Models</li>
+              <li><code>admin</code> — ユーザー・テナント・ポリシー</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">認可（ロール連動）</div>
+            <ul class="cat-list">
+              <li>ツール実行はアクセス主体の<strong>ロール</strong>に従う</li>
+              <li><code>config</code> / <code>admin</code> は tenant_admin / super_admin のみ</li>
+              <li><strong>XACML 3.0</strong> ポリシーをそのまま適用</li>
+              <li>エージェント経由でも権限は越えられない</li>
+            </ul>
+          </div>
+          <div class="cat-card">
+            <div class="cat-card__title">相互運用</div>
+            <ul class="cat-list">
+              <li>MCP 対応ツール（Claude Desktop / Code 等）</li>
+              <li>A2A 対応エージェント基盤</li>
+              <li><code>tools.json</code> で OpenAI Function Calling 互換</li>
+              <li>SDK / CLI と<strong>同じ API・同じ認可</strong>で動作</li>
+            </ul>
+          </div>
+        </div>
+        <p class="cat-foot">※ エンドポイント定数は本体 <code>src/config/defaults.ts</code>（MCP_PATH / A2A_PATH / AGENT_CARD_PATH ほか）に準拠</p>
+      </div>
+    </section>
+
     <!-- Appendix: Administration features -->
     <section class="slide" data-bg="dark">
       <div class="slide__inner">
