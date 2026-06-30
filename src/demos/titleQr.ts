@@ -10,7 +10,12 @@ import { byId } from "../lib/dom";
 /** デッキのルート URL（origin + pathname、末尾スラッシュ正規化・hash/search 除去）。 */
 function deckUrl(): string {
   const { origin, pathname } = window.location;
-  const path = pathname.endsWith("/") ? pathname : pathname.replace(/[^/]*$/, "");
+  // 末尾スラッシュ → そのまま。ファイル名（拡張子付き）→ ディレクトリへ落とす。
+  // 拡張子なしパス（例 /livedeck）→ ディレクトリとみなし末尾スラッシュを補う。
+  let path: string;
+  if (pathname.endsWith("/")) path = pathname;
+  else if (/\.[^/]+$/.test(pathname)) path = pathname.replace(/[^/]*$/, "");
+  else path = pathname + "/";
   return origin + path;
 }
 
