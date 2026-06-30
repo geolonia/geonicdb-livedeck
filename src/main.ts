@@ -3,9 +3,10 @@
    各ライブデモ（slidechange リスナ）を先に登録してから、デッキを起動する。
    この順序により「全デモがリスナ登録済み → デッキ初回 render が slidechange を
    発火」という従来の挙動を再現する。
-   =================================================================== */
-import "./styles/styles.css";
 
+   CSS は index.html の <link> で読み込む（JS import にしないことで、dev リロード時の
+   FOUC＝一瞬スタイル無しで表示される問題を防ぐ）。
+   =================================================================== */
 import { initAiNative } from "./demos/aiNative";
 import { initDual } from "./demos/dual";
 import { initTemporal } from "./demos/temporal";
