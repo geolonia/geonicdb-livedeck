@@ -1054,6 +1054,25 @@ html, body {
 }
 .hint.is-hidden { opacity: 0; pointer-events: none; }
 
+/* ===== 縦持ちスマホ向けの横向き案内 ===== */
+/* 横長固定レイアウト(1280×720)のため、縦画面のタッチ端末では極端に縮小される。
+   その場合だけ全面オーバーレイで横向きを促す（スライド側のレイアウトは一切変更しない）。 */
+.rotate-hint {
+  display: none; /* 既定は非表示。下のメディアクエリでのみ表示 */
+  position: fixed; inset: 0; z-index: 9999;
+  align-items: center; justify-content: center; text-align: center; padding: 28px;
+  background: var(--navy-900);
+}
+.rotate-hint__icon { font-size: 56px; display: block; margin-bottom: 18px; }
+.rotate-hint__text { font-size: 20px; font-weight: 800; color: var(--white); line-height: 1.5; }
+.rotate-hint__text strong { color: var(--orange, #fc6c00); }
+.rotate-hint__sub { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 10px; }
+/* 縦持ち・小画面・タッチ端末でのみ案内を出し、背後の操作 UI を隠す */
+@media (orientation: portrait) and (max-width: 820px) and (pointer: coarse) {
+  .rotate-hint { display: flex; }
+  .ui, .hint { display: none; }
+}
+
 /* ===== Slide 5 — AI-native: chat → markers on the map ===== */
 .slide--ai .ai-stage { flex: 1 1 auto; display: flex; gap: 26px; min-height: 0; }
 

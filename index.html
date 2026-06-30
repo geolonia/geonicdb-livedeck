@@ -1453,6 +1453,15 @@
 
   <div id="hint" class="hint mono">← → / Space で移動 · F で全画面 · Esc で解除</div>
 
+  <!-- 縦持ちスマホ向けの案内。横長レイアウトのため横向きを促す（CSS のみで出し分け） -->
+  <div class="rotate-hint" role="alert">
+    <div class="rotate-hint__inner">
+      <span class="rotate-hint__icon" aria-hidden="true">📱↻</span>
+      <p class="rotate-hint__text">端末を<strong>横向き</strong>にしてご覧ください</p>
+      <p class="rotate-hint__sub">このデッキは横長レイアウトです</p>
+    </div>
+  </div>
+
   <!-- Geolonia Maps library (MapLibre GL compatible). The key is injected from
        VITE_GEOLONIA_API_KEY at build time; the default works on localhost / *.github.io. -->
   <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=%VITE_GEOLONIA_API_KEY%"></script>
