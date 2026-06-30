@@ -1,4 +1,7 @@
 .DS_Store
 node_modules/
 *.log
-config.js
+dist/
+.env
+.env.local
+.env.*.local

@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Render-blocking stylesheet (linked, not JS-injected) so there's no flash of
+       unstyled content on reload. Vite serves this in dev and bundles+hashes it on build. -->
+  <link rel="stylesheet" href="/src/styles/styles.css" />
   <!-- warm static demo assets (auth-free); entity data is prefetched via JS -->
   <link rel="prefetch" href="assets/map-style.json" as="fetch" crossorigin="anonymous" />
 
@@ -1241,18 +1243,12 @@
 
   <div id="hint" class="hint mono">← → / Space で移動 · F で全画面 · Esc で解除</div>
 
-  <!-- Geolonia Maps library (MapLibre GL compatible). YOUR-API-KEY is Geolonia's
-       default key — works on localhost / *.github.io for development (not inside iframes). -->
-  <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=YOUR-API-KEY"></script>
-  <!-- GeonicDB SDK (handles DPoP key-pair, PoW, and api_key→JWT token exchange transparently) -->
-  <script src="assets/geonicdb-sdk.iife.js"></script>
-  <script src="config.js"></script>
-  <script src="dual.js"></script>
-  <script src="aed-map.js"></script>
-  <script src="temporal.js"></script>
-  <script src="survey.js"></script>
-  <script src="ai-native.js"></script>
-  <script src="slides.js"></script>
+  <!-- Geolonia Maps library (MapLibre GL compatible). The key is injected from
+       VITE_GEOLONIA_API_KEY at build time; the default works on localhost / *.github.io. -->
+  <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=%VITE_GEOLONIA_API_KEY%"></script>
+  <!-- App entry (TypeScript, bundled by Vite). Imports the GeonicDB SDK from npm,
+       the deck engine, and every live demo. -->
+  <script type="module" src="/src/main.ts"></script>
   <!-- Service worker disabled: unregister this deck's previously-installed SW and clear
        its caches (the SW caching kept serving stale JS/CSS during development). Scoped to
        THIS app only — by SW scope and the "geonicdb-livedeck" cache-name prefix — so other

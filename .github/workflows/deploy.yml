@@ -5,10 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# gh-pages ブランチへ publish するためソースへの書き込み権限のみ。
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -17,29 +16,25 @@ concurrency:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-
-      # Generate config.js from the committed template, injecting the API keys
-      # from repository secrets (so the source repo never contains the keys).
-      - name: Inject API keys from secrets
-        env:
-          READONLY_KEY: ${{ secrets.GEONICDB_READONLY_KEY }}
-          SURVEY_KEY: ${{ secrets.GEONICDB_SURVEY_KEY }}
-        run: |
-          cp config.template.js config.js
-          sed -i "s|__GEONICDB_READONLY_KEY__|${READONLY_KEY}|g; s|__GEONICDB_SURVEY_KEY__|${SURVEY_KEY}|g" config.js
-          # fail the build if any placeholder is left (missing secret)
-          if grep -q '__GEONICDB_.*_KEY__' config.js; then
-            echo "::error::API key placeholder was not replaced — is the secret set?"; exit 1
-          fi
-
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/setup-node@v4
         with:
-          path: .
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Vite ビルド。BASE_URL は Pages のサブパス、API キーはリポジトリ
+      # シークレットを VITE_* 環境変数として注入する（バンドルへ埋め込み）。
+      - run: npm run build
+        env:
+          BASE_URL: /${{ github.event.repository.name }}/
+          VITE_GEONICDB_READONLY_KEY: ${{ secrets.GEONICDB_READONLY_KEY }}
+          VITE_GEONICDB_SURVEY_KEY: ${{ secrets.GEONICDB_SURVEY_KEY }}
+          VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
+      # ビルド成果物（dist/）だけを gh-pages ブランチへ公開（.nojekyll 自動付与）。
+      # ソース側（main）にはビルド出力を残さない。
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
