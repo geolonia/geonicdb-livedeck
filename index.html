@@ -1462,9 +1462,12 @@
     </div>
   </div>
 
-  <!-- Geolonia Maps library (MapLibre GL compatible). The key is injected from
-       VITE_GEOLONIA_API_KEY at build time; the default works on localhost / *.github.io. -->
-  <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=%VITE_GEOLONIA_API_KEY%"></script>
+  <!-- Geolonia Maps library (MapLibre GL compatible). キーは vite.config.ts のプラグイン
+       html-env-defaults がビルド時に埋め込む。VITE_GEOLONIA_API_KEY が未設定なら
+       YOUR-API-KEY（localhost / *.github.io で動く公開デモキー）へフォールバックする。
+       ※ Vite の %VITE_*% 自動置換は未設定時に空文字になり地図が壊れるため、
+         自動置換されない %GEOLONIA_KEY% を使い、プラグイン側で確実に埋める。 -->
+  <script src="https://cdn.geolonia.com/v1/embed?geolonia-api-key=%GEOLONIA_KEY%"></script>
   <!-- App entry (TypeScript, bundled by Vite). Imports the GeonicDB SDK from npm,
        the deck engine, and every live demo. -->
   <script type="module" src="/src/main.ts"></script>

@@ -30,6 +30,7 @@ jobs:
           BASE_URL: /${{ github.event.repository.name }}/
           VITE_GEONICDB_READONLY_KEY: ${{ secrets.GEONICDB_READONLY_KEY }}
           VITE_GEONICDB_SURVEY_KEY: ${{ secrets.GEONICDB_SURVEY_KEY }}
+          VITE_GEONICDB_FEEDBACK_KEY: ${{ secrets.GEONICDB_FEEDBACK_KEY }}
           VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
       # ビルド成果物（dist/）だけを gh-pages ブランチへ公開（.nojekyll 自動付与）。
       # ソース側（main）にはビルド出力を残さない。
