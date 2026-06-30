@@ -394,6 +394,91 @@
       </div>
     </section>
 
+    <!-- 8. NGSI-LD live demo — フィードバックをカスタムデータモデルで作成し WS で受信 -->
+    <section class="slide slide--fb" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">リンクトデータ / NGSI-LD</span>
+          <h2 class="slide__title map-title">回答が「つながるデータ」になる</h2>
+          <p class="map-desc">フォームの回答を<strong>カスタムデータモデル</strong>の NGSI-LD エンティティとして作成します。値は <strong>Property</strong>、地域や関心は他エンティティへの <strong>Relationship</strong>、位置は <strong>GeoProperty</strong>。作成結果は <strong>WebSocket</strong> で受け取り、右に実エンティティとグラフで表示します。</p>
+        </div>
+        <div class="demo-body fb-body">
+          <!-- LEFT: form -->
+          <form id="fb-form" class="fb-form" autocomplete="off">
+            <label class="fb-field">
+              <span class="fb-field__label">ご所属</span>
+              <select id="fb-role" class="fb-select">
+                <option value="municipality">自治体</option>
+                <option value="sier">SIer・受託開発</option>
+                <option value="startup">スタートアップ</option>
+                <option value="research">研究・教育</option>
+                <option value="other">その他</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">関心のあるユースケース</span>
+              <select id="fb-interest" class="fb-select">
+                <option value="disaster">防災・減災</option>
+                <option value="environment">環境モニタリング</option>
+                <option value="mobility">交通・モビリティ</option>
+                <option value="energy">エネルギー</option>
+                <option value="opendata">オープンデータ</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">お住まいの地域</span>
+              <select id="fb-region" class="fb-select">
+                <option value="01">北海道</option>
+                <option value="13" selected>東京都</option>
+                <option value="14">神奈川県</option>
+                <option value="23">愛知県</option>
+                <option value="27">大阪府</option>
+                <option value="37">香川県</option>
+                <option value="40">福岡県</option>
+              </select>
+            </label>
+            <div class="fb-field">
+              <span class="fb-field__label">GeonicDB への期待度</span>
+              <div id="fb-expect" class="fb-stars" role="radiogroup" aria-label="期待度">
+                <button type="button" class="fb-star" data-val="1" aria-label="1">★</button>
+                <button type="button" class="fb-star" data-val="2" aria-label="2">★</button>
+                <button type="button" class="fb-star" data-val="3" aria-label="3">★</button>
+                <button type="button" class="fb-star" data-val="4" aria-label="4">★</button>
+                <button type="button" class="fb-star" data-val="5" aria-label="5">★</button>
+              </div>
+            </div>
+            <button type="submit" id="fb-submit" class="geo-btn fb-submit">▶ NGSI-LD で送信</button>
+            <div id="fb-msg" class="fb-msg"></div>
+          </form>
+          <!-- RIGHT: knowledge graph + annotated entity -->
+          <div class="fb-result">
+            <div class="fb-graph-wrap">
+              <span class="fb-panel-title">ナレッジグラフ <span class="fb-hint">— 回答が他エンティティと Relationship でつながる</span></span>
+              <svg id="fb-graph" class="fb-graph" viewBox="0 0 560 150" role="img" aria-label="作成したエンティティのグラフ"></svg>
+            </div>
+            <div class="fb-json-wrap">
+              <div class="fb-json-head">
+                <span class="fb-panel-title">作成された NGSI-LD エンティティ</span>
+                <span class="fb-tags">
+                  <span class="fb-tag fb-tag--ctx">🧩 カスタムデータモデル</span>
+                  <span class="fb-tag fb-tag--rel">🔗 Relationship</span>
+                  <span class="fb-tag fb-tag--geo">📍 GeoProperty</span>
+                  <span class="fb-tag fb-tag--prop">🏷 Property</span>
+                </span>
+              </div>
+              <pre id="fb-json" class="fb-json">送信するとここに実エンティティが表示されます…</pre>
+            </div>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="rsv-live"><span class="rsv-live__dot" id="fb-dot"></span><span id="fb-conn">接続中…</span></span>
+          <span class="fb-note-text">回答は GeonicDB に実接続して作成し、WebSocket で受信しています</span>
+          <span id="fb-count" class="fb-count">これまでの回答 0 件</span>
+        </div>
+      </div>
+    </section>
+
     <!-- 9. Live demo — Cafe map (Geolonia Maps + GeonicDB DPoP) -->
     <section class="slide slide--map" data-bg="dark">
       <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>

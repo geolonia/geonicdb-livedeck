@@ -430,6 +430,68 @@ html, body {
 .dual-json .j-lit { color: #c89bff; }
 .dual-run { margin-left: auto; font-size: 13px; padding: 8px 16px; }
 
+/* ===== NGSI-LD feedback slide (linked data) ===== */
+.fb-body { gap: 22px; }
+/* LEFT: form */
+.fb-form { flex: 0 0 300px; display: flex; flex-direction: column; gap: 15px; min-height: 0; }
+.fb-field { display: flex; flex-direction: column; gap: 6px; }
+.fb-field__label { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.62); letter-spacing: .02em; }
+.fb-select {
+  appearance: none; -webkit-appearance: none;
+  background: rgba(255,255,255,.05) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23aeb8c8' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid rgba(255,255,255,.16); border-radius: 9px;
+  color: #eef2f8; font-size: 14px; font-family: inherit; padding: 10px 30px 10px 12px; cursor: pointer;
+}
+.fb-select:focus { outline: none; border-color: var(--cyan); }
+.fb-stars { display: flex; gap: 4px; }
+.fb-star {
+  background: none; border: none; cursor: pointer; padding: 2px 3px;
+  font-size: 26px; line-height: 1; color: rgba(255,255,255,.18); transition: color .12s, transform .12s;
+}
+.fb-star:hover { transform: scale(1.12); }
+.fb-star.is-on { color: #fba40c; }
+.fb-submit { margin-top: 2px; font-size: 14px; padding: 11px 16px; }
+.fb-msg { font-size: 12.5px; min-height: 1.2em; color: rgba(255,255,255,.6); }
+.fb-msg--ok { color: #39d6c6; }
+.fb-msg--err { color: #ff8a7a; }
+/* RIGHT: graph + entity */
+.fb-result { flex: 1 1 auto; display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.fb-panel-title { font-size: 13px; font-weight: 800; color: rgba(255,255,255,.85); }
+.fb-hint { font-weight: 500; color: rgba(255,255,255,.45); }
+.fb-graph-wrap { flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; }
+.fb-graph { width: 100%; height: 150px; }
+.fb-graph .fb-gnode rect { fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,.2); stroke-width: 1.4; }
+.fb-graph .fb-gnode--self rect { fill: rgba(252,108,0,.16); stroke: rgba(252,108,0,.7); }
+.fb-graph .fb-gnode--ref rect { fill: rgba(57,214,198,.12); stroke: rgba(57,214,198,.55); }
+.fb-gn-type { text-anchor: middle; font-size: 12.5px; font-weight: 800; fill: #eef2f8; font-family: var(--font-mono); }
+.fb-gn-val { text-anchor: middle; font-size: 11.5px; fill: #aeb8c8; }
+.fb-edge { fill: none; stroke: #39d6c6; stroke-width: 1.7; stroke-dasharray: 460; stroke-dashoffset: 460; }
+.fb-graph.is-drawn .fb-edge { stroke-dashoffset: 0; transition: stroke-dashoffset .6s ease; }
+.fb-elabel { text-anchor: middle; font-size: 10.5px; fill: #39d6c6; font-family: var(--font-mono); }
+/* entity JSON */
+.fb-json-wrap { flex: 1 1 auto; display: flex; flex-direction: column; gap: 7px; min-height: 0; }
+.fb-json-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.fb-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.fb-tag { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.fb-tag--ctx { background: rgba(200,155,255,.16); color: #d7b8ff; }
+.fb-tag--rel { background: rgba(57,214,198,.16); color: #7fe9d6; }
+.fb-tag--geo { background: rgba(252,108,0,.18); color: #ffb277; }
+.fb-tag--prop { background: rgba(242,193,78,.16); color: #f2d28a; }
+.fb-json {
+  flex: 1 1 auto; min-height: 0; margin: 0; overflow: auto;
+  background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 12px 14px;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.65;
+  color: rgba(255,255,255,.8); white-space: pre; tab-size: 2;
+}
+.fb-json.is-fresh { animation: dualFlash .5s ease-out; }
+.fb-json .j-key { color: #fc9a4c; }
+.fb-json .j-str { color: #9fe0c8; }
+.fb-json .j-num { color: #f2c14e; }
+.fb-json .j-lit { color: #c89bff; }
+.fb-json .fb-tag { margin-left: 6px; }
+.fb-count { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--cyan); }
+.fb-note-text { font-size: 13px; color: rgba(255,255,255,.55); }
+
 /* ===== Full-bleed illustration slide ===== */
 .slide--illus { padding: 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -1149,4 +1211,5 @@ html, body {
   .ai-bubble { animation: none; opacity: 1; transform: none; }
   .ai-caret { animation: none; }
   .live-badge__dot { animation: none; }
+  .fb-graph.is-drawn .fb-edge { transition: none; stroke-dashoffset: 0; }
 }
