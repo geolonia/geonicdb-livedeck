@@ -23,7 +23,9 @@ export function initAiNative(): void {
   let gen = 0; // スライドを離れたとき、走行中ループをキャンセルするために increment
   let running = false;
 
-  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+  // アニメ全体の早送り係数（1 = 等速、小さいほど速い）。
+  const SPEED = 0.6;
+  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms * SPEED));
   const alive = (my: number) => my === gen;
   const reduced = () =>
     !!window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -177,7 +179,8 @@ export function initAiNative(): void {
     const stage = stageEl();
     if (stage && !reduced()) {
       stage.style.opacity = "0";
-      await sleep(400);
+      // フェードは CSS の .ai-stage { transition: opacity .4s } と同期させるため早送り係数を掛けない。
+      await new Promise<void>((r) => setTimeout(r, 400));
     }
     if (!alive(my)) {
       if (stage) stage.style.opacity = "";

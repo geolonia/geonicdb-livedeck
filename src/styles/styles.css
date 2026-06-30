@@ -76,6 +76,25 @@ html, body {
 /* matches future-city.svg's vertical sky→ground profile so the side margins blend */
 .slide[data-bg="illus-dark"] { background: linear-gradient(180deg, #0e1626 0%, #172138 70%, #0a0f1c 100%); }
 
+/* ===== Live demo badge（GeonicDB に実接続しているスライドの右上に表示） ===== */
+.live-badge {
+  position: absolute; top: 30px; right: 46px; z-index: 7;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px 5px 10px; border-radius: 999px;
+  background: rgba(229,57,53,.14); border: 1px solid rgba(229,57,53,.55);
+  color: #ff6b66; font-size: 12px; font-weight: 800; letter-spacing: .14em;
+  font-family: var(--mono, ui-monospace, monospace);
+}
+.live-badge__dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #ff3b30;
+  box-shadow: 0 0 0 0 rgba(255,59,48,.6); animation: livePulse 1.6s ease-out infinite;
+}
+@keyframes livePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,59,48,.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(255,59,48,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,59,48,0); }
+}
+
 /* ===== Live map slide (slide 5) ===== */
 .slide__inner--map { padding: 36px 46px; height: 100%; display: flex; flex-direction: column; }
 .map-head { flex: 0 0 auto; margin-bottom: 26px; }
@@ -808,7 +827,10 @@ html, body {
 .ha-points li { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,.85); padding-left: 18px; position: relative; }
 .ha-points li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 800; }
 .ha-points strong { color: var(--cyan); font-weight: 800; }
-.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; }
+/* SVG は viewBox 内で中央寄せ（レターボックス）されるため左に大きな余白ができる。
+   構成図を左へシフトして 99.95% ブロックとの余白を約半分に詰めつつ、
+   タイトルが短く右側が空くので上方向にも引き上げてスペースを有効活用する。 */
+.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; transform: translate(-42px, -40px); }
 
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .metrics--sm { gap: 18px; }
@@ -1126,4 +1148,5 @@ html, body {
   .ai-pin { animation: none; opacity: 1; transform: none; }
   .ai-bubble { animation: none; opacity: 1; transform: none; }
   .ai-caret { animation: none; }
+  .live-badge__dot { animation: none; }
 }
