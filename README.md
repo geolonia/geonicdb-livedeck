@@ -1,45 +1,59 @@
 # geonicdb-livedeck
 
-GeonicDB の製品紹介スライドデッキ。HTML + CSS + JavaScript の全画面プレゼン（Google スライド風）で、**実際の GeonicDB（ステージング）に接続して動くインタラクティブなライブデモ**を内蔵しているのが特徴です。
+GeonicDB の製品紹介スライドデッキ。全画面プレゼン（Google スライド風）に、**実際の GeonicDB（ステージング）へ接続して動くインタラクティブなライブデモ**を内蔵。**TypeScript + Vite** で構成し、公式 SDK `@geolonia/geonicdb-sdk` の使い方が一目で追える「お手本アプリ」を兼ねています。
+
+## 技術構成
+
+- **Vite + TypeScript（strict）**。地図は Geolonia Maps（CDN）、データは公式 SDK（npm）。
+- `src/main.ts` がエントリ。`src/deck/`（スライドエンジン）、`src/demos/`（各ライブデモ）、`src/lib/`（SDK クライアント・型付き設定・DOM/イベントの小物）。
+- SDK 初期化は `src/lib/client.ts` の `createClient()` に集約。
 
 ## 起動
 
-ビルド不要の静的サイトです。任意の静的サーバで配信できます。
-
 ```bash
-npm start
-# → http://localhost:8745 を開く（内部で python3 -m http.server 8745 を実行）
+npm install        # 初回のみ
+cp .env.example .env   # API キーを設定（下記）
+npm run dev        # → http://localhost:8745
 ```
 
-依存パッケージはありません（`npm install` は不要）。`npm start` を使わず直接起動しても構いません。
-
-```bash
-python3 -m http.server 8745
-# → http://localhost:8745 を開く
-```
+| コマンド | 内容 |
+|---|---|
+| `npm run dev` | 開発サーバー（ポート **8745 固定**） |
+| `npm run build` | 型チェック（`tsc --noEmit`）＋ 本番ビルド（`dist/`） |
+| `npm run preview` | ビルド成果物の確認サーバー（8745） |
+| `npm run typecheck` | 型チェックのみ |
 
 > ライブデモ用の API キーは **origin 制限**付きのため、`http://localhost:8745` または `https://geolonia.github.io` から開く必要があります（ポート 8745 固定）。
+
+### 環境変数（`.env`）
+
+| 変数 | 用途 |
+|---|---|
+| `VITE_GEONICDB_READONLY_KEY` | 読み取り専用（地図・標準API・時系列デモ） |
+| `VITE_GEONICDB_SURVEY_KEY` | ライブアンケートの投票（PollVote POST） |
+| `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
+
+非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。本番デプロイ（GitHub Pages）ではキーをリポジトリシークレットから注入します（`.github/workflows/deploy.yml`）。
 
 ## 操作
 
 - **→ / Space / PageDown**: 次へ　**← / PageUp**: 戻る　**Home / End**: 先頭・末尾
-- **クリック**: 左 1/4 で戻る・それ以外で進む（フォーム/地図/ボタン上は除外）
 - **F**: 全画面　**Esc**: 解除
-- 編集後の確認は **Cmd+Shift+R（ハードリロード）**。参照する JS/CSS はキャッシュバスターを付けていないため、通常リロードだと古い版が残ることがあります。
+- ページ移動は**矢印ボタンとキーボードのみ**（スライド本体クリック・スワイプでは移動しません）
 
-## 構成（全 13 スライド）
+## 構成
 
-1. タイトル / 2. Context Broker とは / 3. スマートシティ未来像（全画面イラスト）/ 4. 国際標準準拠 / 5. AI Native / 6. 品質・信頼性 / 7. Auth & Authz / 8. vs FIWARE Orion / **9. ジオクエリ（ライブ地図デモ）** / 10. ReactiveCore Rules / **11. ライブアンケート（WebSocket デモ）** / 12. ユースケース / 13. クロージング
+本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--ai` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
 いずれも `https://geonicdb.geolonia.com`（テナント `miya`）へ DPoP 認証で接続します。
 
-### スライド 9 — 標準API（`dual.js`） / 10 — ジオクエリ（`aed-map.js`） / 11 — 時系列（`temporal.js`）
+### 標準API（`src/demos/dual.ts`） / ジオクエリ（`src/demos/map.ts`） / 時系列（`src/demos/temporal.ts`）
 - いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、同一エンティティの NGSIv2/NGSI-LD 二面取得、`WeatherObserved` の **Temporal API** 履歴など。
 - 認可: ポリシー／キー **`geonicdb-livedeck-readonly`**（GET + WS のみ、DPoP 必須・origin 制限）を共用。
 
-### スライド 13 — ライブアンケート（`survey.js`）
+### ライブアンケート（`src/demos/survey.ts`）
 - 投票で `PollVote` エンティティを作成 → **WebSocket で全クライアントのバーチャートにリアルタイム集計**。
 - 認可: ポリシー／キー **`geonicdb-livedeck-survey`**（GET|WS + `PollVote` への POST のみ、DPoP 必須・origin 制限）。
 - カスタムデータモデル `PollVote`（`poll` 必須・`choice` は enum 制約）でサーバ側バリデーション。
@@ -81,7 +95,7 @@ cat > readonly-policy.json <<'JSON'
 JSON
 geonic -s miya me policies create @readonly-policy.json
 
-# key（DPoP 必須・origin 制限）。出力された gdb_… を config.js の keys.readonly へ
+# key（DPoP 必須・origin 制限）。出力された gdb_… を .env の VITE_GEONICDB_READONLY_KEY へ
 geonic -s miya me api-keys create \
   --name geonicdb-livedeck-readonly \
   --policy geonicdb-livedeck-readonly \
@@ -121,7 +135,7 @@ cat > survey-policy.json <<'JSON'
 JSON
 geonic -s miya me policies create @survey-policy.json
 
-# key（出力された gdb_… を config.js の keys.survey へ）
+# key（出力された gdb_… を .env の VITE_GEONICDB_SURVEY_KEY へ）
 geonic -s miya me api-keys create \
   --name geonicdb-livedeck-survey \
   --policy geonicdb-livedeck-survey \
@@ -130,7 +144,7 @@ geonic -s miya me api-keys create \
 ```
 
 > ポリシーは個人ポリシーとして作成され、priority は 100・scope は personal に固定されます。
-> 作成したキー値（`gdb_…`）は二度と表示されないため、その場で `config.js` に転記してください。
+> 作成したキー値（`gdb_…`）は二度と表示されないため、その場で `.env`（VITE_GEONICDB_*_KEY）に転記してください。
 
 ### 3. デモ用データ
 
@@ -154,17 +168,21 @@ geonic -s miya temporal entities create @weather-temporal.json
 
 > 標準APIデモの NGSIv2 側エンティティ（`env-sensor-001`）は NGSIv2 API（`POST /v2/entities`、ヘッダー `Fiware-Service: miya`）で作成します。GeonicDB は NGSIv2 と NGSI-LD のエンティティを別空間で保持するため、デモは各プロトコルに 1 件ずつ用意しています。
 
-## ファイル
+## ファイル構成
 
-| ファイル | 役割 |
+| パス | 役割 |
 |---|---|
-| `config.js` | **設定ファイル**（テナント名・API キー・各デモのエンティティタイプ/ID など。ここを書き換えれば全デモに反映） |
-| `index.html` | デッキ本体（全スライドのマークアップ） |
-| `styles.css` | テーマ・レイアウト・アニメーション |
-| `slides.js` | スライドエンジン（ナビゲーション・背景同期・スケーリング） |
-| `dual.js` | スライド 9 標準API（NGSIv2 / NGSI-LD 二面取得）デモ |
-| `aed-map.js` | スライド 10 ジオクエリの地図デモ |
-| `temporal.js` | スライド 11 時系列（Temporal API）デモ |
-| `survey.js` | スライド 13 ライブアンケートの WebSocket デモ |
-| `manifest.webmanifest` / `sw.js` | PWA（インストール対応・オフラインシェル） |
-| `assets/` | ロゴ・イラスト SVG・地図スタイル・GeonicDB SDK（IIFE）・OGP/アイコン画像 |
+| `index.html` | デッキ本体（全スライドのマークアップ・大型インライン SVG） |
+| `src/main.ts` | エントリ。各デモを登録 → デッキ起動 |
+| `src/deck/slides.ts` | スライドエンジン（ナビゲーション・背景同期・スケーリング） |
+| `src/demos/dual.ts` | 標準API（NGSIv2 / NGSI-LD 二面取得）デモ |
+| `src/demos/map.ts` | ジオクエリの地図デモ（Geolonia Maps + near 検索） |
+| `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
+| `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
+| `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |
+| `src/lib/client.ts` | GeonicDB SDK クライアントの生成を集約 |
+| `src/lib/config.ts` | 型付き設定（非秘密値＋ env からのキー） |
+| `src/lib/dom.ts` / `slidechange.ts` | 型安全な DOM ヘルパ・型付き slidechange イベント |
+| `src/styles/styles.css` | テーマ・レイアウト・アニメーション |
+| `public/` | `sw.js`・`manifest.webmanifest`・`assets/`（ロゴ・地図スタイル・スプライト・画像）。ビルドで `dist/` 直下へコピー |
+| `vite.config.ts` / `tsconfig.json` / `.env.example` | ビルド・型・環境変数の設定 |
