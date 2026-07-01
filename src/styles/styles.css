@@ -642,7 +642,8 @@ html, body {
 .title__meta { display: flex; gap: 12px; flex-wrap: wrap; }
 .title__foot {
   position: absolute;
-  bottom: 38px; right: 48px;
+  /* 右下は共通のページャ UI と重なるため左下に配置 */
+  bottom: 38px; left: 80px;
   font-size: 14px;
   color: rgba(255,255,255,.4);
 }
