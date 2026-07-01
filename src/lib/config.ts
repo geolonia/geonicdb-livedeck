@@ -46,7 +46,7 @@ export const config: DeckConfig = {
     feedback: import.meta.env.VITE_GEONICDB_FEEDBACK_KEY ?? "",
   },
   demos: {
-    dual: { ldId: "urn:ngsi-ld:AedLocation:1", v2Id: "env-sensor-001" },
+    dual: { ldId: "urn:ngsi-ld:EnvironmentSensor:001", v2Id: "env-sensor-001" },
     map: { type: "AedLocation", center: [134.0475, 34.34], zoom: 11 },
     temporal: {
       entityId: "urn:ngsi-ld:WeatherObserved:takamatsu-1",
