@@ -28,3 +28,8 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 - 親リポジトリ `geonicdb` の `CLAUDE.md` のワークツリー運用・ラベル規約に従う。
 - 変更後は `npm run build`（`tsc --noEmit` + `vite build`）が通ることを確認してから push する。
 - ライブデモの動作確認は `npm run dev`（`http://localhost:8745`、origin 制限のためポート固定）。
+
+## デモデータの原則
+
+- **実在の顧客データと誤認させない**。エンティティの名前・id・URL・scope 等に**特定の地域名を含めない**（架空・中立的な内容にする）。
+- NGSIv2 と NGSI-LD を対比する dual デモでは、**同じ内容のデータを両プロトコルで用意**し、差分が形式だけになるようにする（`env-sensor-001` ⇔ `urn:ngsi-ld:EnvironmentSensor:001`）。

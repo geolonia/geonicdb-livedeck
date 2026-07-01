@@ -62,7 +62,7 @@ npm run dev        # → http://localhost:8745
 いずれも `https://geonicdb.geolonia.com`（テナント `miya`）へ DPoP 認証で接続します。
 
 ### 標準API（`src/demos/dual.ts`） / ジオクエリ（`src/demos/map.ts`） / 時系列（`src/demos/temporal.ts`）
-- いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、同一エンティティの NGSIv2/NGSI-LD 二面取得、`WeatherObserved` の **Temporal API** 履歴など。
+- いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、**同じ内容の環境センサーを NGSIv2 と NGSI-LD の両形式で取得**（`env-sensor-001` / `urn:ngsi-ld:EnvironmentSensor:001`）してプロトコル差を対比、`WeatherObserved` の **Temporal API** 履歴など。デモデータは特定地域を想起させない中立的な内容にしている。
 - 認可: ポリシー／キー **`geonicdb-livedeck-readonly`**（GET + WS のみ、DPoP 必須・origin 制限）を共用。
 
 ### ライブアンケート（`src/demos/survey.ts`）
@@ -104,6 +104,7 @@ cat > readonly-policy.json <<'JSON'
     {"ruleId":"allow-by-path","effect":"Permit","target":{
       "resources":[
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*AedLocation*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EnvironmentSensor*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/v2/entities/env-sensor-001","matchFunction":"glob"}
       ],
@@ -234,6 +235,17 @@ geonic -s miya custom-data-models create '{
   }
 }'
 
+# 標準APIデモ（dual）用: 同じ内容の環境センサーを NGSI-LD 側にも用意（NGSIv2 側は下記の注参照）
+geonic -s miya entities create '{
+  "@context":"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+  "id":"urn:ngsi-ld:EnvironmentSensor:001","type":"EnvironmentSensor",
+  "name":{"type":"Property","value":"サンプル環境センサー 001"},
+  "temperature":{"type":"Property","value":24.3,"unitCode":"CEL"},
+  "relativeHumidity":{"type":"Property","value":58},
+  "co2":{"type":"Property","value":612},
+  "location":{"type":"GeoProperty","value":{"type":"Point","coordinates":[139.767,35.681]}}
+}'
+
 # 地図デモ用 AedLocation（NGSI-LD）
 geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLocation","name":{"type":"Property","value":"…"},"location":{"type":"GeoProperty","value":{"type":"Point","coordinates":[134.045,34.341]}}}'
 
@@ -241,7 +253,9 @@ geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLoc
 geonic -s miya temporal entities create @weather-temporal.json
 ```
 
-> 標準APIデモの NGSIv2 側エンティティ（`env-sensor-001`）は NGSIv2 API（`POST /v2/entities`、ヘッダー `Fiware-Service: miya`）で作成します。GeonicDB は NGSIv2 と NGSI-LD のエンティティを別空間で保持するため、デモは各プロトコルに 1 件ずつ用意しています。
+> 標準APIデモ（dual）は「同じデータを両プロトコルで見せる」ことでプロトコル差を強調する。GeonicDB は NGSIv2 と NGSI-LD を別空間で保持するため、同内容を 2 件用意する: NGSI-LD 側は上記 `urn:ngsi-ld:EnvironmentSensor:001`、NGSIv2 側 `env-sensor-001` は NGSIv2 API（`PUT /v2/entities/env-sensor-001/attrs`、ヘッダー `Fiware-Service: miya`）で同じ内容にする。
+>
+> デモデータは実在の顧客データと誤認させないよう、**特定の地域名を名前・URL・scope 等に含めない**中立的な内容にすること。
 
 ## ファイル構成
 
