@@ -489,8 +489,9 @@ html, body {
 .fb-count { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--cyan); }
 .fb-note-text { font-size: 13px; color: rgba(255,255,255,.55); }
 
-/* ===== Full-bleed illustration slide ===== */
-.slide--illus { padding: 0; }
+/* ===== Illustration slide ===== */
+/* 上下に余白を設けて図版を少し内側に収める（端に張り付かないように）。 */
+.slide--illus { padding: 40px 0; }
 .illus-img { width: 100%; height: 100%; object-fit: contain; display: block; }
 /* inlined illustration SVG: use the deck's sans stack so its text matches the other slides */
 .illus-svg text { font-family: var(--font-sans); }
@@ -840,7 +841,7 @@ html, body {
   background: var(--white); border-radius: 12px; overflow: hidden;
   box-shadow: 0 10px 30px rgba(48,48,60,.08);
 }
-.cmp th, .cmp td { padding: 14px 22px; text-align: left; border-bottom: 1px solid var(--paper-2); }
+.cmp th, .cmp td { padding: 10px 22px; text-align: left; border-bottom: 1px solid var(--paper-2); }
 .cmp thead th { background: var(--navy-800); color: var(--white); font-size: 16px; }
 .cmp thead th:nth-child(2) { color: var(--cyan); }
 .cmp tbody td:first-child { font-weight: 600; color: var(--ink); }
@@ -890,7 +891,7 @@ html, body {
 /* SVG は viewBox 内で中央寄せ（レターボックス）されるため左に大きな余白ができる。
    構成図を左へシフトして 99.95% ブロックとの余白を約半分に詰めつつ、
    タイトルが短く右側が空くので上方向にも引き上げてスペースを有効活用する。 */
-.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 470px; transform: translate(-42px, -40px); }
+.ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 430px; transform: translate(-42px, -40px); }
 
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .metrics--sm { gap: 18px; }
