@@ -729,10 +729,10 @@
       <div class="slide__inner">
         <span class="kicker">データ連携 / Federation</span>
         <h2 class="slide__title">データは集めない。<span class="accent">問い合わせだけ</span>を届ける</h2>
-        <p class="map-desc">フェデレーションは、あちこちに分散したデータ源を <strong>1 つの窓口</strong>にまとめる仕組み。GeonicDB が問い合わせを各組織へ<strong>並列に転送</strong>し、返ってきた結果を<strong>ひとつに束ねて</strong>返します。データを 1 か所にコピー・集約する必要はありません。</p>
+        <p class="map-desc">フェデレーションは、<strong>テナントやドメインの異なる複数の GeonicDB</strong> を 1 つの窓口にまとめる仕組み。手元の GeonicDB が問い合わせを別テナント・別ドメインの GeonicDB へ<strong>並列に転送</strong>し、返ってきた結果を<strong>ひとつに束ねて</strong>返します。データを 1 か所にコピー・集約する必要はありません。</p>
         <svg class="rc-illus" viewBox="0 0 1120 430" role="img"
              font-family="'Inter','Noto Sans JP',sans-serif"
-             aria-label="利用者の1回の問い合わせを GeonicDB が各組織のデータ源へ並列に転送し、結果を束ねて返す様子。データは各組織のまま動かない。">
+             aria-label="利用者の1回の問い合わせを、手元の GeonicDB が別テナント・別ドメインの GeonicDB へ並列に転送し、結果を束ねて返す様子。データは各インスタンスに置いたまま動かない。">
           <defs>
             <marker id="fedTip" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto"><path d="M0,0 L5.5,3 L0,6 Z" fill="rgba(252,108,0,.55)"/></marker>
             <linearGradient id="fedHub" x1="0" y1="0" x2="0" y2="1">
@@ -743,7 +743,7 @@
           <!-- ===== column headers ===== -->
           <text x="115" y="34" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-weight="700">問い合わせる人</text>
           <text x="550" y="34" text-anchor="middle" fill="#fc6c00" font-size="13" font-weight="700">GeonicDB（統合の窓口）</text>
-          <text x="992" y="34" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-weight="700">各組織のデータ源（そのまま）</text>
+          <text x="992" y="34" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-weight="700">別テナント／別ドメインの GeonicDB</text>
 
           <!-- ===== static connectors ===== -->
           <g stroke="rgba(252,108,0,.28)" stroke-width="2" fill="none">
@@ -804,25 +804,34 @@
           <g>
             <rect x="885" y="78" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
             <rect x="885" y="78" width="215" height="70" rx="14" fill="rgba(57,214,198,.14)" stroke="#39d6c6"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
-            <g transform="translate(908,100)"><ellipse cx="0" cy="0" rx="13" ry="5" fill="#39d6c6"/><path d="M-13,0 v20 a13,5 0 0 0 26,0 v-20" fill="rgba(57,214,198,.35)" stroke="#39d6c6" stroke-width="1.6"/><ellipse cx="0" cy="0" rx="13" ry="5" fill="none" stroke="#39d6c6" stroke-width="1.6"/></g>
-            <text x="944" y="106" fill="#fff" font-size="15" font-weight="700">組織 A のデータ</text>
-            <text x="944" y="128" fill="#39d6c6" font-size="11.5" font-weight="700">NGSI-LD</text>
+            <g transform="translate(908,113)" stroke-linecap="round">
+              <g stroke="#39d6c6" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#39d6c6"/><circle cx="-12" cy="-10" r="3" fill="#39d6c6"/><circle cx="12" cy="-10" r="3" fill="#39d6c6"/><circle cx="-12" cy="10" r="3" fill="#39d6c6"/><circle cx="12" cy="10" r="3" fill="#39d6c6"/>
+            </g>
+            <text x="944" y="107" fill="#fff" font-size="15" font-weight="700">別テナント A</text>
+            <text x="944" y="129" fill="#39d6c6" font-size="11.5" font-weight="700">GeonicDB · NGSI-LD</text>
           </g>
           <!-- P2 -->
           <g>
             <rect x="885" y="163" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
             <rect x="885" y="163" width="215" height="70" rx="14" fill="rgba(251,164,12,.14)" stroke="#fba40c"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
-            <g transform="translate(908,185)"><ellipse cx="0" cy="0" rx="13" ry="5" fill="#fba40c"/><path d="M-13,0 v20 a13,5 0 0 0 26,0 v-20" fill="rgba(251,164,12,.35)" stroke="#fba40c" stroke-width="1.6"/><ellipse cx="0" cy="0" rx="13" ry="5" fill="none" stroke="#fba40c" stroke-width="1.6"/></g>
-            <text x="944" y="191" fill="#fff" font-size="15" font-weight="700">組織 B のデータ</text>
-            <text x="944" y="213" fill="#fba40c" font-size="11.5" font-weight="700">NGSIv2</text>
+            <g transform="translate(908,198)" stroke-linecap="round">
+              <g stroke="#fba40c" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#fba40c"/><circle cx="-12" cy="-10" r="3" fill="#fba40c"/><circle cx="12" cy="-10" r="3" fill="#fba40c"/><circle cx="-12" cy="10" r="3" fill="#fba40c"/><circle cx="12" cy="10" r="3" fill="#fba40c"/>
+            </g>
+            <text x="944" y="192" fill="#fff" font-size="15" font-weight="700">別テナント B</text>
+            <text x="944" y="214" fill="#fba40c" font-size="11.5" font-weight="700">GeonicDB · NGSIv2</text>
           </g>
           <!-- P3 -->
           <g>
             <rect x="885" y="248" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
             <rect x="885" y="248" width="215" height="70" rx="14" fill="rgba(251,164,12,.14)" stroke="#fba40c"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
-            <g transform="translate(908,270)"><ellipse cx="0" cy="0" rx="13" ry="5" fill="#fba40c"/><path d="M-13,0 v20 a13,5 0 0 0 26,0 v-20" fill="rgba(251,164,12,.35)" stroke="#fba40c" stroke-width="1.6"/><ellipse cx="0" cy="0" rx="13" ry="5" fill="none" stroke="#fba40c" stroke-width="1.6"/></g>
-            <text x="944" y="276" fill="#fff" font-size="15" font-weight="700">レガシー系システム</text>
-            <text x="944" y="298" fill="#fba40c" font-size="11.5" font-weight="700">NGSIv2</text>
+            <g transform="translate(908,283)" stroke-linecap="round">
+              <g stroke="#fba40c" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#fba40c"/><circle cx="-12" cy="-10" r="3" fill="#fba40c"/><circle cx="12" cy="-10" r="3" fill="#fba40c"/><circle cx="-12" cy="10" r="3" fill="#fba40c"/><circle cx="12" cy="10" r="3" fill="#fba40c"/>
+            </g>
+            <text x="944" y="277" fill="#fff" font-size="15" font-weight="700">別ドメイン</text>
+            <text x="944" y="299" fill="#fba40c" font-size="11.5" font-weight="700">GeonicDB · NGSIv2</text>
           </g>
 
           <!-- ===== bottom banner: 3 benefits ===== -->
@@ -833,7 +842,7 @@
             <text x="216" y="384" text-anchor="middle" font-size="16">🗂️</text>
             <text x="216" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">データを1か所に集めない</text>
             <text x="570" y="384" text-anchor="middle" font-size="16">🔗</text>
-            <text x="570" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">組織をまたいで1回で取得</text>
+            <text x="570" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">テナント・ドメインをまたいで取得</text>
             <text x="924" y="384" text-anchor="middle" font-size="16">🔄</text>
             <text x="924" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">形式が違っても自動変換</text>
           </g>
