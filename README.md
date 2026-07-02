@@ -253,6 +253,26 @@ geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLoc
 geonic -s miya temporal entities create @weather-temporal.json
 ```
 
+### 5. 避難所の混雑デモ用データ（自治体ユースケース・`slide--shelter`）
+
+避難所の**位置・収容人数**は高松市オープンデータ「指定緊急避難場所・指定避難所」
+（<https://github.com/takamatsu-city/opendata> `data/evacuation_space`、CC BY 4.0）から
+中心部の約 30 件を `EvacuationArea`（`municipalityCode: "372013"`）として投入。
+**混雑度（`occupancy`）は Temporal API のデモ用合成データ**（固定期間 2026-06-26 の 24 時間・1 時間刻み。
+相対期間だと古くなるため固定）で、実際の受入実績ではない。
+
+```bash
+# 通常エンティティ（位置・収容人数・出典/ライセンス）
+geonic -s miya entities create @shelter-001.json
+# 混雑度の時系列（occupancy を observedAt 付き配列で。固定期間 2026-06-26T00:00Z〜2026-06-27T00:00Z）
+geonic -s miya temporal entities create @shelter-001-temporal.json
+```
+
+> このデモは既存の **readonly キー**を流用する。readonly ポリシー（`geonicdb-livedeck-readonly`）に
+> `EvacuationArea` の GET と temporal GET（`/ngsi-ld/v1/temporal/entities` ほか）を許可済み。
+> AED マップと同じ高松市域のオープンデータなので、**出典・ライセンスを明示すれば地域名の使用は可**
+> （AED デモと同じ扱い）。
+
 > 標準APIデモ（dual）は「同じデータを両プロトコルで見せる」ことでプロトコル差を強調する。GeonicDB は NGSIv2 と NGSI-LD を別空間で保持するため、同内容を 2 件用意する: NGSI-LD 側は上記 `urn:ngsi-ld:EnvironmentSensor:001`、NGSIv2 側 `env-sensor-001` は NGSIv2 API（`PUT /v2/entities/env-sensor-001/attrs`、ヘッダー `Fiware-Service: miya`）で同じ内容にする。
 >
 > デモデータは実在の顧客データと誤認させないよう、**特定の地域名を名前・URL・scope 等に含めない**中立的な内容にすること。
