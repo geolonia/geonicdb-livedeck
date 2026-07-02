@@ -982,6 +982,33 @@
       </div>
     </section>
 
+    <!-- メッセージング + ReactiveCore Rules ログ（民間ユースケース・WebSocket, live） -->
+    <section class="slide slide--msg" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">ユースケース・民間 / メッセージング</span>
+          <h2 class="slide__title map-title">リアルタイムメッセージング</h2>
+          <p class="map-desc">投稿（名前＋メッセージ）は NGSI-LD エンティティとして作成され <strong>WebSocket で全員に配信</strong>。サーバの <strong>ReactiveCore Rules</strong> が投稿を検知して<strong>ログを自動記録</strong>します。メッセージとログをタブで切り替えられます。</p>
+        </div>
+        <div class="demo-body msg-body">
+          <div class="msg-app">
+            <div class="msg-tabs">
+              <button class="msg-tab is-active" data-tab="messages">💬 メッセージ <b id="msg-count">0</b></button>
+              <button class="msg-tab" data-tab="logs">📋 ログ <b id="msg-log-count">0</b></button>
+              <button id="msg-post" class="geo-btn msg-post">＋ ランダム投稿</button>
+            </div>
+            <div class="msg-feed" id="msg-feed" data-tab="messages"></div>
+            <div class="msg-feed" id="msg-logs" data-tab="logs" hidden></div>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          メッセージは <code>geonicdb-livedeck-Message</code>、ログは ReactiveCore Rules が生成する <code>geonicdb-livedeck-MessageLog</code>。WebSocket で全員に配信されます。
+        </div>
+      </div>
+    </section>
+
     <!-- 13. Use cases -->
     <section class="slide" data-bg="light">
       <div class="slide__inner">
