@@ -15,6 +15,7 @@ import { initTemporal } from "./demos/temporal";
 import { initSurvey } from "./demos/survey";
 import { initMap } from "./demos/map";
 import { initShelter } from "./demos/shelter";
+import { initCollab } from "./demos/collab";
 import { initDeck } from "./deck/slides";
 
 function boot(): void {
@@ -27,6 +28,7 @@ function boot(): void {
   initSurvey();
   initMap();
   initShelter();
+  initCollab();
   // 2) その後でデッキを起動 → 初回 render() が slidechange を発火する。
   initDeck();
 }
