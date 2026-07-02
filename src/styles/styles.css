@@ -1282,3 +1282,27 @@ html, body {
 .collab-status { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin-top: auto; font-size: 13px; color: rgba(255,255,255,.8); }
 .collab-status b { color: #fff; font-family: var(--font-mono); font-size: 15px; }
 .collab-panel .demo-note code, .slide--collab .demo-note code { font-family: var(--font-mono); font-size: 12px; color: var(--amber); }
+
+/* ---- マルチテナンシー説明スライド ---- */
+.mt-diagram { display: flex; flex-direction: column; gap: 12px; margin: 20px 0 22px; }
+.mt-clients { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* .mt-client / .mt-tenant は .std-card の面（背景・枠・角丸）を再利用し、差分のみ指定 */
+.mt-client { text-align: center; font-size: 14px; color: rgba(255,255,255,.8); padding: 9px 8px; }
+.mt-client span { display: block; font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
+.mt-client b { color: var(--amber); font-family: var(--font-mono); }
+.mt-arrows { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; color: rgba(252,108,0,.7); font-size: 16px; line-height: 1; }
+.mt-broker {
+  position: relative; border: 1px solid rgba(252,108,0,.45); border-radius: 14px;
+  background: linear-gradient(120deg, rgba(252,108,0,.12), rgba(251,164,12,.04));
+  padding: 18px 16px 16px;
+}
+.mt-broker__label {
+  position: absolute; top: -12px; left: 16px; background: #17171d; padding: 0 10px;
+  font-size: 14px; font-weight: 800; color: #fc6c00;
+}
+.mt-tenants { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+/* ネスト内なので .std-card より暗い面にして階層を出す */
+.mt-tenant { background: rgba(0,0,0,.28); padding: 12px 14px; }
+.mt-tenant__name { font-weight: 800; color: #fff; font-size: 15px; margin-bottom: 5px; }
+.mt-tenant__res { font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,.72); }
+.mt-tenant__res b { color: var(--cyan); font-weight: 700; }
