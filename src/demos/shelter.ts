@@ -68,14 +68,6 @@ export function initShelter(): void {
     });
   }
 
-  function setConn(state: "on" | "off" | "wait"): void {
-    const dot = byId("shelter-dot");
-    const conn = byId("shelter-conn");
-    if (dot) dot.className = "rsv-live__dot rsv-live__dot--" + state;
-    if (conn)
-      conn.textContent =
-        state === "on" ? "Temporal API 接続" : state === "off" ? "取得失敗" : "接続中…";
-  }
 
   // ---- データ取得 -------------------------------------------------
   // NGSI-LD temporal インスタンス配列 → { iso, v } の昇順リスト
@@ -100,7 +92,6 @@ export function initShelter(): void {
   async function loadData(): Promise<void> {
     if (dataStarted) return;
     dataStarted = true;
-    setConn("wait");
 
     // 1) 避難所の位置・収容人数（通常エンティティ）。高松市（municipalityCode）だけに絞る。
     const list = (await db!.getEntities({ type: SH.type, limit: 1000 })) as Record<string, any>[];
@@ -159,7 +150,6 @@ export function initShelter(): void {
     }
     sel = best;
     ready = true;
-    setConn("on");
     wireControls();
     renderAll();
     if (map) {
@@ -481,7 +471,6 @@ export function initShelter(): void {
     ensureDb();
     loadData().catch((err: unknown) => {
       console.error("[shelter]", err);
-      setConn("off");
     });
   }
   function start(): void {
@@ -490,11 +479,10 @@ export function initShelter(): void {
     ensureDb();
     void loadData().catch((err: unknown) => {
       console.error("[shelter]", err);
-      setConn("off");
     });
     GL = window.geolonia || window.maplibregl || null;
     if (!GL || typeof GL.Map !== "function") {
-      setConn("off");
+      console.error("[shelter] 地図ライブラリ（Geolonia Maps）の読み込みに失敗しました");
       return;
     }
     const styleUrl = import.meta.env.BASE_URL + "assets/map-style.json";
@@ -519,7 +507,6 @@ export function initShelter(): void {
       })
       .catch((err: unknown) => {
         console.error("[shelter] map style", err);
-        setConn("off");
       });
   }
 
