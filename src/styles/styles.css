@@ -1232,3 +1232,41 @@ html, body {
   .ai-caret { animation: none; }
   .live-badge__dot { animation: none; }
 }
+
+/* ---- 避難所の混雑状況デモ（slide--shelter） ---- */
+/* サイドパネルはカード枠（背景・ボーダー・角丸）を外し、内容をそのまま並べる */
+.shelter-panel { width: 340px; flex: 0 0 340px; gap: 12px; background: none; border: none; border-radius: 0; padding: 0; margin-left: 40px; margin-right: -22px; }
+.shelter-clock { display: flex; flex-direction: column; gap: 2px; }
+.shelter-clock__label { font-size: 12px; color: rgba(255,255,255,.55); }
+.shelter-clock__time { font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+.shelter-controls { display: flex; align-items: center; gap: 12px; }
+.shelter-controls .geo-btn { flex: 0 0 auto; white-space: nowrap; }
+.shelter-controls .geo-range { flex: 1 1 auto; }
+.shelter-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: rgba(255,255,255,.78); }
+.shelter-legend__item { display: inline-flex; align-items: center; gap: 6px; }
+.shelter-legend b { font-family: var(--font-mono); font-size: 15px; color: #fff; font-weight: 700; }
+.shelter-legend .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.dot--green { background: #2fbf71; }
+.dot--amber { background: #f5a524; }
+.dot--red { background: #e5484d; }
+/* パネルの空きスペース: 実行中の API リクエスト＋注記 */
+.shelter-req { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
+.shelter-req__label { font-size: 12px; color: rgba(255,255,255,.6); }
+.shelter-query {
+  margin: 0; font-family: var(--font-mono); font-size: 11px; line-height: 1.55;
+  color: rgba(255,255,255,.82); background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 9px 11px;
+  white-space: pre-wrap; word-break: break-all;
+}
+.shelter-note { margin: 0; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,.45); }
+
+/* クリック時のポップアップ（受入率グラフ入り・MapLibre の白背景） */
+.aed-map .maplibregl-popup-content strong { color: #e8401e; }
+.shelter-popup .maplibregl-popup-content { padding: 8px 10px; }
+.shelter-pop { min-width: 172px; color: #1b1b22; }
+.shelter-pop__name { font-weight: 800; font-size: 12px; line-height: 1.3; color: #1b1b22; }
+.shelter-pop__addr { font-size: 10px; color: rgba(0,0,0,.55); margin-top: 1px; }
+.shelter-pop__stat { margin: 5px 0 0; font-size: 11px; color: #1b1b22; }
+.shelter-pop__badge { display: inline-block; color: #fff; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; margin-right: 6px; }
+.shelter-pop__chart-t { font-size: 9.5px; color: rgba(0,0,0,.5); margin-top: 7px; }
+.shelter-pop-svg { width: 100%; height: 42px; display: block; margin-top: 3px; }

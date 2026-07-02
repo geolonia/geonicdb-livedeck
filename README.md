@@ -55,7 +55,7 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--ai` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
@@ -75,6 +75,11 @@ npm run dev        # → http://localhost:8745
 - 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）と「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）。
 - 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
 - 認可: ポリシー／キー **`geonicdb-livedeck-feedback`**（GET|WS + `Feedback` への POST、`/custom-data-models/**` の GET、DPoP 必須・origin 制限）。
+
+### 避難所の混雑（`src/demos/shelter.ts`・自治体ユースケース）
+- 高松市の指定避難所（`EvacuationArea`）を地図に表示し、**Temporal API** で固定期間（2026-06-26 の24時間）の受入状況を取得 → **混雑度で色分け**。タイムスライダー／再生で時間変化を再生、避難所クリックで受入率の推移をポップアップ表示。
+- 認可: 読み取り専用のため **`geonicdb-livedeck-readonly`** を共用（`EvacuationArea` の GET / temporal GET を §1 のポリシーに含む）。
+- データ: 位置・収容人数は高松市オープンデータ（CC BY 4.0）。混雑度は Temporal API のデモ用合成データ（実受入実績ではない旨を画面に明記）。詳細は「セットアップ §5」。
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
 
 ## セットアップ（`geonic` CLI）
@@ -82,12 +87,13 @@ npm run dev        # → http://localhost:8745
 ライブデモが使う XACML ポリシー・API キー・デモ用データは [`geonic` CLI](https://github.com/geolonia/geonicdb-cli) で作成します。
 前提: 対象テナント（例 `miya`）の `tenant_admin` として認証済み（`geonic auth login` → `geonic profile use <profile>`）。以下は `-s <tenant>` でテナントを明示する例です。
 
-### 1. 読み取り専用ポリシー＋キー（標準API・ジオクエリ・時系列デモで共用）
+### 1. 読み取り専用ポリシー＋キー（標準API・ジオクエリ・時系列・避難所デモで共用）
 
 ```bash
 # policy: GET 読み取りのみ。さらに必要なエンティティタイプだけに限定
-#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EnvironmentSensor / WeatherObserved）
+#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EnvironmentSensor / WeatherObserved / EvacuationArea）
 #   - ID 指定 GET は entityType が認可に乗らないため、パスで個別に許可
+#   - 避難所デモは temporal を型指定で一括取得するため /ngsi-ld/v1/temporal/entities も許可
 cat > readonly-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-readonly",
@@ -99,13 +105,16 @@ cat > readonly-policy.json <<'JSON'
   "ruleCombiningAlgorithm": "first-applicable",
   "rules": [
     {"ruleId":"allow-by-type","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved)$","matchFunction":"string-regexp"}],
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved|EvacuationArea)$","matchFunction":"string-regexp"}],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"allow-by-path","effect":"Permit","target":{
       "resources":[
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*AedLocation*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EnvironmentSensor*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EvacuationArea*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*EvacuationArea*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/v2/entities/env-sensor-001","matchFunction":"glob"}
       ],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
@@ -253,6 +262,26 @@ geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLoc
 geonic -s miya temporal entities create @weather-temporal.json
 ```
 
+### 5. 避難所の混雑デモ用データ（自治体ユースケース・`slide--shelter`）
+
+避難所の**位置・収容人数**は高松市オープンデータ「指定緊急避難場所・指定避難所」
+（<https://github.com/takamatsu-city/opendata> `data/evacuation_space`、CC BY 4.0）から
+中心部の約 30 件を `EvacuationArea`（`municipalityCode: "372013"`）として投入。
+**混雑度（`occupancy`）は Temporal API のデモ用合成データ**（固定期間 2026-06-26 の 24 時間・1 時間刻み。
+相対期間だと古くなるため固定）で、実際の受入実績ではない。
+
+```bash
+# 通常エンティティ（位置・収容人数・出典/ライセンス）
+geonic -s miya entities create @shelter-001.json
+# 混雑度の時系列（occupancy を observedAt 付き配列で。固定期間 2026-06-26T00:00Z〜2026-06-27T00:00Z）
+geonic -s miya temporal entities create @shelter-001-temporal.json
+```
+
+> このデモは既存の **readonly キー**を流用する。readonly ポリシー（`geonicdb-livedeck-readonly`）は
+> §1 の JSON どおり `EvacuationArea` の GET と temporal GET（`/ngsi-ld/v1/temporal/entities` ほか）を含む。
+> AED マップと同じ高松市域のオープンデータなので、**出典・ライセンスを明示すれば地域名の使用は可**
+> （AED デモと同じ扱い）。
+
 > 標準APIデモ（dual）は「同じデータを両プロトコルで見せる」ことでプロトコル差を強調する。GeonicDB は NGSIv2 と NGSI-LD を別空間で保持するため、同内容を 2 件用意する: NGSI-LD 側は上記 `urn:ngsi-ld:EnvironmentSensor:001`、NGSIv2 側 `env-sensor-001` は NGSIv2 API（`PUT /v2/entities/env-sensor-001/attrs`、ヘッダー `Fiware-Service: miya`）で同じ内容にする。
 >
 > デモデータは実在の顧客データと誤認させないよう、**特定の地域名を名前・URL・scope 等に含めない**中立的な内容にすること。
@@ -267,6 +296,7 @@ geonic -s miya temporal entities create @weather-temporal.json
 | `src/demos/dual.ts` | 標準API（NGSIv2 / NGSI-LD 二面取得）デモ |
 | `src/demos/map.ts` | ジオクエリの地図デモ（Geolonia Maps + near 検索） |
 | `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
+| `src/demos/shelter.ts` | 避難所の混雑（地図 + Temporal API・自治体ユースケース）デモ |
 | `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
 | `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |

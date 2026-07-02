@@ -34,6 +34,19 @@ export interface DeckConfig {
       /** 会場の位置（GeoProperty 用の固定座標 [lng, lat]） */
       venue: { name: string; coordinates: [number, number] };
     };
+    /** スライド: 避難所の混雑状況（地図 + Temporal API・自治体ユースケース） */
+    shelter: {
+      /** 避難所の型（EvacuationArea） */
+      type: string;
+      /** 高松市の避難所だけに絞るための市区町村コード */
+      municipalityCode: string;
+      /** 地図の初期表示 [lng, lat] / zoom */
+      center: [number, number];
+      zoom: number;
+      /** 混雑度の時系列を取得する固定期間（相対期間だとデータが古くなるため固定） */
+      from: string;
+      to: string;
+    };
   };
 }
 
@@ -57,6 +70,14 @@ export const config: DeckConfig = {
     feedback: {
       type: "Feedback",
       venue: { name: "会場（高松）", coordinates: [134.0475, 34.34] },
+    },
+    shelter: {
+      type: "EvacuationArea",
+      municipalityCode: "372013",
+      center: [134.045, 34.345],
+      zoom: 12.6,
+      from: "2026-06-26T00:00:00Z",
+      to: "2026-06-27T00:00:00Z",
     },
   },
 };

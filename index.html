@@ -543,6 +543,7 @@
       </div>
     </section>
 
+
     <!-- 10. Temporal time-machine (live) -->
     <section class="slide slide--tmp" data-bg="dark">
       <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
@@ -848,6 +849,47 @@
           </g>
         </svg>
         <p class="footnote">Context Source Registration にもとづく分散クエリ／更新の転送・結果マージ。ループ検知（Via）・警告ヘッダ（NGSILD-Warning）に対応（ETSI GS CIM 009）。</p>
+      </div>
+    </section>
+
+    <!-- 避難所の混雑状況（自治体ユースケース・地図 + Temporal API, live） -->
+    <section class="slide slide--shelter" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">ユースケース・自治体 / 防災</span>
+          <h2 class="slide__title map-title">避難所の混雑度を時系列データで</h2>
+          <p class="map-desc">指定避難所の位置に <strong>Temporal API</strong> の受入状況を重ね、1 日の混雑の移り変わりを再生。下のスライダーで時刻を動かすと各避難所が<strong>混雑度で色分け</strong>され、クリックすると 24 時間の推移が見られます。</p>
+        </div>
+        <div class="demo-body">
+          <div class="map-wrap">
+            <div id="shelter-map" class="aed-map" data-navigation-control="off" data-marker="off"></div>
+          </div>
+          <aside class="geo-panel shelter-panel">
+            <div class="shelter-clock">
+              <span class="shelter-clock__label">表示時刻</span>
+              <span id="shelter-time" class="shelter-clock__time">--/-- --:--</span>
+            </div>
+            <div class="shelter-controls">
+              <button id="shelter-play" class="geo-btn">▶ 再生</button>
+              <input id="shelter-slider" class="geo-range" type="range" min="0" max="0" value="0" step="1" />
+            </div>
+            <div class="shelter-legend">
+              <span class="shelter-legend__item"><i class="dot dot--green"></i>空き <b id="shelter-n-green">–</b></span>
+              <span class="shelter-legend__item"><i class="dot dot--amber"></i>やや混雑 <b id="shelter-n-amber">–</b></span>
+              <span class="shelter-legend__item"><i class="dot dot--red"></i>満員間近 <b id="shelter-n-red">–</b></span>
+            </div>
+            <div class="shelter-req">
+              <div class="shelter-req__label">API リクエスト</div>
+              <pre id="shelter-query" class="shelter-query"></pre>
+            </div>
+            <p class="shelter-note">混雑度は Temporal API のデモ用サンプルデータ（実際の受入実績ではありません）。</p>
+          </aside>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          避難所の位置・収容人数は高松市オープンデータ「指定緊急避難場所・指定避難所」(CC BY 4.0)。
+        </div>
       </div>
     </section>
 
