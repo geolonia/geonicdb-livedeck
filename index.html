@@ -277,8 +277,8 @@
     <section class="slide" data-bg="dark">
       <div class="slide__inner">
         <span class="kicker">基礎 / What is a Context Broker</span>
-        <h2 class="slide__title">コンテキストブローカーとは</h2>
-        <p class="map-desc">IoT・都市・業務システムが生む<strong>「いま」の状態（コンテキスト）</strong>を一元管理する基盤。多数のデータ源からの登録・更新を受け取り、<strong>最新状態の保持・問い合わせ・購読（Pub/Sub）</strong>を標準 API で提供。データの<strong>生産者と利用者を疎結合</strong>につなぎ、アプリはデータの所在を意識せず必要な情報を取得できます。</p>
+        <h2 class="slide__title">コンテキストブローカーとは？</h2>
+        <p class="map-desc">IoT・都市・業務システムが生む<strong>「いま」の状態（コンテキスト）</strong>を一元管理する基盤。登録・更新の受け取り、<strong>最新状態の保持・問い合わせ・購読（Pub/Sub）</strong>を標準 API で提供し、データの<strong>生産者と利用者を疎結合</strong>につなぎます。</p>
         <div class="std-grid">
           <div class="std-card"><span class="std-card__name">📥 収集・更新</span><span class="std-card__desc">多数の IoT / アプリから最新状態を登録・更新</span></div>
           <div class="std-card"><span class="std-card__name">🗃 最新状態＋履歴</span><span class="std-card__desc">現在値を一元管理し、Temporal API で履歴も取得</span></div>
@@ -291,7 +291,7 @@
           <div class="std-hero__badge">🏢</div>
           <div class="std-hero__body">
             <div class="std-hero__title"><strong>マルチテナンシー</strong> <span>1 基盤で複数組織を安全に相乗り</span></div>
-            <p>1 つの GeonicDB を<strong>テナント（組織・プロジェクト）ごとに完全分離</strong>して共有。テナントは <strong>NGSILD-Tenant / Fiware-Service</strong> ヘッダで切り替わり、エンティティ・ポリシー・API キーはテナント境界で隔離されます。運用・コストを抑えつつ、各組織の<strong>データ主権</strong>を保てます。</p>
+            <p>1 つの GeonicDB を<strong>テナント（組織・プロジェクト）ごとに完全分離</strong>して共有。<strong>NGSILD-Tenant / Fiware-Service</strong> ヘッダで切り替わり、データも権限もテナント境界で隔離されます。（詳細は次頁）</p>
           </div>
         </div>
       </div>
@@ -339,17 +339,17 @@
         <p class="map-desc">1 つの GeonicDB を<strong>テナント（組織・プロジェクト）単位で完全分離</strong>して共有。リクエストの <strong>NGSILD-Tenant / Fiware-Service ヘッダ</strong>でテナントが切り替わり、データも権限も混ざりません。エンティティ ID が同じでもテナントが違えば別物として扱われます。</p>
         <div class="mt-diagram">
           <div class="mt-clients">
-            <div class="mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>city-a</b></span></div>
-            <div class="mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>corp-b</b></span></div>
-            <div class="mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>lab-c</b></span></div>
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>city-a</b></span></div>
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>corp-b</b></span></div>
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>lab-c</b></span></div>
           </div>
           <div class="mt-arrows"><span>▼</span><span>▼</span><span>▼</span></div>
           <div class="mt-broker">
             <div class="mt-broker__label">🗄 1 つの GeonicDB</div>
             <div class="mt-tenants">
-              <div class="mt-tenant"><div class="mt-tenant__name">🏢 テナント city-a</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="mt-tenant"><div class="mt-tenant__name">🏢 テナント corp-b</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="mt-tenant"><div class="mt-tenant__name">🏢 テナント lab-c</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント city-a</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント corp-b</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント lab-c</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
             </div>
           </div>
         </div>
