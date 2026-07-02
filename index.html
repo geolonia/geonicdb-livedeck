@@ -724,6 +724,133 @@
       </div>
     </section>
 
+    <!-- 12. Federation — データを動かさず、1回の問い合わせで束ねる -->
+    <section class="slide slide--fed" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">データ連携 / Federation</span>
+        <h2 class="slide__title"><span class="accent">組織をまたがって</span>データを集約</h2>
+        <p class="map-desc">フェデレーションは、<strong>テナントやドメインの異なる複数の GeonicDB</strong> を 1 つの窓口にまとめる仕組み。手元の GeonicDB が問い合わせを別テナント・別ドメインの GeonicDB へ<strong>並列に転送</strong>し、返ってきた結果を<strong>ひとつに束ねて</strong>返します。データを 1 か所にコピー・集約する必要はありません。</p>
+        <svg class="rc-illus" viewBox="0 0 1120 430" role="img"
+             font-family="'Inter','Noto Sans JP',sans-serif"
+             aria-label="利用者の1回の問い合わせを、手元の GeonicDB が別テナント・別ドメインの GeonicDB へ並列に転送し、結果を束ねて返す様子。データは各インスタンスに置いたまま動かない。">
+          <defs>
+            <marker id="fedTip" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto"><path d="M0,0 L5.5,3 L0,6 Z" fill="rgba(252,108,0,.55)"/></marker>
+            <linearGradient id="fedHub" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fc6c00"/><stop offset="1" stop-color="#e8401e"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ===== column headers ===== -->
+          <text x="115" y="34" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-weight="700">問い合わせる人</text>
+          <text x="550" y="34" text-anchor="middle" fill="#fc6c00" font-size="13" font-weight="700">GeonicDB（統合の窓口）</text>
+          <text x="992" y="34" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-weight="700">別テナント／別ドメインの GeonicDB</text>
+
+          <!-- ===== static connectors ===== -->
+          <g stroke="rgba(252,108,0,.28)" stroke-width="2" fill="none">
+            <line x1="198" y1="198" x2="389" y2="198" marker-end="url(#fedTip)"/>
+            <line x1="709" y1="168" x2="881" y2="113" marker-end="url(#fedTip)"/>
+            <line x1="709" y1="198" x2="881" y2="198" marker-end="url(#fedTip)"/>
+            <line x1="709" y1="228" x2="881" y2="283" marker-end="url(#fedTip)"/>
+          </g>
+
+          <!-- ===== moving dots ===== -->
+          <!-- (1) query: user → hub  [0.02–0.14] -->
+          <circle r="5" fill="#fc6c00">
+            <animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.02;0.14;1" keyPoints="0;0;1;1" path="M198,198 L391,198"/>
+            <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.02;0.03;0.14;0.15;1"/>
+          </circle>
+          <!-- (2) query fan-out: hub → each provider  [0.17–0.30] -->
+          <g fill="#fc6c00">
+            <circle r="4.5"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.17;0.30;1" keyPoints="0;0;1;1" path="M709,168 L881,113"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.17;0.18;0.30;0.31;1"/></circle>
+            <circle r="4.5"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.17;0.30;1" keyPoints="0;0;1;1" path="M709,198 L881,198"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.17;0.18;0.30;0.31;1"/></circle>
+            <circle r="4.5"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.17;0.30;1" keyPoints="0;0;1;1" path="M709,228 L881,283"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.17;0.18;0.30;0.31;1"/></circle>
+          </g>
+          <!-- (3) results back: provider → hub  [0.44–0.58], coloured by protocol -->
+          <circle r="5" fill="#39d6c6"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.44;0.58;1" keyPoints="0;0;1;1" path="M881,113 L709,168"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.44;0.45;0.58;0.59;1"/></circle>
+          <circle r="5" fill="#fba40c"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.44;0.58;1" keyPoints="0;0;1;1" path="M881,198 L709,198"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.44;0.45;0.58;0.59;1"/></circle>
+          <circle r="5" fill="#fba40c"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.44;0.58;1" keyPoints="0;0;1;1" path="M881,283 L709,228"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.44;0.45;0.58;0.59;1"/></circle>
+          <!-- (4) merged result: hub → user  [0.66–0.80] -->
+          <circle r="6" fill="#fc6c00"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.66;0.80;1" keyPoints="0;0;1;1" path="M391,198 L198,198"/><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.66;0.67;0.80;0.81;1"/></circle>
+
+          <!-- ===== USER / APP ===== -->
+          <g>
+            <rect x="40" y="150" width="150" height="96" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.16)"/>
+            <rect x="72" y="176" width="86" height="44" rx="7" fill="none" stroke="#fff" stroke-width="2"/>
+            <line x1="72" y1="188" x2="158" y2="188" stroke="#fff" stroke-width="2"/>
+            <circle cx="79" cy="182" r="1.8" fill="#fff"/><circle cx="86" cy="182" r="1.8" fill="#fff"/><circle cx="93" cy="182" r="1.8" fill="#fff"/>
+            <text x="115" y="238" text-anchor="middle" fill="rgba(255,255,255,.72)" font-size="12">1 回たずねるだけ</text>
+          </g>
+
+          <!-- ===== GEONICDB HUB ===== -->
+          <g>
+            <rect x="395" y="110" width="310" height="176" rx="20" fill="rgba(252,108,0,.10)" stroke="rgba(252,108,0,.5)"/>
+            <!-- merge glow when results arrive -->
+            <rect x="395" y="110" width="310" height="176" rx="20" fill="url(#fedHub)"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;0.22;0.22;0;0" keyTimes="0;0.55;0.60;0.68;0.74;1"/></rect>
+            <!-- network node icon -->
+            <g stroke="#fc6c00" stroke-width="2.4" fill="none">
+              <line x1="550" y1="152" x2="522" y2="134"/><line x1="550" y1="152" x2="578" y2="134"/>
+              <line x1="550" y1="152" x2="526" y2="176"/><line x1="550" y1="152" x2="574" y2="176"/>
+            </g>
+            <circle cx="550" cy="152" r="9" fill="#fc6c00"/>
+            <circle cx="522" cy="132" r="5" fill="#fba40c"/><circle cx="578" cy="132" r="5" fill="#fba40c"/>
+            <circle cx="526" cy="178" r="5" fill="#39d6c6"/><circle cx="574" cy="178" r="5" fill="#39d6c6"/>
+            <text x="550" y="216" text-anchor="middle" fill="#fff" font-size="21" font-weight="800">GeonicDB</text>
+            <text x="550" y="242" text-anchor="middle" fill="rgba(255,255,255,.78)" font-size="13">問い合わせを並列転送 → 結果を束ねる</text>
+            <text x="550" y="266" text-anchor="middle" fill="#fc6c00" font-size="12.5" font-weight="700">形式が違っても自動でそろえて返す</text>
+          </g>
+
+          <!-- ===== PROVIDERS (data stays put) ===== -->
+          <!-- P1 -->
+          <g>
+            <rect x="885" y="78" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
+            <rect x="885" y="78" width="215" height="70" rx="14" fill="rgba(57,214,198,.14)" stroke="#39d6c6"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
+            <g transform="translate(908,113)" stroke-linecap="round">
+              <g stroke="#39d6c6" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#39d6c6"/><circle cx="-12" cy="-10" r="3" fill="#39d6c6"/><circle cx="12" cy="-10" r="3" fill="#39d6c6"/><circle cx="-12" cy="10" r="3" fill="#39d6c6"/><circle cx="12" cy="10" r="3" fill="#39d6c6"/>
+            </g>
+            <text x="944" y="107" fill="#fff" font-size="15" font-weight="700">別テナント A</text>
+            <text x="944" y="129" fill="#39d6c6" font-size="11.5" font-weight="700">GeonicDB · NGSI-LD</text>
+          </g>
+          <!-- P2 -->
+          <g>
+            <rect x="885" y="163" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
+            <rect x="885" y="163" width="215" height="70" rx="14" fill="rgba(251,164,12,.14)" stroke="#fba40c"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
+            <g transform="translate(908,198)" stroke-linecap="round">
+              <g stroke="#fba40c" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#fba40c"/><circle cx="-12" cy="-10" r="3" fill="#fba40c"/><circle cx="12" cy="-10" r="3" fill="#fba40c"/><circle cx="-12" cy="10" r="3" fill="#fba40c"/><circle cx="12" cy="10" r="3" fill="#fba40c"/>
+            </g>
+            <text x="944" y="192" fill="#fff" font-size="15" font-weight="700">別テナント B</text>
+            <text x="944" y="214" fill="#fba40c" font-size="11.5" font-weight="700">GeonicDB · NGSIv2</text>
+          </g>
+          <!-- P3 -->
+          <g>
+            <rect x="885" y="248" width="215" height="70" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
+            <rect x="885" y="248" width="215" height="70" rx="14" fill="rgba(251,164,12,.14)" stroke="#fba40c"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.33;0.46;0.5;1"/></rect>
+            <g transform="translate(908,283)" stroke-linecap="round">
+              <g stroke="#fba40c" stroke-width="1.8" fill="none"><line x1="0" y1="0" x2="-12" y2="-10"/><line x1="0" y1="0" x2="12" y2="-10"/><line x1="0" y1="0" x2="-12" y2="10"/><line x1="0" y1="0" x2="12" y2="10"/></g>
+              <circle r="5" fill="#fba40c"/><circle cx="-12" cy="-10" r="3" fill="#fba40c"/><circle cx="12" cy="-10" r="3" fill="#fba40c"/><circle cx="-12" cy="10" r="3" fill="#fba40c"/><circle cx="12" cy="10" r="3" fill="#fba40c"/>
+            </g>
+            <text x="944" y="277" fill="#fff" font-size="15" font-weight="700">別ドメイン</text>
+            <text x="944" y="299" fill="#fba40c" font-size="11.5" font-weight="700">GeonicDB · NGSIv2</text>
+          </g>
+
+          <!-- ===== bottom banner: 3 benefits ===== -->
+          <g>
+            <rect x="40" y="360" width="1060" height="56" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/>
+            <line x1="393" y1="374" x2="393" y2="402" stroke="rgba(255,255,255,.12)"/>
+            <line x1="747" y1="374" x2="747" y2="402" stroke="rgba(255,255,255,.12)"/>
+            <text x="216" y="384" text-anchor="middle" font-size="16">🗂️</text>
+            <text x="216" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">データを1か所に集めない</text>
+            <text x="570" y="384" text-anchor="middle" font-size="16">🔗</text>
+            <text x="570" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">テナント・ドメインをまたいで取得</text>
+            <text x="924" y="384" text-anchor="middle" font-size="16">🔄</text>
+            <text x="924" y="404" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13.5" font-weight="700">形式が違っても自動変換</text>
+          </g>
+        </svg>
+        <p class="footnote">Context Source Registration にもとづく分散クエリ／更新の転送・結果マージ。ループ検知（Via）・警告ヘッダ（NGSILD-Warning）に対応（ETSI GS CIM 009）。</p>
+      </div>
+    </section>
+
     <!-- 13. Use cases -->
     <section class="slide" data-bg="light">
       <div class="slide__inner">
