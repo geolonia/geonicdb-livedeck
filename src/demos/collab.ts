@@ -103,10 +103,18 @@ export function initCollab(): void {
   function fc(): any {
     return { type: "FeatureCollection", features: Object.keys(features).map((id) => features[id]) };
   }
+  // WS 受信・描画のたびに全 FeatureCollection を再構築すると重いので、
+  // 連続する更新は requestAnimationFrame で 1 フレーム 1 回の setData にまとめる。
+  let applyScheduled = false;
   function applyToMap(): void {
-    const src = map && map.getSource("features");
-    if (src) src.setData(fc());
     setCount();
+    if (applyScheduled) return;
+    applyScheduled = true;
+    requestAnimationFrame(() => {
+      applyScheduled = false;
+      const src = map && map.getSource("features");
+      if (src) src.setData(fc());
+    });
   }
 
   // ---- 作図の下書き（描画中プレビュー）----------------------------
@@ -159,7 +167,11 @@ export function initCollab(): void {
     });
   }
   function finishDraft(): void {
-    const pts = draft.slice();
+    // ダブルクリックで確定すると click が二重発火して同座標の頂点が余分に入るため、
+    // 連続する重複頂点を畳んでから geometry を組む。
+    const pts = draft.filter(
+      (p, i) => i === 0 || p[0] !== draft[i - 1]![0] || p[1] !== draft[i - 1]![1],
+    );
     if (tool === "line" && pts.length >= 2) {
       createFeature("line", { type: "LineString", coordinates: pts });
     } else if (tool === "polygon" && pts.length >= 3) {
@@ -208,7 +220,7 @@ export function initCollab(): void {
     });
     map.addLayer({
       id: "co-draft-line", type: "line", source: "draft",
-      filter: ["==", ["geometry-type"], "LineString"],
+      filter: ["!=", ["geometry-type"], "Point"],
       paint: { "line-color": myColor, "line-width": 2, "line-dasharray": [2, 1] },
     });
     map.addLayer({
@@ -330,12 +342,10 @@ export function initCollab(): void {
     started = true;
     wireTools();
     db = createClient("mapedit");
-    load()
-      .then(connect)
-      .catch((err: unknown) => {
-        console.error("[collab]", err);
-        connect();
-      });
+    // 先に購読・接続してから既存地物を取得（取得中に作られた地物を取りこぼさない）。
+    // 取得分と WS 受信分は ingest 側で id 冪等にマージされる。
+    connect();
+    load().catch((err: unknown) => console.error("[collab]", err));
 
     GL = window.geolonia || window.maplibregl || null;
     if (!GL || typeof GL.Map !== "function") {
