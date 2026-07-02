@@ -11,6 +11,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 | API キー名 (`--name`) | `geonicdb-livedeck-<demo>` | `geonicdb-livedeck-readonly` / `geonicdb-livedeck-survey` / `geonicdb-livedeck-feedback` |
 | XACML ポリシー (`policyId`) | `geonicdb-livedeck-<demo>`（対応するキーと同名） | 同上 |
 | カスタムデータモデル | NGSI-LD のエンティティ型名（`PollVote` / `Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `PollVote` / `Feedback` |
+| デッキ専用の自由形状エンティティ型（例外） | カスタムデータモデルを持たず、共有テナントで他用途と明確に分離したい型は `geonicdb-livedeck-<Type>` を付けてよい | `geonicdb-livedeck-MapFeature`（共同編集 GIS） |
 
 - 新しいライブデモを追加するときも、必要な キー / ポリシー は必ず `geonicdb-livedeck-<demo>` で作る。
 - キーはすべて **origin 制限**（`http://localhost:8745,https://geolonia.github.io`）＋ **DPoP 必須**。
@@ -20,7 +21,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 ## デモの識別
 
 スライド順序は `index.html` の `<section class="slide">` の並びで決まる。各ライブデモは
-`.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter`
+`.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab`
 のクラスで自分のスライドを特定する（`slides.indexOf(...)`）。**スライドを挿入・並べ替えても番号は自動追従するので、ドキュメントでは極力ハードな番号参照を避ける。**
 
 ## 作業の進め方

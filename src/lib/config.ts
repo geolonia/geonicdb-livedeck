@@ -17,6 +17,8 @@ export interface DeckConfig {
     survey: string;
     /** フィードバック用（GET|WS ＋ Feedback への POST）。NGSI-LD デモで使用 */
     feedback: string;
+    /** 共同編集 GIS 用（GET|WS ＋ geonicdb-livedeck-MapFeature への POST）。 */
+    mapedit: string;
   };
   demos: {
     /** スライド: 標準API（NGSIv2 / NGSI-LD 二面取得） */
@@ -47,6 +49,14 @@ export interface DeckConfig {
       from: string;
       to: string;
     };
+    /** スライド: 共同編集 GIS（作図 + WebSocket・民間ユースケース） */
+    collab: {
+      /** 書き込む地物の型（プレフィックス付き） */
+      type: string;
+      /** 地図の初期表示 [lng, lat] / zoom */
+      center: [number, number];
+      zoom: number;
+    };
   };
 }
 
@@ -57,6 +67,7 @@ export const config: DeckConfig = {
     readonly: import.meta.env.VITE_GEONICDB_READONLY_KEY ?? "",
     survey: import.meta.env.VITE_GEONICDB_SURVEY_KEY ?? "",
     feedback: import.meta.env.VITE_GEONICDB_FEEDBACK_KEY ?? "",
+    mapedit: import.meta.env.VITE_GEONICDB_MAPEDIT_KEY ?? "",
   },
   demos: {
     dual: { ldId: "urn:ngsi-ld:EnvironmentSensor:001", v2Id: "env-sensor-001" },
@@ -78,6 +89,12 @@ export const config: DeckConfig = {
       zoom: 12.6,
       from: "2026-06-26T00:00:00Z",
       to: "2026-06-27T00:00:00Z",
+    },
+    collab: {
+      type: "geonicdb-livedeck-MapFeature",
+      // 広島県尾道市周辺
+      center: [133.2045, 34.409],
+      zoom: 14,
     },
   },
 };

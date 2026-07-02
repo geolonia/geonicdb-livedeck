@@ -1270,3 +1270,15 @@ html, body {
 .shelter-pop__badge { display: inline-block; color: #fff; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; margin-right: 6px; }
 .shelter-pop__chart-t { font-size: 9.5px; color: rgba(0,0,0,.5); margin-top: 7px; }
 .shelter-pop-svg { width: 100%; height: 42px; display: block; margin-top: 3px; }
+
+/* ---- 共同編集 GIS デモ（slide--collab） ---- */
+/* サイドパネルはカード枠（背景・ボーダー・角丸）を外す（避難所デモと同じ） */
+.collab-panel { gap: 12px; background: none; border: none; border-radius: 0; padding: 0; margin-left: 40px; margin-right: -22px; }
+.collab-tools { display: flex; flex-direction: column; gap: 8px; }
+.collab-tool { text-align: left; }
+.collab-me { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,.8); }
+.collab-me b { color: #fff; font-family: var(--font-mono); }
+.collab-swatch { width: 15px; height: 15px; border-radius: 4px; display: inline-block; border: 1px solid rgba(255,255,255,.35); }
+.collab-status { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin-top: auto; font-size: 13px; color: rgba(255,255,255,.8); }
+.collab-status b { color: #fff; font-family: var(--font-mono); font-size: 15px; }
+.collab-panel .demo-note code, .slide--collab .demo-note code { font-family: var(--font-mono); font-size: 12px; color: var(--amber); }

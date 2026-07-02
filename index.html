@@ -893,6 +893,40 @@
       </div>
     </section>
 
+    <!-- 共同編集 GIS（民間ユースケース・地図 + WebSocket, live） -->
+    <section class="slide slide--collab" data-bg="dark">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">ユースケース・民間 / 共同編集 GIS</span>
+          <h2 class="slide__title map-title">共同編集が可能な GIS</h2>
+          <p class="map-desc">地図に<strong>ポイント・ライン・ポリゴン</strong>を描くと NGSI-LD の地物として作成され、<strong>WebSocket で全員の画面にリアルタイム反映</strong>。現地調査・資産管理・エリア共有などを 1 つの地図で共同編集できます。</p>
+        </div>
+        <div class="demo-body">
+          <div class="map-wrap">
+            <div id="collab-map" class="aed-map" data-navigation-control="off" data-marker="off"></div>
+          </div>
+          <aside class="geo-panel collab-panel">
+            <h3 class="geo-panel__title">作図ツール</h3>
+            <div class="collab-tools">
+              <button id="collab-tool-point" class="geo-btn collab-tool">📍 ポイント</button>
+              <button id="collab-tool-line" class="geo-btn collab-tool">╱ ライン</button>
+              <button id="collab-tool-polygon" class="geo-btn collab-tool">⬠ ポリゴン</button>
+            </div>
+            <button id="collab-finish" class="geo-btn geo-btn--ghost" hidden>✓ 確定（ダブルクリックでも可）</button>
+            <div class="collab-me"><span id="collab-mycolor" class="collab-swatch"></span>あなたの色 · <b id="collab-me">–</b></div>
+            <div class="collab-status">
+              <span><b id="collab-count">0</b> 件</span>
+            </div>
+          </aside>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          データは NGSI-LD として保存され、WebSocket で全員に配信されます
+        </div>
+      </div>
+    </section>
+
     <!-- 13. Use cases -->
     <section class="slide" data-bg="light">
       <div class="slide__inner">

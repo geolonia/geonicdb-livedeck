@@ -5,6 +5,10 @@ interface ImportMetaEnv {
   readonly VITE_GEONICDB_READONLY_KEY?: string;
   /** PollVote 用 API キー（POST + GET/WS）。本番は CI で注入。 */
   readonly VITE_GEONICDB_SURVEY_KEY?: string;
+  /** Feedback 用 API キー（POST + GET/WS）。本番は CI で注入。 */
+  readonly VITE_GEONICDB_FEEDBACK_KEY?: string;
+  /** 共同編集 GIS 用 API キー（MapFeature POST + GET/WS）。本番は CI で注入。 */
+  readonly VITE_GEONICDB_MAPEDIT_KEY?: string;
   /** Geolonia Maps の API キー（index.html の CDN タグへ置換）。 */
   readonly VITE_GEOLONIA_API_KEY?: string;
 }

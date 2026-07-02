@@ -32,6 +32,7 @@ npm run dev        # → http://localhost:8745
 | `VITE_GEONICDB_READONLY_KEY` | 読み取り専用（地図・標準API・時系列デモ） |
 | `VITE_GEONICDB_SURVEY_KEY` | ライブアンケートの投票（PollVote POST） |
 | `VITE_GEONICDB_FEEDBACK_KEY` | NGSI-LD フィードバック（Feedback POST + WS） |
+| `VITE_GEONICDB_MAPEDIT_KEY` | 共同編集 GIS（geonicdb-livedeck-MapFeature POST + GET + WS） |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
@@ -43,6 +44,7 @@ npm run dev        # → http://localhost:8745
 | `GEONICDB_READONLY_KEY` | `VITE_GEONICDB_READONLY_KEY` | ✅（標準API/地図/時系列デモ） |
 | `GEONICDB_SURVEY_KEY` | `VITE_GEONICDB_SURVEY_KEY` | ✅（ライブアンケート） |
 | `GEONICDB_FEEDBACK_KEY` | `VITE_GEONICDB_FEEDBACK_KEY` | ✅（NGSI-LD フィードバック） |
+| `GEONICDB_MAPEDIT_KEY` | `VITE_GEONICDB_MAPEDIT_KEY` | ✅（共同編集 GIS） |
 | `VITE_GEOLONIA_API_KEY` | `VITE_GEOLONIA_API_KEY` | 任意（未設定なら `YOUR-API-KEY` にフォールバック。`*.github.io` で動作） |
 
 > いずれかの GeonicDB キーが未設定だと、そのデモが `AuthenticationError`（空キー）で動かない。新しいライブデモを足したら deploy.yml の env とこの表も更新すること。
@@ -55,7 +57,7 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
@@ -81,6 +83,11 @@ npm run dev        # → http://localhost:8745
 - 認可: 読み取り専用のため **`geonicdb-livedeck-readonly`** を共用（`EvacuationArea` の GET / temporal GET を §1 のポリシーに含む）。
 - データ: 位置・収容人数は高松市オープンデータ（CC BY 4.0）。混雑度は Temporal API のデモ用合成データ（実受入実績ではない旨を画面に明記）。詳細は「セットアップ §5」。
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
+
+### 共同編集 GIS（`src/demos/collab.ts`・民間ユースケース）
+- 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近1週間**に作成された地物のみ。
+- 認可: ポリシー／キー **`geonicdb-livedeck-mapedit`**（`geonicdb-livedeck-MapFeature` の GET|POST ＋ WS、DPoP 必須・origin 制限）。
+- 地図の初期表示は広島県尾道市周辺（`src/lib/config.ts` の `demos.collab`）。
 
 ## セットアップ（`geonic` CLI）
 
@@ -282,6 +289,48 @@ geonic -s miya temporal entities create @shelter-001-temporal.json
 > AED マップと同じ高松市域のオープンデータなので、**出典・ライセンスを明示すれば地域名の使用は可**
 > （AED デモと同じ扱い）。
 
+### 6. 共同編集 GIS のポリシー＋キー（`slide--collab`）
+
+地図に描いた地物（ポイント／ライン／ポリゴン）を `geonicdb-livedeck-MapFeature` として作成し、WebSocket で全員に配信する。読み書き用の専用ポリシー＋キーを作る。
+
+```bash
+cat > mapedit-policy.json <<'JSON'
+{
+  "policyId": "geonicdb-livedeck-mapedit",
+  "description": "geonicdb-livedeck: collaborative GIS — WS + geonicdb-livedeck-MapFeature read/write",
+  "target": { "resources": [
+    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
+  ]},
+  "ruleCombiningAlgorithm": "first-applicable",
+  "rules": [
+    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[{"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
+      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-read","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"geonicdb-livedeck-MapFeature"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-write","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"geonicdb-livedeck-MapFeature"}],
+      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
+    {"ruleId":"deny-others","effect":"Deny"}
+  ]
+}
+JSON
+geonic -s miya me policies create @mapedit-policy.json
+
+# key（出力された gdb_… を .env の VITE_GEONICDB_MAPEDIT_KEY へ）
+geonic -s miya me api-keys create \
+  --name geonicdb-livedeck-mapedit \
+  --policy geonicdb-livedeck-mapedit \
+  --origins "http://localhost:8745,https://geolonia.github.io" \
+  --dpop-required
+```
+
+> 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
+> 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
+
 > 標準APIデモ（dual）は「同じデータを両プロトコルで見せる」ことでプロトコル差を強調する。GeonicDB は NGSIv2 と NGSI-LD を別空間で保持するため、同内容を 2 件用意する: NGSI-LD 側は上記 `urn:ngsi-ld:EnvironmentSensor:001`、NGSIv2 側 `env-sensor-001` は NGSIv2 API（`PUT /v2/entities/env-sensor-001/attrs`、ヘッダー `Fiware-Service: miya`）で同じ内容にする。
 >
 > デモデータは実在の顧客データと誤認させないよう、**特定の地域名を名前・URL・scope 等に含めない**中立的な内容にすること。
@@ -297,6 +346,7 @@ geonic -s miya temporal entities create @shelter-001-temporal.json
 | `src/demos/map.ts` | ジオクエリの地図デモ（Geolonia Maps + near 検索） |
 | `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
 | `src/demos/shelter.ts` | 避難所の混雑（地図 + Temporal API・自治体ユースケース）デモ |
+| `src/demos/collab.ts` | 共同編集 GIS（作図 + WebSocket・民間ユースケース）デモ |
 | `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
 | `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |
