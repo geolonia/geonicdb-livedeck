@@ -57,7 +57,7 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
@@ -88,6 +88,11 @@ npm run dev        # → http://localhost:8745
 - 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近1週間**に作成された地物のみ。
 - 認可: ポリシー／キー **`geonicdb-livedeck-mapedit`**（`geonicdb-livedeck-MapFeature` の GET|POST ＋ WS、DPoP 必須・origin 制限）。
 - 地図の初期表示は広島県尾道市周辺（`src/lib/config.ts` の `demos.collab`）。
+
+### メッセージング + Rules ログ（`src/demos/messaging.ts`・民間ユースケース）
+- 「ランダム投稿」で 名前＋メッセージ（100字まで）を NGSI-LD エンティティ（`type=geonicdb-livedeck-Message`）として作成 → **WebSocket で全員に配信**。登壇中のキーボード入力を避けるため、名前・本文はダミーから無作為に選ぶ。
+- サーバ側の **ReactiveCore Rules**（`geonicdb-livedeck-message-log`）が作成を検知して **ログ（`type=geonicdb-livedeck-MessageLog`）を自動生成**。メッセージ / ログをタブで切替。
+- 認可: **`geonicdb-livedeck-feedback` キーを流用**（API キー上限（5）に達しているため。feedback ポリシーに Message/MessageLog の GET|POST を追加）。専用キーを作る場合は §7 参照。
 
 ## セットアップ（`geonic` CLI）
 
@@ -331,6 +336,36 @@ geonic -s miya me api-keys create \
 > 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
 > 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
 
+### 7. メッセージング + Rules ログ（`slide--msg`）
+
+`geonicdb-livedeck-Message` の作成を **ReactiveCore Rules** で検知し、`createEntity` アクションで
+`geonicdb-livedeck-MessageLog` を自動生成する。
+
+```bash
+geonic -s miya rules create '{
+  "ruleId": "geonicdb-livedeck-message-log",
+  "name": "geonicdb-livedeck: メッセージ作成時にログを生成",
+  "conditions": [
+    {"type":"eventType","eventTypes":["create"]},
+    {"type":"entityType","entityTypes":["geonicdb-livedeck-Message"]}
+  ],
+  "actions": [{
+    "type":"createEntity",
+    "entityId":"urn:ngsi-ld:geonicdb-livedeck-MessageLog:${entity.id}",
+    "entityType":"geonicdb-livedeck-MessageLog",
+    "attributes":{"action":"message.created","author":"${attribute.name.value}",
+      "target":"${entity.id}","summary":"${attribute.name.value} さんがメッセージを投稿しました"}
+  }]
+}'
+```
+
+> **API キー: feedback キーを流用。** テナントの API キー上限（5）に達しているため専用キーは作らず、
+> `geonicdb-livedeck-feedback` ポリシーに `geonicdb-livedeck-Message`（GET|POST）と
+> `geonicdb-livedeck-MessageLog`（GET）の許可を追加し、`createClient("feedback")` で接続する。
+> 枠が空いたら専用ポリシー／キー `geonicdb-livedeck-messaging`（他デモと同じ WS + 型別 GET|POST 構成）を作り、
+> `VITE_GEONICDB_MESSAGING_KEY` に切り替えるのが本来の形。
+> メッセージ本文は 100 字まで（クライアント側で制限。登壇時はダミーからランダム投稿）。
+
 > 標準APIデモ（dual）は「同じデータを両プロトコルで見せる」ことでプロトコル差を強調する。GeonicDB は NGSIv2 と NGSI-LD を別空間で保持するため、同内容を 2 件用意する: NGSI-LD 側は上記 `urn:ngsi-ld:EnvironmentSensor:001`、NGSIv2 側 `env-sensor-001` は NGSIv2 API（`PUT /v2/entities/env-sensor-001/attrs`、ヘッダー `Fiware-Service: miya`）で同じ内容にする。
 >
 > デモデータは実在の顧客データと誤認させないよう、**特定の地域名を名前・URL・scope 等に含めない**中立的な内容にすること。
@@ -347,6 +382,7 @@ geonic -s miya me api-keys create \
 | `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
 | `src/demos/shelter.ts` | 避難所の混雑（地図 + Temporal API・自治体ユースケース）デモ |
 | `src/demos/collab.ts` | 共同編集 GIS（作図 + WebSocket・民間ユースケース）デモ |
+| `src/demos/messaging.ts` | メッセージング + ReactiveCore Rules ログ（民間ユースケース）デモ |
 | `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
 | `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |

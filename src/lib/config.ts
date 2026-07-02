@@ -57,6 +57,15 @@ export interface DeckConfig {
       center: [number, number];
       zoom: number;
     };
+    /** スライド: メッセージング + ReactiveCore Rules ログ（民間ユースケース） */
+    messaging: {
+      /** 投稿メッセージの型（プレフィックス付き） */
+      messageType: string;
+      /** Rules が自動生成するログの型（プレフィックス付き） */
+      logType: string;
+      /** メッセージ本文の最大文字数 */
+      maxLen: number;
+    };
   };
 }
 
@@ -89,6 +98,11 @@ export const config: DeckConfig = {
       zoom: 12.6,
       from: "2026-06-26T00:00:00Z",
       to: "2026-06-27T00:00:00Z",
+    },
+    messaging: {
+      messageType: "geonicdb-livedeck-Message",
+      logType: "geonicdb-livedeck-MessageLog",
+      maxLen: 100,
     },
     collab: {
       type: "geonicdb-livedeck-MapFeature",
