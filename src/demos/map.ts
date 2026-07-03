@@ -2,7 +2,7 @@
    ライブ AED マップデモ。
    Geolonia Maps（MapLibre GL）＋ GeonicDB SDK（DPoP / PoW トークン交換）。
    テナント `miya` の `AedLocation` をクラスタ件数付きで描画し、ジオクエリ（near）と
-   ページング取得を行う（geonicdb-pulse と同じ作り）。読み取り専用（readonly キー）。
+   ページング取得を行う（geonicdb-pulse と同じ作り）。読み取り専用（統合キー VITE_GEONICDB_KEY）。
 
    MapLibre GL は CDN（Geolonia embed）で読み込むため、地図インスタンスやレイヤは
    型を最小限（any 寄り）に留め、SDK 呼び出し側の見通しを優先している。
@@ -545,7 +545,7 @@ export function initMap(): void {
   // SDK クライアントを 1 度だけ生成（生成は軽量。DPoP トークン交換は最初のリクエストで遅延実行）。
   function ensureDb(): GeonicDB | null {
     if (db) return db;
-    db = createClient("readonly");
+    db = createClient();
     return db;
   }
 

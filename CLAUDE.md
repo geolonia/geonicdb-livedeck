@@ -8,15 +8,17 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 
 | リソース種別 | 命名規約 | 既存例 |
 |---|---|---|
-| API キー名 (`--name`) | `geonicdb-livedeck-<demo>` | `geonicdb-livedeck-readonly` / `geonicdb-livedeck-survey` / `geonicdb-livedeck-feedback` |
-| XACML ポリシー (`policyId`) | `geonicdb-livedeck-<demo>`（対応するキーと同名） | 同上 |
+| API キー名 (`--name`) | **デッキ全体で 1 つ**に統合 | `geonicdb-livedeck-deck` |
+| XACML ポリシー (`policyId`) | **1 つ**に統合（全デモの権限をまとめる） | `geonicdb-livedeck-deck` |
 | カスタムデータモデル | NGSI-LD のエンティティ型名（`PollVote` / `Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `PollVote` / `Feedback` |
 | デッキ専用の自由形状エンティティ型（例外） | カスタムデータモデルを持たず、共有テナントで他用途と明確に分離したい型は `geonicdb-livedeck-<Type>` を付けてよい | `geonicdb-livedeck-MapFeature`（共同編集 GIS） |
 
-- 新しいライブデモを追加するときも、必要な キー / ポリシー は必ず `geonicdb-livedeck-<demo>` で作る。
-- キーはすべて **origin 制限**（`http://localhost:8745,https://geolonia.github.io`）＋ **DPoP 必須**。
-- 発行手順（`geonic` CLI）は README.md「セットアップ」を参照。新デモを足したら README の発行手順も更新する。
-- 環境変数は `VITE_GEONICDB_<DEMO>_KEY`（`.env` / CI シークレット）。非秘密値は `src/lib/config.ts`。
+- **API キーはデッキ全体で 1 つに統合**（キー名／ポリシー `geonicdb-livedeck-deck`）。テナントの API キー上限対策。
+  新しいライブデモを追加するときは**新キーを作らず**、必要な型・アクション（GET/POST/WS）を
+  `geonicdb-livedeck-deck` ポリシーに追記する（`geonic me policies update`）。
+- キーは **origin 制限**（`http://localhost:8745,https://geolonia.github.io`）＋ **DPoP 必須**。
+- 発行手順（`geonic` CLI）は README.md「セットアップ」を参照。新デモを足したら README の権限追記手順も更新する。
+- 環境変数は単一の `VITE_GEONICDB_KEY`（`.env` / CI シークレット `GEONICDB_KEY`）。非秘密値は `src/lib/config.ts`。
 
 ## デモの識別
 

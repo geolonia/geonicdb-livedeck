@@ -4,7 +4,7 @@
    地図に描画し、Temporal API から固定期間（1 日分）の受入状況を取得。
    タイムスライダーで時刻を動かすと、各避難所が混雑度で色分けされ、避難所を
    クリックするとその 24 時間の受入率グラフをポップアップ内に表示する。
-   読み取り専用（readonly キー）。
+   読み取り専用（統合キー VITE_GEONICDB_KEY）。
 
    - 避難所の位置・収容人数: 高松市オープンデータ「指定緊急避難場所・指定避難所」(CC BY 4.0)
    - 混雑度（occupancy）: デモ用の合成データ（実際の受入実績ではない）
@@ -464,7 +464,7 @@ export function initShelter(): void {
 
   // ---- 起動 -------------------------------------------------------
   function ensureDb(): GeonicDB {
-    if (!db) db = createClient("readonly");
+    if (!db) db = createClient();
     return db;
   }
   function prefetch(): void {

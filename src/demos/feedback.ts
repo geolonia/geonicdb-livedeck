@@ -12,7 +12,7 @@
    右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」と
    「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」を表示し、
    件数は WebSocket の entityCreated で集計する。
-   認可は専用キー geonicdb-livedeck-feedback（VITE_GEONICDB_FEEDBACK_KEY）。
+   認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
@@ -288,7 +288,7 @@ export function initFeedback(): void {
     paintStars();
     initTabs();
     setCount();
-    db = createClient("feedback");
+    db = createClient();
     loadModel(); // 埋め込み即時表示 → API 実データに差し替え
     load()
       .then(connect)

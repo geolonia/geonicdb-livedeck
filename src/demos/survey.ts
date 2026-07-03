@@ -203,7 +203,7 @@ export function initSurvey(): void {
     started = true;
     buildChart();
     render();
-    db = createClient("survey");
+    db = createClient();
     load()
       .then(connect)
       .catch((err: unknown) => {

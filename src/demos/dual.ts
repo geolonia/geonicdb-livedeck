@@ -2,7 +2,7 @@
    標準API（デュアルプロトコル）デモ。
    GeonicDB SDK（DPoP）で「同じ実体」を NGSI-LD（/ngsi-ld/v1/entities/{id}）と
    NGSIv2（/v2/entities/{id}）の両標準 API から取得し、生レスポンスを左右に並べる。
-   読み取り専用（readonly キー。ポリシーで /ngsi-ld/** と /v2/** の GET を許可）。
+   読み取り専用（統合キー VITE_GEONICDB_KEY）。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { config } from "../lib/config";
@@ -88,7 +88,7 @@ export function initDual(): void {
     if (started) return;
     started = true;
     setReq();
-    db = createClient("readonly");
+    db = createClient();
     run(); // 初回表示で自動取得
     byId<HTMLButtonElement>("dual-run")?.addEventListener("click", run);
   }

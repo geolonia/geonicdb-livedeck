@@ -5,7 +5,7 @@
    地図上にポイント / ライン / ポリゴンを描くと、その地物が NGSI-LD エンティティ
    （type=geonicdb-livedeck-MapFeature、location は GeoProperty）として作成され、
    WebSocket で全クライアントの地図にリアルタイムで反映される（＝共同編集）。
-   認可は専用キー geonicdb-livedeck-mapedit（VITE_GEONICDB_MAPEDIT_KEY）。
+   認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    MapFeature の GET|POST ＋ WS、origin 制限・DPoP 必須。
 
    地図まわり（スタイル/スプライト・CSS scale() 補正・ホイールズーム）は map.ts と同じ作り。
@@ -341,7 +341,7 @@ export function initCollab(): void {
     if (started) return;
     started = true;
     wireTools();
-    db = createClient("mapedit");
+    db = createClient();
     // 先に購読・接続してから既存地物を取得（取得中に作られた地物を取りこぼさない）。
     // 取得分と WS 受信分は ingest 側で id 冪等にマージされる。
     connect();

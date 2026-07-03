@@ -1,14 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** origin 制限付き readonly API キー（GET + WebSocket）。本番は CI で注入。 */
-  readonly VITE_GEONICDB_READONLY_KEY?: string;
-  /** PollVote 用 API キー（POST + GET/WS）。本番は CI で注入。 */
-  readonly VITE_GEONICDB_SURVEY_KEY?: string;
-  /** Feedback 用 API キー（POST + GET/WS）。本番は CI で注入。 */
-  readonly VITE_GEONICDB_FEEDBACK_KEY?: string;
-  /** 共同編集 GIS 用 API キー（MapFeature POST + GET/WS）。本番は CI で注入。 */
-  readonly VITE_GEONICDB_MAPEDIT_KEY?: string;
+  /** デッキ共通の統合 API キー（統合ポリシー geonicdb-livedeck-deck・origin 制限＋DPoP）。本番は CI で注入。 */
+  readonly VITE_GEONICDB_KEY?: string;
   /** Geolonia Maps の API キー（index.html の CDN タグへ置換）。 */
   readonly VITE_GEOLONIA_API_KEY?: string;
 }
