@@ -2,7 +2,7 @@
    Temporal「タイムマシン」デモ。
    GeonicDB SDK（DPoP）＋ Temporal API で WeatherObserved の履歴を取得し、
    時間を遡ってスクラブできる。チャートが 1 日分を描画、スライダーで瞬間を選び、
-   スナップショットカードがその時刻の状態を表示。読み取り専用（readonly キー）。
+   スナップショットカードがその時刻の状態を表示。読み取り専用（統合キー VITE_GEONICDB_KEY）。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { config } from "../lib/config";

@@ -8,8 +8,8 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 
 | リソース種別 | 命名規約 | 既存例 |
 |---|---|---|
-| API キー名 (`--name`) | `geonicdb-livedeck-<demo>` | `geonicdb-livedeck-readonly` / `geonicdb-livedeck-survey` / `geonicdb-livedeck-feedback` |
-| XACML ポリシー (`policyId`) | `geonicdb-livedeck-<demo>`（対応するキーと同名） | 同上 |
+| API キー名 (`--name`) | **デッキ全体で 1 つ**に統合 | `geonicdb-livedeck-deck` |
+| XACML ポリシー (`policyId`) | **1 つ**に統合（全デモの権限をまとめる） | `geonicdb-livedeck-deck` |
 | カスタムデータモデル | NGSI-LD のエンティティ型名（`PollVote` / `Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `PollVote` / `Feedback` |
 | デッキ専用の自由形状エンティティ型（例外） | カスタムデータモデルを持たず、共有テナントで他用途と明確に分離したい型は `geonicdb-livedeck-<Type>` を付けてよい | `geonicdb-livedeck-MapFeature`（共同編集 GIS） |
 
