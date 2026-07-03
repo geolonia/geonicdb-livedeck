@@ -9,6 +9,7 @@ import { config } from "../lib/config";
 import { createClient } from "../lib/client";
 import { byId, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
+import { isRecent } from "../lib/recency";
 
 interface Option {
   choice: string;
@@ -140,7 +141,8 @@ export function initSurvey(): void {
 
   function load(): Promise<void> {
     return db!.getEntities({ type: DS.type, limit: 1000 }).then((res) => {
-      const list = Array.isArray(res) ? res : [];
+      // 初期ロードは直近 24 時間の票のみ（WS のリアルタイム受信分は対象外）。
+      const list = (Array.isArray(res) ? res : []).filter((e) => isRecent(e));
       list.forEach((e) => tally(e));
       render();
     });
