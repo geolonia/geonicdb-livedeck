@@ -25,7 +25,9 @@ jobs:
       - run: npm ci
       # Vite ビルド。BASE_URL は Pages のサブパス、API キーはリポジトリ
       # シークレットを VITE_* 環境変数として注入する（バンドルへ埋め込み）。
-      - run: npm run build
+      - run: |
+          : "${VITE_GEONICDB_KEY:?GEONICDB_KEY secret is required}"
+          npm run build
         env:
           BASE_URL: /${{ github.event.repository.name }}/
           VITE_GEONICDB_KEY: ${{ secrets.GEONICDB_KEY }}
