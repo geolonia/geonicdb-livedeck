@@ -72,7 +72,7 @@ npm run dev        # → http://localhost:8745
 - フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
 - 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）と「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）。
 - 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
-- 認可: 統合キー **`geonicdb-livedeck-deck`**（GET|WS + `Feedback` への POST、`/custom-data-models/**` の GET）。
+- 認可: 統合キー **`geonicdb-livedeck-deck`**（GET|WS + `Feedback` への POST、`/custom-data-models/Feedback` の GET）。
 
 ### 避難所の混雑（`src/demos/shelter.ts`・自治体ユースケース）
 - 高松市の指定避難所（`EvacuationArea`）を地図に表示し、**Temporal API** で固定期間（2026-06-26 の24時間）の受入状況を取得 → **混雑度で色分け**。タイムスライダー／再生で時間変化を再生、避難所クリックで受入率の推移をポップアップ表示。
@@ -99,12 +99,16 @@ npm run dev        # → http://localhost:8745
 
 デッキ全体で **1 つのキー `geonicdb-livedeck-deck`** を使う（テナントの API キー上限対策）。ポリシー `geonicdb-livedeck-deck` に、各デモが必要とする型別 GET/POST・WS・パスをまとめて許可する。**新デモを足すときは新キーを作らず、この 1 ポリシーに権限を追記**する（`geonic me policies update geonicdb-livedeck-deck @patch.json`）。
 
+このキーは公開バンドルに埋め込まれるため、**最小権限**を保つ（破壊系 `PUT`/`PATCH`/`DELETE` は一切許可しない・append-only）。読み取りも実使用分だけに絞る:
+- `allow-read-types`（型別 GET）は**型別クエリで読む型のみ**列挙する。`EnvironmentSensor`（dual: by-id 取得）と `WeatherObserved`（temporal 取得）は型別 GET しないため含めず、`allow-get-paths` の個別パスだけで許可する。
+- `allow-get-paths` の `/custom-data-models/**` は実際に読む `/custom-data-models/Feedback` に限定する。
+
 ```bash
 # 統合ポリシー（全デモの型別 GET/POST + WS + 必要パスを 1 つに）
 cat > deck-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-deck",
-  "description": "geonicdb-livedeck: 全デモ統合キー用ポリシー",
+  "description": "geonicdb-livedeck: 全デモ統合キー用ポリシー（最小権限）",
   "target": { "resources": [
     {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
     {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
@@ -114,7 +118,7 @@ cat > deck-policy.json <<'JSON'
   "rules": [
     {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[{"attributeId":"method","matchValue":"WS"}]}},
     {"ruleId":"allow-read-types","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved|EvacuationArea|Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message|geonicdb-livedeck-MessageLog)$","matchFunction":"string-regexp"}],
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EvacuationArea|Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message|geonicdb-livedeck-MessageLog)$","matchFunction":"string-regexp"}],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"allow-write-types","effect":"Permit","target":{
       "resources":[{"attributeId":"entityType","matchValue":"^(Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message)$","matchFunction":"string-regexp"}],
@@ -129,7 +133,7 @@ cat > deck-policy.json <<'JSON'
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*EvacuationArea*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
+        {"attributeId":"path","matchValue":"/custom-data-models/Feedback","matchFunction":"glob"}
       ],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"deny-others","effect":"Deny"}
@@ -153,8 +157,9 @@ geonic -s miya me api-keys create \
 
 ```bash
 # policy: GET 読み取りのみ。さらに必要なエンティティタイプだけに限定
-#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EnvironmentSensor / WeatherObserved / EvacuationArea）
+#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EvacuationArea のみ）
 #   - ID 指定 GET は entityType が認可に乗らないため、パスで個別に許可
+#     （EnvironmentSensor は by-id、WeatherObserved は temporal 取得のみ。型別 GET しないので allow-by-type には含めない）
 #   - 避難所デモは temporal を型指定で一括取得するため /ngsi-ld/v1/temporal/entities も許可
 cat > readonly-policy.json <<'JSON'
 {
@@ -167,7 +172,7 @@ cat > readonly-policy.json <<'JSON'
   "ruleCombiningAlgorithm": "first-applicable",
   "rules": [
     {"ruleId":"allow-by-type","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved|EvacuationArea)$","matchFunction":"string-regexp"}],
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EvacuationArea)$","matchFunction":"string-regexp"}],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"allow-by-path","effect":"Permit","target":{
       "resources":[
@@ -251,7 +256,7 @@ cat > feedback-policy.json <<'JSON'
       "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
       "actions":[{"attributeId":"method","matchValue":"POST"}]}},
     {"ruleId":"allow-cdm-read","effect":"Permit","target":{
-      "resources":[{"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}],
+      "resources":[{"attributeId":"path","matchValue":"/custom-data-models/Feedback","matchFunction":"glob"}],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"deny-others","effect":"Deny"}
   ]
