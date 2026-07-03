@@ -17,6 +17,7 @@ import { config } from "../lib/config";
 import { createClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
+import { isRecent } from "../lib/recency";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface MsgEvent {
@@ -182,11 +183,12 @@ export function initMessaging(): void {
     if (ingest(evtEntity(evt))) render();
   }
   function load(): Promise<void> {
+    // 初期ロードは直近 24 時間のメッセージ／ログのみ（WS のリアルタイム受信分は対象外）。
     const p1 = db!.getEntities({ type: MS.messageType, limit: 1000 }).then((res) => {
-      (Array.isArray(res) ? res : []).forEach((e) => ingest(e));
+      (Array.isArray(res) ? res : []).filter((e) => isRecent(e)).forEach((e) => ingest(e));
     });
     const p2 = db!.getEntities({ type: MS.logType, limit: 1000 }).then((res) => {
-      (Array.isArray(res) ? res : []).forEach((e) => ingest(e));
+      (Array.isArray(res) ? res : []).filter((e) => isRecent(e)).forEach((e) => ingest(e));
     });
     return Promise.all([p1, p2]).then(() => render());
   }
