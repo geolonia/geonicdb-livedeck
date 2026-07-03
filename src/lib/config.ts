@@ -10,16 +10,8 @@ export interface DeckConfig {
   baseUrl: string;
   /** 対象テナント */
   tenant: string;
-  keys: {
-    /** 読み取り専用（GET + WS）。地図 / 標準API / 時系列デモで共用 */
-    readonly: string;
-    /** 投票用（GET|WS ＋ PollVote への POST）。ライブアンケートで使用 */
-    survey: string;
-    /** フィードバック用（GET|WS ＋ Feedback への POST）。NGSI-LD デモで使用 */
-    feedback: string;
-    /** 共同編集 GIS 用（GET|WS ＋ geonicdb-livedeck-MapFeature への POST）。 */
-    mapedit: string;
-  };
+  /** デッキ全体で共用する単一 API キー（統合ポリシー geonicdb-livedeck-deck にバインド）。 */
+  key: string;
   demos: {
     /** スライド: 標準API（NGSIv2 / NGSI-LD 二面取得） */
     dual: { ldId: string; v2Id: string };
@@ -72,12 +64,7 @@ export interface DeckConfig {
 export const config: DeckConfig = {
   baseUrl: "https://geonicdb.geolonia.com",
   tenant: "miya",
-  keys: {
-    readonly: import.meta.env.VITE_GEONICDB_READONLY_KEY ?? "",
-    survey: import.meta.env.VITE_GEONICDB_SURVEY_KEY ?? "",
-    feedback: import.meta.env.VITE_GEONICDB_FEEDBACK_KEY ?? "",
-    mapedit: import.meta.env.VITE_GEONICDB_MAPEDIT_KEY ?? "",
-  },
+  key: import.meta.env.VITE_GEONICDB_KEY ?? "",
   demos: {
     dual: { ldId: "urn:ngsi-ld:EnvironmentSensor:001", v2Id: "env-sensor-001" },
     map: { type: "AedLocation", center: [134.0475, 34.34], zoom: 11 },

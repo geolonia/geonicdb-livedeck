@@ -88,7 +88,7 @@ export function initDual(): void {
     if (started) return;
     started = true;
     setReq();
-    db = createClient("readonly");
+    db = createClient();
     run(); // 初回表示で自動取得
     byId<HTMLButtonElement>("dual-run")?.addEventListener("click", run);
   }

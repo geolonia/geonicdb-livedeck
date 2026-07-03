@@ -9,8 +9,8 @@
    メッセージ / ログをタブで切り替えて表示する。
 
    デモ登壇中のキーボード入力は難しいので、名前・本文はダミーからランダムに選ぶ。
-   認可は feedback キーを流用（API キー上限のため。feedback ポリシーに Message/
-   MessageLog の権限を追加済み）。VITE_GEONICDB_FEEDBACK_KEY。
+   認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
+   Message の GET|POST、MessageLog の GET、WS を含む。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { config } from "../lib/config";
@@ -201,7 +201,7 @@ export function initMessaging(): void {
   function start(): void {
     if (started) return;
     started = true;
-    db = createClient("feedback"); // API キー上限のため feedback キーを流用
+    db = createClient(); // デッキ共通の統合キー
     document.querySelectorAll<HTMLElement>(".slide--msg .msg-tab").forEach((t) => {
       t.addEventListener("click", () =>
         switchTab((t.getAttribute("data-tab") as "messages" | "logs") || "messages"),

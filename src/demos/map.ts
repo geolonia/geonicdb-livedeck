@@ -545,7 +545,7 @@ export function initMap(): void {
   // SDK クライアントを 1 度だけ生成（生成は軽量。DPoP トークン交換は最初のリクエストで遅延実行）。
   function ensureDb(): GeonicDB | null {
     if (db) return db;
-    db = createClient("readonly");
+    db = createClient();
     return db;
   }
 

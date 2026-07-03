@@ -464,7 +464,7 @@ export function initShelter(): void {
 
   // ---- 起動 -------------------------------------------------------
   function ensureDb(): GeonicDB {
-    if (!db) db = createClient("readonly");
+    if (!db) db = createClient();
     return db;
   }
   function prefetch(): void {

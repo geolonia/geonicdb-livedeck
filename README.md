@@ -27,12 +27,11 @@ npm run dev        # → http://localhost:8745
 
 ### 環境変数（`.env`）
 
+デッキ全体で **1 つの統合 API キー**（統合ポリシー `geonicdb-livedeck-deck`）を共用します。
+
 | 変数 | 用途 |
 |---|---|
-| `VITE_GEONICDB_READONLY_KEY` | 読み取り専用（地図・標準API・時系列デモ） |
-| `VITE_GEONICDB_SURVEY_KEY` | ライブアンケートの投票（PollVote POST） |
-| `VITE_GEONICDB_FEEDBACK_KEY` | NGSI-LD フィードバック（Feedback POST + WS） |
-| `VITE_GEONICDB_MAPEDIT_KEY` | 共同編集 GIS（geonicdb-livedeck-MapFeature POST + GET + WS） |
+| `VITE_GEONICDB_KEY` | 全デモ共通の統合キー（統合ポリシー `geonicdb-livedeck-deck`。GET/POST/WS を型別に許可・origin 制限＋DPoP） |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
@@ -41,10 +40,7 @@ npm run dev        # → http://localhost:8745
 
 | シークレット名 | 対応する env | 必須 |
 |---|---|---|
-| `GEONICDB_READONLY_KEY` | `VITE_GEONICDB_READONLY_KEY` | ✅（標準API/地図/時系列デモ） |
-| `GEONICDB_SURVEY_KEY` | `VITE_GEONICDB_SURVEY_KEY` | ✅（ライブアンケート） |
-| `GEONICDB_FEEDBACK_KEY` | `VITE_GEONICDB_FEEDBACK_KEY` | ✅（NGSI-LD フィードバック） |
-| `GEONICDB_MAPEDIT_KEY` | `VITE_GEONICDB_MAPEDIT_KEY` | ✅（共同編集 GIS） |
+| `GEONICDB_KEY` | `VITE_GEONICDB_KEY` | ✅（全デモ共通の統合キー） |
 | `VITE_GEOLONIA_API_KEY` | `VITE_GEOLONIA_API_KEY` | 任意（未設定なら `YOUR-API-KEY` にフォールバック。`*.github.io` で動作） |
 
 > いずれかの GeonicDB キーが未設定だと、そのデモが `AuthenticationError`（空キー）で動かない。新しいライブデモを足したら deploy.yml の env とこの表も更新すること。
@@ -92,12 +88,66 @@ npm run dev        # → http://localhost:8745
 ### メッセージング + Rules ログ（`src/demos/messaging.ts`・民間ユースケース）
 - 「ランダム投稿」で 名前＋メッセージ（100字まで）を NGSI-LD エンティティ（`type=geonicdb-livedeck-Message`）として作成 → **WebSocket で全員に配信**。登壇中のキーボード入力を避けるため、名前・本文はダミーから無作為に選ぶ。
 - サーバ側の **ReactiveCore Rules**（`geonicdb-livedeck-message-log`）が作成を検知して **ログ（`type=geonicdb-livedeck-MessageLog`）を自動生成**。メッセージ / ログをタブで切替。
-- 認可: **`geonicdb-livedeck-feedback` キーを流用**（API キー上限（5）に達しているため。feedback ポリシーに Message/MessageLog の GET|POST を追加）。専用キーを作る場合は §7 参照。
+- 認可: 統合キー **`geonicdb-livedeck-deck`**（Message の GET|POST、MessageLog の GET、WS を統合ポリシーに含む）。
 
 ## セットアップ（`geonic` CLI）
 
 ライブデモが使う XACML ポリシー・API キー・デモ用データは [`geonic` CLI](https://github.com/geolonia/geonicdb-cli) で作成します。
 前提: 対象テナント（例 `miya`）の `tenant_admin` として認証済み（`geonic auth login` → `geonic profile use <profile>`）。以下は `-s <tenant>` でテナントを明示する例です。
+
+### 0. 統合 API キー ＋ ポリシー（全デモ共通・最初に作る）
+
+デッキ全体で **1 つのキー `geonicdb-livedeck-deck`** を使う（テナントの API キー上限対策）。ポリシー `geonicdb-livedeck-deck` に、各デモが必要とする型別 GET/POST・WS・パスをまとめて許可する。**新デモを足すときは新キーを作らず、この 1 ポリシーに権限を追記**する（`geonic me policies update geonicdb-livedeck-deck @patch.json`）。
+
+```bash
+# 統合ポリシー（全デモの型別 GET/POST + WS + 必要パスを 1 つに）
+cat > deck-policy.json <<'JSON'
+{
+  "policyId": "geonicdb-livedeck-deck",
+  "description": "geonicdb-livedeck: 全デモ統合キー用ポリシー",
+  "target": { "resources": [
+    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
+    {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
+  ]},
+  "ruleCombiningAlgorithm": "first-applicable",
+  "rules": [
+    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[{"attributeId":"method","matchValue":"WS"}]}},
+    {"ruleId":"allow-read-types","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EnvironmentSensor|WeatherObserved|EvacuationArea|Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message|geonicdb-livedeck-MessageLog)$","matchFunction":"string-regexp"}],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"allow-write-types","effect":"Permit","target":{
+      "resources":[{"attributeId":"entityType","matchValue":"^(Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message)$","matchFunction":"string-regexp"}],
+      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
+    {"ruleId":"allow-get-paths","effect":"Permit","target":{
+      "resources":[
+        {"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/v2/entities/env-sensor-001","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*AedLocation*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EnvironmentSensor*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EvacuationArea*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*EvacuationArea*","matchFunction":"glob"},
+        {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
+      ],
+      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
+    {"ruleId":"deny-others","effect":"Deny"}
+  ]
+}
+JSON
+geonic -s miya me policies create @deck-policy.json
+
+# key（出力された gdb_… を .env の VITE_GEONICDB_KEY へ / CI シークレット GEONICDB_KEY へ）
+geonic -s miya me api-keys create \
+  --name geonicdb-livedeck-deck \
+  --policy geonicdb-livedeck-deck \
+  --origins "http://localhost:8745,https://geolonia.github.io" \
+  --dpop-required
+```
+
+> 以下 §1〜§7 は各デモが必要とする **権限の内訳**（統合ポリシーに含める型・アクション）とデモ用データの作成手順。
+> かつては per-demo にキーを分けていたが、API キー上限のため 1 キーに統合した（#37）。
 
 ### 1. 読み取り専用ポリシー＋キー（標準API・ジオクエリ・時系列・避難所デモで共用）
 

@@ -272,7 +272,7 @@ export function initTemporal(): void {
   function start(): void {
     if (started) return;
     started = true;
-    db = createClient("readonly");
+    db = createClient();
     load().catch((err: unknown) => {
       console.error("[temporal]", err);
       setConn("off");
