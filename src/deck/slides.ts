@@ -1,7 +1,9 @@
 /* ===================================================================
    GeonicDB Presentation — slide engine
    - 全画面プレゼン（Google スライド風）
-   - 移動は矢印ボタンとキーボードのみ（クリック/スワイプでは移動しない）
+   - 移動: 矢印ボタン / キーボード / 左右の余白クリック
+     （余白＝スライド枠の空きスペース・レターボックス外周。
+       テキスト・ボタン・デモ・地図などコンテンツ上では移動しない）
    - キーボード: ← → / Space / PageUp PageDown / Home End / F / Esc
    =================================================================== */
 import { byId } from "../lib/dom";
@@ -121,10 +123,33 @@ export function initDeck(): void {
     }
   });
 
-  // ナビゲーションは矢印ボタンのみ（スライド本体クリック・スワイプでは移動しない）。
   nextBtn?.addEventListener("click", next);
   prevBtn?.addEventListener("click", prev);
   fsBtn?.addEventListener("click", toggleFullscreen);
+
+  // 左右の余白クリックでのページ送り。
+  // 「余白」＝クリック対象がデッキ外周（レターボックス）またはスライド枠そのもの
+  // （.slide / .slide__inner の padding・空きスペース）の場合のみ移動する。
+  // テキスト・ボタン・デモ・地図・カードなどコンテンツ要素はいずれも
+  // .slide__inner の子孫（別要素）が e.target になるため、ここでは対象外＝移動しない。
+  function isBlankArea(el: HTMLElement | null): boolean {
+    return (
+      el === deck ||
+      (!!el && (el.classList.contains("slide") || el.classList.contains("slide__inner")))
+    );
+  }
+  deck.addEventListener("click", (e) => {
+    const el = e.target as HTMLElement | null;
+    if (!isBlankArea(el)) return;
+    // テキストをドラッグ選択した直後のクリックでは移動しない。
+    const sel = window.getSelection?.();
+    if (sel && sel.type === "Range" && sel.toString().length > 0) return;
+    // 現在のスライドの中心を基準に、左側なら前へ・右側なら次へ。
+    const rect = slides[current]?.getBoundingClientRect();
+    const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    if (e.clientX < centerX) prev();
+    else next();
+  });
 
   // ヒントの自動非表示。
   let hintTimer = window.setTimeout(() => hint?.classList.add("is-hidden"), 4500);
