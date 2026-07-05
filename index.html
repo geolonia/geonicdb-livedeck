@@ -994,17 +994,24 @@
         <div class="map-head">
           <span class="kicker">ユースケース・民間 / メッセージング</span>
           <h2 class="slide__title map-title">リアルタイムメッセージング</h2>
-          <p class="map-desc">投稿（名前＋メッセージ）は NGSI-LD エンティティとして作成され <strong>WebSocket で全員に配信</strong>。サーバの <strong>ReactiveCore Rules</strong> が投稿を検知して<strong>ログを自動記録</strong>します。メッセージとログをタブで切り替えられます。</p>
+          <p class="map-desc">投稿（名前＋メッセージ）は NGSI-LD エンティティとして作成され <strong>WebSocket で全員に配信</strong>。サーバの <strong>ReactiveCore Rules</strong> が投稿を検知して<strong>ログを自動記録</strong>します。メッセージとログを<strong>並べてリアルタイムに確認</strong>できます。</p>
         </div>
         <div class="demo-body msg-body">
           <div class="msg-app">
-            <div class="msg-tabs">
-              <button class="msg-tab is-active" data-tab="messages">💬 メッセージ <b id="msg-count">0</b></button>
-              <button class="msg-tab" data-tab="logs">📋 ログ <b id="msg-log-count">0</b></button>
+            <div class="msg-bar">
+              <span class="msg-bar__hint">投稿すると ReactiveCore Rules がログを自動生成します</span>
               <button id="msg-post" class="geo-btn msg-post">＋ ランダム投稿</button>
             </div>
-            <div class="msg-feed" id="msg-feed" data-tab="messages"></div>
-            <div class="msg-feed" id="msg-logs" data-tab="logs" hidden></div>
+            <div class="msg-cols">
+              <div class="msg-col">
+                <div class="msg-col__head">💬 メッセージ <b id="msg-count">0</b></div>
+                <div class="msg-feed" id="msg-feed"></div>
+              </div>
+              <div class="msg-col msg-col--logs">
+                <div class="msg-col__head">📋 ログ <b id="msg-log-count">0</b></div>
+                <div class="msg-feed" id="msg-logs"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="demo-note">
