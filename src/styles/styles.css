@@ -1258,7 +1258,8 @@ html, body {
   border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 9px 11px;
   white-space: pre-wrap; word-break: break-all;
 }
-.shelter-note { margin: 0; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,.45); }
+.shelter-note { margin: 0; font-size: 13px; line-height: 1.5; color: #ff6b6b; font-weight: 700; }
+.shelter-note::before { content: "⚠ "; }
 
 /* クリック時のポップアップ（受入率グラフ入り・MapLibre の白背景） */
 .aed-map .maplibregl-popup-content strong { color: #e8401e; }
