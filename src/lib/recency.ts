@@ -13,10 +13,8 @@
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
 
-/** 蓄積系デモの初期ロード対象ウィンドウ（直近 24 時間）。 */
+/** 蓄積系デモ（survey / messaging / collab）の初期ロード対象ウィンドウ（直近 24 時間）。 */
 export const RECENT_WINDOW_MS = DAY_MS;
-/** 共同編集 GIS（collab）の初期ロード対象ウィンドウ（直近 1 週間）。 */
-export const WEEK_MS = 7 * DAY_MS;
 
 // 作成時刻の推定に使う日時プロパティ（優先順）。
 // createdAt: NGSI-LD のシステム属性（返れば最も正確）。drawnAt: collab の作図時刻。

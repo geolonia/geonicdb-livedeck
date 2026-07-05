@@ -15,7 +15,7 @@ import { config } from "../lib/config";
 import { createClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
-import { entityCreatedAt, WEEK_MS } from "../lib/recency";
+import { entityCreatedAt, RECENT_WINDOW_MS } from "../lib/recency";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type AnyMap = any;
@@ -82,12 +82,12 @@ export function initCollab(): void {
       },
     };
   }
-  // 表示対象は直近 1 週間に作成された地物のみ（drawnAt、無ければ id 埋め込みの時刻で判定）。
+  // 表示対象は直近 24 時間に作成された地物のみ（drawnAt、無ければ id 埋め込みの時刻で判定）。
   // 時刻判定は共有ヘルパ（src/lib/recency）に集約。
   function ingest(e: Record<string, any> | null): boolean {
     const id = e?.id as string | undefined;
     if (!e || !id || features[id]) return false;
-    if (Date.now() - entityCreatedAt(e) > WEEK_MS) return false; // 直近1週間のみ表示
+    if (Date.now() - entityCreatedAt(e) > RECENT_WINDOW_MS) return false; // 直近24時間のみ表示
     const f = toFeature(e);
     if (!f) return false;
     features[id] = f;
