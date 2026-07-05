@@ -1,0 +1,66 @@
+# GeonicDB
+
+> GeonicDB は FIWARE Orion 互換のフルマネージド Context Broker（コンテキストブローカー）サービス。IoT・都市・業務システムが生む「いま」の状態（コンテキスト）を、標準 API で登録・保持・問い合わせ・購読できる基盤を、運用レスな SaaS として提供します。NGSIv2 と NGSI-LD を 1 エンジンで両対応し、AI・地理空間ネイティブ、エンタープライズ級の認証認可を備えます。
+
+GeonicDB は、データの生産者と利用者を疎結合につなぐ「都市 OS」的な中継役です。1 つの GeonicDB をテナント（組織・プロジェクト）単位で完全分離して共有でき、`NGSILD-Tenant` / `Fiware-Service` ヘッダでテナントが切り替わります。データも権限もテナント境界で隔離されます。
+
+提供元は Geolonia, Inc.。サーバーレスで自動スケールし、冗長構成＋マルチリージョンで高可用（自動フェイルオーバー 10–30 秒、RTO < 5 分 / RPO < 1 分）。利用者はサーバー運用やスケーリングを意識せず、プランに応じて使えます。
+
+このファイルは製品紹介ライブデッキ（実接続のデモ入りスライド）の内容をもとに生成した、LLM 向けの概要です。
+
+## 標準準拠とプロトコル
+
+- NGSI-LD（ETSI GS CIM 009）: エンティティ同士が Relationship でつながるリンクトデータ。JSON-LD が土台。組織を越えても意味を保ったまま連携できます。
+- FIWARE NGSIv2: FIWARE スマートシティ/IoT 基盤群が定める API。GeonicDB は 1 つのブローカーで NGSIv2 と NGSI-LD の両方に対応し、用途に合わせてどちらの形式でもエンティティを取得できます。
+- マルチテナンシー: `Fiware-Service` / `NGSILD-Tenant` によるテナント完全分離。エンティティ ID が同じでもテナントが違えば別物として扱われます。
+
+## コア機能
+
+- エンティティ CRUD: 一覧・ページング・フィルタ・ソート、属性レベル操作、バッチ操作（NGSIv2 `POST /v2/op/update`、NGSI-LD の create/upsert/update/merge/delete/purge・最大 100 件）。
+- 時系列（Temporal API）: すべての変化を履歴として保持。`timerel`（after/before/between）・`lastN`・集約 `aggrMethods`（count/sum/avg/min/max/stddev…）に対応。MongoDB Time Series 格納。
+- 地理空間（Geo-query）: `georel`（near/within/intersects…）、空間 ID（ZFXY・`spatialIdDepth`）、CRS 変換（EPSG:4326/3857）、GeoJSON 出力、ベクトルタイル（TileJSON 3.0・自動クラスタリング）。
+- サブスクリプション / リアルタイム: エンティティの作成・更新・削除を購読し、変化した瞬間に WebSocket で即時プッシュ、または Webhook / MQTT（3.1.1・5.0）で外部通知。ポーリング不要。
+- ReactiveCore Rules: 内蔵ルールエンジン。エンティティの変化を監視し、CEL 条件に一致すると通知・Webhook・属性更新・派生エンティティ生成などのアクションを自動実行。外部ワークフロー基盤の構築不要。
+- フェデレーション: テナントやドメインの異なる複数の GeonicDB を 1 つの窓口に統合。Context Source Registration にもとづき分散クエリ/更新を並列転送し、結果をマージ。形式差は自動変換。ループ検知（Via）・警告ヘッダ（`NGSILD-Warning`）対応。
+- データモデル / カタログ: Smart Data Models（8+ ドメイン・50+ 型）、カスタムデータモデル（JSON Schema 自動生成・検証）、データカタログ（DCAT / CKAN・全文検索）、CADDE 連携。
+
+## AI 連携
+
+- 機械可読ディスカバリ（いずれも未認証で取得可能。エージェントが自力で仕様を把握できる）: `/.well-known/ai-plugin.json`、`/llms.txt`、`/openapi.json`・`/api.json`（OpenAPI 3.0）、`/tools.json`（Function Calling スキーマ）。
+- MCP（Model Context Protocol）: `POST /mcp`。Streamable HTTP（ステートレス）。Claude / Cursor など MCP クライアントから直結。
+- A2A（Agent-to-Agent）: `POST /a2a`（JSON-RPC 2.0・protocol 0.2.2）、Agent Card `/.well-known/agent-card.json`。
+- 統一 5 ツール: `entities` / `batch` / `temporal` / `config` / `admin`。SDK / CLI と同じ API・同じ認可で動作し、ツール実行はアクセス主体のロールに従う（`config` / `admin` は tenant_admin / super_admin のみ）。エージェント経由でも XACML の権限は越えられません。
+- 各種設定・データ作成・アプリ開発を、MCP サーバーや CLI を通じて自然言語で AI に依頼できます（AI サービスは別途契約が必要）。
+
+## 認証・認可 / セキュリティ
+
+- 5 種の認証: JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）。
+- XACML 3.0 単一レイヤ: 5 ロール × 属性ベースのきめ細かいポリシー。ポリシーセット・優先度・deny-fence、XACML エクスポート/インポート。PEP プロキシ（Wilma 等）を別途立てる必要がありません。
+- per-tenant IP 制限（allowlist）、トークン失効、監査ログ（`level=AUDIT`。`LOG_LEVEL=SILENT` でも必ず出力、コンプライアンス用途）。
+- テナント削除時の暗号消去（crypto-shred・AWS KMS 鍵失効・AES-256-GCM）＋削除レポート。
+
+## 開発者向けインターフェース
+
+- JavaScript SDK: `@geolonia/geonicdb-sdk`（型定義つき）。
+- 公式 CLI: `geonic`（管理・認証・JSON/YAML 出力）。
+- OpenAPI / Swagger: `/openapi.json`・`/api.json`。
+- 入力検証: 全入力を Zod スキーマで検証（ID/型/属性名 最大 256 字、クエリ 2000 字、正規表現 200 字・ReDoS 対策、ネスト深度 10）。
+
+## ユースケース
+
+- スマートシティ / 自治体: 交通・駐車・環境モニタリング。空間 ID・CADDE で日本市場に適合。防災（避難所の混雑度を Temporal API で可視化）。
+- AI 駆動 IoT 分析: MCP 経由でエージェントが自律的にデータ投入・検索、自動バリデーション。
+- オープンデータ公開: DCAT-AP / CKAN ハーベスタ連携でポータルへ自動収集。
+- マルチテナント SaaS: XACML・IP 制限・JWT RBAC で PEP プロキシ不要。
+- 地図・位置情報アプリ: ベクトルタイル直結でカスタム描画コード不要。共同編集 GIS（地図の地物を NGSI-LD として作成し WebSocket で全員に反映）。
+- LLM アシスタント付き Web: SDK 型定義 + MCP で Claude / Cursor から開発。
+
+## Resources
+
+- [製品紹介ライブデッキ（GeonicDB のご紹介）](https://geolonia.github.io/geonicdb-livedeck/): 本 llms.txt の元となる、実接続ライブデモ入りのスライド。
+- [Geolonia, Inc.](https://geolonia.com/): 提供元。
+
+## Optional
+
+- ステージング環境 `https://geonicdb.geolonia.com` はドッグフーディング用の稼働環境です（本番の顧客データではありません）。
+- デモ内のサンプルデータ（避難所の混雑度など）は説明用であり、実際の実績値ではありません。
