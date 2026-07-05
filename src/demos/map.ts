@@ -432,7 +432,10 @@ export function initMap(): void {
         setPick(false);
         updateQueryView();
         drawGeo();
-        runGeoQuery(true); // 初回ピックで円に合わせてフレーミング
+        // スライダー操作と同様、取得前に円へフィットさせてから near クエリを実行する
+        // （ダウンロード完了を待たずに地図が円へ収まる）。
+        fitToCircle();
+        runGeoQuery(false);
         return;
       }
       const clusters = map.queryRenderedFeatures(pt, { layers: ["aed-clusters"] });

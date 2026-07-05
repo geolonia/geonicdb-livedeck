@@ -565,6 +565,8 @@ html, body {
 .grid-bg {
   position: absolute;
   inset: 0;
+  /* 装飾レイヤー。クリック/タップは下の .slide へ透過させ、左右余白でのページ送りを妨げない。 */
+  pointer-events: none;
   background-image:
     linear-gradient(rgba(252,108,0,.07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(252,108,0,.07) 1px, transparent 1px);

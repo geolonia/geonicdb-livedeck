@@ -431,7 +431,7 @@ export function initShelter(): void {
     const btn = byId("shelter-play");
     if (playTimer) return stop();
     if (sel >= times.length - 1) setSel(0);
-    if (btn) btn.textContent = "⏸ 停止";
+    if (btn) btn.textContent = "停止";
     playTimer = window.setInterval(() => {
       if (sel >= times.length - 1) return stop();
       setSel(sel + 1);
