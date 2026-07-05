@@ -16,7 +16,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@geolonia/geonicdb-sdk": "^0.11.0",
+    "@geolonia/geonicdb-sdk": "^0.14.0",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
