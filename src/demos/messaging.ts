@@ -6,7 +6,7 @@
    （type=geonicdb-livedeck-Message）として作成 → WebSocket で全員に配信。
    サーバ側の ReactiveCore Rules（geonicdb-livedeck-message-log）が作成を検知して
    ログ（type=geonicdb-livedeck-MessageLog）を自動生成し、それも WS で届く。
-   メッセージ / ログをタブで切り替えて表示する。
+   メッセージ列とログ列を横並びに表示し、両方をリアルタイムに更新する。
 
    デモ登壇中のキーボード入力は難しいので、名前・本文はダミーからランダムに選ぶ。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
@@ -56,7 +56,6 @@ export function initMessaging(): void {
 
   let db: GeonicDB | null = null;
   let started = false;
-  let tab: "messages" | "logs" = "messages";
 
   const messages: Record<string, any> = Object.create(null); // id -> message entity
   const logs: Record<string, any> = Object.create(null); // id -> log entity
@@ -154,19 +153,8 @@ export function initMessaging(): void {
   }
   function render(): void {
     setCounts();
-    if (tab === "messages") renderMessages();
-    else renderLogs();
-  }
-  function switchTab(next: "messages" | "logs"): void {
-    tab = next;
-    document.querySelectorAll<HTMLElement>(".slide--msg .msg-tab").forEach((t) => {
-      t.classList.toggle("is-active", t.getAttribute("data-tab") === next);
-    });
-    const feed = byId("msg-feed");
-    const logsEl = byId("msg-logs");
-    if (feed) feed.hidden = next !== "messages";
-    if (logsEl) logsEl.hidden = next !== "logs";
-    render();
+    renderMessages();
+    renderLogs();
   }
 
   // ---- データ取得 / WS -------------------------------------------
@@ -204,11 +192,6 @@ export function initMessaging(): void {
     if (started) return;
     started = true;
     db = createClient(); // デッキ共通の統合キー
-    document.querySelectorAll<HTMLElement>(".slide--msg .msg-tab").forEach((t) => {
-      t.addEventListener("click", () =>
-        switchTab((t.getAttribute("data-tab") as "messages" | "logs") || "messages"),
-      );
-    });
     byId("msg-post")?.addEventListener("click", post);
     render();
     connect(); // 先に購読してから既存を取得（取りこぼし防止）
