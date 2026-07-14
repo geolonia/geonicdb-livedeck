@@ -315,28 +315,37 @@ export function initFeedback(): void {
     }
     return regionNames[code] ?? code;
   }
-  // 地域は回答のあった都道府県のみ。多い順に上位 4 ＋「その他」に丸める。
-  const REGION_OTHER = "__other";
+  // 地域は回答のあった都道府県のみを多い順に（10% 未満の丸めは groupSmall が行う）。
   function regionItems(): PieItem[] {
-    const entries = Object.entries(regionCounts)
+    return Object.entries(regionCounts)
       .filter(([, n]) => n > 0)
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-    const shown = entries.length <= PIE_COLORS.length - 1 ? entries : entries.slice(0, 4);
-    const items = shown.map(([code, n], i) => ({
-      key: code,
-      label: regionName(code),
-      color: PIE_COLORS[i],
-      n,
-    }));
-    const rest = entries.slice(shown.length);
-    if (rest.length)
-      items.push({
-        key: REGION_OTHER,
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([code, n], i) => ({
+        key: code,
+        label: regionName(code),
+        color: PIE_COLORS[i % (PIE_COLORS.length - 1)],
+        n,
+      }));
+  }
+
+  // 全体の 10% 未満のスライスは「その他」（グレー）に集約する。
+  // スライス数の上限（色数）を超えた分も同様に丸める。
+  const OTHER_KEY = "__other";
+  const OTHER_SHARE = 0.1;
+  function groupSmall(items: PieItem[]): PieItem[] {
+    const t = items.reduce((s, it) => s + it.n, 0);
+    if (t === 0) return [];
+    const major = items.filter((it) => it.n / t >= OTHER_SHARE);
+    const shown = major.slice(0, PIE_COLORS.length - 1);
+    const restN = t - shown.reduce((s, it) => s + it.n, 0);
+    if (restN > 0)
+      shown.push({
+        key: OTHER_KEY,
         label: "その他",
         color: PIE_COLORS[PIE_COLORS.length - 1],
-        n: rest.reduce((s, [, n]) => s + n, 0),
+        n: restN,
       });
-    return items;
+    return shown;
   }
 
   // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
@@ -401,14 +410,14 @@ export function initFeedback(): void {
     renderPie(
       "fb-pie-interest",
       "fb-chips-interest",
-      INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 })),
+      groupSmall(INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 }))),
     );
     renderPie(
       "fb-pie-role",
       "fb-chips-role",
-      ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 })),
+      groupSmall(ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 }))),
     );
-    renderPie("fb-pie-region", "fb-chips-region", regionItems());
+    renderPie("fb-pie-region", "fb-chips-region", groupSmall(regionItems()));
   }
 
   // ---- 送信 ----
