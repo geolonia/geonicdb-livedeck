@@ -154,7 +154,7 @@
   <g stroke="#FF6A2C" stroke-width="1.6" fill="none" opacity="0.5">
     <path d="M 600,92 Q 558,220 600,360"/>
     <path d="M 88,300 Q 330,360 600,360"/>
-    <path d="M 100,150 Q 350,255 600,360"/>
+    <path d="M 1100,140 Q 850,250 600,360"/>
     <path d="M 1112,300 Q 860,350 600,360"/>
     <path d="M 1118,570 Q 840,470 600,360"/>
     <path d="M 250,360 Q 420,330 600,360"/>
@@ -162,7 +162,7 @@
   <g fill="#E8412F">
     <circle r="3.5"><animateMotion dur="3.1s" repeatCount="indefinite" path="M 600,92 Q 558,220 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 88,300 Q 330,360 600,360"/></circle>
-    <circle r="3.5"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 100,150 Q 350,255 600,360"/></circle>
+    <circle r="3.5"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 1100,140 Q 850,250 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 1112,300 Q 860,350 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="3.7s" repeatCount="indefinite" path="M 1118,570 Q 840,470 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="2.7s" repeatCount="indefinite" path="M 250,360 Q 420,330 600,360"/></circle>
@@ -218,7 +218,7 @@
       <text y="42">気象</text>
     </g>
     <!-- MapFan DB（GeoTechnologies） -->
-    <g transform="translate(100,150)">
+    <g transform="translate(1100,140)">
       <circle r="30" fill="#ffffff" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
       <g transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)" fill="#174f9e">
         <path d="M352,168.9l-35.6-17.8-21.4,10.7c-3,1.5-9.4,2.1-12.8.7l12.8,6.4c2,1,3.3,2.1,3.3,3.6s-1.3,2.6-3.3,3.6l-49.9,24.9c-3.6,1.8-5.3,2.8-7.1,2.8s-3.6-1-7.1-2.8l-42.7-21.4c-2-1-3.3-2.1-3.3-3.6s1.4-2.6,3.3-3.6l7.1-3.6-35.6-17.8-35.6,17.8c-4.4,2.2-7.1,3.8-7.1,7.1s2.6,4.9,7.1,7.1l99.7,49.9c8,4,10.2,5.1,14.2,5.1,4,0,6.2-1.1,14.2-5.1l99.7-49.9c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1h0Z"/>
