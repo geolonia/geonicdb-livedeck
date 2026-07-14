@@ -165,7 +165,6 @@
     <path d="M 1100,140 Q 850,250 600,360"/>
     <path d="M 100,150 Q 350,255 600,360"/>
     <path d="M 810,70 Q 700,215 600,360"/>
-    <path d="M 170,610 Q 380,485 600,360"/>
     <path d="M 1112,300 Q 860,350 600,360"/>
     <path d="M 1118,570 Q 840,470 600,360"/>
     <path d="M 250,360 Q 420,330 600,360"/>
@@ -176,7 +175,6 @@
     <circle r="3.5"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 1100,140 Q 850,250 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="3.9s" repeatCount="indefinite" path="M 100,150 Q 350,255 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="3.0s" repeatCount="indefinite" path="M 810,70 Q 700,215 600,360"/></circle>
-    <circle r="3.5"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 170,610 Q 380,485 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 1112,300 Q 860,350 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="3.7s" repeatCount="indefinite" path="M 1118,570 Q 840,470 600,360"/></circle>
     <circle r="3.5"><animateMotion dur="2.7s" repeatCount="indefinite" path="M 250,360 Q 420,330 600,360"/></circle>
@@ -243,17 +241,11 @@
       <use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/>
       <text y="50">住所データ</text>
     </g>
-    <!-- POI・施設データ（GeoTechnologies） -->
+    <!-- 各種地理空間情報（Geolonia） -->
     <g transform="translate(810,70)">
       <circle r="30" fill="#ffffff" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
-      <use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/>
-      <text y="50">POI・施設データ</text>
-    </g>
-    <!-- 空間ID（Geolonia） -->
-    <g transform="translate(170,610)">
-      <circle r="30" fill="#ffffff" stroke="#FF540D" stroke-width="2" filter="url(#cardShadow)"/>
       <use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/>
-      <text y="50">空間ID</text>
+      <text y="50">各種地理空間情報</text>
     </g>
     <!-- 人流データ（トリマ / GeoTechnologies） -->
     <g transform="translate(88,300)">
