@@ -497,7 +497,7 @@ html, body {
 .fb-pie-col { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .fb-pie-col__title { flex: 0 0 auto; font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.75); }
 /* 3 つのグラフが同じ大きさになるよう固定サイズ（チップの行数差で伸縮させない） */
-.fb-pie { flex: 0 0 auto; width: 172px; height: 172px; }
+.fb-pie { flex: 0 0 auto; width: 208px; height: 208px; }
 .fb-pie__ring { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 34; }
 .fb-pie__seg {
   fill: none; stroke-width: 34;
