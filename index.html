@@ -604,13 +604,13 @@
           <div class="fb-result">
             <div class="fb-json-wrap">
               <div class="fb-tabs" role="tablist">
-                <button type="button" class="fb-tab" data-panel="chart" role="tab">集計結果</button>
-                <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
+                <button type="button" class="fb-tab is-active" data-panel="chart" role="tab">集計結果</button>
+                <button type="button" class="fb-tab" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
                 <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
               </div>
-              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity" hidden>送信するとここに実エンティティが表示されます…</pre>
               <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
-              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart" hidden>
+              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart">
                 <div class="fb-chart__title">回答の集計<span id="fb-chart-total" class="fb-chart__total"></span></div>
                 <div class="fb-pies">
                   <div class="fb-pie-col">
