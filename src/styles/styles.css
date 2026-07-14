@@ -509,10 +509,10 @@ html, body {
 }
 .fb-pie-chips { flex: 0 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; max-width: 100%; }
 .fb-pie-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 11px; font-weight: 700; color: rgba(255,255,255,.85); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 8.5px; font-weight: 700; color: rgba(255,255,255,.85); white-space: nowrap;
 }
-.fb-pie-chip__dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; }
+.fb-pie-chip__dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; }
 .fb-json .j-key { color: #fc9a4c; }
 .fb-json .j-str { color: #9fe0c8; }
 .fb-json .j-num { color: #f2c14e; }
