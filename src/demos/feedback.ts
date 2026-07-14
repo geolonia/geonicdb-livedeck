@@ -11,7 +11,7 @@
 
    右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」
    「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」
-   「集計結果（関心ユースケース別バーチャート）」を表示し、
+   「集計結果（関心ユースケース別の円グラフ）」を表示し、
    件数・集計は WebSocket の entityCreated でリアルタイム更新する。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
@@ -256,41 +256,58 @@ export function initFeedback(): void {
     interestCounts[key] += 1;
     return key;
   }
-  // チャートの行を一度だけ作り、以降は幅とラベルのみ更新する（マークアップはアンケートと共通）。
+  // ドーナツ円グラフ＋凡例を一度だけ作り、以降はセグメント長と値のみ更新する。
+  // セグメントは stroke-dasharray/-offset で描くため、更新が CSS transition で滑らかに動く。
+  const PIE_R = 70;
+  const PIE_C = 2 * Math.PI * PIE_R;
   function buildChart(): void {
-    const rows = byId("fb-chart-rows");
-    if (!rows || rows.childElementCount) return;
-    rows.innerHTML = INTERESTS.map(
+    const svg = byId("fb-pie");
+    const legend = byId("fb-chart-rows");
+    if (!svg || !legend || svg.childElementCount) return;
+    svg.innerHTML =
+      '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>' +
+      INTERESTS.map(
+        (o) =>
+          '<circle class="fb-pie__seg" data-choice="' + o.key + '" cx="100" cy="100" r="' +
+          PIE_R + '" stroke="' + o.color + '" stroke-dasharray="0 ' + PIE_C +
+          '" transform="rotate(-90 100 100)"/>',
+      ).join("") +
+      '<text id="fb-pie-total" class="fb-pie__total" x="100" y="104">0</text>' +
+      '<text class="fb-pie__unit" x="100" y="126">件</text>';
+    legend.innerHTML = INTERESTS.map(
       (o) =>
-        '<div class="svy-row" data-choice="' +
-        o.key +
-        '"><div class="svy-row__head"><span class="svy-row__label">' +
-        o.label +
-        '</span><span class="svy-row__val"><span class="svy-row__n">0</span>' +
-        '<span class="svy-row__pct">0%</span></span></div>' +
-        '<div class="svy-bar"><div class="svy-bar__fill" style="background:' +
-        o.color +
-        '"></div></div></div>',
+        '<div class="fb-legend__row" data-choice="' + o.key + '">' +
+        '<span class="fb-legend__dot" style="background:' + o.color + '"></span>' +
+        '<span class="fb-legend__label">' + o.label + '</span>' +
+        '<span class="fb-legend__val"><span class="fb-legend__n">0</span>' +
+        '<span class="fb-legend__pct">0%</span></span></div>',
     ).join("");
   }
   function renderChart(bumpKey?: string): void {
     buildChart();
-    const rows = byId("fb-chart-rows");
-    if (!rows) return;
+    const svg = byId("fb-pie");
+    const legend = byId("fb-chart-rows");
+    if (!svg || !legend) return;
     const t = INTERESTS.reduce((s, o) => s + (interestCounts[o.key] ?? 0), 0);
-    const tot = byId("fb-chart-total");
-    if (tot) tot.textContent = t ? "（全 " + t + " 件）" : "";
+    const totalEl = byId("fb-pie-total");
+    if (totalEl) totalEl.textContent = String(t);
+    let acc = 0; // 累積割合（次セグメントの開始位置）
     INTERESTS.forEach((o) => {
-      const row = rows.querySelector<HTMLElement>('.svy-row[data-choice="' + o.key + '"]');
-      if (!row) return;
       const n = interestCounts[o.key] ?? 0;
-      const pct = t > 0 ? Math.round((n / t) * 100) : 0;
-      const nEl = row.querySelector<HTMLElement>(".svy-row__n");
-      const pctEl = row.querySelector<HTMLElement>(".svy-row__pct");
-      const fill = row.querySelector<HTMLElement>(".svy-bar__fill");
+      const frac = t > 0 ? n / t : 0;
+      const pct = t > 0 ? Math.round(frac * 100) : 0;
+      const seg = svg.querySelector('.fb-pie__seg[data-choice="' + o.key + '"]');
+      if (seg) {
+        seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
+        seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
+      }
+      acc += frac;
+      const row = legend.querySelector<HTMLElement>('.fb-legend__row[data-choice="' + o.key + '"]');
+      if (!row) return;
+      const nEl = row.querySelector<HTMLElement>(".fb-legend__n");
+      const pctEl = row.querySelector<HTMLElement>(".fb-legend__pct");
       if (nEl) nEl.textContent = String(n);
       if (pctEl) pctEl.textContent = pct + "%";
-      if (fill) fill.style.width = pct + "%";
       if (bumpKey === o.key) {
         row.classList.remove("is-bump");
         void row.offsetWidth;

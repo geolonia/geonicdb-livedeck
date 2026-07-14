@@ -611,8 +611,11 @@
               <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
               <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
               <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart" hidden>
-                <div class="fb-chart__title">関心のあるユースケース別の回答数<span id="fb-chart-total" class="fb-chart__total"></span></div>
-                <div id="fb-chart-rows" class="fb-chart__rows"></div>
+                <div class="fb-chart__title">関心のあるユースケース別の回答数</div>
+                <div class="fb-pie-wrap">
+                  <svg id="fb-pie" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
+                  <div id="fb-chart-rows" class="fb-legend"></div>
+                </div>
               </div>
             </div>
           </div>
