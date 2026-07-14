@@ -9,9 +9,10 @@
      - お住まいの地域       → Relationship（urn:ngsi-ld:AdministrativeArea:*）
      - 会場の位置           → GeoProperty（固定座標）
 
-   右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」と
-   「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」を表示し、
-   件数は WebSocket の entityCreated で集計する。
+   右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」
+   「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」
+   「集計結果（関心・所属・地域の 3 つの円グラフ）」を表示し、
+   件数・集計は WebSocket の entityCreated でリアルタイム更新する。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
    =================================================================== */
@@ -46,6 +47,39 @@ const FEEDBACK_MODEL = {
   },
 };
 
+// 集計結果タブの選択肢と色（キー・ラベルは左フォームの選択肢と一致させる）。
+const USECASE_PREFIX = "urn:ngsi-ld:UseCase:";
+const REGION_PREFIX = "urn:ngsi-ld:AdministrativeArea:";
+const PIE_COLORS = ["#fc6c00", "#39d6c6", "#fba40c", "#e8401e", "#c89bff", "#6b7a90"];
+const INTERESTS = [
+  { key: "disaster", label: "防災・減災", color: PIE_COLORS[0] },
+  { key: "environment", label: "環境モニタリング", color: PIE_COLORS[1] },
+  { key: "mobility", label: "交通・モビリティ", color: PIE_COLORS[2] },
+  { key: "energy", label: "エネルギー", color: PIE_COLORS[3] },
+  { key: "opendata", label: "オープンデータ", color: PIE_COLORS[4] },
+];
+const ROLES = [
+  { key: "municipality", label: "自治体", color: PIE_COLORS[0] },
+  { key: "sier", label: "SIer・受託開発", color: PIE_COLORS[1] },
+  { key: "startup", label: "スタートアップ", color: PIE_COLORS[2] },
+  { key: "research", label: "研究・教育", color: PIE_COLORS[3] },
+  { key: "other", label: "その他", color: PIE_COLORS[4] },
+];
+
+/** 円グラフの 1 スライス。 */
+interface PieItem {
+  key: string;
+  label: string;
+  color: string;
+  n: number;
+}
+/** 1 回答が各グラフに与える集計キー（bump 対象の伝搬用）。 */
+interface TallyKeys {
+  interest?: string;
+  role?: string;
+  region?: string;
+}
+
 export function initFeedback(): void {
   const FB = config.demos.feedback;
   const slides = Array.from(document.querySelectorAll(".slide"));
@@ -55,6 +89,12 @@ export function initFeedback(): void {
   let started = false;
   let stars = 5; // 期待度の初期値
   const seen: Record<string, true> = Object.create(null); // feedback id -> true（件数の冪等集計）
+  const seenChart: Record<string, true> = Object.create(null); // feedback id -> true（集計結果の冪等集計）
+  const interestCounts: Record<string, number> = Object.create(null); // usecase key -> 件数
+  const roleCounts: Record<string, number> = Object.create(null); // role key -> 件数
+  const regionCounts: Record<string, number> = Object.create(null); // 都道府県コード -> 件数
+  INTERESTS.forEach((o) => (interestCounts[o.key] = 0));
+  ROLES.forEach((o) => (roleCounts[o.key] = 0));
 
   // ---- helpers ----
   const sel = (id: string) => byId<HTMLSelectElement>(id);
@@ -217,6 +257,168 @@ export function initFeedback(): void {
     if (evt.entity && typeof evt.entity.id === "string") return evt.entity.id;
     return evt.entityId;
   }
+  // WS イベントからエンティティ形を復元する（entity か data + entityId のどちらでも）。
+  function evtEntity(evt: FbEvent | null): Record<string, unknown> | null {
+    if (!evt) return null;
+    if (evt.entity && evt.entity.id) return evt.entity;
+    const e: Record<string, unknown> = {};
+    if (evt.data) for (const k in evt.data) e[k] = evt.data[k];
+    e.id = evt.entityId;
+    e.type = evt.entityType || FB.type;
+    return e.id ? e : null;
+  }
+
+  // ---- 集計結果タブ（関心・所属・地域の 3 つのドーナツ円グラフ）----
+  // Relationship の object からプレフィックスを外してキーを取り出す。
+  function relKey(attr: unknown, prefix: string): string | null {
+    const obj =
+      attr && typeof attr === "object" && "object" in attr
+        ? (attr as { object: unknown }).object
+        : null;
+    if (typeof obj !== "string" || !obj.startsWith(prefix)) return null;
+    return obj.slice(prefix.length);
+  }
+  // 1 回答を 3 つの集計へ反映（id で冪等）。反映できたキーを返す。
+  function chartTally(e: Record<string, unknown> | null): TallyKeys | null {
+    const id = e?.id as string | undefined;
+    if (!e || !id || seenChart[id]) return null;
+    const keys: TallyKeys = {};
+    const interest = relKey(e.interestedIn, USECASE_PREFIX);
+    if (interest && interest in interestCounts) {
+      interestCounts[interest] += 1;
+      keys.interest = interest;
+    }
+    const roleAttr = e.role as { value?: unknown } | undefined;
+    const role = roleAttr && typeof roleAttr.value === "string" ? roleAttr.value : null;
+    if (role && role in roleCounts) {
+      roleCounts[role] += 1;
+      keys.role = role;
+    }
+    const region = relKey(e.region, REGION_PREFIX);
+    if (region && /^\d{2}$/.test(region)) {
+      regionCounts[region] = (regionCounts[region] ?? 0) + 1;
+      keys.region = region;
+    }
+    if (!keys.interest && !keys.role && !keys.region) return null;
+    seenChart[id] = true;
+    return keys;
+  }
+
+  // 都道府県コード -> 名称（左フォームの選択肢から一度だけ読む。データの二重管理を避ける）。
+  let regionNames: Record<string, string> | null = null;
+  function regionName(code: string): string {
+    if (!regionNames) {
+      regionNames = Object.create(null) as Record<string, string>;
+      document
+        .querySelectorAll<HTMLOptionElement>("#fb-region option")
+        .forEach((o) => (regionNames![o.value] = o.textContent ?? o.value));
+    }
+    return regionNames[code] ?? code;
+  }
+  // 地域は回答のあった都道府県のみを多い順に（10% 未満の丸めは groupSmall が行う）。
+  function regionItems(): PieItem[] {
+    return Object.entries(regionCounts)
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([code, n], i) => ({
+        key: code,
+        label: regionName(code),
+        color: PIE_COLORS[i % (PIE_COLORS.length - 1)],
+        n,
+      }));
+  }
+
+  // 全体の 10% 未満のスライスは「その他」（グレー）に集約する。
+  // スライス数の上限（色数）を超えた分も同様に丸める。
+  const OTHER_KEY = "__other";
+  const OTHER_SHARE = 0.1;
+  function groupSmall(items: PieItem[]): PieItem[] {
+    const t = items.reduce((s, it) => s + it.n, 0);
+    if (t === 0) return [];
+    const major = items.filter((it) => it.n / t >= OTHER_SHARE);
+    const shown = major.slice(0, PIE_COLORS.length - 1);
+    const restN = t - shown.reduce((s, it) => s + it.n, 0);
+    if (restN > 0)
+      shown.push({
+        key: OTHER_KEY,
+        label: "その他",
+        color: PIE_COLORS[PIE_COLORS.length - 1],
+        n: restN,
+      });
+    return shown;
+  }
+
+  // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
+  // 更新を CSS transition で滑らかに見せる。凡例は「バンド上の％ラベル＋グラフ下の色チップ」
+  // の 2 段構え（％はスライスが細いと重なるため 6% 以上のみ表示）。
+  const PIE_R = 70;
+  const PIE_C = 2 * Math.PI * PIE_R;
+  const PIE_SLICES = PIE_COLORS.length;
+  const PIE_MIN_LABEL = 0.06;
+  function renderPie(svgId: string, chipsId: string, items: PieItem[]): void {
+    const svg = document.getElementById(svgId);
+    const chips = byId(chipsId);
+    if (!svg || !chips) return;
+    if (!svg.childElementCount) {
+      let circles = '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>';
+      for (let i = 0; i < PIE_SLICES; i++)
+        circles +=
+          '<circle class="fb-pie__seg" data-idx="' + i + '" cx="100" cy="100" r="' + PIE_R +
+          '" stroke="transparent" stroke-dasharray="0 ' + PIE_C +
+          '" transform="rotate(-90 100 100)"/>';
+      svg.innerHTML = circles + '<g class="fb-pie__labels"></g>';
+    }
+    const t = items.reduce((s, it) => s + it.n, 0);
+    let acc = 0; // 累積割合（次セグメントの開始位置）
+    let labels = "";
+    for (let i = 0; i < PIE_SLICES; i++) {
+      const seg = svg.querySelector('.fb-pie__seg[data-idx="' + i + '"]');
+      if (!seg) continue;
+      const it = items[i];
+      const frac = it && t > 0 ? it.n / t : 0;
+      seg.setAttribute("stroke", it ? it.color : "transparent");
+      seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
+      seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
+      if (frac >= PIE_MIN_LABEL) {
+        // スライス中央角のバンド上に％を重ねる（12時起点・時計回り）
+        const a = (acc + frac / 2) * 2 * Math.PI - Math.PI / 2;
+        const x = 100 + PIE_R * Math.cos(a);
+        const y = 100 + PIE_R * Math.sin(a);
+        labels +=
+          '<text x="' + x.toFixed(1) + '" y="' + (y + 4.5).toFixed(1) + '">' +
+          Math.round(frac * 100) + "%</text>";
+      }
+      acc += frac;
+    }
+    const labelsEl = svg.querySelector(".fb-pie__labels");
+    if (labelsEl) labelsEl.innerHTML = labels;
+    chips.innerHTML = items
+      .filter((it) => it.n > 0)
+      .map(
+        (it) =>
+          '<span class="fb-pie-chip"><span class="fb-pie-chip__dot" style="background:' +
+          it.color + '"></span>' + escapeHtml(it.label) + "</span>",
+      )
+      .join("");
+  }
+  function renderChart(): void {
+    const totalEl = byId("fb-chart-total");
+    if (totalEl) {
+      const t = Object.keys(seenChart).length;
+      totalEl.textContent = t ? "（全 " + t + " 件）" : "";
+    }
+    renderPie(
+      "fb-pie-interest",
+      "fb-chips-interest",
+      groupSmall(INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 }))),
+    );
+    renderPie(
+      "fb-pie-role",
+      "fb-chips-role",
+      groupSmall(ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 }))),
+    );
+    renderPie("fb-pie-region", "fb-chips-region", groupSmall(regionItems()));
+  }
 
   // ---- 送信 ----
   function submit(): void {
@@ -233,6 +435,7 @@ export function initFeedback(): void {
       .then(() => {
         renderJson(entity);
         tally(entity.id as string); // 楽観集計。WS エコー（同 id）は冪等。
+        if (chartTally(entity)) renderChart();
         buttonState("is-ok", "✓ 作成しました"); // 成功はボタン内に表示
       })
       .catch((err: unknown) => {
@@ -253,7 +456,11 @@ export function initFeedback(): void {
   function load(): Promise<void> {
     return db!.getEntities({ type: FB.type, limit: 1000 }).then((res) => {
       const list = Array.isArray(res) ? res : [];
-      list.forEach((e) => tally(e.id as string));
+      list.forEach((e) => {
+        tally(e.id as string);
+        chartTally(e);
+      });
+      renderChart();
       // デフォルト表示として、最後（最新）の回答エンティティを出す。
       let latest: Record<string, unknown> | null = null;
       let best = "";
@@ -269,7 +476,11 @@ export function initFeedback(): void {
   }
 
   function connect(): void {
-    db!.on("entityCreated", (evt) => tally(evtId(evt as unknown as FbEvent)));
+    db!.on("entityCreated", (evt) => {
+      const fe = evt as unknown as FbEvent;
+      tally(evtId(fe));
+      if (chartTally(evtEntity(fe))) renderChart();
+    });
     db!.on("connected", () => setConn("on"));
     db!.on("open", () => setConn("on"));
     db!.on("disconnected", () => setConn("off"));
@@ -288,6 +499,7 @@ export function initFeedback(): void {
     paintStars();
     initTabs();
     setCount();
+    renderChart();
     db = createClient();
     loadModel(); // 埋め込み即時表示 → API 実データに差し替え
     load()

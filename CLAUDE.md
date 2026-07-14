@@ -10,7 +10,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 |---|---|---|
 | API キー名 (`--name`) | **デッキ全体で 1 つ**に統合 | `geonicdb-livedeck-deck` |
 | XACML ポリシー (`policyId`) | **1 つ**に統合（全デモの権限をまとめる） | `geonicdb-livedeck-deck` |
-| カスタムデータモデル | NGSI-LD のエンティティ型名（`PollVote` / `Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `PollVote` / `Feedback` |
+| カスタムデータモデル | NGSI-LD のエンティティ型名（`Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `Feedback` |
 | デッキ専用の自由形状エンティティ型（例外） | カスタムデータモデルを持たず、共有テナントで他用途と明確に分離したい型は `geonicdb-livedeck-<Type>` を付けてよい | `geonicdb-livedeck-MapFeature`（共同編集 GIS） |
 
 - **API キーはデッキ全体で 1 つに統合**（キー名／ポリシー `geonicdb-livedeck-deck`）。テナントの API キー上限対策。
@@ -23,7 +23,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 ## デモの識別
 
 スライド順序は `index.html` の `<section class="slide">` の並びで決まる。各ライブデモは
-`.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
+`.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
 のクラスで自分のスライドを特定する（`slides.indexOf(...)`）。**スライドを挿入・並べ替えても番号は自動追従するので、ドキュメントでは極力ハードな番号参照を避ける。**
 
 ## 作業の進め方

@@ -20,7 +20,6 @@ export interface DeckConfig {
     /** スライド: 時系列（Temporal API） */
     temporal: { entityId: string; from: string; to: string };
     /** スライド: ライブアンケート（WebSocket） */
-    survey: { type: string; poll: string };
     /** スライド: NGSI-LD フィードバック（カスタムデータモデル Feedback + WebSocket） */
     feedback: {
       /** カスタムデータモデルの型（サーバ側に custom-data-model 登録） */
@@ -73,7 +72,6 @@ export const config: DeckConfig = {
       from: "2026-06-26T00:00:00Z",
       to: "2026-06-27T00:30:00Z",
     },
-    survey: { type: "PollVote", poll: "features-2026" },
     feedback: {
       type: "Feedback",
       venue: { name: "会場（高松）", coordinates: [134.0475, 34.34] },

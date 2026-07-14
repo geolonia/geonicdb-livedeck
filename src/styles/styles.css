@@ -295,67 +295,6 @@ html, body {
   100% { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); transform: translateX(0); opacity: 1; }
 }
 
-/* ===== Live poll demo (WebSocket) ===== */
-.svy-body { align-items: stretch; gap: 18px; }
-
-/* left: question + options */
-.svy-poll {
-  flex: 0 0 380px; width: 380px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(252,108,0,.25);
-  border-radius: 14px; padding: 24px 22px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-.svy-q { font-size: 20px; font-weight: 800; color: #fff; line-height: 1.45; }
-.svy-options { display: flex; flex-direction: column; gap: 11px; margin-top: 2px; }
-.svy-opt {
-  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
-  font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #fff;
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
-  border-radius: 11px; padding: 14px 16px; cursor: pointer;
-  transition: background .15s, border-color .15s, transform .08s;
-}
-.svy-opt:hover { background: rgba(252,108,0,.14); border-color: rgba(252,108,0,.5); }
-.svy-opt:active { transform: scale(.99); }
-.svy-opt.is-chosen { background: rgba(252,108,0,.2); border-color: var(--cyan); }
-.svy-opt__dot { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
-.svy-msg { margin-top: auto; font-size: 14px; color: rgba(255,255,255,.6); min-height: 18px; }
-.svy-msg--ok { color: #39d6c6; }
-.svy-msg--err { color: #ffb3a6; }
-
-/* right: live aggregated bar chart */
-.svy-chart-wrap {
-  flex: 1 1 auto; min-width: 0;
-  background: rgba(0,0,0,.22);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 14px; padding: 18px 22px;
-  display: flex; flex-direction: column; min-height: 0;
-}
-.svy-chart-head {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.1);
-}
-.svy-chart-title { font-size: 17px; font-weight: 800; color: #fff; }
-.svy-total { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.5); margin-left: 4px; }
-/* distribute rows evenly so 4 bars always fit the chart area (no overflow on short devices) */
-.svy-chart { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-evenly; gap: 8px; padding: 4px 0; }
-.svy-row__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
-.svy-row__label { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.9); }
-.svy-row__val { font-family: var(--font-mono); }
-.svy-row__n { font-size: 16px; font-weight: 800; color: #fff; }
-.svy-row__pct { font-size: 11px; color: rgba(255,255,255,.5); margin-left: 7px; }
-.svy-bar { height: 18px; border-radius: 9px; background: rgba(255,255,255,.08); overflow: hidden; }
-.svy-bar__fill {
-  height: 100%; width: 0; border-radius: 9px;
-  transition: width .6s cubic-bezier(.22,.61,.36,1);
-}
-.svy-row.is-bump .svy-row__n { animation: svyBump .5s ease-out; }
-@keyframes svyBump {
-  0% { transform: scale(1); color: #39d6c6; }
-  35% { transform: scale(1.35); color: #39d6c6; }
-  100% { transform: scale(1); color: #fff; }
-}
-
 /* ===== Temporal time-machine demo ===== */
 .tmp-body { align-items: stretch; gap: 18px; }
 
@@ -485,6 +424,35 @@ html, body {
   color: rgba(255,255,255,.8); white-space: pre; tab-size: 2;
 }
 .fb-json.is-fresh { animation: dualFlash .5s ease-out; }
+/* 集計結果タブ: パネル面は .fb-json と揃え、3 つのドーナツ円グラフ＋凡例を横に並べる */
+.fb-chart {
+  flex: 1 1 auto; min-height: 0; min-width: 0; overflow: auto;
+  background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.22); border-radius: 10px;
+  padding: 14px 18px; display: flex; flex-direction: column;
+}
+.fb-chart__title { font-size: 12.5px; font-weight: 800; color: rgba(255,255,255,.85); margin-bottom: 10px; }
+.fb-chart__total { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,.5); margin-left: 8px; }
+.fb-pies { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; gap: 24px; padding: 6px 0; }
+.fb-pie-col { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.fb-pie-col__title { flex: 0 0 auto; font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.75); }
+/* 3 つのグラフが同じ大きさになるよう固定サイズ（チップの行数差で伸縮させない） */
+.fb-pie { flex: 0 0 auto; width: 208px; height: 208px; }
+.fb-pie__ring { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 34; }
+.fb-pie__seg {
+  fill: none; stroke-width: 34;
+  transition: stroke-dasharray .6s cubic-bezier(.22,.61,.36,1), stroke-dashoffset .6s cubic-bezier(.22,.61,.36,1);
+}
+/* バンド上の％ラベル。縁取りで背景色を問わず読めるようにする */
+.fb-pie__labels text {
+  font-family: var(--font-mono); font-size: 13.5px; font-weight: 700; fill: #fff;
+  text-anchor: middle; paint-order: stroke; stroke: rgba(0,0,0,.5); stroke-width: 3px;
+}
+.fb-pie-chips { flex: 0 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; max-width: 100%; }
+.fb-pie-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 8.5px; font-weight: 700; color: rgba(255,255,255,.85); white-space: nowrap;
+}
+.fb-pie-chip__dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; }
 .fb-json .j-key { color: #fc9a4c; }
 .fb-json .j-str { color: #9fe0c8; }
 .fb-json .j-num { color: #f2c14e; }
@@ -867,6 +835,43 @@ html, body {
 .metrics--ha { grid-template-columns: 1fr 1fr; gap: 18px; }
 .metrics--ha .metric { padding: 30px 14px; }
 .metrics--ha .metric__num { font-size: 48px; }
+
+/* ===== Company profile (会社紹介) ===== */
+.company { display: grid; grid-template-columns: 1.02fr 1fr; gap: 30px; align-items: start; }
+.company-facts { width: 100%; border-collapse: collapse; font-size: 15px; }
+.company-facts th {
+  width: 112px; padding: 9px 14px; text-align: right; vertical-align: top;
+  font-size: 13.5px; font-weight: 800; color: #fff; background: var(--cyan);
+  border-bottom: 2px solid var(--navy-900); white-space: nowrap;
+}
+.company-facts td {
+  padding: 9px 16px; line-height: 1.55; color: rgba(255,255,255,.85);
+  border-bottom: 1px solid rgba(255,255,255,.12); vertical-align: top;
+}
+.company-facts tr:last-child th { border-bottom: none; }
+.company-facts tr:last-child td { border-bottom: none; }
+.company-officers { list-style: none; columns: 2; column-gap: 20px; }
+.company-officers li { font-size: 13.5px; line-height: 1.7; break-inside: avoid; }
+.company-side { display: grid; gap: 16px; }
+.company-profile { display: flex; gap: 20px; align-items: flex-start; }
+.company-profile__text { flex: 1; min-width: 0; }
+.company-profile__label {
+  display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 8px;
+}
+.company-profile__name { display: block; font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.company-profile__name span { font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.6); margin-left: 8px; }
+.company-profile__bio { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.75); }
+.company-profile__photo {
+  width: 190px; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); flex-shrink: 0;
+}
+.company-gov__list { list-style: none; margin-top: 2px; }
+.company-gov__list li {
+  position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.55;
+  color: rgba(255,255,255,.78); margin-bottom: 7px;
+}
+.company-gov__list li:last-child { margin-bottom: 0; }
+.company-gov__list li::before { content: "●"; position: absolute; left: 0; top: 1px; font-size: 8px; color: var(--cyan); }
 
 /* ===== Metrics ===== */
 /* availability hero (slide 6) */

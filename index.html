@@ -73,6 +73,56 @@
       <div class="title__foot mono">v0.11.0 · Context Broker</div>
     </section>
 
+    <!-- 会社紹介 — 会社概要 + 代表者プロフィール -->
+    <section class="slide" data-bg="dark">
+      <div class="slide__inner">
+        <span class="kicker">会社紹介 / Company</span>
+        <h2 class="slide__title">会社概要</h2>
+        <div class="company">
+          <table class="company-facts">
+            <tbody>
+              <tr><th>商号</th><td>株式会社 Geolonia（Geolonia Inc.）</td></tr>
+              <tr><th>設立</th><td>2019年8月</td></tr>
+              <tr><th>資本金</th><td>67,022千円（資本準備金 45,010千円）</td></tr>
+              <tr><th>本社所在地</th><td>〒113-0021<br />東京都文京区本駒込二丁目28番8号</td></tr>
+              <tr><th>役員</th><td>
+                <ul class="company-officers">
+                  <li>代表取締役CEO 宮内 隆行</li>
+                  <li>取締役公共政策担当 関 治之</li>
+                  <li>取締役 西川 伸一</li>
+                  <li>社外取締役 八剱 洋一郎</li>
+                  <li>社外取締役 但馬 一幸</li>
+                  <li>社外取締役 足立 圭介</li>
+                  <li>社外取締役 藤田 博昭</li>
+                  <li>社外取締役 藤倉 庸子</li>
+                  <li>社外監査役 中瀬 美明</li>
+                </ul>
+              </td></tr>
+              <tr><th>従業員数</th><td>27名</td></tr>
+            </tbody>
+          </table>
+          <div class="company-side">
+            <div class="std-card company-profile">
+              <div class="company-profile__text">
+                <span class="company-profile__label">代表者プロフィール</span>
+                <span class="company-profile__name">宮内 隆行 <span>代表取締役CEO</span></span>
+                <p class="company-profile__bio">オープンソースコミュニティで活動した後、2019年に株式会社 Geolonia を設立し現在に至る。現在は広島県尾道市に在住。</p>
+              </div>
+              <img class="company-profile__photo" src="assets/ceo-miyauchi.jpg" alt="代表取締役CEO 宮内 隆行" />
+            </div>
+            <div class="std-card company-gov">
+              <span class="std-card__name">政府委員</span>
+              <ul class="company-gov__list">
+                <li>四次元空間情報基盤アーキテクチャ検討会（経済産業省）</li>
+                <li>地理空間情報に関するベースレジストリ利活用研究会（デジタル庁）</li>
+                <li>不動産ID官民連携協議会アドバイザリーボード（国土交通省）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 2. What is a Context Broker (illustration, inlined so it uses the deck's fonts) -->
     <section class="slide slide--illus" data-bg="illus">
       <svg class="illus-img illus-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800"
@@ -554,11 +604,32 @@
           <div class="fb-result">
             <div class="fb-json-wrap">
               <div class="fb-tabs" role="tablist">
-                <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
+                <button type="button" class="fb-tab is-active" data-panel="chart" role="tab">集計結果</button>
+                <button type="button" class="fb-tab" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
                 <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
               </div>
-              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity" hidden>送信するとここに実エンティティが表示されます…</pre>
               <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
+              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart">
+                <div class="fb-chart__title">回答の集計<span id="fb-chart-total" class="fb-chart__total"></span></div>
+                <div class="fb-pies">
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">関心のあるユースケース</div>
+                    <svg id="fb-pie-interest" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-interest" class="fb-pie-chips"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">ご所属</div>
+                    <svg id="fb-pie-role" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="所属別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-role" class="fb-pie-chips"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">お住まいの地域</div>
+                    <svg id="fb-pie-region" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="地域別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-region" class="fb-pie-chips"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -745,43 +816,6 @@
           </g>
         </svg>
         <p class="footnote">外部のルールエンジンやワークフロー基盤を別途構築せず、ブローカー内で完結。</p>
-      </div>
-    </section>
-
-    <!-- 11. WebSocket live demo — ライブアンケート -->
-    <section class="slide slide--svy" data-bg="dark">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">リアルタイム / WebSocket</span>
-          <h2 class="slide__title map-title">データの変化をリアルタイムに通知</h2>
-          <p class="map-desc">GeonicDB はサブスクリプション機能を内蔵。エンティティの作成・更新・削除を購読しておくと、変化した瞬間に <strong>WebSocket</strong> で全クライアントへ即時プッシュ、または <strong>Webhook</strong> で外部システムへ通知します。ポーリングは不要です。</p>
-        </div>
-        <div class="demo-body svy-body">
-          <!-- LEFT: poll -->
-          <div class="svy-poll">
-            <h3 class="svy-q">GeonicDB で一番試したい機能は？</h3>
-            <div id="svy-options" class="svy-options">
-              <button class="svy-opt" data-choice="geoquery"><span class="svy-opt__dot" style="background:#fc6c00"></span>ジオクエリ</button>
-              <button class="svy-opt" data-choice="realtime"><span class="svy-opt__dot" style="background:#fba40c"></span>リアルタイム通知</button>
-              <button class="svy-opt" data-choice="reactivecore"><span class="svy-opt__dot" style="background:#39d6c6"></span>ReactiveCore Rules</button>
-              <button class="svy-opt" data-choice="standards"><span class="svy-opt__dot" style="background:#e8401e"></span>標準準拠（NGSI-LD）</button>
-            </div>
-            <div id="svy-msg" class="svy-msg"></div>
-          </div>
-          <!-- RIGHT: live aggregated bar chart -->
-          <div class="svy-chart-wrap">
-            <div class="svy-chart-head">
-              <span class="svy-chart-title">集計結果 <span id="svy-total" class="svy-total"></span></span>
-              <span class="rsv-live"><span class="rsv-live__dot" id="svy-dot"></span><span id="svy-conn">接続中…</span></span>
-            </div>
-            <div id="svy-chart" class="svy-chart"></div>
-          </div>
-        </div>
-        <div class="demo-note">
-          <span class="demo-note__dot"></span>
-          投票は GeonicDB にエンティティを作成し、WebSocket で全員のグラフにリアルタイム集計されます
-        </div>
       </div>
     </section>
 

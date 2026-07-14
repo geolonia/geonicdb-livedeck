@@ -12,7 +12,6 @@ import { initTitleQr } from "./demos/titleQr";
 import { initDual } from "./demos/dual";
 import { initFeedback } from "./demos/feedback";
 import { initTemporal } from "./demos/temporal";
-import { initSurvey } from "./demos/survey";
 import { initMap } from "./demos/map";
 import { initShelter } from "./demos/shelter";
 import { initCollab } from "./demos/collab";
@@ -26,7 +25,6 @@ function boot(): void {
   initDual();
   initFeedback();
   initTemporal();
-  initSurvey();
   initMap();
   initShelter();
   initCollab();
