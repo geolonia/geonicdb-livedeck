@@ -36,6 +36,9 @@ npm run dev        # → http://localhost:8745
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
 
+> [direnv](https://direnv.net/) 利用者は `.env` の代わりに `.envrc` に `export VITE_GEONICDB_KEY=…` を書いてもよい。
+> `.worktrees/` 配下のワークツリーで作業する場合は、`source_env ../..` だけの `.envrc` を置けば親の環境変数を継承できる（いずれも gitignore 済み）。
+
 本番デプロイ（GitHub Pages）ではキーを**リポジトリシークレット**からビルド時に注入します（`.github/workflows/deploy.yml`）。必要なシークレット:
 
 | シークレット名 | 対応する env | 必須 |
@@ -103,7 +106,7 @@ npm run dev        # → http://localhost:8745
 cat > deck-policy.json <<'JSON'
 {
   "policyId": "geonicdb-livedeck-deck",
-  "description": "geonicdb-livedeck: 全デモ統合キー用ポリシー（最小権限）",
+  "description": "geonicdb-livedeck: 全デモ統合キー用ポリシー（WS + 各デモの型別 GET/POST + 必要パス）",
   "target": { "resources": [
     {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
     {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
@@ -145,84 +148,28 @@ geonic -s miya me api-keys create \
   --dpop-required
 ```
 
-> 以下 §1〜§7 は各デモが必要とする **権限の内訳**（統合ポリシーに含める型・アクション）とデモ用データの作成手順。
+> 以下 §1〜§6 は各デモが必要とする **権限の内訳**（統合ポリシーに含める型・アクション）とデモ用データの作成手順。
 > かつては per-demo にキーを分けていたが、API キー上限のため 1 キーに統合した（#37）。
 
 ### 1. 読み取り系の権限（標準API・ジオクエリ・時系列・避難所）
 
-```bash
-# policy: GET 読み取りのみ。さらに必要なエンティティタイプだけに限定
-#   - クエリ GET（?type=…）→ entityType で許可（AedLocation / EvacuationArea のみ）
-#   - ID 指定 GET は entityType が認可に乗らないため、パスで個別に許可
-#     （EnvironmentSensor は by-id、WeatherObserved は temporal 取得のみ。型別 GET しないので allow-by-type には含めない）
-#   - 避難所デモは temporal を型指定で一括取得するため /ngsi-ld/v1/temporal/entities も許可
-cat > readonly-policy.json <<'JSON'
-{
-  "policyId": "geonicdb-livedeck-readonly",
-  "description": "geonicdb-livedeck: readonly GET, limited to the demo entity types",
-  "target": { "resources": [
-    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
-  ]},
-  "ruleCombiningAlgorithm": "first-applicable",
-  "rules": [
-    {"ruleId":"allow-by-type","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EvacuationArea)$","matchFunction":"string-regexp"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-by-path","effect":"Permit","target":{
-      "resources":[
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*AedLocation*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EnvironmentSensor*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EvacuationArea*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*EvacuationArea*","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/v2/entities/env-sensor-001","matchFunction":"glob"}
-      ],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"deny-others","effect":"Deny"}
-  ]
-}
-JSON
-# ↑ これらのルールは §0 の統合ポリシー geonicdb-livedeck-deck に含める（個別ポリシー・キーは作らない）
-```
+読み取り系デモに個別のポリシー・キーは作らない。§0 の統合ポリシーの以下のルールでカバーする:
+
+- `allow-read-types` — 型別クエリ GET（`?type=…`）: `AedLocation` / `EvacuationArea`
+- `allow-get-paths` — ID 指定・temporal・NGSIv2 の個別パス GET:
+  - `/ngsi-ld/v1/entities/*EnvironmentSensor*`（標準API デモの by-id 取得）
+  - `/ngsi-ld/v1/temporal/entities`（避難所デモの型指定一括取得）・`*WeatherObserved*`・`*EvacuationArea*`
+  - `/v2/entities`・`/v2/entities/env-sensor-001`（NGSIv2 側）
+
+> ID 指定 GET は entityType が認可に乗らないためパスで許可する。`EnvironmentSensor` と `WeatherObserved` は
+> 型別クエリ GET をしないので `allow-read-types` には含めない（§0 の最小権限の方針）。
 
 ### 2. フィードバックの権限＋データモデル（NGSI-LD デモ）
 
-```bash
-# policy: WS + Feedback の読み書き、加えてカスタムデータモデルの参照を許可
-# （「カスタムデータモデル」タブが GET /custom-data-models/Feedback で実データを取得するため）
-cat > feedback-policy.json <<'JSON'
-{
-  "policyId": "geonicdb-livedeck-feedback",
-  "description": "geonicdb-livedeck: NGSI-LD feedback — WS + Feedback read/write + custom-data-model read",
-  "target": { "resources": [
-    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/custom-data-models/**","matchFunction":"glob"}
-  ]},
-  "ruleCombiningAlgorithm": "first-applicable",
-  "rules": [
-    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[
-      {"attributeId":"method","matchValue":"WS"}]}},
-    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
-      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-feedback-read","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-feedback-write","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"Feedback"}],
-      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
-    {"ruleId":"allow-cdm-read","effect":"Permit","target":{
-      "resources":[{"attributeId":"path","matchValue":"/custom-data-models/Feedback","matchFunction":"glob"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"deny-others","effect":"Deny"}
-  ]
-}
-JSON
-# ↑ これらのルールは §0 の統合ポリシー geonicdb-livedeck-deck に含める（個別ポリシー・キーは作らない）
+権限は §0 の統合ポリシーでカバーする: WS（`allow-stream`）＋ `Feedback` の GET/POST（`allow-read-types` / `allow-write-types`）＋
+「カスタムデータモデル」タブが読む `/custom-data-models/Feedback` の GET（`allow-get-paths`）。
 
+```bash
 # カスタムデータモデル Feedback（関心・地域は Relationship、位置は GeoProperty）
 geonic -s miya custom-data-models create '{
   "type":"Feedback","domain":"Survey",
@@ -272,42 +219,16 @@ geonic -s miya entities create @shelter-001.json
 geonic -s miya temporal entities create @shelter-001-temporal.json
 ```
 
-> このデモは既存の **readonly キー**を流用する。readonly ポリシー（`geonicdb-livedeck-readonly`）は
-> §1 の JSON どおり `EvacuationArea` の GET と temporal GET（`/ngsi-ld/v1/temporal/entities` ほか）を含む。
+> このデモも統合キー（§0）で動く。必要な権限（`EvacuationArea` の GET と temporal GET）は
+> 統合ポリシーの `allow-read-types` / `allow-get-paths` に含まれている（§1 参照）。
 > AED マップと同じ高松市域のオープンデータなので、**出典・ライセンスを明示すれば地域名の使用は可**
 > （AED デモと同じ扱い）。
 
 ### 5. 共同編集 GIS の権限（`slide--collab`）
 
-地図に描いた地物（ポイント／ライン／ポリゴン）を `geonicdb-livedeck-MapFeature` として作成し、WebSocket で全員に配信する。以下の権限を §0 の統合ポリシーに含める。
-
-```bash
-cat > mapedit-policy.json <<'JSON'
-{
-  "policyId": "geonicdb-livedeck-mapedit",
-  "description": "geonicdb-livedeck: collaborative GIS — WS + geonicdb-livedeck-MapFeature read/write",
-  "target": { "resources": [
-    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
-  ]},
-  "ruleCombiningAlgorithm": "first-applicable",
-  "rules": [
-    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[{"attributeId":"method","matchValue":"WS"}]}},
-    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
-      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-read","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"geonicdb-livedeck-MapFeature"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-write","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"geonicdb-livedeck-MapFeature"}],
-      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
-    {"ruleId":"deny-others","effect":"Deny"}
-  ]
-}
-JSON
-# ↑ これらのルールは §0 の統合ポリシー geonicdb-livedeck-deck に含める（個別ポリシー・キーは作らない）
-```
+地図に描いた地物（ポイント／ライン／ポリゴン）を `geonicdb-livedeck-MapFeature` として作成し、WebSocket で全員に配信する。
+権限（WS ＋ `geonicdb-livedeck-MapFeature` の GET/POST）は §0 の統合ポリシーの
+`allow-stream` / `allow-read-types` / `allow-write-types` に含まれている。個別ポリシー・キーは作らない。
 
 > 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
 > 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
