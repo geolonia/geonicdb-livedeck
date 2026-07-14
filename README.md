@@ -70,7 +70,7 @@ npm run dev        # → http://localhost:8745
 
 ### NGSI-LD フィードバック（`src/demos/feedback.ts`）
 - フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
-- 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）と「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）。
+- 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）、「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）、「集計結果」（関心ユースケース別バーチャート。WebSocket でリアルタイム更新）。
 - 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（GET|WS + `Feedback` への POST、`/custom-data-models/Feedback` の GET）。
 

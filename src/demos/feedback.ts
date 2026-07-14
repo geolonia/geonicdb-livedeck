@@ -9,9 +9,10 @@
      - お住まいの地域       → Relationship（urn:ngsi-ld:AdministrativeArea:*）
      - 会場の位置           → GeoProperty（固定座標）
 
-   右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」と
-   「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」を表示し、
-   件数は WebSocket の entityCreated で集計する。
+   右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」
+   「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」
+   「集計結果（関心ユースケース別バーチャート）」を表示し、
+   件数・集計は WebSocket の entityCreated でリアルタイム更新する。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
    =================================================================== */
@@ -46,6 +47,16 @@ const FEEDBACK_MODEL = {
   },
 };
 
+// 集計結果タブの選択肢とバー色（左フォームの「関心のあるユースケース」と一致させる）。
+const USECASE_PREFIX = "urn:ngsi-ld:UseCase:";
+const INTERESTS = [
+  { key: "disaster", label: "防災・減災", color: "#fc6c00" },
+  { key: "environment", label: "環境モニタリング", color: "#39d6c6" },
+  { key: "mobility", label: "交通・モビリティ", color: "#fba40c" },
+  { key: "energy", label: "エネルギー", color: "#e8401e" },
+  { key: "opendata", label: "オープンデータ", color: "#c89bff" },
+];
+
 export function initFeedback(): void {
   const FB = config.demos.feedback;
   const slides = Array.from(document.querySelectorAll(".slide"));
@@ -55,6 +66,9 @@ export function initFeedback(): void {
   let started = false;
   let stars = 5; // 期待度の初期値
   const seen: Record<string, true> = Object.create(null); // feedback id -> true（件数の冪等集計）
+  const seenChart: Record<string, true> = Object.create(null); // feedback id -> true（集計結果の冪等集計）
+  const interestCounts: Record<string, number> = Object.create(null); // usecase key -> 件数
+  INTERESTS.forEach((o) => (interestCounts[o.key] = 0));
 
   // ---- helpers ----
   const sel = (id: string) => byId<HTMLSelectElement>(id);
@@ -217,6 +231,73 @@ export function initFeedback(): void {
     if (evt.entity && typeof evt.entity.id === "string") return evt.entity.id;
     return evt.entityId;
   }
+  // WS イベントからエンティティ形を復元する（entity か data + entityId のどちらでも）。
+  function evtEntity(evt: FbEvent | null): Record<string, unknown> | null {
+    if (!evt) return null;
+    if (evt.entity && evt.entity.id) return evt.entity;
+    const e: Record<string, unknown> = {};
+    if (evt.data) for (const k in evt.data) e[k] = evt.data[k];
+    e.id = evt.entityId;
+    e.type = evt.entityType || FB.type;
+    return e.id ? e : null;
+  }
+
+  // ---- 集計結果タブ（関心ユースケース別バーチャート）----
+  // interestedIn Relationship を集計（id で冪等）。集計できたら該当 key を返す。
+  function chartTally(e: Record<string, unknown> | null): string | null {
+    const id = e?.id as string | undefined;
+    if (!e || !id || seenChart[id]) return null;
+    const rel = e.interestedIn as { object?: unknown } | undefined;
+    const obj = rel && typeof rel.object === "string" ? rel.object : "";
+    if (!obj.startsWith(USECASE_PREFIX)) return null;
+    const key = obj.slice(USECASE_PREFIX.length);
+    if (!(key in interestCounts)) return null;
+    seenChart[id] = true;
+    interestCounts[key] += 1;
+    return key;
+  }
+  // チャートの行を一度だけ作り、以降は幅とラベルのみ更新する（マークアップはアンケートと共通）。
+  function buildChart(): void {
+    const rows = byId("fb-chart-rows");
+    if (!rows || rows.childElementCount) return;
+    rows.innerHTML = INTERESTS.map(
+      (o) =>
+        '<div class="svy-row" data-choice="' +
+        o.key +
+        '"><div class="svy-row__head"><span class="svy-row__label">' +
+        o.label +
+        '</span><span class="svy-row__val"><span class="svy-row__n">0</span>' +
+        '<span class="svy-row__pct">0%</span></span></div>' +
+        '<div class="svy-bar"><div class="svy-bar__fill" style="background:' +
+        o.color +
+        '"></div></div></div>',
+    ).join("");
+  }
+  function renderChart(bumpKey?: string): void {
+    buildChart();
+    const rows = byId("fb-chart-rows");
+    if (!rows) return;
+    const t = INTERESTS.reduce((s, o) => s + (interestCounts[o.key] ?? 0), 0);
+    const tot = byId("fb-chart-total");
+    if (tot) tot.textContent = t ? "（全 " + t + " 件）" : "";
+    INTERESTS.forEach((o) => {
+      const row = rows.querySelector<HTMLElement>('.svy-row[data-choice="' + o.key + '"]');
+      if (!row) return;
+      const n = interestCounts[o.key] ?? 0;
+      const pct = t > 0 ? Math.round((n / t) * 100) : 0;
+      const nEl = row.querySelector<HTMLElement>(".svy-row__n");
+      const pctEl = row.querySelector<HTMLElement>(".svy-row__pct");
+      const fill = row.querySelector<HTMLElement>(".svy-bar__fill");
+      if (nEl) nEl.textContent = String(n);
+      if (pctEl) pctEl.textContent = pct + "%";
+      if (fill) fill.style.width = pct + "%";
+      if (bumpKey === o.key) {
+        row.classList.remove("is-bump");
+        void row.offsetWidth;
+        row.classList.add("is-bump");
+      }
+    });
+  }
 
   // ---- 送信 ----
   function submit(): void {
@@ -233,6 +314,7 @@ export function initFeedback(): void {
       .then(() => {
         renderJson(entity);
         tally(entity.id as string); // 楽観集計。WS エコー（同 id）は冪等。
+        renderChart(chartTally(entity) ?? undefined);
         buttonState("is-ok", "✓ 作成しました"); // 成功はボタン内に表示
       })
       .catch((err: unknown) => {
@@ -253,7 +335,11 @@ export function initFeedback(): void {
   function load(): Promise<void> {
     return db!.getEntities({ type: FB.type, limit: 1000 }).then((res) => {
       const list = Array.isArray(res) ? res : [];
-      list.forEach((e) => tally(e.id as string));
+      list.forEach((e) => {
+        tally(e.id as string);
+        chartTally(e);
+      });
+      renderChart();
       // デフォルト表示として、最後（最新）の回答エンティティを出す。
       let latest: Record<string, unknown> | null = null;
       let best = "";
@@ -269,7 +355,12 @@ export function initFeedback(): void {
   }
 
   function connect(): void {
-    db!.on("entityCreated", (evt) => tally(evtId(evt as unknown as FbEvent)));
+    db!.on("entityCreated", (evt) => {
+      const fe = evt as unknown as FbEvent;
+      tally(evtId(fe));
+      const key = chartTally(evtEntity(fe));
+      if (key) renderChart(key);
+    });
     db!.on("connected", () => setConn("on"));
     db!.on("open", () => setConn("on"));
     db!.on("disconnected", () => setConn("off"));
@@ -288,6 +379,7 @@ export function initFeedback(): void {
     paintStars();
     initTabs();
     setCount();
+    renderChart();
     db = createClient();
     loadModel(); // 埋め込み即時表示 → API 実データに差し替え
     load()

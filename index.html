@@ -606,9 +606,14 @@
               <div class="fb-tabs" role="tablist">
                 <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
                 <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
+                <button type="button" class="fb-tab" data-panel="chart" role="tab">集計結果</button>
               </div>
               <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
               <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
+              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart" hidden>
+                <div class="fb-chart__title">関心のあるユースケース別の回答数<span id="fb-chart-total" class="fb-chart__total"></span></div>
+                <div id="fb-chart-rows" class="fb-chart__rows"></div>
+              </div>
             </div>
           </div>
         </div>
