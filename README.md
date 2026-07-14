@@ -53,7 +53,7 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → 会社紹介 → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--svy` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → 会社紹介 → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
@@ -62,11 +62,6 @@ npm run dev        # → http://localhost:8745
 ### 標準API（`src/demos/dual.ts`） / ジオクエリ（`src/demos/map.ts`） / 時系列（`src/demos/temporal.ts`）
 - いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、**同じ内容の環境センサーを NGSIv2 と NGSI-LD の両形式で取得**（`env-sensor-001` / `urn:ngsi-ld:EnvironmentSensor:001`）してプロトコル差を対比、`WeatherObserved` の **Temporal API** 履歴など。デモデータは特定地域を想起させない中立的な内容にしている。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（GET + WS。origin 制限・DPoP 必須）。
-
-### ライブアンケート（`src/demos/survey.ts`）
-- 投票で `PollVote` エンティティを作成 → **WebSocket で全クライアントのバーチャートにリアルタイム集計**。
-- 認可: 統合キー **`geonicdb-livedeck-deck`**（GET|WS + `PollVote` への POST）。
-- カスタムデータモデル `PollVote`（`poll` 必須・`choice` は enum 制約）でサーバ側バリデーション。
 
 ### NGSI-LD フィードバック（`src/demos/feedback.ts`）
 - フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
@@ -77,7 +72,7 @@ npm run dev        # → http://localhost:8745
 ### 避難所の混雑（`src/demos/shelter.ts`・自治体ユースケース）
 - 高松市の指定避難所（`EvacuationArea`）を地図に表示し、**Temporal API** で固定期間（2026-06-26 の24時間）の受入状況を取得 → **混雑度で色分け**。タイムスライダー／再生で時間変化を再生、避難所クリックで受入率の推移をポップアップ表示。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（`EvacuationArea` の GET / temporal GET）。
-- データ: 位置・収容人数は高松市オープンデータ（CC BY 4.0）。混雑度は Temporal API のデモ用合成データ（実受入実績ではない旨を画面に明記）。詳細は「セットアップ §5」。
+- データ: 位置・収容人数は高松市オープンデータ（CC BY 4.0）。混雑度は Temporal API のデモ用合成データ（実受入実績ではない旨を画面に明記）。詳細は「セットアップ §4」。
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
 
 ### 共同編集 GIS（`src/demos/collab.ts`・民間ユースケース）
@@ -192,43 +187,7 @@ JSON
 # ↑ これらのルールは §0 の統合ポリシー geonicdb-livedeck-deck に含める（個別ポリシー・キーは作らない）
 ```
 
-### 2. ライブアンケートの権限＋データモデル
-
-```bash
-# policy: 読み書きを PollVote に限定。WS 接続だけは仕様上「type なしの
-# GET /v2/entities」許可が必要（WS ⊂ GET。接続ハンドシェイクの認可で評価される）
-cat > survey-policy.json <<'JSON'
-{
-  "policyId": "geonicdb-livedeck-survey",
-  "description": "geonicdb-livedeck: live-poll — WS + PollVote read/write",
-  "target": { "resources": [
-    {"attributeId":"path","matchValue":"/ngsi-ld/**","matchFunction":"glob"},
-    {"attributeId":"path","matchValue":"/v2/**","matchFunction":"glob"}
-  ]},
-  "ruleCombiningAlgorithm": "first-applicable",
-  "rules": [
-    {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[
-      {"attributeId":"method","matchValue":"WS"}]}},
-    {"ruleId":"allow-ws-handshake","effect":"Permit","target":{
-      "resources":[{"attributeId":"path","matchValue":"/v2/entities","matchFunction":"glob"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-poll-read","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"PollVote"}],
-      "actions":[{"attributeId":"method","matchValue":"GET"}]}},
-    {"ruleId":"allow-vote","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"PollVote"}],
-      "actions":[{"attributeId":"method","matchValue":"POST"}]}},
-    {"ruleId":"deny-others","effect":"Deny"}
-  ]
-}
-JSON
-# ↑ これらのルールは §0 の統合ポリシー geonicdb-livedeck-deck に含める（個別ポリシー・キーは作らない）
-```
-
-> ポリシーは個人ポリシーとして作成され、priority は 100・scope は personal に固定されます。
-> 作成したキー値（`gdb_…`）は二度と表示されないため、その場で `.env`（VITE_GEONICDB_*_KEY）に転記してください。
-
-### 3. フィードバックの権限＋データモデル（NGSI-LD デモ）
+### 2. フィードバックの権限＋データモデル（NGSI-LD デモ）
 
 ```bash
 # policy: WS + Feedback の読み書き、加えてカスタムデータモデルの参照を許可
@@ -277,7 +236,7 @@ geonic -s miya custom-data-models create '{
 }'
 ```
 
-### 4. デモ用データ
+### 3. デモ用データ
 
 ```bash
 # 投票エンティティのスキーマ（choice を enum 制約）
@@ -308,7 +267,7 @@ geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLoc
 geonic -s miya temporal entities create @weather-temporal.json
 ```
 
-### 5. 避難所の混雑デモ用データ（自治体ユースケース・`slide--shelter`）
+### 4. 避難所の混雑デモ用データ（自治体ユースケース・`slide--shelter`）
 
 避難所の**位置・収容人数**は高松市オープンデータ「指定緊急避難場所・指定避難所」
 （<https://github.com/takamatsu-city/opendata> `data/evacuation_space`、CC BY 4.0）から
@@ -328,7 +287,7 @@ geonic -s miya temporal entities create @shelter-001-temporal.json
 > AED マップと同じ高松市域のオープンデータなので、**出典・ライセンスを明示すれば地域名の使用は可**
 > （AED デモと同じ扱い）。
 
-### 6. 共同編集 GIS の権限（`slide--collab`）
+### 5. 共同編集 GIS の権限（`slide--collab`）
 
 地図に描いた地物（ポイント／ライン／ポリゴン）を `geonicdb-livedeck-MapFeature` として作成し、WebSocket で全員に配信する。以下の権限を §0 の統合ポリシーに含める。
 
@@ -363,7 +322,7 @@ JSON
 > 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
 > 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
 
-### 7. メッセージング + Rules ログ（`slide--msg`）
+### 6. メッセージング + Rules ログ（`slide--msg`）
 
 `geonicdb-livedeck-Message` の作成を **ReactiveCore Rules** で検知し、`createEntity` アクションで
 `geonicdb-livedeck-MessageLog` を自動生成する。
@@ -407,7 +366,6 @@ geonic -s miya rules create '{
 | `src/demos/shelter.ts` | 避難所の混雑（地図 + Temporal API・自治体ユースケース）デモ |
 | `src/demos/collab.ts` | 共同編集 GIS（作図 + WebSocket・民間ユースケース）デモ |
 | `src/demos/messaging.ts` | メッセージング + ReactiveCore Rules ログ（民間ユースケース）デモ |
-| `src/demos/survey.ts` | ライブアンケートの WebSocket デモ |
 | `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |
 | `src/lib/client.ts` | GeonicDB SDK クライアントの生成を集約 |

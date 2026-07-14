@@ -819,43 +819,6 @@
       </div>
     </section>
 
-    <!-- 11. WebSocket live demo — ライブアンケート -->
-    <section class="slide slide--svy" data-bg="dark">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">リアルタイム / WebSocket</span>
-          <h2 class="slide__title map-title">データの変化をリアルタイムに通知</h2>
-          <p class="map-desc">GeonicDB はサブスクリプション機能を内蔵。エンティティの作成・更新・削除を購読しておくと、変化した瞬間に <strong>WebSocket</strong> で全クライアントへ即時プッシュ、または <strong>Webhook</strong> で外部システムへ通知します。ポーリングは不要です。</p>
-        </div>
-        <div class="demo-body svy-body">
-          <!-- LEFT: poll -->
-          <div class="svy-poll">
-            <h3 class="svy-q">GeonicDB で一番試したい機能は？</h3>
-            <div id="svy-options" class="svy-options">
-              <button class="svy-opt" data-choice="geoquery"><span class="svy-opt__dot" style="background:#fc6c00"></span>ジオクエリ</button>
-              <button class="svy-opt" data-choice="realtime"><span class="svy-opt__dot" style="background:#fba40c"></span>リアルタイム通知</button>
-              <button class="svy-opt" data-choice="reactivecore"><span class="svy-opt__dot" style="background:#39d6c6"></span>ReactiveCore Rules</button>
-              <button class="svy-opt" data-choice="standards"><span class="svy-opt__dot" style="background:#e8401e"></span>標準準拠（NGSI-LD）</button>
-            </div>
-            <div id="svy-msg" class="svy-msg"></div>
-          </div>
-          <!-- RIGHT: live aggregated bar chart -->
-          <div class="svy-chart-wrap">
-            <div class="svy-chart-head">
-              <span class="svy-chart-title">集計結果 <span id="svy-total" class="svy-total"></span></span>
-              <span class="rsv-live"><span class="rsv-live__dot" id="svy-dot"></span><span id="svy-conn">接続中…</span></span>
-            </div>
-            <div id="svy-chart" class="svy-chart"></div>
-          </div>
-        </div>
-        <div class="demo-note">
-          <span class="demo-note__dot"></span>
-          投票は GeonicDB にエンティティを作成し、WebSocket で全員のグラフにリアルタイム集計されます
-        </div>
-      </div>
-    </section>
-
     <!-- 12. Federation — データを動かさず、1回の問い合わせで束ねる -->
     <section class="slide slide--fed" data-bg="dark">
       <div class="slide__inner">
