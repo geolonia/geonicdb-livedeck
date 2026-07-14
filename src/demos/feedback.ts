@@ -339,15 +339,14 @@ export function initFeedback(): void {
     return items;
   }
 
-  // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
-  // 更新を CSS transition で滑らかに見せる。凡例は毎回組み直す（地域は行が入れ替わるため）。
+  // ドーナツ円グラフ（凡例なし）。セグメントは固定数の circle を使い回し、
+  // stroke-dasharray/-offset の更新を CSS transition で滑らかに見せる。
   const PIE_R = 70;
   const PIE_C = 2 * Math.PI * PIE_R;
   const PIE_SLICES = PIE_COLORS.length;
-  function renderPie(svgId: string, legendId: string, items: PieItem[], bumpKey?: string): void {
+  function renderPie(svgId: string, items: PieItem[]): void {
     const svg = document.getElementById(svgId);
-    const legend = byId(legendId);
-    if (!svg || !legend) return;
+    if (!svg) return;
     if (!svg.childElementCount) {
       let circles = '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>';
       for (let i = 0; i < PIE_SLICES; i++)
@@ -369,25 +368,8 @@ export function initFeedback(): void {
       seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
       acc += frac;
     }
-    legend.innerHTML = items
-      .map(
-        (it) =>
-          '<div class="fb-legend__row" data-choice="' + it.key + '">' +
-          '<span class="fb-legend__dot" style="background:' + it.color + '"></span>' +
-          '<span class="fb-legend__label">' + escapeHtml(it.label) + '</span>' +
-          '<span class="fb-legend__val"><span class="fb-legend__n">' + it.n + "</span>" +
-          '<span class="fb-legend__pct">' + (t > 0 ? Math.round((it.n / t) * 100) : 0) +
-          "%</span></span></div>",
-      )
-      .join("");
-    if (bumpKey) {
-      const key = items.some((it) => it.key === bumpKey) ? bumpKey : REGION_OTHER;
-      legend
-        .querySelector<HTMLElement>('.fb-legend__row[data-choice="' + key + '"]')
-        ?.classList.add("is-bump");
-    }
   }
-  function renderChart(bump?: TallyKeys): void {
+  function renderChart(): void {
     const totalEl = byId("fb-chart-total");
     if (totalEl) {
       const t = Object.keys(seenChart).length;
@@ -395,17 +377,13 @@ export function initFeedback(): void {
     }
     renderPie(
       "fb-pie-interest",
-      "fb-legend-interest",
       INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 })),
-      bump?.interest,
     );
     renderPie(
       "fb-pie-role",
-      "fb-legend-role",
       ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 })),
-      bump?.role,
     );
-    renderPie("fb-pie-region", "fb-legend-region", regionItems(), bump?.region);
+    renderPie("fb-pie-region", regionItems());
   }
 
   // ---- 送信 ----
@@ -423,7 +401,7 @@ export function initFeedback(): void {
       .then(() => {
         renderJson(entity);
         tally(entity.id as string); // 楽観集計。WS エコー（同 id）は冪等。
-        renderChart(chartTally(entity) ?? undefined);
+        if (chartTally(entity)) renderChart();
         buttonState("is-ok", "✓ 作成しました"); // 成功はボタン内に表示
       })
       .catch((err: unknown) => {
@@ -467,8 +445,7 @@ export function initFeedback(): void {
     db!.on("entityCreated", (evt) => {
       const fe = evt as unknown as FbEvent;
       tally(evtId(fe));
-      const key = chartTally(evtEntity(fe));
-      if (key) renderChart(key);
+      if (chartTally(evtEntity(fe))) renderChart();
     });
     db!.on("connected", () => setConn("on"));
     db!.on("open", () => setConn("on"));
