@@ -853,19 +853,14 @@ html, body {
 .company-officers { list-style: none; columns: 2; column-gap: 20px; }
 .company-officers li { font-size: 13.5px; line-height: 1.7; break-inside: avoid; }
 .company-side { display: grid; gap: 16px; }
-.company-profile { display: flex; gap: 20px; align-items: flex-start; }
-.company-profile__text { flex: 1; min-width: 0; }
-.company-profile__label {
-  display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--cyan); margin-bottom: 8px;
+.company-clients__list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px 16px; margin-top: 4px; }
+.company-clients__list li {
+  position: relative; padding-left: 15px; font-size: 13px; line-height: 1.45;
+  color: rgba(255,255,255,.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.company-profile__name { display: block; font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-.company-profile__name span { font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.6); margin-left: 8px; }
-.company-profile__bio { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.75); }
-.company-profile__photo {
-  width: 190px; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); flex-shrink: 0;
-}
+.company-clients__list li::before { content: "●"; position: absolute; left: 0; top: 2px; font-size: 8px; color: var(--cyan); }
 .company-gov__list { list-style: none; margin-top: 2px; }
+.company-gov__list li strong { color: #fff; font-size: 13.5px; }
 .company-gov__list li {
   position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.55;
   color: rgba(255,255,255,.78); margin-bottom: 7px;

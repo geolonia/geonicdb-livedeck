@@ -408,14 +408,14 @@ export function initFeedback(): void {
       totalEl.textContent = t ? "（全 " + t + " 件）" : "";
     }
     renderPie(
-      "fb-pie-interest",
-      "fb-chips-interest",
-      groupSmall(INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 }))),
-    );
-    renderPie(
       "fb-pie-role",
       "fb-chips-role",
       groupSmall(ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 }))),
+    );
+    renderPie(
+      "fb-pie-interest",
+      "fb-chips-interest",
+      groupSmall(INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 }))),
     );
     renderPie("fb-pie-region", "fb-chips-region", groupSmall(regionItems()));
   }
