@@ -10,7 +10,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 |---|---|---|
 | API キー名 (`--name`) | **デッキ全体で 1 つ**に統合 | `geonicdb-livedeck-deck` |
 | XACML ポリシー (`policyId`) | **1 つ**に統合（全デモの権限をまとめる） | `geonicdb-livedeck-deck` |
-| カスタムデータモデル | NGSI-LD のエンティティ型名（`PollVote` / `Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `PollVote` / `Feedback` |
+| カスタムデータモデル | NGSI-LD のエンティティ型名（`Feedback` 等）。**型名はエンティティ本体に出るのでプレフィックスを付けず**、デッキ用と分かる型名にする | `Feedback` |
 | デッキ専用の自由形状エンティティ型（例外） | カスタムデータモデルを持たず、共有テナントで他用途と明確に分離したい型は `geonicdb-livedeck-<Type>` を付けてよい | `geonicdb-livedeck-MapFeature`（共同編集 GIS） |
 
 - **API キーはデッキ全体で 1 つに統合**（キー名／ポリシー `geonicdb-livedeck-deck`）。テナントの API キー上限対策。

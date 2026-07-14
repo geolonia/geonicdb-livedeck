@@ -113,10 +113,10 @@ cat > deck-policy.json <<'JSON'
   "rules": [
     {"ruleId":"allow-stream","effect":"Permit","target":{"actions":[{"attributeId":"method","matchValue":"WS"}]}},
     {"ruleId":"allow-read-types","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EvacuationArea|Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message|geonicdb-livedeck-MessageLog)$","matchFunction":"string-regexp"}],
+      "resources":[{"attributeId":"entityType","matchValue":"^(AedLocation|EvacuationArea|Feedback|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message|geonicdb-livedeck-MessageLog)$","matchFunction":"string-regexp"}],
       "actions":[{"attributeId":"method","matchValue":"GET"}]}},
     {"ruleId":"allow-write-types","effect":"Permit","target":{
-      "resources":[{"attributeId":"entityType","matchValue":"^(Feedback|PollVote|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message)$","matchFunction":"string-regexp"}],
+      "resources":[{"attributeId":"entityType","matchValue":"^(Feedback|geonicdb-livedeck-MapFeature|geonicdb-livedeck-Message)$","matchFunction":"string-regexp"}],
       "actions":[{"attributeId":"method","matchValue":"POST"}]}},
     {"ruleId":"allow-get-paths","effect":"Permit","target":{
       "resources":[
@@ -239,16 +239,6 @@ geonic -s miya custom-data-models create '{
 ### 3. デモ用データ
 
 ```bash
-# 投票エンティティのスキーマ（choice を enum 制約）
-geonic -s miya custom-data-models create '{
-  "type":"PollVote","domain":"Survey",
-  "propertyDetails":{
-    "poll":{"ngsiType":"Property","valueType":"string","required":true},
-    "choice":{"ngsiType":"Property","valueType":"string","required":true,
-      "validation":{"enum":["geoquery","realtime","reactivecore","standards"]}}
-  }
-}'
-
 # 標準APIデモ（dual）用: 同じ内容の環境センサーを NGSI-LD 側にも用意（NGSIv2 側は下記の注参照）
 geonic -s miya entities create '{
   "@context":"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
