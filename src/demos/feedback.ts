@@ -339,14 +339,17 @@ export function initFeedback(): void {
     return items;
   }
 
-  // ドーナツ円グラフ（凡例なし）。セグメントは固定数の circle を使い回し、
-  // stroke-dasharray/-offset の更新を CSS transition で滑らかに見せる。
+  // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
+  // 更新を CSS transition で滑らかに見せる。凡例は「バンド上の％ラベル＋グラフ下の色チップ」
+  // の 2 段構え（％はスライスが細いと重なるため 6% 以上のみ表示）。
   const PIE_R = 70;
   const PIE_C = 2 * Math.PI * PIE_R;
   const PIE_SLICES = PIE_COLORS.length;
-  function renderPie(svgId: string, items: PieItem[]): void {
+  const PIE_MIN_LABEL = 0.06;
+  function renderPie(svgId: string, chipsId: string, items: PieItem[]): void {
     const svg = document.getElementById(svgId);
-    if (!svg) return;
+    const chips = byId(chipsId);
+    if (!svg || !chips) return;
     if (!svg.childElementCount) {
       let circles = '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>';
       for (let i = 0; i < PIE_SLICES; i++)
@@ -354,10 +357,11 @@ export function initFeedback(): void {
           '<circle class="fb-pie__seg" data-idx="' + i + '" cx="100" cy="100" r="' + PIE_R +
           '" stroke="transparent" stroke-dasharray="0 ' + PIE_C +
           '" transform="rotate(-90 100 100)"/>';
-      svg.innerHTML = circles;
+      svg.innerHTML = circles + '<g class="fb-pie__labels"></g>';
     }
     const t = items.reduce((s, it) => s + it.n, 0);
     let acc = 0; // 累積割合（次セグメントの開始位置）
+    let labels = "";
     for (let i = 0; i < PIE_SLICES; i++) {
       const seg = svg.querySelector('.fb-pie__seg[data-idx="' + i + '"]');
       if (!seg) continue;
@@ -366,8 +370,27 @@ export function initFeedback(): void {
       seg.setAttribute("stroke", it ? it.color : "transparent");
       seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
       seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
+      if (frac >= PIE_MIN_LABEL) {
+        // スライス中央角のバンド上に％を重ねる（12時起点・時計回り）
+        const a = (acc + frac / 2) * 2 * Math.PI - Math.PI / 2;
+        const x = 100 + PIE_R * Math.cos(a);
+        const y = 100 + PIE_R * Math.sin(a);
+        labels +=
+          '<text x="' + x.toFixed(1) + '" y="' + (y + 4.5).toFixed(1) + '">' +
+          Math.round(frac * 100) + "%</text>";
+      }
       acc += frac;
     }
+    const labelsEl = svg.querySelector(".fb-pie__labels");
+    if (labelsEl) labelsEl.innerHTML = labels;
+    chips.innerHTML = items
+      .filter((it) => it.n > 0)
+      .map(
+        (it) =>
+          '<span class="fb-pie-chip"><span class="fb-pie-chip__dot" style="background:' +
+          it.color + '"></span>' + escapeHtml(it.label) + "</span>",
+      )
+      .join("");
   }
   function renderChart(): void {
     const totalEl = byId("fb-chart-total");
@@ -377,13 +400,15 @@ export function initFeedback(): void {
     }
     renderPie(
       "fb-pie-interest",
+      "fb-chips-interest",
       INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 })),
     );
     renderPie(
       "fb-pie-role",
+      "fb-chips-role",
       ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 })),
     );
-    renderPie("fb-pie-region", regionItems());
+    renderPie("fb-pie-region", "fb-chips-region", regionItems());
   }
 
   // ---- 送信 ----
