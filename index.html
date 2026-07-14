@@ -604,17 +604,30 @@
           <div class="fb-result">
             <div class="fb-json-wrap">
               <div class="fb-tabs" role="tablist">
+                <button type="button" class="fb-tab" data-panel="chart" role="tab">集計結果</button>
                 <button type="button" class="fb-tab is-active" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
                 <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
-                <button type="button" class="fb-tab" data-panel="chart" role="tab">集計結果</button>
               </div>
               <pre id="fb-json" class="fb-json fb-panel" data-panel="entity">送信するとここに実エンティティが表示されます…</pre>
               <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
               <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart" hidden>
-                <div class="fb-chart__title">関心のあるユースケース別の回答数</div>
-                <div class="fb-pie-wrap">
-                  <svg id="fb-pie" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
-                  <div id="fb-chart-rows" class="fb-legend"></div>
+                <div class="fb-chart__title">回答の集計<span id="fb-chart-total" class="fb-chart__total"></span></div>
+                <div class="fb-pies">
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">関心のあるユースケース</div>
+                    <svg id="fb-pie-interest" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
+                    <div id="fb-legend-interest" class="fb-legend"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">ご所属</div>
+                    <svg id="fb-pie-role" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="所属別の回答割合の円グラフ"></svg>
+                    <div id="fb-legend-role" class="fb-legend"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">お住まいの地域</div>
+                    <svg id="fb-pie-region" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="地域別の回答割合の円グラフ"></svg>
+                    <div id="fb-legend-region" class="fb-legend"></div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -11,7 +11,7 @@
 
    右はタブ切替で「注釈付き NGSI-LD エンティティ（送信前は最新の回答を表示）」
    「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」
-   「集計結果（関心ユースケース別の円グラフ）」を表示し、
+   「集計結果（関心・所属・地域の 3 つの円グラフ）」を表示し、
    件数・集計は WebSocket の entityCreated でリアルタイム更新する。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
@@ -47,15 +47,38 @@ const FEEDBACK_MODEL = {
   },
 };
 
-// 集計結果タブの選択肢とバー色（左フォームの「関心のあるユースケース」と一致させる）。
+// 集計結果タブの選択肢と色（キー・ラベルは左フォームの選択肢と一致させる）。
 const USECASE_PREFIX = "urn:ngsi-ld:UseCase:";
+const REGION_PREFIX = "urn:ngsi-ld:AdministrativeArea:";
+const PIE_COLORS = ["#fc6c00", "#39d6c6", "#fba40c", "#e8401e", "#c89bff", "#6b7a90"];
 const INTERESTS = [
-  { key: "disaster", label: "防災・減災", color: "#fc6c00" },
-  { key: "environment", label: "環境モニタリング", color: "#39d6c6" },
-  { key: "mobility", label: "交通・モビリティ", color: "#fba40c" },
-  { key: "energy", label: "エネルギー", color: "#e8401e" },
-  { key: "opendata", label: "オープンデータ", color: "#c89bff" },
+  { key: "disaster", label: "防災・減災", color: PIE_COLORS[0] },
+  { key: "environment", label: "環境モニタリング", color: PIE_COLORS[1] },
+  { key: "mobility", label: "交通・モビリティ", color: PIE_COLORS[2] },
+  { key: "energy", label: "エネルギー", color: PIE_COLORS[3] },
+  { key: "opendata", label: "オープンデータ", color: PIE_COLORS[4] },
 ];
+const ROLES = [
+  { key: "municipality", label: "自治体", color: PIE_COLORS[0] },
+  { key: "sier", label: "SIer・受託開発", color: PIE_COLORS[1] },
+  { key: "startup", label: "スタートアップ", color: PIE_COLORS[2] },
+  { key: "research", label: "研究・教育", color: PIE_COLORS[3] },
+  { key: "other", label: "その他", color: PIE_COLORS[4] },
+];
+
+/** 円グラフの 1 スライス。 */
+interface PieItem {
+  key: string;
+  label: string;
+  color: string;
+  n: number;
+}
+/** 1 回答が各グラフに与える集計キー（bump 対象の伝搬用）。 */
+interface TallyKeys {
+  interest?: string;
+  role?: string;
+  region?: string;
+}
 
 export function initFeedback(): void {
   const FB = config.demos.feedback;
@@ -68,7 +91,10 @@ export function initFeedback(): void {
   const seen: Record<string, true> = Object.create(null); // feedback id -> true（件数の冪等集計）
   const seenChart: Record<string, true> = Object.create(null); // feedback id -> true（集計結果の冪等集計）
   const interestCounts: Record<string, number> = Object.create(null); // usecase key -> 件数
+  const roleCounts: Record<string, number> = Object.create(null); // role key -> 件数
+  const regionCounts: Record<string, number> = Object.create(null); // 都道府県コード -> 件数
   INTERESTS.forEach((o) => (interestCounts[o.key] = 0));
+  ROLES.forEach((o) => (roleCounts[o.key] = 0));
 
   // ---- helpers ----
   const sel = (id: string) => byId<HTMLSelectElement>(id);
@@ -242,78 +268,144 @@ export function initFeedback(): void {
     return e.id ? e : null;
   }
 
-  // ---- 集計結果タブ（関心ユースケース別バーチャート）----
-  // interestedIn Relationship を集計（id で冪等）。集計できたら該当 key を返す。
-  function chartTally(e: Record<string, unknown> | null): string | null {
+  // ---- 集計結果タブ（関心・所属・地域の 3 つのドーナツ円グラフ）----
+  // Relationship の object からプレフィックスを外してキーを取り出す。
+  function relKey(attr: unknown, prefix: string): string | null {
+    const obj =
+      attr && typeof attr === "object" && "object" in attr
+        ? (attr as { object: unknown }).object
+        : null;
+    if (typeof obj !== "string" || !obj.startsWith(prefix)) return null;
+    return obj.slice(prefix.length);
+  }
+  // 1 回答を 3 つの集計へ反映（id で冪等）。反映できたキーを返す。
+  function chartTally(e: Record<string, unknown> | null): TallyKeys | null {
     const id = e?.id as string | undefined;
     if (!e || !id || seenChart[id]) return null;
-    const rel = e.interestedIn as { object?: unknown } | undefined;
-    const obj = rel && typeof rel.object === "string" ? rel.object : "";
-    if (!obj.startsWith(USECASE_PREFIX)) return null;
-    const key = obj.slice(USECASE_PREFIX.length);
-    if (!(key in interestCounts)) return null;
+    const keys: TallyKeys = {};
+    const interest = relKey(e.interestedIn, USECASE_PREFIX);
+    if (interest && interest in interestCounts) {
+      interestCounts[interest] += 1;
+      keys.interest = interest;
+    }
+    const roleAttr = e.role as { value?: unknown } | undefined;
+    const role = roleAttr && typeof roleAttr.value === "string" ? roleAttr.value : null;
+    if (role && role in roleCounts) {
+      roleCounts[role] += 1;
+      keys.role = role;
+    }
+    const region = relKey(e.region, REGION_PREFIX);
+    if (region && /^\d{2}$/.test(region)) {
+      regionCounts[region] = (regionCounts[region] ?? 0) + 1;
+      keys.region = region;
+    }
+    if (!keys.interest && !keys.role && !keys.region) return null;
     seenChart[id] = true;
-    interestCounts[key] += 1;
-    return key;
+    return keys;
   }
-  // ドーナツ円グラフ＋凡例を一度だけ作り、以降はセグメント長と値のみ更新する。
-  // セグメントは stroke-dasharray/-offset で描くため、更新が CSS transition で滑らかに動く。
+
+  // 都道府県コード -> 名称（左フォームの選択肢から一度だけ読む。データの二重管理を避ける）。
+  let regionNames: Record<string, string> | null = null;
+  function regionName(code: string): string {
+    if (!regionNames) {
+      regionNames = Object.create(null) as Record<string, string>;
+      document
+        .querySelectorAll<HTMLOptionElement>("#fb-region option")
+        .forEach((o) => (regionNames![o.value] = o.textContent ?? o.value));
+    }
+    return regionNames[code] ?? code;
+  }
+  // 地域は回答のあった都道府県のみ。多い順に上位 4 ＋「その他」に丸める。
+  const REGION_OTHER = "__other";
+  function regionItems(): PieItem[] {
+    const entries = Object.entries(regionCounts)
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const shown = entries.length <= PIE_COLORS.length - 1 ? entries : entries.slice(0, 4);
+    const items = shown.map(([code, n], i) => ({
+      key: code,
+      label: regionName(code),
+      color: PIE_COLORS[i],
+      n,
+    }));
+    const rest = entries.slice(shown.length);
+    if (rest.length)
+      items.push({
+        key: REGION_OTHER,
+        label: "その他",
+        color: PIE_COLORS[PIE_COLORS.length - 1],
+        n: rest.reduce((s, [, n]) => s + n, 0),
+      });
+    return items;
+  }
+
+  // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
+  // 更新を CSS transition で滑らかに見せる。凡例は毎回組み直す（地域は行が入れ替わるため）。
   const PIE_R = 70;
   const PIE_C = 2 * Math.PI * PIE_R;
-  function buildChart(): void {
-    const svg = byId("fb-pie");
-    const legend = byId("fb-chart-rows");
-    if (!svg || !legend || svg.childElementCount) return;
-    svg.innerHTML =
-      '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>' +
-      INTERESTS.map(
-        (o) =>
-          '<circle class="fb-pie__seg" data-choice="' + o.key + '" cx="100" cy="100" r="' +
-          PIE_R + '" stroke="' + o.color + '" stroke-dasharray="0 ' + PIE_C +
-          '" transform="rotate(-90 100 100)"/>',
-      ).join("") +
-      '<text id="fb-pie-total" class="fb-pie__total" x="100" y="104">0</text>' +
-      '<text class="fb-pie__unit" x="100" y="126">件</text>';
-    legend.innerHTML = INTERESTS.map(
-      (o) =>
-        '<div class="fb-legend__row" data-choice="' + o.key + '">' +
-        '<span class="fb-legend__dot" style="background:' + o.color + '"></span>' +
-        '<span class="fb-legend__label">' + o.label + '</span>' +
-        '<span class="fb-legend__val"><span class="fb-legend__n">0</span>' +
-        '<span class="fb-legend__pct">0%</span></span></div>',
-    ).join("");
-  }
-  function renderChart(bumpKey?: string): void {
-    buildChart();
-    const svg = byId("fb-pie");
-    const legend = byId("fb-chart-rows");
+  const PIE_SLICES = PIE_COLORS.length;
+  function renderPie(svgId: string, legendId: string, items: PieItem[], bumpKey?: string): void {
+    const svg = document.getElementById(svgId);
+    const legend = byId(legendId);
     if (!svg || !legend) return;
-    const t = INTERESTS.reduce((s, o) => s + (interestCounts[o.key] ?? 0), 0);
-    const totalEl = byId("fb-pie-total");
-    if (totalEl) totalEl.textContent = String(t);
+    if (!svg.childElementCount) {
+      let circles = '<circle class="fb-pie__ring" cx="100" cy="100" r="' + PIE_R + '"/>';
+      for (let i = 0; i < PIE_SLICES; i++)
+        circles +=
+          '<circle class="fb-pie__seg" data-idx="' + i + '" cx="100" cy="100" r="' + PIE_R +
+          '" stroke="transparent" stroke-dasharray="0 ' + PIE_C +
+          '" transform="rotate(-90 100 100)"/>';
+      svg.innerHTML = circles;
+    }
+    const t = items.reduce((s, it) => s + it.n, 0);
     let acc = 0; // 累積割合（次セグメントの開始位置）
-    INTERESTS.forEach((o) => {
-      const n = interestCounts[o.key] ?? 0;
-      const frac = t > 0 ? n / t : 0;
-      const pct = t > 0 ? Math.round(frac * 100) : 0;
-      const seg = svg.querySelector('.fb-pie__seg[data-choice="' + o.key + '"]');
-      if (seg) {
-        seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
-        seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
-      }
+    for (let i = 0; i < PIE_SLICES; i++) {
+      const seg = svg.querySelector('.fb-pie__seg[data-idx="' + i + '"]');
+      if (!seg) continue;
+      const it = items[i];
+      const frac = it && t > 0 ? it.n / t : 0;
+      seg.setAttribute("stroke", it ? it.color : "transparent");
+      seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
+      seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
       acc += frac;
-      const row = legend.querySelector<HTMLElement>('.fb-legend__row[data-choice="' + o.key + '"]');
-      if (!row) return;
-      const nEl = row.querySelector<HTMLElement>(".fb-legend__n");
-      const pctEl = row.querySelector<HTMLElement>(".fb-legend__pct");
-      if (nEl) nEl.textContent = String(n);
-      if (pctEl) pctEl.textContent = pct + "%";
-      if (bumpKey === o.key) {
-        row.classList.remove("is-bump");
-        void row.offsetWidth;
-        row.classList.add("is-bump");
-      }
-    });
+    }
+    legend.innerHTML = items
+      .map(
+        (it) =>
+          '<div class="fb-legend__row" data-choice="' + it.key + '">' +
+          '<span class="fb-legend__dot" style="background:' + it.color + '"></span>' +
+          '<span class="fb-legend__label">' + escapeHtml(it.label) + '</span>' +
+          '<span class="fb-legend__val"><span class="fb-legend__n">' + it.n + "</span>" +
+          '<span class="fb-legend__pct">' + (t > 0 ? Math.round((it.n / t) * 100) : 0) +
+          "%</span></span></div>",
+      )
+      .join("");
+    if (bumpKey) {
+      const key = items.some((it) => it.key === bumpKey) ? bumpKey : REGION_OTHER;
+      legend
+        .querySelector<HTMLElement>('.fb-legend__row[data-choice="' + key + '"]')
+        ?.classList.add("is-bump");
+    }
+  }
+  function renderChart(bump?: TallyKeys): void {
+    const totalEl = byId("fb-chart-total");
+    if (totalEl) {
+      const t = Object.keys(seenChart).length;
+      totalEl.textContent = t ? "（全 " + t + " 件）" : "";
+    }
+    renderPie(
+      "fb-pie-interest",
+      "fb-legend-interest",
+      INTERESTS.map((o) => ({ ...o, n: interestCounts[o.key] ?? 0 })),
+      bump?.interest,
+    );
+    renderPie(
+      "fb-pie-role",
+      "fb-legend-role",
+      ROLES.map((o) => ({ ...o, n: roleCounts[o.key] ?? 0 })),
+      bump?.role,
+    );
+    renderPie("fb-pie-region", "fb-legend-region", regionItems(), bump?.region);
   }
 
   // ---- 送信 ----
