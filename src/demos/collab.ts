@@ -187,6 +187,18 @@ export function initCollab(): void {
 
   // ---- 地図 -------------------------------------------------------
   function addLayers(): void {
+    // 現在地へジャンプ（MapLibre / Geolonia 標準の GeolocateControl）。
+    if (GL && typeof GL.GeolocateControl === "function") {
+      map.addControl(
+        new GL.GeolocateControl({
+          positionOptions: { enableHighAccuracy: true },
+          trackUserLocation: true,
+          showUserLocation: true,
+        }),
+        "top-right",
+      );
+    }
+
     map.addSource("features", { type: "geojson", data: fc() });
     map.addLayer({
       id: "co-poly-fill", type: "fill", source: "features",
