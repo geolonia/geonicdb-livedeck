@@ -127,11 +127,12 @@ export function initDeck(): void {
   prevBtn?.addEventListener("click", prev);
   fsBtn?.addEventListener("click", toggleFullscreen);
 
-  // 左右の余白クリックでのページ送り。
-  // 「余白」＝クリック対象がデッキ外周（レターボックス）またはスライド枠そのもの
-  // （.slide / .slide__inner の padding・空きスペース）の場合のみ移動する。
-  // テキスト・ボタン・デモ・地図・カードなどコンテンツ要素はいずれも
-  // .slide__inner の子孫（別要素）が e.target になるため、ここでは対象外＝移動しない。
+  // 左右端の余白クリックでのページ送り。
+  // 送りの対象は「空きスペース（デッキ外周・スライド枠・.slide__inner の余白）」の
+  // うち、さらに左右端の帯（EDGE_RATIO）に入るクリックのみ。
+  // テキスト・ボタン・デモ・地図などコンテンツ要素は e.target が別要素になるため対象外。
+  // 中央・下部の広い空きスペースをクリックしても送らない＝意図しない遷移を防ぐ。
+  const EDGE_RATIO = 0.2; // 左右それぞれ 20% の帯だけを送りゾーンにする
   function isBlankArea(el: HTMLElement | null): boolean {
     return (
       el === deck ||
@@ -144,11 +145,12 @@ export function initDeck(): void {
     // テキストをドラッグ選択した直後のクリックでは移動しない。
     const sel = window.getSelection?.();
     if (sel && sel.type === "Range" && sel.toString().length > 0) return;
-    // 現在のスライドの中心を基準に、左側なら前へ・右側なら次へ。
+    // 現在スライド枠を基準に、左端の帯なら前へ・右端の帯なら次へ。中央は送らない。
     const rect = slides[current]?.getBoundingClientRect();
-    const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    if (e.clientX < centerX) prev();
-    else next();
+    if (!rect) return;
+    const band = rect.width * EDGE_RATIO;
+    if (e.clientX < rect.left + band) prev();
+    else if (e.clientX > rect.right - band) next();
   });
 
   // ヒントの自動非表示。
