@@ -1,66 +1,195 @@
-# GeonicDB
+# GeonicDB Live Deck（製品紹介ライブデッキ）
 
-> GeonicDB は FIWARE Orion 互換のフルマネージド Context Broker（コンテキストブローカー）サービス。IoT・都市・業務システムが生む「いま」の状態（コンテキスト）を、標準 API で登録・保持・問い合わせ・購読できる基盤を、運用レスな SaaS として提供します。NGSIv2 と NGSI-LD を 1 エンジンで両対応し、AI・地理空間ネイティブ、エンタープライズ級の認証認可を備えます。
+> GeonicDB は FIWARE Orion 互換のフルマネージド Context Broker（コンテキストブローカー）サービス。IoT・都市・業務システムが生む「いま」の状態（コンテキスト）を、標準 API で登録・保持・問い合わせ・購読できる基盤を、運用レスな SaaS として提供します。NGSIv2 と NGSI-LD を 1 エンジンで両対応し、AI・地理空間ネイティブ、エンタープライズ級の認証認可を備えます。提供元は Geolonia, Inc.。
 
-GeonicDB は、データの生産者と利用者を疎結合につなぐ「都市 OS」的な中継役です。1 つの GeonicDB をテナント（組織・プロジェクト）単位で完全分離して共有でき、`NGSILD-Tenant` / `Fiware-Service` ヘッダでテナントが切り替わります。データも権限もテナント境界で隔離されます。
+このファイルは製品紹介ライブデッキ（実接続のライブデモ入りスライド）そのものについての LLM 向けドキュメントです。各スライド（ページ）のコンテンツと、**ライブデモの接続先・エンティティタイプ・データモデル**、そして顧客向けプレゼン中に **MCP 経由でデータを投入・分析する**ための実用情報をまとめています。
 
-提供元は Geolonia, Inc.。サーバーレスで自動スケールし、冗長構成＋マルチリージョンで高可用（自動フェイルオーバー 10–30 秒、RTO < 5 分 / RPO < 1 分）。利用者はサーバー運用やスケーリングを意識せず、プランに応じて使えます。
+- デッキ本体: https://geolonia.github.io/geonicdb-livedeck/
+- ライブデモの接続先（全デモ共通）: `https://geonicdb.geolonia.com`（ステージング、ドッグフーディング環境）
+- テナント: `miya`（`NGSILD-Tenant: miya` / `Fiware-Service: miya`）
 
-このファイルは製品紹介ライブデッキ（実接続のデモ入りスライド）の内容をもとに生成した、LLM 向けの概要です。
+> データへのアクセスは **MCP または CLI（`geonic`）経由**を前提とします。いずれも接続時に認証が済んでいるため、この文書では認証情報（トークン取得手順など）は扱いません。以降は「何のデータがあり・どう投入/分析するか」に集中します。
 
-## 標準準拠とプロトコル
+## MCP / CLI でデータを投入・分析する（プレゼン中）
 
-- NGSI-LD（ETSI GS CIM 009）: エンティティ同士が Relationship でつながるリンクトデータ。JSON-LD が土台。組織を越えても意味を保ったまま連携できます。
-- FIWARE NGSIv2: FIWARE スマートシティ/IoT 基盤群が定める API。GeonicDB は 1 つのブローカーで NGSIv2 と NGSI-LD の両方に対応し、用途に合わせてどちらの形式でもエンティティを取得できます。
-- マルチテナンシー: `Fiware-Service` / `NGSILD-Tenant` によるテナント完全分離。エンティティ ID が同じでもテナントが違えば別物として扱われます。
+MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code / Cursor 等）や公式 CLI `geonic` から、ライブデモと同じテナント `miya` のデータを直接操作できます。投入したエンティティは、対応するライブデモに **WebSocket 経由でリアルタイム反映**されます（フィードバック・共同編集 GIS・メッセージング）。
 
-## コア機能
+- MCP エンドポイント: `POST https://geonicdb.geolonia.com/mcp`（Streamable HTTP・ステートレス。POST のみ）
+- テナント: `miya`（接続済みの認証情報から解決される）
+- ツールの完全なスキーマは `GET /tools.json`（Function Calling 形式）、`GET /openapi.json`・`GET /api.json`（OpenAPI 3.0）、MCP の `tools/list` で取得できます。
+- 認可は XACML 3.0 ポリシーに従います（`config` / `admin` ツールは管理者ロール向け）。
 
-- エンティティ CRUD: 一覧・ページング・フィルタ・ソート、属性レベル操作、バッチ操作（NGSIv2 `POST /v2/op/update`、NGSI-LD の create/upsert/update/merge/delete/purge・最大 100 件）。
-- 時系列（Temporal API）: すべての変化を履歴として保持。`timerel`（after/before/between）・`lastN`・集約 `aggrMethods`（count/sum/avg/min/max/stddev…）に対応。MongoDB Time Series 格納。
+### 統一 5 ツール
+
+| ツール | 用途 | 主なアクション |
+|---|---|---|
+| `entities` | エンティティ CRUD・型・属性・geo 検索 | `list` / `get` / `create` / `update` / `delete` / `replace` / `search_by_location` / `search_by_attribute` |
+| `batch` | 一括操作（最大 100 件） | create / upsert / update / delete |
+| `temporal` | 時系列・履歴の取得 | 期間・`lastN`・集約 |
+| `config` | Rules・JSON-LD コンテキスト・データモデル管理 | 要 `tenant_admin`+ |
+| `admin` | ユーザー・テナント・ポリシー管理 | 要 `tenant_admin`+ |
+
+### プレゼンでよく使うレシピ
+
+以下は「MCP の `entities` / `temporal` ツールでこう呼ぶ」ことを示す擬似指示です（実際の引数名は `/tools.json` に準拠）。REST 等価も併記します。各デモの型・属性は後述の「ライブデモの接続先・データモデル」を参照。
+
+1. **フィードバックを投入 →「回答が『つながるデータ』になる」スライドの集計に即反映**
+   - `entities` / `create`：type=`Feedback`、下記データモデルどおりの属性（`role`/`expectation`/`interestedIn`/`region`/`location`）を持つ NGSI-LD エンティティを作成。
+   - REST 等価: `POST /ngsi-ld/v1/entities`（tenant=miya）。
+2. **メッセージを投入 → メッセージング＆ReactiveCore Rules ログのデモに反映**
+   - `entities` / `create`：type=`geonicdb-livedeck-Message`（`name`・`text`）。サーバ側の Rules が自動で `geonicdb-livedeck-MessageLog` を生成し、両方が WS で配信される。
+3. **地物を投入 → 共同編集 GIS の地図に反映**
+   - `entities` / `create`：type=`geonicdb-livedeck-MapFeature`（`kind`・`color`・`author`・`drawnAt`・`location`=GeoProperty）。※直近 24 時間に作成された地物のみ地図に表示される。
+4. **近傍検索で分析（AED マップ相当）**
+   - `entities` / `search_by_location`：type=`AedLocation`、中心座標＋半径で近傍を取得。
+   - REST 等価: `GET /ngsi-ld/v1/entities?type=AedLocation&georel=near;maxDistance==<m>&geometry=Point&coordinates=[lng,lat]&count=true`。
+5. **時系列を分析（Temporal タイムマシン / 避難所の混雑度 相当）**
+   - `temporal`：type=`WeatherObserved`（`temperature`/`humidity`）や `EvacuationArea`（`occupancy`）を期間・集約付きで取得。
+   - REST 等価: `GET /ngsi-ld/v1/temporal/entities?type=...&timerel=between&timeAt=...&endTimeAt=...&attrs=...`。
+
+> 注意: 投入したデータはステージングの共有テナント `miya` に残ります。デッキ用リソースには `geonicdb-livedeck-` プレフィックス、または `Feedback` などデッキ用と分かる型名を使い、他用途のデータと混ざらないようにしてください。プレゼン後の後始末（削除）は `entities` / `delete` または `batch` で行えます。
+
+## ライブデモの接続先・エンティティタイプ・データモデル
+
+全ライブデモは `https://geonicdb.geolonia.com`（ステージング）・テナント `miya` に実接続します。以下は各ライブデモが読み書きする型とデータモデルです。
+
+### 標準 API — NGSIv2 / NGSI-LD デュアルプロトコル（読み取り専用）
+
+「1 つのブローカーで NGSIv2 と NGSI-LD の両方に対応」を示すデモ。同一の実体を両プロトコルで取得して左右に並べます。
+
+- 型: `EnvironmentSensor`（環境センサー）
+- 対象エンティティ（同一内容を両形式で用意）: NGSI-LD `urn:ngsi-ld:EnvironmentSensor:001` ⇔ NGSIv2 `env-sensor-001`
+- 操作: `GET /ngsi-ld/v1/entities/{id}` と `GET /v2/entities/{id}`
+
+### ライブフィードバック — NGSI-LD リンクトデータ（作成 + WebSocket + カスタムデータモデル）
+
+フォーム送信で NGSI-LD エンティティ（type=`Feedback`）を作成し、WebSocket で集計をリアルタイム更新。NGSI-LD の Property / Relationship / GeoProperty を体感させるデモ。
+
+- 型: `Feedback`（カスタムデータモデル。domain=`Survey`。定義は `GET /custom-data-models/Feedback`）
+- id 形式: `urn:ngsi-ld:Feedback:<自動生成>`
+- データモデル（属性）:
+  - `role` — Property / string（回答者の所属。例 `municipality`）／必須
+  - `expectation` — Property / number 1–5（期待度。`observedAt` メタデータ付き）／必須
+  - `interestedIn` — Relationship → `urn:ngsi-ld:UseCase:<key>`（関心ユースケース。例 `disaster`）／必須
+  - `region` — Relationship → `urn:ngsi-ld:AdministrativeArea:<都道府県コード2桁>`（例 `13`）／必須
+  - `location` — GeoProperty / GeoJSON Point（会場の位置。固定座標）／必須
+- 購読: `entityTypes: ["Feedback"]` の WebSocket で `entityCreated` を受信
+
+### Geo クエリー — AED マップ（読み取り専用 + 近傍検索）
+
+地図上に点を描画し、中心＋半径の近傍検索で絞り込むデモ。
+
+- 型: `AedLocation`
+- 使用属性: `location`（GeoProperty / Point）、`name`、`address`、`installationPosition`
+- 主なクエリ: `GET /ngsi-ld/v1/entities?type=AedLocation&georel=near;maxDistance==<meters>&geometry=Point&coordinates=[lng,lat]&count=true`（総数は `NGSILD-Results-Count` ヘッダ）
+- データ出典: 香川県高松市のオープンデータ（AED 設置場所）
+
+### Temporal タイムマシン — 時系列（読み取り専用 / Temporal API）
+
+過去にさかのぼって「いつ・どの瞬間の状態か」を再生するデモ。
+
+- 型: `WeatherObserved`
+- 対象エンティティ: `urn:ngsi-ld:WeatherObserved:takamatsu-1`
+- 時系列属性: `temperature`、`humidity`（各インスタンスに `observedAt`）
+- 期間（固定）: `2026-06-26T00:00:00Z` 〜 `2026-06-27T00:30:00Z`
+- クエリ: `GET /ngsi-ld/v1/temporal/entities/{id}?timerel=between&timeAt=...&endTimeAt=...&attrs=temperature,humidity`
+
+### 避難所の混雑度 — 自治体ユースケース（読み取り専用 / 地図 + Temporal API）
+
+指定避難所の位置に受入状況の時系列を重ね、1 日の混雑の移り変わりを再生するデモ。
+
+- 型: `EvacuationArea`
+- 絞り込み: `municipalityCode == 372013`（高松市）
+- 使用属性: `name`、`address`、`location`（GeoProperty / Point）、`capacity`（number）、`municipalityCode`、`occupancy`（時系列 / Temporal）
+- 期間（固定）: `2026-06-26T00:00:00Z` 〜 `2026-06-27T00:00:00Z`
+- 時系列クエリ: `GET /ngsi-ld/v1/temporal/entities?type=EvacuationArea&timerel=between&timeAt=...&endTimeAt=...&attrs=occupancy`
+- データ出典: 避難所の位置・収容人数は高松市オープンデータ「指定緊急避難場所・指定避難所」(CC BY 4.0)。`occupancy`（混雑度）は説明用の合成データで、実際の受入実績ではありません。
+
+### 共同編集 GIS — 民間ユースケース（作成 + WebSocket）
+
+地図にポイント/ライン/ポリゴンを描くと NGSI-LD の地物として作成され、WebSocket で全員の画面に反映されるデモ。
+
+- 型: `geonicdb-livedeck-MapFeature`（デッキ専用の自由形状型）
+- id 形式: `urn:ngsi-ld:geonicdb-livedeck-MapFeature:<自動生成>`
+- データモデル（属性）:
+  - `kind` — Property / string（`point` | `line` | `polygon`）
+  - `color` — Property / string（参加者ごとの色。hex）
+  - `author` — Property / string（セッションごとの匿名 ID 例 `guest-xxxxxx`）
+  - `drawnAt` — Property / string（ISO 8601 日時）
+  - `location` — GeoProperty / GeoJSON（Point / LineString / Polygon）
+- 購読: `entityTypes: ["geonicdb-livedeck-MapFeature"]`
+- 表示条件: 直近 24 時間に作成された地物のみ地図に表示
+
+### リアルタイムメッセージング + ReactiveCore Rules ログ — 民間ユースケース（作成 + WebSocket + Rules）
+
+投稿（名前＋本文）を NGSI-LD エンティティとして作成 → WS で全員に配信。サーバの ReactiveCore Rules が投稿を検知してログを自動記録するデモ。
+
+- メッセージ型: `geonicdb-livedeck-Message`
+  - `name` — Property / string
+  - `text` — Property / string（最大 100 文字）
+  - id 形式: `urn:ngsi-ld:geonicdb-livedeck-Message:<自動生成>`
+- ログ型: `geonicdb-livedeck-MessageLog`（ReactiveCore Rules `geonicdb-livedeck-message-log` が自動生成）
+  - 表示に使う属性: `summary`、`action`
+- 購読: `entityTypes: ["geonicdb-livedeck-Message", "geonicdb-livedeck-MessageLog"]`
+
+## スライド（ページ）の内容
+
+スライドは順序を入れ替えることがあるため、番号ではなくセクション名で示します。ライブデモを含むページには **[LIVE]** を付けています。
+
+- **タイトル** — 「フルマネージド コンテキストブローカー」。NGSIv2＋NGSI-LD デュアル／AI・地理空間ネイティブ／エンタープライズ認証認可／運用レス。QR でこのデッキを開ける。
+- **会社概要** — 株式会社 Geolonia（親会社 ジオテクノロジーズ）。設立 2019 年、従業員 27 名。主な納入先（デジタル庁・国土交通省・国土地理院・NHK・ソフトバンク・竹中工務店・高松市 ほか）、政府の取り組み（空間 ID／スマートシティリファレンスアーキテクチャ）への貢献。
+- **コンテキストブローカーとは？（図解）** — 街じゅうのバラバラなデータを「受け取って・そろえて・届ける」中継役、という概念図。
+- **コンテキストブローカーとは？（基礎）** — 収集・更新／最新状態＋履歴／横断クエリ／購読（Pub/Sub）／標準 API／認証・認可。マルチテナンシーの導入。
+- **近未来のスマートシティ（図解）** — 街のいまを「状態の集合体」として束ねる都市 OS のビジョン。
+- **国際標準に準拠** — NGSI-LD（ETSI GS CIM 009 V1.9.1）を軸に、FIWARE NGSIv2・OpenAPI 3.0.3・JSON-LD・DCAT-AP/CKAN・CADDE・各種 RFC（ETag/Link/DPoP 9449/GeoJSON 7946）。
+- **マルチテナンシー** — 1 基盤をテナント単位で完全分離。`NGSILD-Tenant` / `Fiware-Service` で切替。データ・ポリシー・API キー・購読が独立し、ID 衝突も起きない。
+- **AI Native** — 「むずかしいことや面倒なことは AI におまかせ」。MCP サーバー・CLI により、設定・データ作成・アプリ開発を自然言語で AI に依頼できる（AI サービスは別途契約）。
+- **[LIVE] 標準 API（デュアルプロトコル）** — 同一実体を NGSIv2 と NGSI-LD の両 API から取得して左右に並べる（型 `EnvironmentSensor`）。
+- **[LIVE] ライブフィードバック（NGSI-LD リンクトデータ）** — 回答が Property/Relationship/GeoProperty を持つ「つながるデータ」になる。集計を WS でリアルタイム更新（型 `Feedback`）。
+- **[LIVE] Geo クエリー（AED マップ）** — 中心＋半径の近傍検索でデータを絞り込む（型 `AedLocation`）。
+- **[LIVE] Temporal タイムマシン** — すべての変化を履歴として保持し、過去の瞬間を期間指定で再生（型 `WeatherObserved`）。
+- **ReactiveCore Rules（図解）** — 内蔵ルールエンジン。しきい値超過などの条件で、通知・Webhook・属性更新・派生エンティティ生成を自動実行。
+- **フェデレーション** — テナント/ドメインの異なる複数 GeonicDB を 1 窓口に統合。Context Source Registration にもとづく並列転送＋結果マージ、ループ検知（Via）・`NGSILD-Warning` 対応。
+- **[LIVE] 避難所の混雑度（自治体ユースケース）** — 指定避難所に Temporal の受入状況を重ね、混雑度で色分け再生（型 `EvacuationArea`）。
+- **[LIVE] 共同編集 GIS（民間ユースケース）** — 地図に描いた地物を NGSI-LD として作成し WS で全員に反映（型 `geonicdb-livedeck-MapFeature`）。
+- **[LIVE] リアルタイムメッセージング + Rules ログ（民間ユースケース）** — 投稿を NGSI-LD エンティティで作成 → WS 配信、Rules がログを自動生成（型 `geonicdb-livedeck-Message` / `geonicdb-livedeck-MessageLog`）。
+- **ユースケース** — スマートシティ/自治体、AI 駆動 IoT 分析、オープンデータ公開、マルチテナント SaaS、地図・位置情報アプリ、LLM アシスタント付き Web。
+- **競合比較（vs FIWARE Orion）** — NGSIv2/NGSI-LD 両対応・Temporal・WebSocket/ベクトルタイル/空間 ID・組込み JWT/RBAC/XACML・外部 OIDC/IP 制限/DPoP・DCAT-AP/CKAN/CADDE・オートスケールで差別化。
+- **Appendix（補足資料）** — 以下は技術詳細。
+- **全機能カタログ ①/②** — NGSIv2 / NGSI-LD / Temporal / 地理空間 / データモデル・知識管理 / イベント・リアルタイム / 分散・フェデレーション / AI・LLM 統合 / SDK・CLI / マルチテナント・運用 / 入力検証。
+- **AI 連携の仕様** — ディスカバリ（`/.well-known/ai-plugin.json`・`/llms.txt`・`/openapi.json`・`/api.json`・`/tools.json`）、MCP（`POST /mcp`）、A2A（`POST /a2a`）、統一 5 ツール、ロール連動の認可。
+- **管理機能** — テナント管理、ユーザー・メンバーシップ、認証情報（API キー・OAuth クライアント）、XACML ポリシー、監査ログ、監視・運用。
+- **信頼性** — 想定可用性 99.95%+、サーバーレス自動スケール、冗長構成＋マルチリージョン、自動フェイルオーバー 10–30 秒、RTO < 5 分 / RPO < 1 分。
+- **認証・認可** — 5 種の認証（JWT・API Key・OAuth 2.0・OIDC・DPoP）、XACML 3.0 単一レイヤ、per-tenant IP 制限、PEP プロキシ不要。
+- **セキュリティ** — ブルートフォース/スプレー対策、レート制限、PoW＋Nonce、入力の厳格検証（ReDoS/SSRF 対策）、PBKDF2-SHA512、AES-256-GCM＋AWS KMS。
+- **クエリで使えるパラメータ** — ページング・件数、フィルタ（`type`/`id`/`idPattern`/`q`/`mq`/`attrs`）、属性選択・整形（`pick`/`omit`/`lang`/`scopeQ`/`orderBy`）、ジオクエリ（`georel`/`geometry`/`coordinates`/`geoproperty`）、空間 ID・連携、主な制限値。
+- **用語集** — A2A・NGSI-LD・NGSIv2・MCP・XACML・DPoP・Temporal API・ReactiveCore Rules・リンクトデータ ほか、本資料の専門用語の平易な説明。
+- **クロージング** — 「都市 OS を、フルマネージドサービスで。」お問い合わせ・デモの案内。
+
+## 標準準拠とプロトコル（製品概要）
+
+- NGSI-LD（ETSI GS CIM 009）: エンティティ同士が Relationship でつながるリンクトデータ。JSON-LD が土台。組織を越えても意味を保ったまま連携できる。
+- FIWARE NGSIv2: 1 エンジンで NGSIv2 と NGSI-LD の両方に対応。用途に合わせてどちらの形式でもエンティティを取得できる。
+- マルチテナンシー: `Fiware-Service` / `NGSILD-Tenant` によるテナント完全分離。ID が同じでもテナントが違えば別物。
+
+## コア機能（製品概要）
+
+- エンティティ CRUD（一覧・ページング・フィルタ・ソート、属性レベル操作、バッチ最大 100 件）。
+- 時系列（Temporal API）: `timerel`（after/before/between）・`lastN`・集約 `aggrMethods`（count/sum/avg/min/max/stddev…）。MongoDB Time Series 格納。
 - 地理空間（Geo-query）: `georel`（near/within/intersects…）、空間 ID（ZFXY・`spatialIdDepth`）、CRS 変換（EPSG:4326/3857）、GeoJSON 出力、ベクトルタイル（TileJSON 3.0・自動クラスタリング）。
-- サブスクリプション / リアルタイム: エンティティの作成・更新・削除を購読し、変化した瞬間に WebSocket で即時プッシュ、または Webhook / MQTT（3.1.1・5.0）で外部通知。ポーリング不要。
-- ReactiveCore Rules: 内蔵ルールエンジン。エンティティの変化を監視し、CEL 条件に一致すると通知・Webhook・属性更新・派生エンティティ生成などのアクションを自動実行。外部ワークフロー基盤の構築不要。
-- フェデレーション: テナントやドメインの異なる複数の GeonicDB を 1 つの窓口に統合。Context Source Registration にもとづき分散クエリ/更新を並列転送し、結果をマージ。形式差は自動変換。ループ検知（Via）・警告ヘッダ（`NGSILD-Warning`）対応。
+- サブスクリプション / リアルタイム: 作成・更新・削除を購読し、WebSocket で即時プッシュ、または Webhook / MQTT（3.1.1・5.0）で外部通知。
+- ReactiveCore Rules: 内蔵ルールエンジン。CEL 条件に一致すると通知・Webhook・属性更新・派生エンティティ生成を自動実行。
+- フェデレーション: Context Source Registration にもとづく分散クエリ/更新の並列転送・結果マージ。形式差は自動変換。
 - データモデル / カタログ: Smart Data Models（8+ ドメイン・50+ 型）、カスタムデータモデル（JSON Schema 自動生成・検証）、データカタログ（DCAT / CKAN・全文検索）、CADDE 連携。
-
-## AI 連携
-
-- 機械可読ディスカバリ（いずれも未認証で取得可能。エージェントが自力で仕様を把握できる）: `/.well-known/ai-plugin.json`、`/llms.txt`、`/openapi.json`・`/api.json`（OpenAPI 3.0）、`/tools.json`（Function Calling スキーマ）。
-- MCP（Model Context Protocol）: `POST /mcp`。Streamable HTTP（ステートレス）。Claude / Cursor など MCP クライアントから直結。
-- A2A（Agent-to-Agent）: `POST /a2a`（JSON-RPC 2.0・protocol 0.2.2）、Agent Card `/.well-known/agent-card.json`。
-- 統一 5 ツール: `entities` / `batch` / `temporal` / `config` / `admin`。SDK / CLI と同じ API・同じ認可で動作し、ツール実行はアクセス主体のロールに従う（`config` / `admin` は tenant_admin / super_admin のみ）。エージェント経由でも XACML の権限は越えられません。
-- 各種設定・データ作成・アプリ開発を、MCP サーバーや CLI を通じて自然言語で AI に依頼できます（AI サービスは別途契約が必要）。
-
-## 認証・認可 / セキュリティ
-
-- 5 種の認証: JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）。
-- XACML 3.0 単一レイヤ: 5 ロール × 属性ベースのきめ細かいポリシー。ポリシーセット・優先度・deny-fence、XACML エクスポート/インポート。PEP プロキシ（Wilma 等）を別途立てる必要がありません。
-- per-tenant IP 制限（allowlist）、トークン失効、監査ログ（`level=AUDIT`。`LOG_LEVEL=SILENT` でも必ず出力、コンプライアンス用途）。
-- テナント削除時の暗号消去（crypto-shred・AWS KMS 鍵失効・AES-256-GCM）＋削除レポート。
-
-## 開発者向けインターフェース
-
-- JavaScript SDK: `@geolonia/geonicdb-sdk`（型定義つき）。
-- 公式 CLI: `geonic`（管理・認証・JSON/YAML 出力）。
-- OpenAPI / Swagger: `/openapi.json`・`/api.json`。
-- 入力検証: 全入力を Zod スキーマで検証（ID/型/属性名 最大 256 字、クエリ 2000 字、正規表現 200 字・ReDoS 対策、ネスト深度 10）。
-
-## ユースケース
-
-- スマートシティ / 自治体: 交通・駐車・環境モニタリング。空間 ID・CADDE で日本市場に適合。防災（避難所の混雑度を Temporal API で可視化）。
-- AI 駆動 IoT 分析: MCP 経由でエージェントが自律的にデータ投入・検索、自動バリデーション。
-- オープンデータ公開: DCAT-AP / CKAN ハーベスタ連携でポータルへ自動収集。
-- マルチテナント SaaS: XACML・IP 制限・JWT RBAC で PEP プロキシ不要。
-- 地図・位置情報アプリ: ベクトルタイル直結でカスタム描画コード不要。共同編集 GIS（地図の地物を NGSI-LD として作成し WebSocket で全員に反映）。
-- LLM アシスタント付き Web: SDK 型定義 + MCP で Claude / Cursor から開発。
 
 ## Resources
 
-- [製品紹介ライブデッキ（GeonicDB のご紹介）](https://geolonia.github.io/geonicdb-livedeck/): 本 llms.txt の元となる、実接続ライブデモ入りのスライド。
+- [製品紹介ライブデッキ（GeonicDB のご紹介）](https://geolonia.github.io/geonicdb-livedeck/): このデッキ本体。実接続ライブデモ入りのスライド。
 - [Geolonia, Inc.](https://geolonia.com/): 提供元。
+- 機械可読ディスカバリ（未認証で取得可・エージェントが自力で仕様を把握できる）: `https://geonicdb.geolonia.com/tools.json`・`/openapi.json`・`/api.json`・`/.well-known/ai-plugin.json`・`/.well-known/agent-card.json`。
 
 ## Optional
 
 - ステージング環境 `https://geonicdb.geolonia.com` はドッグフーディング用の稼働環境です（本番の顧客データではありません）。
 - デモ内のサンプルデータ（避難所の混雑度など）は説明用であり、実際の実績値ではありません。
+- MCP でデータを投入するとステージングの共有テナント `miya` に残ります。プレゼン後は不要なデモデータを削除してください。
