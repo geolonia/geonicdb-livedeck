@@ -26,6 +26,14 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
 のクラスで自分のスライドを特定する（`slides.indexOf(...)`）。**スライドを挿入・並べ替えても番号は自動追従するので、ドキュメントでは極力ハードな番号参照を避ける。**
 
+### AI エージェント向けメタデータ（`data-slide` / JSON-LD / llms.txt）
+
+URL の `#N`（先頭から N 番目のスライド）を、AI エージェントがソースを読まずに内容・エンティティ型へ解決できるよう、各 `<section class="slide">` に機械可読メタデータを持たせている。**スライドを追加・並べ替えたら、以下を同時に更新する**こと（番号ではなくスラグで対応づけているので、並べ替え自体はスラグを保てば壊れない）。
+
+- 各 `<section>` に安定スラグ `data-slide="<slug>"`。ライブデモには `data-live="true"` / `data-demo="<key>"` / `data-entity-types="<型>[,<型>…]"` も付ける。
+- `index.html` の `<head>` の JSON-LD（`PresentationDigitalDocument` の `hasPart`）に、`position`（＝DOM 順＝`#N`）・`identifier`（スラグ）・`name`（見出し）を 1 エントリ追加。ライブデモは `keywords` に `entityType:<型>`。`<head>` の `<link rel="alternate" title="llms.txt">` は発見用シグナル。
+- `public/llms.txt` の「スライド（ページ）の内容」と、ライブデモなら「ライブデモの接続先・データモデル」（`### …` に `data-slide: <slug>` 併記）を更新。
+
 ## 作業の進め方
 
 - 親リポジトリ `geonicdb` の `CLAUDE.md` のワークツリー運用・ラベル規約に従う。
