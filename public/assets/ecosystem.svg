@@ -279,7 +279,4 @@
     <circle r="3.4"><animateMotion dur="7s" begin="-2.33s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
     <circle r="3.4"><animateMotion dur="7s" begin="-4.66s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
   </g>
-  <text x="672" y="740" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FF9E5C">
-    使われるほど、お客様のデータが増えて育つ ― これがエコシステムの循環
-  </text>
 </svg>
