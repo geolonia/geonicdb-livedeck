@@ -96,18 +96,18 @@
 
   <!-- ===== 流出: GeonicDB から生まれるサービス（グリーン） ===== -->
   <g fill="none" stroke="#1fd39a" stroke-width="1.8" opacity="0.55">
-    <path d="M 640,380 Q 520,500 400,617"/>
-    <path d="M 640,380 Q 580,498 520,617"/>
-    <path d="M 640,380 Q 640,498 640,617"/>
-    <path d="M 640,380 Q 700,498 760,617"/>
-    <path d="M 640,380 Q 760,500 880,617"/>
+    <path d="M 640,380 Q 520,500 400,610"/>
+    <path d="M 640,380 Q 580,498 520,610"/>
+    <path d="M 640,380 Q 640,498 640,610"/>
+    <path d="M 640,380 Q 700,498 760,610"/>
+    <path d="M 640,380 Q 760,500 880,610"/>
   </g>
   <g fill="#2fe0a8">
-    <circle r="3.2"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 640,380 Q 520,500 400,617"/></circle>
-    <circle r="3.2"><animateMotion dur="3.2s" begin="-0.6s" repeatCount="indefinite" path="M 640,380 Q 580,498 520,617"/></circle>
-    <circle r="3.2"><animateMotion dur="3.2s" begin="-1.2s" repeatCount="indefinite" path="M 640,380 Q 640,498 640,617"/></circle>
-    <circle r="3.2"><animateMotion dur="3.2s" begin="-1.8s" repeatCount="indefinite" path="M 640,380 Q 700,498 760,617"/></circle>
-    <circle r="3.2"><animateMotion dur="3.2s" begin="-2.4s" repeatCount="indefinite" path="M 640,380 Q 760,500 880,617"/></circle>
+    <circle r="3.2"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 640,380 Q 520,500 400,610"/></circle>
+    <circle r="3.2"><animateMotion dur="3.2s" begin="-0.6s" repeatCount="indefinite" path="M 640,380 Q 580,498 520,610"/></circle>
+    <circle r="3.2"><animateMotion dur="3.2s" begin="-1.2s" repeatCount="indefinite" path="M 640,380 Q 640,498 640,610"/></circle>
+    <circle r="3.2"><animateMotion dur="3.2s" begin="-1.8s" repeatCount="indefinite" path="M 640,380 Q 700,498 760,610"/></circle>
+    <circle r="3.2"><animateMotion dur="3.2s" begin="-2.4s" repeatCount="indefinite" path="M 640,380 Q 760,500 880,610"/></circle>
   </g>
 
   <!-- ===== 還流: 現場の実データがデータ資産へ戻る（エコシステムの循環） ===== -->
@@ -292,40 +292,55 @@
     両社の強みが GeonicDB でつながり、新しいサービスになる
   </text>
   <g text-anchor="middle" fill="#e7eef7">
-    <g transform="translate(400,640)">
-      <rect x="-52" y="-23" width="104" height="46" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
-      <rect x="-48" y="-19" width="96" height="5" rx="2" fill="#FF540D"/>
-      <g fill="#1fd39a"><rect x="-16" y="4" width="6" height="9"/><rect x="-7" y="-1" width="6" height="14"/><rect x="2" y="-5" width="6" height="18"/><rect x="11" y="1" width="6" height="12"/></g>
-      <text y="40" font-size="12.5">防災・危機管理</text>
-    </g>
-    <g transform="translate(520,640)">
-      <rect x="-52" y="-23" width="104" height="46" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
-      <rect x="-48" y="-19" width="96" height="5" rx="2" fill="#FF540D"/>
-      <g fill="none" stroke="#F2933C" stroke-width="2" stroke-linejoin="round">
-        <rect x="-13" y="-9" width="26" height="17" rx="4"/><path d="M-13,-2 h26"/><path d="M-5,-9 v7"/>
+    <g transform="translate(400,638)">
+      <rect x="-55" y="-30" width="110" height="60" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <rect x="-51" y="-26" width="102" height="5" rx="2" fill="#FF540D"/>
+      <g transform="translate(0,5)" fill="none" stroke="#F2933C" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M0,-15 L17,14 H-17 Z"/>
+        <path d="M0,-5 v8"/>
       </g>
-      <circle cx="-7" cy="10" r="2.4" fill="#F2933C"/><circle cx="7" cy="10" r="2.4" fill="#F2933C"/>
-      <text y="40" font-size="12.5">MaaS・モビリティ</text>
+      <circle cx="0" cy="14" r="2.1" fill="#F2933C"/>
+      <text y="48" font-size="13">防災</text>
     </g>
-    <g transform="translate(640,640)">
-      <rect x="-52" y="-23" width="104" height="46" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
-      <rect x="-48" y="-19" width="96" height="5" rx="2" fill="#FF540D"/>
-      <g fill="none" stroke="#1fd39a" stroke-width="2"><rect x="-13" y="-4" width="8" height="16"/><rect x="-3" y="-10" width="8" height="22"/><rect x="7" y="0" width="6" height="12"/></g>
-      <text y="40" font-size="12.5">自治体 DX</text>
+    <g transform="translate(520,638)">
+      <rect x="-55" y="-30" width="110" height="60" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <rect x="-51" y="-26" width="102" height="5" rx="2" fill="#FF540D"/>
+      <g transform="translate(0,3)" fill="none" stroke="#F2933C" stroke-width="2.6" stroke-linejoin="round">
+        <rect x="-19" y="-14" width="38" height="25" rx="6"/>
+        <path d="M-19,-3 h38"/><path d="M-7,-14 v11"/>
+      </g>
+      <circle cx="-10" cy="18" r="3.2" fill="#F2933C"/><circle cx="10" cy="18" r="3.2" fill="#F2933C"/>
+      <text y="48" font-size="13">MaaS</text>
     </g>
-    <g transform="translate(760,640)">
-      <rect x="-52" y="-23" width="104" height="46" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
-      <rect x="-48" y="-19" width="96" height="5" rx="2" fill="#FF540D"/>
-      <path d="M-14,-6 h24 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-16 l-6,5 v-5 a4,4 0 0 1 -2,-3 v-9 a4,4 0 0 1 0,-4 z" fill="none" stroke="#1fd39a" stroke-width="2"/>
-      <path d="M14,-10 l1.5,4 4,1.5 -4,1.5 -1.5,4 -1.5,-4 -4,-1.5 4,-1.5 z" fill="#F2933C"/>
-      <text y="40" font-size="12.5">AI エージェント</text>
+    <g transform="translate(640,638)">
+      <rect x="-55" y="-30" width="110" height="60" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <rect x="-51" y="-26" width="102" height="5" rx="2" fill="#FF540D"/>
+      <g transform="translate(0,4)">
+        <path d="M-20,11 q10,-24 20,-11 q10,12 20,-11" fill="none" stroke="#F2933C" stroke-width="2.6" stroke-dasharray="4 4" stroke-linecap="round"/>
+        <circle cx="-20" cy="11" r="4.2" fill="#1fd39a"/>
+        <circle cx="20" cy="-11" r="4.2" fill="#E8412F"/>
+      </g>
+      <text y="48" font-size="13">観光</text>
     </g>
-    <g transform="translate(880,640)">
-      <rect x="-52" y="-23" width="104" height="46" rx="8" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
-      <rect x="-48" y="-19" width="96" height="5" rx="2" fill="#FF540D"/>
-      <path d="M-14,8 q7,-16 14,-8 q7,8 14,-8" fill="none" stroke="#F2933C" stroke-width="2" stroke-dasharray="3 3"/>
-      <circle cx="-14" cy="8" r="3" fill="#1fd39a"/><circle cx="14" cy="-8" r="3" fill="#E8412F"/>
-      <text y="40" font-size="12.5">エリア分析</text>
+    <g transform="translate(760,638)">
+      <rect x="-55" y="-30" width="110" height="60" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <rect x="-51" y="-26" width="102" height="5" rx="2" fill="#FF540D"/>
+      <g transform="translate(0,4)" fill="none" stroke="#1fd39a" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M-19,-6 L0,-16 L19,-6 Z"/>
+        <path d="M-14,-1 v13 M-4.7,-1 v13 M4.7,-1 v13 M14,-1 v13"/>
+        <path d="M-19,14 h38"/>
+      </g>
+      <text y="48" font-size="13">自治体DX</text>
+    </g>
+    <g transform="translate(880,638)">
+      <rect x="-55" y="-30" width="110" height="60" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <rect x="-51" y="-26" width="102" height="5" rx="2" fill="#FF540D"/>
+      <g transform="translate(0,3)">
+        <path d="M-20,-13 h34 a5,5 0 0 1 5,5 v13 a5,5 0 0 1 -5,5 h-22 l-9,7 v-7 h-3 a5,5 0 0 1 -5,-5 v-13 a5,5 0 0 1 5,-5 z"
+              fill="none" stroke="#1fd39a" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M24,-17 l2.2,5.6 5.6,2.2 -5.6,2.2 -2.2,5.6 -2.2,-5.6 -5.6,-2.2 5.6,-2.2 z" fill="#F2933C" stroke="none"/>
+      </g>
+      <text y="48" font-size="13">AI エージェント</text>
     </g>
   </g>
 
