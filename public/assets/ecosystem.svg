@@ -65,8 +65,8 @@
     <path d="M 135,335 Q 380,355 640,382"/>
     <path d="M 100,415 Q 370,400 640,382"/>
     <path d="M 112,495 Q 380,440 640,382"/>
-    <path d="M 170,565 Q 400,480 640,382"/>
-    <path d="M 295,592 Q 460,500 640,382"/>
+    <path d="M 168,552 Q 398,472 640,382"/>
+    <path d="M 300,574 Q 460,492 640,382"/>
   </g>
   <g fill="#FFB183">
     <circle r="3.6"><animateMotion dur="3.0s" repeatCount="indefinite" path="M 700,150 Q 680,260 640,382"/></circle>
@@ -85,10 +85,10 @@
     <circle r="2.6" opacity="0.7"><animateMotion dur="3.1s" begin="-1.55s" repeatCount="indefinite" path="M 100,415 Q 370,400 640,382"/></circle>
     <circle r="3.6"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 112,495 Q 380,440 640,382"/></circle>
     <circle r="2.6" opacity="0.7"><animateMotion dur="3.6s" begin="-1.80s" repeatCount="indefinite" path="M 112,495 Q 380,440 640,382"/></circle>
-    <circle r="3.6"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 170,565 Q 400,480 640,382"/></circle>
-    <circle r="2.6" opacity="0.7"><animateMotion dur="3.3s" begin="-1.65s" repeatCount="indefinite" path="M 170,565 Q 400,480 640,382"/></circle>
-    <circle r="3.6"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 295,592 Q 460,500 640,382"/></circle>
-    <circle r="2.6" opacity="0.7"><animateMotion dur="3.8s" begin="-1.90s" repeatCount="indefinite" path="M 295,592 Q 460,500 640,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 168,552 Q 398,472 640,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.3s" begin="-1.65s" repeatCount="indefinite" path="M 168,552 Q 398,472 640,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 300,574 Q 460,492 640,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.8s" begin="-1.90s" repeatCount="indefinite" path="M 300,574 Q 460,492 640,382"/></circle>
   </g>
 
   <!-- 見出し -->
@@ -140,12 +140,12 @@
       <g fill="none" stroke="#FFB183" stroke-width="2"><ellipse cx="0" cy="-6" rx="9" ry="3.6"/><path d="M-9,-6 v12 a9,3.6 0 0 0 18,0 v-12"/></g>
       <text y="38" font-size="12.5" font-weight="600">施設・インフラ台帳</text>
     </g>
-    <g transform="translate(170,565)">
+    <g transform="translate(168,552)">
       <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
       <g fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"><path d="M-8,-6 h16 l-1.5,14 h-13 z"/><path d="M-10,-6 h20 M-3,-6 v-2.5 h6 v2.5"/></g>
       <text y="38" font-size="12.5" font-weight="600">ごみ収集・環境</text>
     </g>
-    <g transform="translate(295,592)">
+    <g transform="translate(300,574)">
       <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
       <circle r="9.5" fill="none" stroke="#FFB183" stroke-width="2"/><path d="M0,-5 v10 M-5,0 h10" stroke="#FFB183" stroke-width="2"/>
       <text y="38" font-size="12.5" font-weight="600">健康・医療・福祉</text>
