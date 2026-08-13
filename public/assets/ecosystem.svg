@@ -59,7 +59,7 @@
   <g stroke="#FF8A4C" stroke-width="2" fill="none" opacity="0.5">
     <path d="M 620,140 Q 615,260 640,382"/>
     <path d="M 460,155 Q 530,265 640,382"/>
-    <path d="M 305,200 Q 460,290 640,382"/>
+    <path d="M 272,232 Q 450,305 640,382"/>
     <path d="M 175,265 Q 400,325 640,382"/>
     <path d="M 100,370 Q 370,375 640,382"/>
     <path d="M 110,485 Q 370,435 640,382"/>
@@ -73,8 +73,8 @@
     <circle r="2.6" opacity="0.7"><animateMotion dur="3.0s" begin="-1.50s" repeatCount="indefinite" path="M 620,140 Q 615,260 640,382"/></circle>
     <circle r="3.6"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 460,155 Q 530,265 640,382"/></circle>
     <circle r="2.6" opacity="0.7"><animateMotion dur="3.5s" begin="-1.75s" repeatCount="indefinite" path="M 460,155 Q 530,265 640,382"/></circle>
-    <circle r="3.6"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 305,200 Q 460,290 640,382"/></circle>
-    <circle r="2.6" opacity="0.7"><animateMotion dur="3.2s" begin="-1.60s" repeatCount="indefinite" path="M 305,200 Q 460,290 640,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 272,232 Q 450,305 640,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.2s" begin="-1.60s" repeatCount="indefinite" path="M 272,232 Q 450,305 640,382"/></circle>
     <circle r="3.6"><animateMotion dur="3.7s" repeatCount="indefinite" path="M 175,265 Q 400,325 640,382"/></circle>
     <circle r="2.6" opacity="0.7"><animateMotion dur="3.7s" begin="-1.85s" repeatCount="indefinite" path="M 175,265 Q 400,325 640,382"/></circle>
     <circle r="3.6"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 100,370 Q 370,375 640,382"/></circle>
@@ -110,7 +110,7 @@
       <path d="M-11,-3 L0,-8 L11,-3 L0,2 Z M-7,0 v6 q7,4 14,0 v-6" fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"/>
       <text y="38" font-size="12.5" font-weight="600">教育・子育て</text>
     </g>
-    <g transform="translate(305,200)">
+    <g transform="translate(272,232)">
       <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
       <g fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"><rect x="-10" y="-9" width="20" height="14" rx="3.5"/><path d="M-10,-2 h20"/></g><circle cx="-5" cy="8" r="2" fill="#FFB183"/><circle cx="5" cy="8" r="2" fill="#FFB183"/>
       <text y="38" font-size="12.5" font-weight="600">公共交通</text>
