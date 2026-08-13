@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760"
      role="img" font-family="'Helvetica Neue', 'Hiragino Sans', sans-serif"
-     aria-label="お客様のデータが GeonicDB で育ち、サービスを生み、その利用がさらにデータを増やす循環。地図・住所・人流はそれを補完するレイヤー。">
-  <title>GeonicDB エコシステム — 育つのはお客様のデータ</title>
+     aria-label="お客様のデータが GeonicDB で育ち、サービスを生み、その利用がさらにデータを増やす循環。ジオテクノロジーズと Geolonia のデータ・技術がそれを支える。">
+  <title>GeonicDB エコシステム — 育つのはお客様のデータ、支えるのは両社</title>
   <defs>
     <radialGradient id="ecoCoreGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#FF540D" stop-opacity="0.40"/>
@@ -38,176 +38,155 @@
   <g fill="#9fc0e6">
     <circle cx="470" cy="176" r="1.4" opacity="0.55"/>
     <circle cx="812" cy="163" r="1.2" opacity="0.45"/>
-    <circle cx="240" cy="620" r="1.2" opacity="0.35"/>
+    <circle cx="530" cy="640" r="1.2" opacity="0.35"/>
     <circle cx="1240" cy="660" r="1.3" opacity="0.4"/>
-    <circle cx="60"  cy="230" r="1.4" opacity="0.5"/>
     <circle cx="950"  cy="330" r="1.1" opacity="0.3"/>
-    <circle cx="410"  cy="440" r="1.1" opacity="0.3"/>
+    <circle cx="700"  cy="600" r="1.1" opacity="0.3"/>
   </g>
 
   <!-- GeonicDB を中心とした軌道リング -->
   <g fill="none" stroke="#33486a" opacity="0.45">
-    <ellipse cx="600" cy="382" rx="248" ry="196" stroke-width="1" stroke-dasharray="5 9"/>
-    <ellipse cx="600" cy="382" rx="392" ry="300" stroke-width="1" stroke-dasharray="4 12" opacity="0.75">
-      <animateTransform attributeName="transform" type="rotate" from="0 600 382" to="360 600 382"
+    <ellipse cx="640" cy="382" rx="240" ry="192" stroke-width="1" stroke-dasharray="5 9"/>
+    <ellipse cx="640" cy="382" rx="384" ry="296" stroke-width="1" stroke-dasharray="4 12" opacity="0.75">
+      <animateTransform attributeName="transform" type="rotate" from="0 640 382" to="360 640 382"
                         dur="90s" repeatCount="indefinite"/>
     </ellipse>
   </g>
 
   <!-- ===================================================================
-       補完レイヤー（控えめ）: 地図・住所・人流。お客様のデータの下敷き。
-       =================================================================== -->
-  <g fill="none" stroke="#4a6a94" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.4">
-    <path d="M 400,612 Q 480,520 578,432"/>
-    <path d="M 620,612 Q 614,522 604,438"/>
-    <path d="M 840,612 Q 762,520 648,434"/>
-  </g>
-  <g fill="#6d8fbb" opacity="0.65">
-    <circle r="2.4"><animateMotion dur="6.5s" repeatCount="indefinite" path="M 400,612 Q 480,520 578,432"/></circle>
-    <circle r="2.4"><animateMotion dur="7.2s" repeatCount="indefinite" path="M 620,612 Q 614,522 604,438"/></circle>
-    <circle r="2.4"><animateMotion dur="6.1s" repeatCount="indefinite" path="M 840,612 Q 762,520 648,434"/></circle>
-  </g>
-  <g>
-    <rect x="250" y="612" width="740" height="76" rx="14" fill="#0d1524" fill-opacity="0.72"
-          stroke="#33486a" stroke-width="1.2" stroke-dasharray="6 6"/>
-    <text x="620" y="634" text-anchor="middle" font-size="11.5" fill="#7d9bc0">
-      補完レイヤー ― 地図・住所・人流が、お客様のデータに厚みを与える
-    </text>
-    <!-- ジオテクノロジーズ -->
-    <g transform="translate(292,664)">
-      <circle r="15" fill="#e8eff8" opacity="0.9"/>
-      <g transform="scale(0.62)"><use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/></g>
-    </g>
-    <g font-size="10.5" fill="#9fb6d1" text-anchor="middle">
-      <g transform="translate(372,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">MapFan DB</text></g>
-      <g transform="translate(466,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">人流データ</text></g>
-      <g transform="translate(560,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">ADAS・HD 地図</text></g>
-      <g transform="translate(730,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">Geolonia Maps</text></g>
-      <g transform="translate(828,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">住所正規化</text></g>
-      <g transform="translate(922,664)"><rect x="-44" y="-12" width="88" height="24" rx="12" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="4">空間ID・OSS</text></g>
-    </g>
-    <!-- Geolonia -->
-    <g transform="translate(652,664)">
-      <circle r="15" fill="#fdf3ea" opacity="0.9"/>
-      <g transform="scale(0.72)"><use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/></g>
-    </g>
-  </g>
-
-  <!-- ===================================================================
-       お客様のデータ（主役）: 太く・明るく・数が多い
+       左上段: お客様のデータ（主役・オレンジ・太い流れ）
        =================================================================== -->
   <!-- 名もなき小口の流入（データ量の厚み） -->
   <g stroke="#FF8A4C" stroke-width="1" fill="none" opacity="0.28">
-    <path d="M 232,182 Q 400,270 600,382"/>
-    <path d="M 62,318  Q 320,352 600,382"/>
-    <path d="M 66,462  Q 330,432 600,382"/>
-    <path d="M 226,596 Q 400,500 600,382"/>
-    <path d="M 424,168 Q 500,272 600,382"/>
+    <path d="M 250,140 Q 430,240 640,382"/>
+    <path d="M 60,240  Q 350,300 640,382"/>
+    <path d="M 500,150 Q 560,260 640,382"/>
   </g>
   <g fill="#FF9E5C" opacity="0.55">
-    <circle r="2.2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M 232,182 Q 400,270 600,382"/></circle>
-    <circle r="2.2"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 62,318  Q 320,352 600,382"/></circle>
-    <circle r="2.2"><animateMotion dur="4.6s" repeatCount="indefinite" path="M 66,462  Q 330,432 600,382"/></circle>
-    <circle r="2.2"><animateMotion dur="3.9s" repeatCount="indefinite" path="M 226,596 Q 400,500 600,382"/></circle>
-    <circle r="2.2"><animateMotion dur="4.4s" repeatCount="indefinite" path="M 424,168 Q 500,272 600,382"/></circle>
+    <circle r="2.2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M 250,140 Q 430,240 640,382"/></circle>
+    <circle r="2.2"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 60,240  Q 350,300 640,382"/></circle>
+    <circle r="2.2"><animateMotion dur="4.6s" repeatCount="indefinite" path="M 500,150 Q 560,260 640,382"/></circle>
   </g>
 
   <g stroke="#FF8A4C" stroke-width="2.4" fill="none" opacity="0.62">
-    <path d="M 360,210 Q 470,280 600,382"/>
-    <path d="M 152,268 Q 370,300 600,382"/>
-    <path d="M 92,392  Q 340,382 600,382"/>
-    <path d="M 152,512 Q 380,460 600,382"/>
-    <path d="M 300,548 Q 440,470 600,382"/>
+    <path d="M 385,205 Q 490,280 640,382"/>
+    <path d="M 205,265 Q 410,310 640,382"/>
+    <path d="M 120,375 Q 370,378 640,382"/>
   </g>
   <g fill="#FFB183">
-    <circle r="4"><animateMotion dur="3.0s" repeatCount="indefinite" path="M 360,210 Q 470,280 600,382"/></circle>
-    <circle r="4"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 152,268 Q 370,300 600,382"/></circle>
-    <circle r="4"><animateMotion dur="2.8s" repeatCount="indefinite" path="M 92,392  Q 340,382 600,382"/></circle>
-    <circle r="4"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 152,512 Q 380,460 600,382"/></circle>
-    <circle r="4"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 300,548 Q 440,470 600,382"/></circle>
-    <circle r="3"><animateMotion dur="3.0s" begin="-1.5s" repeatCount="indefinite" path="M 360,210 Q 470,280 600,382"/></circle>
-    <circle r="3"><animateMotion dur="3.4s" begin="-1.7s" repeatCount="indefinite" path="M 152,268 Q 370,300 600,382"/></circle>
-    <circle r="3"><animateMotion dur="2.8s" begin="-1.4s" repeatCount="indefinite" path="M 92,392  Q 340,382 600,382"/></circle>
-    <circle r="3"><animateMotion dur="3.6s" begin="-1.8s" repeatCount="indefinite" path="M 152,512 Q 380,460 600,382"/></circle>
-    <circle r="3"><animateMotion dur="3.2s" begin="-1.6s" repeatCount="indefinite" path="M 300,548 Q 440,470 600,382"/></circle>
+    <circle r="4"><animateMotion dur="3.0s" repeatCount="indefinite" path="M 385,205 Q 490,280 640,382"/></circle>
+    <circle r="4"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 205,265 Q 410,310 640,382"/></circle>
+    <circle r="4"><animateMotion dur="2.8s" repeatCount="indefinite" path="M 120,375 Q 370,378 640,382"/></circle>
+    <circle r="3"><animateMotion dur="3.0s" begin="-1.5s" repeatCount="indefinite" path="M 385,205 Q 490,280 640,382"/></circle>
+    <circle r="3"><animateMotion dur="3.4s" begin="-1.7s" repeatCount="indefinite" path="M 205,265 Q 410,310 640,382"/></circle>
+    <circle r="3"><animateMotion dur="2.8s" begin="-1.4s" repeatCount="indefinite" path="M 120,375 Q 370,378 640,382"/></circle>
   </g>
 
-  <!-- お客様のデータ 見出し -->
+  <!-- 見出し -->
   <g>
-    <rect x="112" y="146" width="238" height="42" rx="21" fill="#2a1a1a" stroke="#FF8A4C" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
-    <text x="231" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#FFC9A3">お客様のデータ</text>
-    <text x="231" y="181" text-anchor="middle" font-size="10.5" fill="#c9a08a">使うほど増え、育っていく主役</text>
+    <rect x="96" y="130" width="250" height="44" rx="22" fill="#2a1a1a" stroke="#FF8A4C" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
+    <text x="221" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#FFC9A3">お客様のデータ ― 主役</text>
+    <text x="221" y="166" text-anchor="middle" font-size="10.5" fill="#c9a08a">使うほど増え、育っていく</text>
   </g>
 
-  <!-- お客様のデータ ノード -->
+  <!-- ノード -->
   <g text-anchor="middle" fill="#f3e6dd">
-    <g transform="translate(360,210)">
+    <g transform="translate(385,205)">
       <circle r="25" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.4" filter="url(#ecoCardShadow)"/>
       <path d="M-11,-8 h22 a3,3 0 0 1 3,3 v11 a3,3 0 0 1 -3,3 h-13 l-7,6 v-6 h-2 a3,3 0 0 1 -3,-3 v-11 a3,3 0 0 1 3,-3 z"
             fill="none" stroke="#FFB183" stroke-width="2.2" stroke-linejoin="round"/>
       <text y="44" font-size="13" font-weight="600">市民からの通報</text>
       <text y="59" font-size="10.5" fill="#c2a08c">アプリ・窓口・SNS</text>
     </g>
-    <g transform="translate(152,268)">
+    <g transform="translate(205,265)">
       <circle r="25" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.4" filter="url(#ecoCardShadow)"/>
       <path d="M0,-10 v20 M-10,0 h20" stroke="#FFB183" stroke-width="2.2"/>
       <circle r="12" fill="none" stroke="#FFB183" stroke-width="2.2"/>
       <text y="44" font-size="13" font-weight="600">センサー・IoT</text>
       <text y="59" font-size="10.5" fill="#c2a08c">気温・水位・車両</text>
     </g>
-    <g transform="translate(92,392)">
+    <g transform="translate(120,375)">
       <circle r="25" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.4" filter="url(#ecoCardShadow)"/>
       <g fill="none" stroke="#FFB183" stroke-width="2.2">
         <ellipse cx="0" cy="-8" rx="11" ry="4.5"/>
         <path d="M-11,-8 v16 a11,4.5 0 0 0 22,0 v-16"/>
         <ellipse cx="0" cy="0" rx="11" ry="4.5"/>
       </g>
-      <text y="44" font-size="13" font-weight="600">業務システム</text>
-      <text y="59" font-size="10.5" fill="#c2a08c">住民・施設・台帳</text>
-    </g>
-    <g transform="translate(152,512)">
-      <circle r="25" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.4" filter="url(#ecoCardShadow)"/>
-      <g fill="none" stroke="#FFB183" stroke-width="2.2" stroke-linecap="round">
-        <circle cx="-1" cy="-9" r="3.4"/><path d="M-1,-4 v7 M-6,-1 h10 M-5,10 l4,-7 4,7"/>
-      </g>
-      <path d="M7,-5 h8 M11,-9 v8" stroke="#1fd39a" stroke-width="2" stroke-linecap="round"/>
-      <text y="44" font-size="13" font-weight="600">現場からの入力</text>
-      <text y="59" font-size="10.5" fill="#c2a08c">職員・パトロール</text>
-    </g>
-    <g transform="translate(300,548)">
-      <circle r="25" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.4" filter="url(#ecoCardShadow)"/>
-      <g fill="#FFB183">
-        <rect x="-12" y="4" width="6" height="7"/><rect x="-3" y="-1" width="6" height="12"/><rect x="6" y="-8" width="6" height="19"/>
-      </g>
-      <path d="M-12,-9 l8,5 8,-8" fill="none" stroke="#1fd39a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-      <text y="44" font-size="13" font-weight="600">蓄積された履歴</text>
-      <text y="59" font-size="10.5" fill="#c2a08c">時系列で厚くなる</text>
+      <text y="44" font-size="13" font-weight="600">業務システム・現場</text>
+      <text y="59" font-size="10.5" fill="#c2a08c">住民・施設・台帳・点検</text>
     </g>
   </g>
+
+  <!-- ===================================================================
+       左下段: われわれ（ジオテクノロジーズ × Geolonia）― 支える側
+       =================================================================== -->
+  <g fill="none" stroke="#4a90d9" stroke-width="1.8" opacity="0.55">
+    <path d="M 322,523 Q 470,462 640,382"/>
+    <path d="M 322,603 Q 490,508 640,382"/>
+  </g>
+  <g fill="#6fb6ef">
+    <circle r="3.2"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 322,523 Q 470,462 640,382"/></circle>
+    <circle r="3.2"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 322,603 Q 490,508 640,382"/></circle>
+    <circle r="2.4" opacity="0.75"><animateMotion dur="3.4s" begin="-1.7s" repeatCount="indefinite" path="M 322,523 Q 470,462 640,382"/></circle>
+    <circle r="2.4" opacity="0.75"><animateMotion dur="3.8s" begin="-1.9s" repeatCount="indefinite" path="M 322,603 Q 490,508 640,382"/></circle>
+  </g>
+
+  <!-- 見出し -->
+  <g>
+    <rect x="96" y="448" width="250" height="30" rx="15" fill="#101c30" stroke="#4a90d9" stroke-width="1.6" filter="url(#ecoCardShadow)"/>
+    <text x="221" y="468" text-anchor="middle" font-size="13" font-weight="700" fill="#a8cdf0">われわれ ― データと技術で支える</text>
+  </g>
+
+  <!-- ジオテクノロジーズ カード -->
+  <g>
+    <rect x="64" y="490" width="256" height="66" rx="12" fill="#101c30" stroke="#4a90d9" stroke-width="2" filter="url(#ecoCardShadow)"/>
+    <circle cx="98" cy="523" r="17" fill="#e8eff8"/>
+    <g transform="translate(98,523) scale(0.72)"><use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/></g>
+    <text x="124" y="515" font-size="14" font-weight="700" fill="#cfe2f7">ジオテクノロジーズ</text>
+    <g font-size="10" fill="#9fb6d1" text-anchor="middle">
+      <g transform="translate(158,534)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">MapFan DB</text></g>
+      <g transform="translate(230,534)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">人流データ</text></g>
+      <g transform="translate(291,534)"><rect x="-25" y="-10" width="50" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">HD 地図</text></g>
+    </g>
+  </g>
+
+  <!-- Geolonia カード -->
+  <g>
+    <rect x="64" y="570" width="256" height="66" rx="12" fill="#101c30" stroke="#4a90d9" stroke-width="2" filter="url(#ecoCardShadow)"/>
+    <circle cx="98" cy="603" r="17" fill="#fdf3ea"/>
+    <g transform="translate(98,603) scale(0.82)"><use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/></g>
+    <text x="124" y="595" font-size="14" font-weight="700" fill="#cfe2f7">Geolonia</text>
+    <g font-size="10" fill="#9fb6d1" text-anchor="middle">
+      <g transform="translate(150,614)"><rect x="-26" y="-10" width="52" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">Maps</text></g>
+      <g transform="translate(212,614)"><rect x="-32" y="-10" width="64" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">住所正規化</text></g>
+      <g transform="translate(281,614)"><rect x="-33" y="-10" width="66" height="20" rx="10" fill="#16233a" stroke="#3a5375" stroke-width="1"/><text y="3.5">空間ID・OSS</text></g>
+    </g>
+  </g>
+  <text x="192" y="660" text-anchor="middle" font-size="10.5" fill="#7d9bc0">地図・住所・人流が、お客様のデータに厚みを与える</text>
 
   <!-- ===================================================================
        中心: GeonicDB — お客様のデータが育つ場所
        =================================================================== -->
   <!-- 成長リング -->
   <g fill="none" stroke="#FF8A4C" stroke-width="2">
-    <circle cx="600" cy="382" r="90">
-      <animate attributeName="r" values="88;226" dur="4.5s" repeatCount="indefinite"/>
+    <circle cx="640" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" repeatCount="indefinite"/>
       <animate attributeName="opacity" values="0.5;0" dur="4.5s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="600" cy="382" r="90">
-      <animate attributeName="r" values="88;226" dur="4.5s" begin="-1.5s" repeatCount="indefinite"/>
+    <circle cx="640" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" begin="-1.5s" repeatCount="indefinite"/>
       <animate attributeName="opacity" values="0.5;0" dur="4.5s" begin="-1.5s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="600" cy="382" r="90">
-      <animate attributeName="r" values="88;226" dur="4.5s" begin="-3s" repeatCount="indefinite"/>
+    <circle cx="640" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" begin="-3s" repeatCount="indefinite"/>
       <animate attributeName="opacity" values="0.5;0" dur="4.5s" begin="-3s" repeatCount="indefinite"/>
     </circle>
   </g>
-  <circle cx="600" cy="382" r="120" fill="url(#ecoCoreGlow)">
+  <circle cx="640" cy="382" r="120" fill="url(#ecoCoreGlow)">
     <animate attributeName="r" values="104;140;104" dur="4s" repeatCount="indefinite"/>
   </circle>
-  <ellipse cx="600" cy="380" rx="126" ry="102" fill="url(#ecoScrim)"/>
-  <svg x="512" y="294" width="176" height="176" viewBox="0 0 512 512" overflow="visible">
+  <ellipse cx="640" cy="380" rx="126" ry="102" fill="url(#ecoScrim)"/>
+  <svg x="552" y="294" width="176" height="176" viewBox="0 0 512 512" overflow="visible">
   <defs>
     <style>
       .cls-1{fill:#ff6d00}.cls-2{fill:#ee730d}.cls-3{fill:#ffa714}.cls-4{fill:#e84130}.cls-5{fill:#ffffff}
@@ -222,10 +201,10 @@
   <path d="M501.83 10.56H240.46l-134.7 134.7h87.09c2.66-24.07 23.05-42.8 47.83-42.8 10.48 0 20.15 3.39 28.06 9.08l50.23-50.23 77.04 77.03c3.65-2.05 6.93-4.4 9.37-6.94L507.91 24.43c7.31-7.62 4.58-13.86-6.07-13.86ZM213.13 10.56h-67.32c-10.65 0-25.33 6.24-32.64 13.86L10.65 131.4c-7.31 7.62-4.58 13.86 6.07 13.86h61.72z" class="cls-3"/>
   <path d="m375.42 145.08-56.44-56.44-37.12 37.12c3.52 5.81 5.79 12.43 6.59 19.51h84.29c.86 0 1.78-.1 2.68-.18Z" class="cls-3"/>
 </svg>
-  <text x="600" y="478" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="1.6"
+  <text x="640" y="478" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="1.6"
         fill="#c7d6e8" filter="url(#ecoLbl)">NGSI-LD CONTEXT BROKER</text>
   <!-- 育つゲージ -->
-  <g>
+  <g transform="translate(40,0)">
     <rect x="490" y="493" width="220" height="11" rx="5.5" fill="#22304a"/>
     <g clip-path="url(#ecoGaugeClip)">
       <rect x="490" y="493" width="26" height="11" fill="#FF8A4C">
@@ -233,7 +212,7 @@
       </rect>
     </g>
   </g>
-  <text x="600" y="524" text-anchor="middle" font-size="12" font-weight="600" fill="#FFB183">
+  <text x="640" y="524" text-anchor="middle" font-size="12" font-weight="600" fill="#FFB183">
     使うほど、お客様のデータが厚みを増す
   </text>
 
@@ -241,18 +220,18 @@
        生まれるサービス（右列）
        =================================================================== -->
   <g fill="none" stroke="#1fd39a" stroke-width="1.8" opacity="0.5">
-    <path d="M 600,382 Q 830,300 1020,248"/>
-    <path d="M 600,382 Q 830,340 1020,326"/>
-    <path d="M 600,382 Q 830,392 1020,404"/>
-    <path d="M 600,382 Q 830,440 1020,482"/>
-    <path d="M 600,382 Q 830,486 1020,560"/>
+    <path d="M 640,382 Q 850,300 1020,248"/>
+    <path d="M 640,382 Q 850,340 1020,326"/>
+    <path d="M 640,382 Q 850,392 1020,404"/>
+    <path d="M 640,382 Q 850,440 1020,482"/>
+    <path d="M 640,382 Q 850,486 1020,560"/>
   </g>
   <g fill="#2fe0a8">
-    <circle r="3.2"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 600,382 Q 830,300 1020,248"/></circle>
-    <circle r="3.2"><animateMotion dur="3.4s" begin="-0.7s" repeatCount="indefinite" path="M 600,382 Q 830,340 1020,326"/></circle>
-    <circle r="3.2"><animateMotion dur="3.4s" begin="-1.4s" repeatCount="indefinite" path="M 600,382 Q 830,392 1020,404"/></circle>
-    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" path="M 600,382 Q 830,440 1020,482"/></circle>
-    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.8s" repeatCount="indefinite" path="M 600,382 Q 830,486 1020,560"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 640,382 Q 850,300 1020,248"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-0.7s" repeatCount="indefinite" path="M 640,382 Q 850,340 1020,326"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-1.4s" repeatCount="indefinite" path="M 640,382 Q 850,392 1020,404"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" path="M 640,382 Q 850,440 1020,482"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.8s" repeatCount="indefinite" path="M 640,382 Q 850,486 1020,560"/></circle>
   </g>
 
   <g>
@@ -307,17 +286,17 @@
   <!-- ===================================================================
        還流: サービスの利用が、お客様のデータをさらに増やす
        =================================================================== -->
-  <path d="M 1105,592 C 1150,662 1120,724 1000,730 L 340,730 C 180,730 60,688 44,570 C 36,512 38,490 46,470"
+  <path d="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"
         fill="none" stroke="#FF9E5C" stroke-width="2.2" stroke-dasharray="9 7" opacity="0.7"
         marker-end="url(#ecoLoopArrow)">
     <animate attributeName="stroke-dashoffset" values="160;0" dur="5s" repeatCount="indefinite"/>
   </path>
   <g fill="#FFB183">
-    <circle r="3.4"><animateMotion dur="7s" repeatCount="indefinite" path="M 1105,592 C 1150,662 1120,724 1000,730 L 340,730 C 180,730 60,688 44,570 C 36,512 38,490 46,470"/></circle>
-    <circle r="3.4"><animateMotion dur="7s" begin="-2.33s" repeatCount="indefinite" path="M 1105,592 C 1150,662 1120,724 1000,730 L 340,730 C 180,730 60,688 44,570 C 36,512 38,490 46,470"/></circle>
-    <circle r="3.4"><animateMotion dur="7s" begin="-4.66s" repeatCount="indefinite" path="M 1105,592 C 1150,662 1120,724 1000,730 L 340,730 C 180,730 60,688 44,570 C 36,512 38,490 46,470"/></circle>
+    <circle r="3.4"><animateMotion dur="7s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+    <circle r="3.4"><animateMotion dur="7s" begin="-2.33s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+    <circle r="3.4"><animateMotion dur="7s" begin="-4.66s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
   </g>
-  <text x="620" y="722" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FF9E5C">
+  <text x="672" y="740" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FF9E5C">
     使われるほど、お客様のデータが増えて育つ ― これがエコシステムの循環
   </text>
 </svg>
