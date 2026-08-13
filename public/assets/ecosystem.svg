@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760"
+     role="img" font-family="'Helvetica Neue', 'Hiragino Sans', sans-serif"
+     aria-label="お客様のデータが GeonicDB で育ち、サービスを生み、その利用がさらにデータを増やす循環。ジオテクノロジーズと Geolonia のデータ・技術がそれを支える。">
+  <title>GeonicDB エコシステム — 育つのはお客様のデータ、支えるのは両社</title>
+  <defs>
+    <radialGradient id="ecoCoreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF540D" stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#FF540D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ecoScrim" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a0f1c" stop-opacity="0.80"/>
+      <stop offset="62%" stop-color="#0a0f1c" stop-opacity="0.66"/>
+      <stop offset="100%" stop-color="#0a0f1c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ecoCardShadow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#8fa6c2" flood-opacity="0.35"/>
+    </filter>
+    <filter id="ecoLbl" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.7" flood-color="#5a1205" flood-opacity="0.95"/>
+    </filter>
+    <marker id="ecoLoopArrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#FF9E5C"/>
+    </marker>
+    <clipPath id="ecoGaugeClip"><rect x="490" y="493" width="220" height="11" rx="5.5"/></clipPath>
+    <g id="geotMark" fill="#174f9e">
+      <path d="M352,168.9l-35.6-17.8-21.4,10.7c-3,1.5-9.4,2.1-12.8.7l12.8,6.4c2,1,3.3,2.1,3.3,3.6s-1.3,2.6-3.3,3.6l-49.9,24.9c-3.6,1.8-5.3,2.8-7.1,2.8s-3.6-1-7.1-2.8l-42.7-21.4c-2-1-3.3-2.1-3.3-3.6s1.4-2.6,3.3-3.6l7.1-3.6-35.6-17.8-35.6,17.8c-4.4,2.2-7.1,3.8-7.1,7.1s2.6,4.9,7.1,7.1l99.7,49.9c8,4,10.2,5.1,14.2,5.1,4,0,6.2-1.1,14.2-5.1l99.7-49.9c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1h0Z"/>
+      <path d="M123.9,126.2l99.7,49.9c4.6,2.3,10.2,5.1,14.2,5.1s12.7-4.4,14.2-5.1l14.2-7.1c4.5-2.2,4.4-4.9,0-7.1l-78.4-39.2c-2-1-3.3-2.1-3.3-3.6s1.3-2.6,3.3-3.6l7.1-3.6-35.6-17.8-35.6,17.8c-4.4,2.2-7.1,3.8-7.1,7.1s2.6,4.9,7.1,7.1h0Z"/>
+      <path d="M330.7,134.9c4,0,6.2-1.1,14.2-5.1l7.1-3.6c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1l-35.6-17.8-35.6,17.8,35.6,17.8c8,4,10.2,5.1,14.2,5.1h0Z"/>
+      <path d="M266.6,119.1l-21.4,10.7c-3,1.5-10.8,1.3-14.2,0l14.2,7.1h0l28.5,14.2c8,4,10.2,5.1,14.2,5.1s6.2-1.1,14.2-5.1c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1l-35.6-17.8h0Z"/>
+      <path d="M124.1,69.2l99.7,49.8c8,4,10.2,5.1,14.2,5.1,4,0,6.2-1.1,14.2-5.1l49.9-24.9c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1l-57-28.5c-3.6-1.8-5.3-2.7-7.1-2.7s-3.6.9-7.1,2.7l-14.2,7.1s-7.1,3.6,0,7.1l28.6,14.3c6.2,3.4,0,7.1,0,7.1h0c-3.6,1.8-5.3,2.7-7.1,2.7s-3.6-.9-7.1-2.7l-42.7-21.4c-2-1-3.3-2.1-3.3-3.6s1.3-2.6,3.3-3.6l42.7-21.4c3.6-1.8,5.3-2.7,7.1-2.7s3.6.9,7.1,2.7l71.2,35.6c8,4,10.2,5.1,14.2,5.1s6.2-1.1,14.2-5.1l7.1-3.6h0c4.5-2.2,7.1-3.8,7.1-7.1s-2.7-4.9-7.1-7.1L252.3,5.1c-8-4-10.2-5.1-14.2-5.1s-6.2,1.1-14.2,5.1l-99.7,49.8c-4.4,2.2-7.1,3.8-7.1,7.1s2.6,4.9,7.1,7.1h0Z"/>
+    </g>
+    <image id="geoloniaMark" href="data:image/png;base64,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" width="200" height="199"/>
+  </defs>
+
+  <!-- 背景は透明: スライドの illus-dark 背景がそのまま透ける -->
+
+  <!-- 遠景のデータ点 -->
+  <g fill="#9fc0e6">
+    <circle cx="470" cy="176" r="1.4" opacity="0.55"/>
+    <circle cx="812" cy="163" r="1.2" opacity="0.45"/>
+    <circle cx="530" cy="640" r="1.2" opacity="0.35"/>
+    <circle cx="1240" cy="660" r="1.3" opacity="0.4"/>
+    <circle cx="950"  cy="330" r="1.1" opacity="0.3"/>
+    <circle cx="700"  cy="600" r="1.1" opacity="0.3"/>
+  </g>
+
+  <!-- GeonicDB を中心とした軌道リング -->
+  <g fill="none" stroke="#33486a" opacity="0.45">
+    <ellipse cx="595" cy="382" rx="240" ry="192" stroke-width="1" stroke-dasharray="5 9"/>
+    <ellipse cx="595" cy="382" rx="384" ry="296" stroke-width="1" stroke-dasharray="4 12" opacity="0.75">
+      <animateTransform attributeName="transform" type="rotate" from="0 595 382" to="360 595 382"
+                        dur="90s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- ===================================================================
+       左列: お客様 (自治体) のデータ ― 主役。外列 6 + 内列 4 の縦弧
+       =================================================================== -->
+  <g stroke="#FF8A4C" stroke-width="1" fill="none" opacity="0.28">
+    <path d="M 80,180 Q 330,300 595,382"/>
+    <path d="M 56,390 Q 320,390 595,382"/>
+    <path d="M 90,620 Q 350,490 595,382"/>
+  </g>
+  <g fill="#FF9E5C" opacity="0.55">
+    <circle r="2.2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M 80,180 Q 330,300 595,382"/></circle>
+    <circle r="2.2"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 56,390 Q 320,390 595,382"/></circle>
+    <circle r="2.2"><animateMotion dur="4.6s" repeatCount="indefinite" path="M 90,620 Q 350,490 595,382"/></circle>
+  </g>
+  <g stroke="#FF8A4C" stroke-width="2" fill="none" opacity="0.5">
+    <path d="M 200,205 Q 380,270 595,382"/>
+    <path d="M 148,283 Q 360,320 595,382"/>
+    <path d="M 124,361 Q 350,368 595,382"/>
+    <path d="M 124,439 Q 350,420 595,382"/>
+    <path d="M 148,517 Q 360,460 595,382"/>
+    <path d="M 200,595 Q 390,500 595,382"/>
+    <path d="M 332,247 Q 450,300 595,382"/>
+    <path d="M 302,332 Q 440,355 595,382"/>
+    <path d="M 302,417 Q 440,405 595,382"/>
+    <path d="M 332,502 Q 455,455 595,382"/>
+  </g>
+  <g fill="#FFB183">
+    <circle r="3.6"><animateMotion dur="3.0s" repeatCount="indefinite" path="M 200,205 Q 380,270 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.0s" begin="-1.50s" repeatCount="indefinite" path="M 200,205 Q 380,270 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 148,283 Q 360,320 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.5s" begin="-1.75s" repeatCount="indefinite" path="M 148,283 Q 360,320 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 124,361 Q 350,368 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.2s" begin="-1.60s" repeatCount="indefinite" path="M 124,361 Q 350,368 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.7s" repeatCount="indefinite" path="M 124,439 Q 350,420 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.7s" begin="-1.85s" repeatCount="indefinite" path="M 124,439 Q 350,420 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 148,517 Q 360,460 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="2.9s" begin="-1.45s" repeatCount="indefinite" path="M 148,517 Q 360,460 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 200,595 Q 390,500 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.4s" begin="-1.70s" repeatCount="indefinite" path="M 200,595 Q 390,500 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.1s" repeatCount="indefinite" path="M 332,247 Q 450,300 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.1s" begin="-1.55s" repeatCount="indefinite" path="M 332,247 Q 450,300 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.6s" repeatCount="indefinite" path="M 302,332 Q 440,355 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.6s" begin="-1.80s" repeatCount="indefinite" path="M 302,332 Q 440,355 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.3s" repeatCount="indefinite" path="M 302,417 Q 440,405 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.3s" begin="-1.65s" repeatCount="indefinite" path="M 302,417 Q 440,405 595,382"/></circle>
+    <circle r="3.6"><animateMotion dur="3.8s" repeatCount="indefinite" path="M 332,502 Q 455,455 595,382"/></circle>
+    <circle r="2.6" opacity="0.7"><animateMotion dur="3.8s" begin="-1.90s" repeatCount="indefinite" path="M 332,502 Q 455,455 595,382"/></circle>
+  </g>
+
+  <!-- 見出し -->
+  <g>
+    <rect x="96" y="130" width="250" height="44" rx="22" fill="#2a1a1a" stroke="#FF8A4C" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
+    <text x="221" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#FFC9A3">お客様のデータ</text>
+    <text x="221" y="166" text-anchor="middle" font-size="10.5" fill="#c9a08a">使うほど増え、育っていく</text>
+  </g>
+
+  <!-- ノード -->
+  <g text-anchor="middle" fill="#f3e6dd">
+    <g transform="translate(200,205)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <path d="M-9,-7 h18 a3,3 0 0 1 3,3 v9 a3,3 0 0 1 -3,3 h-11 l-6,5 v-5 h-1 a3,3 0 0 1 -3,-3 v-9 a3,3 0 0 1 3,-3 z" fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"/>
+      <text y="38" font-size="12.5" font-weight="600">市民からの通報</text>
+    </g>
+    <g transform="translate(148,283)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <path d="M0,-8 v16 M-8,0 h16" stroke="#FFB183" stroke-width="2"/><circle r="9.5" fill="none" stroke="#FFB183" stroke-width="2"/>
+      <text y="38" font-size="12.5" font-weight="600">センサー・IoT</text>
+    </g>
+    <g transform="translate(124,361)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <g fill="none" stroke="#FFB183" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="-11" y="-8" width="22" height="16" rx="2.5"/><circle cx="-5" cy="-3" r="2.6"/><path d="M-9,5 a4,4 0 0 1 8,0"/><path d="M2,-3 h7 M2,2 h7"/></g>
+      <text y="38" font-size="12.5" font-weight="600">住民・窓口</text>
+    </g>
+    <g transform="translate(124,439)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <g fill="none" stroke="#FFB183" stroke-width="2"><ellipse cx="0" cy="-6" rx="9" ry="3.6"/><path d="M-9,-6 v12 a9,3.6 0 0 0 18,0 v-12"/></g>
+      <text y="38" font-size="12.5" font-weight="600">施設・インフラ台帳</text>
+    </g>
+    <g transform="translate(148,517)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <g fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"><path d="M-8,-6 h16 l-1.5,14 h-13 z"/><path d="M-10,-6 h20 M-3,-6 v-2.5 h6 v2.5"/></g>
+      <text y="38" font-size="12.5" font-weight="600">ごみ収集・環境</text>
+    </g>
+    <g transform="translate(200,595)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <path d="M-10,0 L0,-9 L10,0 M-7,-2 v9 h14 v-9 M-2,7 v-5 h4 v5" fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <text y="38" font-size="12.5" font-weight="600">防災・避難所</text>
+    </g>
+    <g transform="translate(332,247)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <g fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"><rect x="-10" y="-9" width="20" height="14" rx="3.5"/><path d="M-10,-2 h20"/></g><circle cx="-5" cy="8" r="2" fill="#FFB183"/><circle cx="5" cy="8" r="2" fill="#FFB183"/>
+      <text y="38" font-size="12.5" font-weight="600">公共交通</text>
+    </g>
+    <g transform="translate(302,332)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <path d="M-8,9 v-17 h13 l-4,4 4,4 h-13" fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"/>
+      <text y="38" font-size="12.5" font-weight="600">観光・イベント</text>
+    </g>
+    <g transform="translate(302,417)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <path d="M-11,-3 L0,-8 L11,-3 L0,2 Z M-7,0 v6 q7,4 14,0 v-6" fill="none" stroke="#FFB183" stroke-width="2" stroke-linejoin="round"/>
+      <text y="38" font-size="12.5" font-weight="600">教育・子育て</text>
+    </g>
+    <g transform="translate(332,502)">
+      <circle r="21" fill="#231c2c" stroke="#FF8A4C" stroke-width="2.2" filter="url(#ecoCardShadow)"/>
+      <circle r="9.5" fill="none" stroke="#FFB183" stroke-width="2"/><path d="M0,-5 v10 M-5,0 h10" stroke="#FFB183" stroke-width="2"/>
+      <text y="38" font-size="12.5" font-weight="600">健康・医療・福祉</text>
+    </g>
+  </g>
+
+  <!-- ===================================================================
+       基盤: 地理空間情報・人流・住所 ― 両社がお客様のデータを支える
+       =================================================================== -->
+  <g fill="none" stroke="#4a90d9" stroke-width="1.6" stroke-dasharray="5 6" opacity="0.5">
+    <path d="M 435,636 Q 485,530 555,448"/>
+    <path d="M 595,636 Q 595,540 595,452"/>
+    <path d="M 755,636 Q 705,530 635,448"/>
+  </g>
+  <g fill="#6fb6ef">
+    <circle r="2.8"><animateMotion dur="4.5s" repeatCount="indefinite" path="M 435,636 Q 485,530 555,448"/></circle>
+    <circle r="2.8"><animateMotion dur="5.2s" repeatCount="indefinite" path="M 595,636 Q 595,540 595,452"/></circle>
+    <circle r="2.8"><animateMotion dur="4.8s" repeatCount="indefinite" path="M 755,636 Q 705,530 635,448"/></circle>
+    <circle r="2.2" opacity="0.7"><animateMotion dur="4.5s" begin="-2.2s" repeatCount="indefinite" path="M 435,636 Q 485,530 555,448"/></circle>
+    <circle r="2.2" opacity="0.7"><animateMotion dur="4.8s" begin="-2.4s" repeatCount="indefinite" path="M 755,636 Q 705,530 635,448"/></circle>
+  </g>
+
+  <!-- ===================================================================
+       中心: GeonicDB — お客様のデータが育つ場所
+       =================================================================== -->
+  <!-- 成長リング -->
+  <g fill="none" stroke="#FF8A4C" stroke-width="2">
+    <circle cx="595" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="595" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" begin="-1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0" dur="4.5s" begin="-1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="595" cy="382" r="90">
+      <animate attributeName="r" values="88;222" dur="4.5s" begin="-3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0" dur="4.5s" begin="-3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <circle cx="595" cy="382" r="120" fill="url(#ecoCoreGlow)">
+    <animate attributeName="r" values="104;140;104" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <ellipse cx="595" cy="380" rx="126" ry="102" fill="url(#ecoScrim)"/>
+  <svg x="507" y="294" width="176" height="176" viewBox="0 0 512 512" overflow="visible">
+  <defs>
+    <style>
+      .cls-1{fill:#ff6d00}.cls-2{fill:#ee730d}.cls-3{fill:#ffa714}.cls-4{fill:#e84130}.cls-5{fill:#ffffff}
+    </style>
+  </defs>
+  <path d="M5.04 496.46C1.68 493.14 0 488.7 0 483.16v-41.83c0-5.55 1.68-9.98 5.04-13.3q5.04-4.98 13.47-4.98c8.43 0 10.13 1.68 13.52 5.04 3.4 3.36 5.09 7.81 5.09 13.36v4.71c0 .73-.37 1.09-1.09 1.09h-5.58c-.73 0-1.1-.36-1.1-1.09v-4.93c0-3.43-.99-6.19-2.96-8.27s-4.6-3.12-7.88-3.12-5.82 1.06-7.83 3.17c-2.01 2.12-3.01 4.86-3.01 8.21v42.04c0 3.36 1 6.1 3.01 8.21q3.015 3.18 7.83 3.18c4.815 0 5.91-1.04 7.88-3.12s2.96-4.83 2.96-8.27v-14.02c0-.29-.15-.44-.44-.44h-9.42c-.73 0-1.09-.36-1.09-1.09v-4.6c0-.73.36-1.1 1.09-1.1h16.53c.73 0 1.09.37 1.09 1.1v20.04c0 5.55-1.7 9.98-5.09 13.3s-7.9 4.98-13.52 4.98-10.11-1.66-13.47-4.98ZM102.49 475.82H77.53c-.29 0-.44.15-.44.44v7.99c0 3.07.86 5.57 2.57 7.5s3.96 2.9 6.73 2.9c2.34 0 4.33-.71 5.97-2.14s2.72-3.27 3.23-5.53q.33-.99 1.2-.99l5.47.22c.29 0 .55.11.77.33s.29.51.22.88c-.58 4.31-2.35 7.72-5.31 10.24q-4.44 3.78-11.55 3.78c-5.18 0-9.33-1.53-12.43-4.6q-4.65-4.605-4.65-12.15v-23.65c0-4.96 1.55-9 4.65-12.1s7.24-4.65 12.43-4.65 9.43 1.55 12.54 4.65c3.1 3.1 4.65 7.14 4.65 12.1v13.69c0 .73-.37 1.09-1.09 1.09m-22.83-21.85c-1.72 1.93-2.57 4.47-2.57 7.61v7.34c0 .29.15.44.44.44h17.96c.29 0 .44-.15.44-.44v-7.34c0-3.14-.88-5.68-2.63-7.61s-4.05-2.9-6.9-2.9-5.02.97-6.73 2.9ZM140.42 496.84q-4.65-4.605-4.65-12.15v-23.54c0-4.96 1.57-9.02 4.71-12.15q4.71-4.71 12.48-4.71c7.77 0 9.45 1.57 12.59 4.71q4.71 4.71 4.71 12.15v23.54q0 7.56-4.71 12.15c-3.14 3.07-7.34 4.6-12.59 4.6s-9.43-1.53-12.54-4.6m19.39-5.15c1.79-1.9 2.68-4.42 2.68-7.55v-22.56c0-3.14-.89-5.68-2.68-7.61s-4.07-2.9-6.84-2.9-5.04.97-6.79 2.9-2.63 4.47-2.63 7.61v22.56c0 3.14.88 5.66 2.63 7.55 1.75 1.9 4.01 2.85 6.79 2.85s5.05-.95 6.84-2.85M234.37 448.99c2.44 3.07 3.67 7.34 3.67 12.81v37.67c0 .73-.37 1.09-1.1 1.09h-5.58c-.73 0-1.09-.36-1.09-1.09v-37.01c0-3.58-.79-6.35-2.35-8.32-1.57-1.97-3.74-2.96-6.51-2.96q-4.38 0-6.84 3.18c-2.46 3.18-2.46 5-2.46 8.65v36.46c0 .73-.37 1.09-1.09 1.09h-5.58c-.73 0-1.1-.36-1.1-1.09v-53.21c0-.73.36-1.09 1.1-1.09h5.58c.73 0 1.09.37 1.09 1.09v3.5c0 .15.07.26.22.33.14.07.26 0 .33-.22q1.965-2.73 4.98-4.11c2.01-.91 4.14-1.37 6.41-1.37 4.45 0 7.9 1.53 10.35 4.6ZM272.91 433.33c-1.13-1.17-1.7-2.63-1.7-4.38s.56-3.3 1.7-4.43c1.13-1.13 2.61-1.7 4.43-1.7s3.19.57 4.33 1.7c1.13 1.13 1.7 2.61 1.7 4.43s-.57 3.21-1.7 4.38-2.57 1.75-4.33 1.75-3.3-.58-4.43-1.75m.6 66.14v-53.21c0-.73.36-1.09 1.09-1.09h5.59c.73 0 1.09.37 1.09 1.09v53.21c0 .73-.37 1.09-1.09 1.09h-5.59c-.73 0-1.09-.36-1.09-1.09M320.76 496.84q-4.65-4.605-4.65-12.15v-23.65c0-4.96 1.57-9 4.71-12.1s7.26-4.65 12.37-4.65c3.43 0 6.46.69 9.09 2.08s4.65 3.23 6.08 5.53c1.42 2.3 2.14 4.84 2.14 7.61v1.1c0 .73-.37 1.09-1.1 1.09l-5.58.22c-.73 0-1.09-.36-1.09-1.09v-.77c0-2.41-.89-4.51-2.68-6.3s-4.07-2.68-6.84-2.68-5.02.97-6.73 2.9c-1.72 1.93-2.57 4.47-2.57 7.61v22.56c0 3.14.86 5.68 2.57 7.61s3.96 2.9 6.73 2.9 5.05-.89 6.84-2.68 2.68-3.89 2.68-6.3v-.77c0-.73.36-1.09 1.09-1.09l5.58.11c.73 0 1.1.37 1.1 1.09v1.2c0 4.38-1.59 8.01-4.76 10.89-3.18 2.88-7.35 4.33-12.54 4.33s-9.33-1.53-12.43-4.6Z" class="cls-5"/>
+  <path d="M387.71 499.47v-74.46c0-.73.36-1.09 1.09-1.09h17.96c6.06 0 10.88 1.86 14.45 5.58 3.58 3.72 5.37 8.76 5.37 15.11v35.26c0 6.35-1.79 11.39-5.37 15.11s-8.4 5.58-14.45 5.58H388.8c-.73 0-1.09-.36-1.09-1.09m10.95-8 7.99-.11c2.77 0 5-1.08 6.68-3.23s2.55-5.09 2.63-8.81v-34.16c0-3.72-.84-6.68-2.52-8.87s-3.94-3.29-6.79-3.29h-7.99c-.29 0-.44.15-.44.44v57.59c0 .29.14.44.44.44M494.52 495.09c-3.76 3.65-8.7 5.48-14.84 5.48h-18.29c-.73 0-1.09-.36-1.09-1.09v-74.46c0-.73.36-1.09 1.09-1.09h16.75c6.64 0 11.84 1.73 15.6 5.2s5.64 8.52 5.64 15.17c0 7.88-2.81 13.32-8.43 16.31-.37.22-.4.4-.11.55 2.92 1.75 5.2 4.2 6.84 7.34s2.46 6.86 2.46 11.17c0 6.64-1.88 11.79-5.64 15.44Zm-23.7-61.65v23.21c0 .29.14.44.44.44h7.01c3.43 0 6.09-1.04 7.99-3.12q2.85-3.12 2.85-8.7c0-5.58-.95-6.88-2.85-9.03s-4.56-3.23-7.99-3.23h-7.01c-.29 0-.44.15-.44.44Zm15.93 54.53c1.93-2.26 2.9-5.48 2.9-9.64s-.95-7.54-2.85-9.91-4.53-3.56-7.88-3.56h-7.67c-.29 0-.44.15-.44.44v25.62c0 .29.14.44.44.44h7.55c3.36 0 6-1.13 7.94-3.39Z" class="cls-1"/>
+  <path d="M314.41 222.46H166.95l73.73 73.73z" class="cls-4"/>
+  <path d="M501.83 222.46H341.74L240.68 323.52l-100.5-100.5c-9.73 1.62-20.92 6.96-27 13.31L10.65 343.29c-7.31 7.62-4.58 13.86 6.07 13.86h356.02c10.64 0 25.33-6.24 32.64-13.86l102.53-106.97c7.31-7.62 4.58-13.86-6.07-13.86Z" class="cls-4"/>
+  <path d="M346.6 116.26h-55.26l-9.49 9.49c4.39 7.26 6.97 15.74 6.97 24.85 0 26.59-21.55 48.14-48.14 48.14s-48.14-21.55-48.14-48.14c0-13.45 5.53-25.61 14.43-34.34h-61.16c-4.16 0-8.93.97-13.64 2.59l-34.42 34.42 97.69 97.7h90.46l97.69-97.7-37-37ZM80.93 163.77 10.65 237.1c-7.31 7.62-4.58 13.86 6.07 13.86h151.41l-87.19-87.19Z" class="cls-2"/>
+  <path d="M501.83 116.26h-127.9l37 37-97.7 97.7h59.5c10.64 0 25.33-6.24 32.64-13.86L507.9 130.13c7.31-7.62 4.58-13.86-6.07-13.86Z" class="cls-2"/>
+  <path d="M501.83 10.56H240.46l-134.7 134.7h87.09c2.66-24.07 23.05-42.8 47.83-42.8 10.48 0 20.15 3.39 28.06 9.08l50.23-50.23 77.04 77.03c3.65-2.05 6.93-4.4 9.37-6.94L507.91 24.43c7.31-7.62 4.58-13.86-6.07-13.86ZM213.13 10.56h-67.32c-10.65 0-25.33 6.24-32.64 13.86L10.65 131.4c-7.31 7.62-4.58 13.86 6.07 13.86h61.72z" class="cls-3"/>
+  <path d="m375.42 145.08-56.44-56.44-37.12 37.12c3.52 5.81 5.79 12.43 6.59 19.51h84.29c.86 0 1.78-.1 2.68-.18Z" class="cls-3"/>
+</svg>
+  <text x="595" y="478" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="1.6"
+        fill="#c7d6e8" filter="url(#ecoLbl)">NGSI-LD CONTEXT BROKER</text>
+  <!-- 育つゲージ -->
+  <g transform="translate(-5,0)">
+    <rect x="490" y="493" width="220" height="11" rx="5.5" fill="#22304a"/>
+    <g clip-path="url(#ecoGaugeClip)">
+      <rect x="490" y="493" width="26" height="11" fill="#FF8A4C">
+        <animate attributeName="width" values="26;220;220" keyTimes="0;0.86;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </g>
+  <text x="595" y="524" text-anchor="middle" font-size="12" font-weight="600" fill="#FFB183">
+    使うほど、お客様のデータが厚みを増す
+  </text>
+
+  <!-- ===================================================================
+       生まれるサービス（右列）
+       =================================================================== -->
+  <g fill="none" stroke="#1fd39a" stroke-width="1.8" opacity="0.5">
+    <path d="M 595,382 Q 800,300 970,248"/>
+    <path d="M 595,382 Q 800,340 970,326"/>
+    <path d="M 595,382 Q 800,392 970,404"/>
+    <path d="M 595,382 Q 800,440 970,482"/>
+    <path d="M 595,382 Q 800,486 970,560"/>
+  </g>
+  <g fill="#2fe0a8">
+    <circle r="3.2"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 595,382 Q 800,300 970,248"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-0.7s" repeatCount="indefinite" path="M 595,382 Q 800,340 970,326"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-1.4s" repeatCount="indefinite" path="M 595,382 Q 800,392 970,404"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" path="M 595,382 Q 800,440 970,482"/></circle>
+    <circle r="3.2"><animateMotion dur="3.4s" begin="-2.8s" repeatCount="indefinite" path="M 595,382 Q 800,486 970,560"/></circle>
+  </g>
+
+  <g>
+    <rect x="940" y="146" width="230" height="42" rx="21" fill="#12251f" stroke="#1fd39a" stroke-width="1.6" filter="url(#ecoCardShadow)"/>
+    <text x="1055" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#8ef0cb">生まれるサービス</text>
+    <text x="1055" y="181" text-anchor="middle" font-size="10.5" fill="#7bbca4">育ったデータが価値になる</text>
+  </g>
+
+  <g fill="#e7eef7">
+    <g transform="translate(1055,248)">
+      <rect x="-85" y="-27" width="170" height="54" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <g transform="translate(-56,2)" fill="none" stroke="#F2933C" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M0,-13 L15,12 H-15 Z"/><path d="M0,-4 v7"/>
+      </g>
+      <circle cx="-56" cy="14" r="1.9" fill="#F2933C"/>
+      <text x="-28" y="6" font-size="14" font-weight="600" text-anchor="start">防災</text>
+    </g>
+    <g transform="translate(1055,326)">
+      <rect x="-85" y="-27" width="170" height="54" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <g transform="translate(-56,0)" fill="none" stroke="#F2933C" stroke-width="2.4" stroke-linejoin="round">
+        <rect x="-16" y="-12" width="32" height="21" rx="5"/><path d="M-16,-3 h32"/><path d="M-6,-12 v9"/>
+      </g>
+      <circle cx="-64" cy="15" r="2.8" fill="#F2933C"/><circle cx="-48" cy="15" r="2.8" fill="#F2933C"/>
+      <text x="-28" y="6" font-size="14" font-weight="600" text-anchor="start">MaaS</text>
+    </g>
+    <g transform="translate(1055,404)">
+      <rect x="-85" y="-27" width="170" height="54" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <g transform="translate(-56,1)">
+        <path d="M-17,9 q9,-20 17,-9 q8,10 17,-9" fill="none" stroke="#F2933C" stroke-width="2.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+        <circle cx="-17" cy="9" r="3.6" fill="#1fd39a"/><circle cx="17" cy="-9" r="3.6" fill="#E8412F"/>
+      </g>
+      <text x="-28" y="6" font-size="14" font-weight="600" text-anchor="start">観光</text>
+    </g>
+    <g transform="translate(1055,482)">
+      <rect x="-85" y="-27" width="170" height="54" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <g transform="translate(-56,1)" fill="none" stroke="#1fd39a" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M-16,-5 L0,-14 L16,-5 Z"/><path d="M-12,-1 v12 M-4,-1 v12 M4,-1 v12 M12,-1 v12"/><path d="M-16,13 h32"/>
+      </g>
+      <text x="-28" y="6" font-size="14" font-weight="600" text-anchor="start">自治体DX</text>
+    </g>
+    <g transform="translate(1055,560)">
+      <rect x="-85" y="-27" width="170" height="54" rx="10" fill="#1a2438" stroke="#36425c" stroke-width="1.5" filter="url(#ecoCardShadow)"/>
+      <g transform="translate(-58,1)">
+        <path d="M-17,-11 h29 a4,4 0 0 1 4,4 v11 a4,4 0 0 1 -4,4 h-19 l-8,6 v-6 h-2 a4,4 0 0 1 -4,-4 v-11 a4,4 0 0 1 4,-4 z"
+              fill="none" stroke="#1fd39a" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M20,-15 l1.9,4.8 4.8,1.9 -4.8,1.9 -1.9,4.8 -1.9,-4.8 -4.8,-1.9 4.8,-1.9 z" fill="#F2933C"/>
+      </g>
+      <text x="-26" y="6" font-size="14" font-weight="600" text-anchor="start">AI エージェント</text>
+    </g>
+  </g>
+
+  <!-- ===================================================================
+       還流: サービスの利用が、お客様のデータをさらに増やす
+       =================================================================== -->
+  <path d="M 1055,596 C 1090,668 1030,712 890,716 L 470,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"
+        fill="none" stroke="#FF9E5C" stroke-width="2.2" stroke-dasharray="9 7" opacity="0.7"
+        marker-end="url(#ecoLoopArrow)">
+    <animate attributeName="stroke-dashoffset" values="160;0" dur="5s" repeatCount="indefinite"/>
+  </path>
+  <g fill="#FFB183">
+    <circle r="3.4"><animateMotion dur="7s" repeatCount="indefinite" path="M 1055,596 C 1090,668 1030,712 890,716 L 470,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+    <circle r="3.4"><animateMotion dur="7s" begin="-2.33s" repeatCount="indefinite" path="M 1055,596 C 1090,668 1030,712 890,716 L 470,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+    <circle r="3.4"><animateMotion dur="7s" begin="-4.66s" repeatCount="indefinite" path="M 1055,596 C 1090,668 1030,712 890,716 L 470,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+  </g>
+  <g>
+    <rect x="285" y="636" width="620" height="98" rx="16" fill="#101c30" stroke="#4a90d9" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
+    <text x="595" y="673" text-anchor="middle" font-size="22" font-weight="700" fill="#cfe2f7">地理空間情報・人流・住所</text>
+    <g transform="translate(455,706)">
+      <circle r="15" fill="#e8eff8"/>
+      <g transform="scale(0.62)"><use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/></g>
+      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">ジオテクノロジーズ</text>
+    </g>
+    <g transform="translate(667,706)">
+      <circle r="15" fill="#fdf3ea"/>
+      <g transform="scale(0.72)"><use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/></g>
+      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">Geolonia</text>
+    </g>
+  </g>
+</svg>
