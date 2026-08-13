@@ -121,30 +121,16 @@
        基盤: 地理空間情報・人流・住所 ― 両社がお客様のデータを支える
        =================================================================== -->
   <g fill="none" stroke="#4a90d9" stroke-width="1.6" stroke-dasharray="5 6" opacity="0.5">
-    <path d="M 480,612 Q 530,520 600,448"/>
-    <path d="M 640,612 Q 640,530 640,452"/>
-    <path d="M 800,612 Q 750,520 680,448"/>
+    <path d="M 480,636 Q 530,530 600,448"/>
+    <path d="M 640,636 Q 640,540 640,452"/>
+    <path d="M 800,636 Q 750,530 680,448"/>
   </g>
   <g fill="#6fb6ef">
-    <circle r="2.8"><animateMotion dur="4.5s" repeatCount="indefinite" path="M 480,612 Q 530,520 600,448"/></circle>
-    <circle r="2.8"><animateMotion dur="5.2s" repeatCount="indefinite" path="M 640,612 Q 640,530 640,452"/></circle>
-    <circle r="2.8"><animateMotion dur="4.8s" repeatCount="indefinite" path="M 800,612 Q 750,520 680,448"/></circle>
-    <circle r="2.2" opacity="0.7"><animateMotion dur="4.5s" begin="-2.2s" repeatCount="indefinite" path="M 480,612 Q 530,520 600,448"/></circle>
-    <circle r="2.2" opacity="0.7"><animateMotion dur="4.8s" begin="-2.4s" repeatCount="indefinite" path="M 800,612 Q 750,520 680,448"/></circle>
-  </g>
-  <g>
-    <rect x="330" y="612" width="620" height="98" rx="16" fill="#101c30" fill-opacity="0.85" stroke="#4a90d9" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
-    <text x="640" y="649" text-anchor="middle" font-size="22" font-weight="700" fill="#cfe2f7">地理空間情報・人流・住所</text>
-    <g transform="translate(500,682)">
-      <circle r="15" fill="#e8eff8"/>
-      <g transform="scale(0.62)"><use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/></g>
-      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">ジオテクノロジーズ</text>
-    </g>
-    <g transform="translate(712,682)">
-      <circle r="15" fill="#fdf3ea"/>
-      <g transform="scale(0.72)"><use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/></g>
-      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">Geolonia</text>
-    </g>
+    <circle r="2.8"><animateMotion dur="4.5s" repeatCount="indefinite" path="M 480,636 Q 530,530 600,448"/></circle>
+    <circle r="2.8"><animateMotion dur="5.2s" repeatCount="indefinite" path="M 640,636 Q 640,540 640,452"/></circle>
+    <circle r="2.8"><animateMotion dur="4.8s" repeatCount="indefinite" path="M 800,636 Q 750,530 680,448"/></circle>
+    <circle r="2.2" opacity="0.7"><animateMotion dur="4.5s" begin="-2.2s" repeatCount="indefinite" path="M 480,636 Q 530,530 600,448"/></circle>
+    <circle r="2.2" opacity="0.7"><animateMotion dur="4.8s" begin="-2.4s" repeatCount="indefinite" path="M 800,636 Q 750,530 680,448"/></circle>
   </g>
 
   <!-- ===================================================================
@@ -278,5 +264,19 @@
     <circle r="3.4"><animateMotion dur="7s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
     <circle r="3.4"><animateMotion dur="7s" begin="-2.33s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
     <circle r="3.4"><animateMotion dur="7s" begin="-4.66s" repeatCount="indefinite" path="M 1105,596 C 1140,668 1080,712 940,716 L 480,716 C 250,716 60,700 40,540 C 28,430 30,300 58,240"/></circle>
+  </g>
+  <g>
+    <rect x="330" y="636" width="620" height="98" rx="16" fill="#101c30" stroke="#4a90d9" stroke-width="1.8" filter="url(#ecoCardShadow)"/>
+    <text x="640" y="673" text-anchor="middle" font-size="22" font-weight="700" fill="#cfe2f7">地理空間情報・人流・住所</text>
+    <g transform="translate(500,706)">
+      <circle r="15" fill="#e8eff8"/>
+      <g transform="scale(0.62)"><use href="#geotMark" transform="translate(-19,-18.6) scale(0.1567) translate(-116.6,0)"/></g>
+      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">ジオテクノロジーズ</text>
+    </g>
+    <g transform="translate(712,706)">
+      <circle r="15" fill="#fdf3ea"/>
+      <g transform="scale(0.72)"><use href="#geoloniaMark" transform="translate(-18,-17.9) scale(0.18)"/></g>
+      <text x="25" y="4.5" font-size="13" font-weight="600" fill="#9fb6d1">Geolonia</text>
+    </g>
   </g>
 </svg>
