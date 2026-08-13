@@ -10,6 +10,27 @@
 
 > データへのアクセスは **MCP または CLI（`geonic`）経由**を前提とします。いずれも接続時に認証が済んでいるため、この文書では認証情報（トークン取得手順など）は扱いません。以降は「何のデータがあり・どう投入/分析するか」に集中します。
 
+## この文書の見つけ方（AI エージェント向け）
+
+このデッキは GitHub Pages の**プロジェクトサイト（サブパス配信）**のため、llms.txt はドメイン直下ではなく**デッキと同じパス**に置かれています。
+
+- 本ファイルの場所: `https://geolonia.github.io/geonicdb-livedeck/llms.txt`
+- デッキ HTML の `<head>` から参照済み: `<link rel="alternate" type="text/plain" title="llms.txt" href="llms.txt">` および JSON-LD（`PresentationDigitalDocument`）の `subjectOf`。デッキ URL を取得したら、まずこの llms.txt を読んでください。
+- ※ これはこの**デッキ（スライド）自体**の説明です。GeonicDB **サーバー**の機械可読仕様は別物で、`https://geonicdb.geolonia.com/llms.txt`・`/openapi.json`・`/api.json`・`/tools.json`・`/.well-known/*` にあります（末尾「Resources」参照）。
+
+## URL の読み方（`#N` を内容・エンティティ型に解決する）
+
+このデッキは 1 ページの SPA で、URL 末尾の `#N`（例 `…/geonicdb-livedeck/#16`）が「**先頭から N 番目のスライド**」を指します。ハッシュはクライアント側で解釈されるため、`#N` を付けても取得できる HTML は同じです（ただし**全スライドの本文は HTML に静的に含まれる**ので、ソースを読まなくても内容は取得済みの HTML から分かります）。
+
+`#N` を「どのページで・どの型を使うか」に解決する機械可読な手段が 2 つあります:
+
+1. **JSON-LD（推奨・1 か所で完結）** — ページ HTML の `<script type="application/ld+json">`（`@type: PresentationDigitalDocument`）に全スライドの `hasPart` があります。`position` が `#N` に一致し、各 part から `identifier`（安定スラグ）・`name`（見出し）が得られます。ライブデモは `keywords` に `entityType:<型>` が入ります。
+2. **DOM 属性** — N 番目の `<section class="slide">` に `data-slide="<スラグ>"` が付いています。ライブデモにはさらに `data-live="true"` / `data-demo="<キー>"` / `data-entity-types="<型>[,<型>…]"` が付きます。
+
+得られたスラグで、下の「スライド（ページ）の内容」と「ライブデモの接続先・データモデル」を引くと、そのページが使う型・データモデル・投入手順まで辿れます。番号ではなくスラグで対応づけているので、スライドを並べ替えても壊れません。
+
+**例（`…/geonicdb-livedeck/#16`）**: 16 番目の `<section>` → `data-slide="collab-gis"` / `data-entity-types="geonicdb-livedeck-MapFeature"` → 「共同編集 GIS」。この型のダミー地物を後述のデータモデルどおりに `entities`/`create`（複数なら `batch`）で投入すると、地図に WebSocket 経由で反映されます（表示は直近 24 時間に作成された地物のみ）。
+
 ## MCP / CLI でデータを投入・分析する（プレゼン中）
 
 MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code / Cursor 等）や公式 CLI `geonic` から、ライブデモと同じテナント `miya` のデータを直接操作できます。投入したエンティティは、対応するライブデモに **WebSocket 経由でリアルタイム反映**されます（フィードバック・共同編集 GIS・メッセージング）。
@@ -55,6 +76,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 
 ### 標準 API — NGSIv2 / NGSI-LD デュアルプロトコル（読み取り専用）
 
+> `data-slide: dual-protocol`（デッキ #N の解決先。上「URL の読み方」参照）
+
 「1 つのブローカーで NGSIv2 と NGSI-LD の両方に対応」を示すデモ。同一の実体を両プロトコルで取得して左右に並べます。
 
 - 型: `EnvironmentSensor`（環境センサー）
@@ -62,6 +85,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - 操作: `GET /ngsi-ld/v1/entities/{id}` と `GET /v2/entities/{id}`
 
 ### ライブフィードバック — NGSI-LD リンクトデータ（作成 + WebSocket + カスタムデータモデル）
+
+> `data-slide: live-feedback`（デッキ #N の解決先。上「URL の読み方」参照）
 
 フォーム送信で NGSI-LD エンティティ（type=`Feedback`）を作成し、WebSocket で集計をリアルタイム更新。NGSI-LD の Property / Relationship / GeoProperty を体感させるデモ。
 
@@ -77,6 +102,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 
 ### Geo クエリー — AED マップ（読み取り専用 + 近傍検索）
 
+> `data-slide: geo-query`（デッキ #N の解決先。上「URL の読み方」参照）
+
 地図上に点を描画し、中心＋半径の近傍検索で絞り込むデモ。
 
 - 型: `AedLocation`
@@ -85,6 +112,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - データ出典: 香川県高松市のオープンデータ（AED 設置場所）
 
 ### Temporal タイムマシン — 時系列（読み取り専用 / Temporal API）
+
+> `data-slide: temporal`（デッキ #N の解決先。上「URL の読み方」参照）
 
 過去にさかのぼって「いつ・どの瞬間の状態か」を再生するデモ。
 
@@ -96,6 +125,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 
 ### 避難所の混雑度 — 自治体ユースケース（読み取り専用 / 地図 + Temporal API）
 
+> `data-slide: shelter-occupancy`（デッキ #N の解決先。上「URL の読み方」参照）
+
 指定避難所の位置に受入状況の時系列を重ね、1 日の混雑の移り変わりを再生するデモ。
 
 - 型: `EvacuationArea`
@@ -106,6 +137,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - データ出典: 避難所の位置・収容人数は高松市オープンデータ「指定緊急避難場所・指定避難所」(CC BY 4.0)。`occupancy`（混雑度）は説明用の合成データで、実際の受入実績ではありません。
 
 ### 共同編集 GIS — 民間ユースケース（作成 + WebSocket）
+
+> `data-slide: collab-gis`（デッキ #N の解決先。上「URL の読み方」参照）
 
 地図にポイント/ライン/ポリゴンを描くと NGSI-LD の地物として作成され、WebSocket で全員の画面に反映されるデモ。
 
@@ -121,6 +154,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - 表示条件: 直近 24 時間に作成された地物のみ地図に表示
 
 ### リアルタイムメッセージング + ReactiveCore Rules ログ — 民間ユースケース（作成 + WebSocket + Rules）
+
+> `data-slide: messaging`（デッキ #N の解決先。上「URL の読み方」参照）
 
 投稿（名前＋本文）を NGSI-LD エンティティとして作成 → WS で全員に配信。サーバの ReactiveCore Rules が投稿を検知してログを自動記録するデモ。
 
@@ -140,7 +175,7 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - **会社概要** — 株式会社 Geolonia（親会社 ジオテクノロジーズ）。設立 2019 年、従業員 27 名。主な納入先（デジタル庁・国土交通省・国土地理院・NHK・ソフトバンク・竹中工務店・高松市 ほか）、政府の取り組み（空間 ID／スマートシティリファレンスアーキテクチャ）への貢献。
 - **コンテキストブローカーとは？（図解）** — 街じゅうのバラバラなデータを「受け取って・そろえて・届ける」中継役、という概念図。
 - **コンテキストブローカーとは？（基礎）** — 収集・更新／最新状態＋履歴／横断クエリ／購読（Pub/Sub）／標準 API／認証・認可。マルチテナンシーの導入。
-- **近未来のスマートシティ（図解）** — 街のいまを「状態の集合体」として束ねる都市 OS のビジョン。
+- **GeonicDB を中心としたエコシステム（図解）** — 分野を越えてつなぐデータ連携基盤。自治体のデータ（通報・センサー・住民窓口・施設台帳など）がサービスを生み、サービスがデータを育てる循環。地理空間情報・人流・住所（ジオテクノロジーズ／Geolonia）が基盤として支える。
 - **国際標準に準拠** — NGSI-LD（ETSI GS CIM 009 V1.9.1）を軸に、FIWARE NGSIv2・OpenAPI 3.0.3・JSON-LD・DCAT-AP/CKAN・CADDE・各種 RFC（ETag/Link/DPoP 9449/GeoJSON 7946）。
 - **マルチテナンシー** — 1 基盤をテナント単位で完全分離。`NGSILD-Tenant` / `Fiware-Service` で切替。データ・ポリシー・API キー・購読が独立し、ID 衝突も起きない。
 - **AI Native** — 「むずかしいことや面倒なことは AI におまかせ」。MCP サーバー・CLI により、設定・データ作成・アプリ開発を自然言語で AI に依頼できる（AI サービスは別途契約）。
