@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit 設定 — 本体 geolonia/geonicdb の .coderabbit.yaml に合わせる。
+#
+# PR 作成時 + 毎 push (増分レビュー) で自動発火する。手動で `@coderabbitai review` を
+# 打たなくても、PR を開けば/push すればレビューが走る。
+#
+# 留意: 修正ラウンドを何度も回すと Fair Usage Limits の適応的スロットリング (直近 7 日の
+# レビュー数で段階的に絞られる) に近づきうる。自己レビューで収束させてから push する運用で
+# ラウンド数を抑えると良い。増分レビューのため、既にレビュー済みの commit は再レビューされない。
+#
+# 注意: CodeRabbit は **base ブランチ (main) の .coderabbit.yaml** を読むため、この設定は
+# main にマージされて初めて有効になる。
+language: ja-JP
+reviews:
+  # PR 作成時・push 時の自動レビューを有効化
+  auto_review:
+    enabled: true
+  # 変更サマリの自動生成は残す (レビュー本体より軽く、PR の把握に有用)
+  high_level_summary: true
+  # レビュー結果を GitHub の review state に反映する (既定 false = 常に COMMENTED)。
+  #
+  #   true  → 指摘がある間は REQUEST_CHANGES、全指摘が resolve され pre-merge チェックが
+  #           緑になったら自動で APPROVE。
+  #   false → APPROVE も REQUEST_CHANGES も出さず、COMMENTED のみ。
+  #
+  # 有効化の主目的は「承認をもらう」ことではなく **`reviewDecision` を機能させる** こと。
+  # false のままだと CodeRabbit が指摘を出しても `reviewDecision` に一切反映されず、
+  # 未解決スレッドの有無だけが頼りになる (取りこぼしやすい)。
+  #
+  # 注意: main の ruleset (branch-rules: main-protection) は `require_code_owner_review: true`
+  # かつ `require_last_push_approval: true` / `dismiss_stale_reviews_on_push: true` のため、
+  # CodeRabbit の APPROVE だけでは必須レビュー要件は満たされない (--admin 運用は不変)。
+  request_changes_workflow: true
