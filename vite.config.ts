@@ -23,9 +23,12 @@ function geonicdbVersion(root: string): string {
   const deps = read(resolve(root, "package.json")).dependencies as Record<string, string> | undefined;
   const range = deps?.[SDK];
   if (!range) throw new Error(`${SDK} が package.json の dependencies に見つかりません`);
-  const version = range.replace(/^[^\d]*/, "");
-  if (!version) throw new Error(`${SDK} のバージョンを解決できません: ${range}`);
-  return version;
+  // 先頭の範囲指定子だけを落として最初の x.y.z を取り出す。複合レンジ
+  // （">=0.17.0 <0.18.0"）や "0.17.x" のように 1 つに定まらない書き方は
+  // 拾わず throw する（表紙に "v0.17.0 <0.18.0" と出す方が事故なので fail-loud）。
+  const match = /^\D*(\d+\.\d+\.\d+[\w.+-]*)$/.exec(range);
+  if (!match) throw new Error(`${SDK} のバージョンを解決できません: ${range}`);
+  return match[1];
 }
 
 // Geolonia Maps と GeonicDB は CDN / 別管理のため、ベース URL とポートは pulse 準拠。
