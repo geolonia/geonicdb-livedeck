@@ -9,8 +9,10 @@
 # レビュー数で段階的に絞られる) に近づきうる。自己レビューで収束させてから push する運用で
 # ラウンド数を抑えると良い。増分レビューのため、既にレビュー済みの commit は再レビューされない。
 #
-# 注意: CodeRabbit は **base ブランチ (main) の .coderabbit.yaml** を読むため、この設定は
-# main にマージされて初めて有効になる。
+# 適用タイミング: CodeRabbit はレビュー対象ブランチ (PR の head) の .coderabbit.yaml を
+# 検出して、その PR のレビューに適用する。main へのマージを待つ必要はない。
+# 実測: このファイルを追加した PR #57 自身のレビューが language: ja-JP に従って日本語で
+# 返った (main には .coderabbit.yaml が無い状態だった)。
 language: ja-JP
 reviews:
   # PR 作成時・push 時の自動レビューを有効化
@@ -28,7 +30,17 @@ reviews:
   # false のままだと CodeRabbit が指摘を出しても `reviewDecision` に一切反映されず、
   # 未解決スレッドの有無だけが頼りになる (取りこぼしやすい)。
   #
-  # 注意: main の ruleset (branch-rules: main-protection) は `require_code_owner_review: true`
-  # かつ `require_last_push_approval: true` / `dismiss_stale_reviews_on_push: true` のため、
-  # CodeRabbit の APPROVE だけでは必須レビュー要件は満たされない (--admin 運用は不変)。
+  # main の ruleset (branch-rules: main-protection) との関係:
+  #   - `required_approving_review_count: 1` … CodeRabbit の APPROVE で満たす想定
+  #   - `require_last_push_approval: true`   … 承認者は最後の push 者以外であればよく、
+  #                                            CodeRabbit は push しないので抵触しない
+  #   - `required_review_thread_resolution: true` … CodeRabbit のスレッドも解決が必要
+  #   - `dismiss_stale_reviews_on_push: true` … push のたびに再承認が要る (意図どおり)
+  #   - `require_code_owner_review: true` … このリポジトリには CODEOWNERS が無いため
+  #                                          code owner は存在せず、実質無効
+  # つまり ruleset 側の変更は不要で、この設定だけで CodeRabbit の APPROVE が承認要件を
+  # 満たせる想定 (GitHub App の承認がカウントされるかは次の PR で実測する)。
+  # 将来 CODEOWNERS を置く場合は注意 — GitHub App は CODEOWNERS に指定できないため、
+  # そのとき CodeRabbit は承認要件を満たせなくなる。なお main-protection は
+  # **geolonia org 共通の ruleset** なので、緩めるとこのリポジトリだけでは済まない。
   request_changes_workflow: true
