@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit 設定 — 本体 geolonia/geonicdb の .coderabbit.yaml に合わせる。
+#
+# PR 作成時 + 毎 push (増分レビュー) で自動発火する。手動で `@coderabbitai review` を
+# 打たなくても、PR を開けば/push すればレビューが走る。
+#
+# 留意: 修正ラウンドを何度も回すと Fair Usage Limits の適応的スロットリング (直近 7 日の
+# レビュー数で段階的に絞られる) に近づきうる。自己レビューで収束させてから push する運用で
+# ラウンド数を抑えると良い。増分レビューのため、既にレビュー済みの commit は再レビューされない。
+#
+# 適用タイミング: CodeRabbit はレビュー対象ブランチ (PR の head) の .coderabbit.yaml を
+# 検出して、その PR のレビューに適用する。main へのマージを待つ必要はない。
+# 実測: このファイルを追加した PR #57 自身のレビューが language: ja-JP に従って日本語で
+# 返った (main には .coderabbit.yaml が無い状態だった)。
+language: ja-JP
+reviews:
+  # PR 作成時・push 時の自動レビューを有効化
+  auto_review:
+    enabled: true
+  # 変更サマリの自動生成は残す (レビュー本体より軽く、PR の把握に有用)
+  high_level_summary: true
+  # レビュー結果を GitHub の review state に反映する (既定 false = 常に COMMENTED)。
+  #
+  #   true  → 指摘がある間は REQUEST_CHANGES、全指摘が resolve され pre-merge チェックが
+  #           緑になったら自動で APPROVE。
+  #   false → APPROVE も REQUEST_CHANGES も出さず、COMMENTED のみ。
+  #
+  # 有効化の主目的は「承認をもらう」ことではなく **`reviewDecision` を機能させる** こと。
+  # false のままだと CodeRabbit が指摘を出しても `reviewDecision` に一切反映されず、
+  # 未解決スレッドの有無だけが頼りになる (取りこぼしやすい)。
+  #
+  # main の ruleset (branch-rules: main-protection) との関係:
+  #   - `required_approving_review_count: 1` … CodeRabbit の APPROVE で満たす想定
+  #   - `require_last_push_approval: true`   … 承認者は最後の push 者以外であればよく、
+  #                                            CodeRabbit は push しないので抵触しない
+  #   - `required_review_thread_resolution: true` … CodeRabbit のスレッドも解決が必要
+  #   - `dismiss_stale_reviews_on_push: true` … push のたびに再承認が要る (意図どおり)
+  #   - `require_code_owner_review: true` … このリポジトリには CODEOWNERS が無いため
+  #                                          code owner は存在せず、実質無効
+  # つまり ruleset 側の変更は不要で、この設定だけで CodeRabbit の APPROVE が承認要件を
+  # 満たせる想定 (GitHub App の承認がカウントされるかは次の PR で実測する)。
+  # 将来 CODEOWNERS を置く場合は注意 — GitHub App は CODEOWNERS に指定できないため、
+  # そのとき CodeRabbit は承認要件を満たせなくなる。なお main-protection は
+  # **geolonia org 共通の ruleset** なので、緩めるとこのリポジトリだけでは済まない。
+  request_changes_workflow: true
