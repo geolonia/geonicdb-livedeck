@@ -10,7 +10,7 @@
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { createClient } from "../lib/client";
-import { byId, whenIdle } from "../lib/dom";
+import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { resolveOriginCoords } from "../lib/originGeo";
 
 /** cmd_751 のデータ契約（ashigaru4 subtask_751b 確定版・叩き台段階では暫定）。 */
@@ -194,12 +194,13 @@ export function initContributionMap(): void {
       const p = f.properties;
       const c = f.geometry.coordinates.slice();
       const tag = p.seeded ? "（仕込み）" : "";
+      // origin/specialty は会場からの未認証入力ゆえ、popup HTML へ埋め込む前に必ずエスケープする。
       const html =
         "<strong>" +
-        String(p.origin) +
+        escapeHtml(p.origin) +
         tag +
         "</strong>" +
-        (p.specialty ? "<br>" + String(p.specialty) : "");
+        (p.specialty ? "<br>" + escapeHtml(p.specialty) : "");
       new GL!.Popup({ offset: 10, closeButton: false }).setLngLat(c).setHTML(html).addTo(map);
     }
     map.on("click", "contrib-real", (ev: any) => ev.features?.[0] && showPopup(ev.features[0]));
