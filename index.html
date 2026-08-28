@@ -1014,9 +1014,15 @@
             <div class="fb-json-wrap">
               <div class="fb-tabs" role="tablist">
                 <button type="button" class="fb-tab is-active" data-panel="chart" role="tab">集計結果</button>
+                <button type="button" class="fb-tab" data-panel="map" role="tab">地図</button>
                 <button type="button" class="fb-tab" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
                 <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
               </div>
+              <!-- 地図タブ: ashigaru5 (subtask_751d/contributionMap.ts) が中身を描画する統合先。
+                   contribution.ts の initTabs() は .fb-panel を汎用的に切替えるため、この
+                   コンテナへ独自にマウントするだけでタブ切替に自動対応する(contribution.ts
+                   側の変更は不要)。 -->
+              <div id="cb-map" class="fb-chart fb-panel" data-panel="map" hidden></div>
               <pre id="cb-json" class="fb-json fb-panel" data-panel="entity" hidden>投稿するとここに実エンティティが表示されます…</pre>
               <pre id="cb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
               <div id="cb-chart" class="fb-chart fb-panel" data-panel="chart">
