@@ -9,7 +9,7 @@
    ★仕込み投稿（seeded=true）は色・凡例で明示し、会場の生データと混同させない。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
-import { createClient } from "../lib/client";
+import { createContributionClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { resolveOriginCoords } from "../lib/originGeo";
 
@@ -262,7 +262,7 @@ export function initContributionMap(): void {
         });
         map.on("load", () => {
           addLayers();
-          db = createClient();
+          db = createContributionClient();
           loadAndSubscribe();
         });
       })
