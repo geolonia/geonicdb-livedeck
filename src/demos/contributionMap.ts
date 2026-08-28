@@ -12,7 +12,6 @@ import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { createClient } from "../lib/client";
 import { byId, whenIdle } from "../lib/dom";
 import { resolveOriginCoords } from "../lib/originGeo";
-import { onSlideChange } from "../lib/slidechange";
 
 /** cmd_751 のデータ契約（ashigaru4 subtask_751b 確定版・叩き台段階では暫定）。 */
 export const CONTRIBUTION_TYPE = "Contribution";
@@ -83,31 +82,60 @@ export function buildFeatureCollection(
 
 /* ===================================================================
    ここから DOM / SDK 結線。map.ts の構成（SDK 初期化 → WS 購読 → GeoJSON 反映）に倣う。
-   スライド要素 `.slide--contribmap` が無い状態でも安全に no-op する
-   （contribution.ts 側との結合前に単独で読み込まれても壊れないように）。
+
+   ★統合方式（家老確定 2026-08-28）: 独立スライドではなく、contribution.ts
+   （ashigaru2）の「地図」タブ内コンテナ `#cb-map` へ自前でマウントする。
+   タブの表示/非表示自体は contribution.ts 側の initTabs() が汎用的に
+   面倒を見るため、本ファイルは `#cb-map` の hidden 属性を監視し、
+   タブが選ばれて可視化された瞬間に地図を初期化・resize するだけでよい
+   （どちらのモジュールが先に読み込まれても壊れないよう、クリックイベントの
+   登録順に依存せず MutationObserver で判定する）。
+   `#cb-map` が無い状態（結合前・単体テスト等）では安全に no-op する。
    =================================================================== */
 
 type AnyMap = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export function initContributionMap(): void {
-  const slides = Array.from(document.querySelectorAll(".slide"));
-  const SLIDE_INDEX = slides.indexOf(document.querySelector(".slide--contribmap") as Element);
-  if (SLIDE_INDEX < 0) return; // スライドが未結線ならここで終了（結合待ち）
+  const container = byId("cb-map");
+  if (!container) return; // 未結線ならここで終了（結合待ち）
+  const mount: HTMLElement = container; // 以降のクロージャで non-null を保証する
 
   let GL: GeoloniaNamespace | null = null;
   let map: AnyMap = null;
+  let mapDiv: HTMLDivElement | null = null;
   let db: GeonicDB | null = null;
   const entities: Record<string, Record<string, unknown>> = Object.create(null);
   let started = false;
   let dataStarted = false;
   let skipped = 0; // origin未解決で描画から外れた件数（正直に見せる）
+  let statusSpan: HTMLElement | null = null;
 
-  function statusEl(): HTMLElement | null {
-    return byId("contrib-map-status");
-  }
   function setStatus(msg: string): void {
-    const el = statusEl();
-    if (el) el.textContent = msg;
+    if (statusSpan) statusSpan.textContent = msg;
+  }
+
+  /** タブ内 DOM を組み立てる（初回のみ）。map.ts 同様のタイトル/凡例パターンに倣う。 */
+  function buildDom(): void {
+    if (mapDiv) return;
+    const title = document.createElement("div");
+    title.className = "fb-chart__title";
+    title.textContent = "会場地図";
+    statusSpan = document.createElement("span");
+    statusSpan.className = "fb-chart__total";
+    title.appendChild(statusSpan);
+
+    const legend = document.createElement("div");
+    legend.style.cssText = "font-size:11px;color:rgba(255,255,255,.6);margin:2px 0 8px;";
+    legend.innerHTML =
+      '<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#39d6c6;margin-right:4px;"></span>会場の投稿' +
+      '　<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#6b7a90;margin-right:4px;"></span>仕込み(事前投入)';
+
+    mapDiv = document.createElement("div");
+    mapDiv.style.cssText = "flex:1 1 auto;min-height:220px;border-radius:8px;overflow:hidden;position:relative;";
+
+    mount.appendChild(title);
+    mount.appendChild(legend);
+    mount.appendChild(mapDiv);
   }
   function render(): void {
     if (!map) return;
@@ -213,6 +241,7 @@ export function initContributionMap(): void {
   function start(): void {
     if (started) return;
     started = true;
+    buildDom();
     GL = window.geolonia || window.maplibregl || null;
     if (!GL || typeof GL.Map !== "function") {
       setStatus("地図ライブラリの読み込みに失敗しました");
@@ -224,7 +253,7 @@ export function initContributionMap(): void {
       .then((style: any) => {
         style.sprite = location.origin + import.meta.env.BASE_URL + "assets/sprites/gsi";
         map = new GL!.Map({
-          container: "contrib-map",
+          container: mapDiv!,
           style,
           center: VENUE_CENTER,
           zoom: INITIAL_ZOOM,
@@ -243,11 +272,17 @@ export function initContributionMap(): void {
       });
   }
 
-  onSlideChange(({ index }) => {
-    if (index === SLIDE_INDEX - 1) whenIdle(start);
-    else if (index === SLIDE_INDEX) {
-      start();
-      if (map) setTimeout(() => map.resize(), 60);
+  /** タブが可視化された瞬間に初期化・resize する。可視判定は hidden 属性のみを見る
+   *（contribution.ts の initTabs() がどちらの順で読み込まれても壊れないよう、
+   *  クリックイベントの登録順に依存しない）。 */
+  function onVisible(): void {
+    whenIdle(start);
+    if (map) setTimeout(() => map.resize(), 60);
+  }
+  if (!container.hidden) onVisible();
+  new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === "hidden" && !container.hidden) onVisible();
     }
-  });
+  }).observe(container, { attributes: true, attributeFilter: ["hidden"] });
 }
