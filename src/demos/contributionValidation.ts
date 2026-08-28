@@ -15,9 +15,10 @@ export interface ValidationResult {
   errors: Partial<Record<ContributionField, string>>;
 }
 
-export const ORIGIN_MAX = 40;
-export const SPECIALTY_MAX = 60;
-export const HIDDEN_SPOT_MAX = 120;
+// 751b(ashigaru4)確定のカスタムデータモデル契約(propertyDetails.*.validation.maxLength)と一致させる。
+export const ORIGIN_MAX = 100;
+export const SPECIALTY_MAX = 100;
+export const HIDDEN_SPOT_MAX = 200;
 
 export function validateContribution(input: ContributionInput): ValidationResult {
   const errors: ValidationResult["errors"] = {};

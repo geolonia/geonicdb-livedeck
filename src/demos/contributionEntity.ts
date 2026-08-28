@@ -14,18 +14,22 @@ import type { ContributionInput } from "./contributionValidation";
 
 export const CORE_CONTEXT = "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld";
 
-// サーバ登録済みのカスタムデータモデル（feedback.ts の FEEDBACK_MODEL に倣う）。
+// staging へ実登録済みのカスタムデータモデル定義を権威とする(ashigaru4 subtask_751b・
+// geonicdb-console: src/lib/contribution-model.ts のミラー)。domain/validationが
+// 751b側と食い違うと登録モデルと投稿画面の表示が矛盾するため、値は複製元と同期を保つこと。
 export const CONTRIBUTION_MODEL = {
   type: "Contribution",
-  domain: "Survey",
-  description: "FOSS4G Hiroshima 2026: 会場参加者の投稿（NGSI-LD リンクトデータデモ）",
+  domain: "FOSS4G Hiroshima 2026 ライブデモ",
+  description:
+    "geonicdb-livedeck / geonicdb-console: 会場投稿（出身地＋名物）の NGSI-LD リンクトデータデモ（cmd_751）",
   propertyDetails: {
-    origin: { ngsiType: "Property", valueType: "string", example: "香川県", required: true, description: "出身地(都道府県/国レベル)" },
-    specialty: { ngsiType: "Property", valueType: "string", example: "讃岐うどん", required: true, description: "その土地の名物" },
-    hiddenSpot: { ngsiType: "Property", valueType: "string", example: "地元の展望台", required: false, description: "地元の人しか知らない隠れ名所" },
-    seeded: { ngsiType: "Property", valueType: "boolean", example: false, required: true, description: "主催者による事前仕込みデータか否か" },
-    submittedAt: { ngsiType: "Property", valueType: "string", example: "2026-09-03T13:45:00.000Z", required: true, description: "送信時刻(ISO8601)" },
+    origin: { ngsiType: "Property", valueType: "string", example: "広島県", required: true, description: "出身地（都道府県 / 国レベル）", validation: { minLength: 1, maxLength: 100 } },
+    specialty: { ngsiType: "Property", valueType: "string", example: "牡蠣", required: true, description: "その土地の名物（自由入力）", validation: { minLength: 1, maxLength: 100 } },
+    hiddenSpot: { ngsiType: "Property", valueType: "string", example: "千光寺公園の裏道", required: false, description: "地元の人は知っているが地図に載っていない場所（任意）", validation: { maxLength: 200 } },
+    seeded: { ngsiType: "Property", valueType: "boolean", example: false, required: true, description: "主催者による事前仕込みか否か", defaultValue: false },
+    submittedAt: { ngsiType: "Property", valueType: "datetime", example: "2026-09-03T13:45:00.000Z", required: true, description: "投稿日時（サーバ側で設定）" },
   },
+  additionalProperties: false,
 };
 
 export interface BuildEntityOptions {

@@ -41,28 +41,28 @@ describe("validateContribution", () => {
     expect(result.errors.hiddenSpot).toBeUndefined();
   });
 
-  it("rejects origin longer than the limit (municipality-level essays should not fit)", () => {
-    const tooLong = "あ".repeat(41);
+  it("rejects origin longer than the limit (751b contract: maxLength 100)", () => {
+    const tooLong = "あ".repeat(101);
     const result = validateContribution({ origin: tooLong, specialty: "讃岐うどん", hiddenSpot: "" });
     expect(result.ok).toBe(false);
     expect(result.errors.origin).toBeDefined();
   });
 
   it("accepts origin at exactly the limit", () => {
-    const atLimit = "あ".repeat(40);
+    const atLimit = "あ".repeat(100);
     const result = validateContribution({ origin: atLimit, specialty: "讃岐うどん", hiddenSpot: "" });
     expect(result.ok).toBe(true);
   });
 
-  it("rejects specialty longer than the limit", () => {
-    const tooLong = "a".repeat(61);
+  it("rejects specialty longer than the limit (751b contract: maxLength 100)", () => {
+    const tooLong = "a".repeat(101);
     const result = validateContribution({ origin: "香川県", specialty: tooLong, hiddenSpot: "" });
     expect(result.ok).toBe(false);
     expect(result.errors.specialty).toBeDefined();
   });
 
-  it("rejects hiddenSpot longer than the limit", () => {
-    const tooLong = "a".repeat(121);
+  it("rejects hiddenSpot longer than the limit (751b contract: maxLength 200)", () => {
+    const tooLong = "a".repeat(201);
     const result = validateContribution({ origin: "香川県", specialty: "讃岐うどん", hiddenSpot: tooLong });
     expect(result.ok).toBe(false);
     expect(result.errors.hiddenSpot).toBeDefined();
