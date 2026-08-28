@@ -11,10 +11,11 @@
    「NGSI-LD エンティティ（送信前は最新の投稿を表示）」
    「カスタムデータモデル（GET /custom-data-models/Contribution）」を
    表示し、件数・集計は WebSocket の entityCreated でリアルタイム更新する。
-   認可はデッキ共通の統合キー（feedback.ts と同じ config.key）。
+   認可は Contribution 専用の integration key（テナント foss4g_hiroshima_2026・
+   ENTERPRISE契約・200名負荷試験済み。デッキ共通の config.key/miya とは別物)。
    =================================================================== */
 import type GeonicDB from "@geolonia/geonicdb-sdk";
-import { createClient } from "../lib/client";
+import { createContributionClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
 import { validateContribution, type ContributionInput, type ContributionField } from "./contributionValidation";
@@ -322,7 +323,7 @@ export function initContribution(): void {
     initTabs();
     setCount();
     renderChart();
-    db = createClient();
+    db = createContributionClient();
     loadModel();
     load()
       .then(connect)
