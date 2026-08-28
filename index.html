@@ -1935,14 +1935,6 @@
             <span class="glossary__term">JWT</span>
             <span class="glossary__def">改ざん検知の署名が付いた認証トークン。ログイン状態の受け渡しに使う。</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 20. Glossary — page 2 (A–Z) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-2">
-      <div class="slide__inner">
-        <div class="glossary">
           <div class="glossary__item">
             <span class="glossary__term">MCP（Model Context Protocol）</span>
             <span class="glossary__def">AI（LLM）が外部のツールやデータへ安全に接続するための標準プロトコル。</span>
@@ -1951,6 +1943,14 @@
             <span class="glossary__term">NGSI-LD</span>
             <span class="glossary__def">コンテキスト情報を相互運用可能に表現する国際標準 API（ETSI）。</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 20. Glossary — page 2 (A–Z) -->
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-2">
+      <div class="slide__inner">
+        <div class="glossary">
           <div class="glossary__item">
             <span class="glossary__term">NGSIv2</span>
             <span class="glossary__def">FIWARE が定めるコンテキスト API 仕様。GeonicDB は NGSI-LD と両対応。</span>
@@ -2003,6 +2003,14 @@
             <span class="glossary__term">Temporal API</span>
             <span class="glossary__def">データの過去の変化（時系列）を遡って取得できる API。</span>
           </div>
+          <div class="glossary__item">
+            <span class="glossary__term">WebSocket</span>
+            <span class="glossary__def">サーバーとブラウザが双方向にリアルタイム通信する仕組み。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">XACML</span>
+            <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
+          </div>
         </div>
       </div>
     </section>
@@ -2012,16 +2020,12 @@
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
-            <span class="glossary__term">WebSocket</span>
-            <span class="glossary__def">サーバーとブラウザが双方向にリアルタイム通信する仕組み。</span>
-          </div>
-          <div class="glossary__item">
-            <span class="glossary__term">XACML</span>
-            <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
-          </div>
-          <div class="glossary__item">
             <span class="glossary__term">エンティティ（Entity）</span>
             <span class="glossary__def">NGSI-LD でデータを表す単位。型と id を持ち、属性や Relationship で他のエンティティとつながる。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">オートスケール（自動スケール）</span>
+            <span class="glossary__def">アクセス量に応じて、処理能力を自動で増減させる仕組み。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">カスタムデータモデル</span>
@@ -2032,16 +2036,24 @@
             <span class="glossary__def">監査ログは「いつ・誰が・何をしたか」の証跡。トークン失効は漏れた認証情報を無効化する仕組み。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">サーバーレス</span>
+            <span class="glossary__def">サーバーの調達・管理をクラウド側に任せ、実際に処理された分だけ自動で確保・課金される方式。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">指数バックオフ</span>
             <span class="glossary__def">失敗のたびに待ち時間を倍々に延ばし、連続した試行を成立しにくくする手法。</span>
           </div>
           <div class="glossary__item">
-            <span class="glossary__term">自動スケール</span>
-            <span class="glossary__def">アクセス量に応じて、処理能力を自動で増減させる仕組み。</span>
+            <span class="glossary__term">スケールアップ／スケールアウト</span>
+            <span class="glossary__def">処理能力の増やし方。スケールアップは 1 台あたりの性能を上げ、スケールアウトは台数を増やす。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">冗長構成</span>
             <span class="glossary__def">同じ機能を複数用意し、一部が壊れても止まらないようにする構成。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ソフトリミット</span>
+            <span class="glossary__def">超えた瞬間に遮断されない上限。一時的な超過は許容され、恒常的に超える場合に契約の見直しで引き上げる。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">タイミング攻撃</span>
@@ -2056,12 +2068,12 @@
             <span class="glossary__def">前者はパスワードを総当たりで試す攻撃。後者はありがちなパスワードを多数のアカウントへ広く試す攻撃。</span>
           </div>
           <div class="glossary__item">
-            <span class="glossary__term">レート制限（トークンバケット）</span>
-            <span class="glossary__def">一定時間あたりの利用回数に上限を設ける仕組み。許容量を超えると一時的に拒否する。</span>
-          </div>
-          <div class="glossary__item">
             <span class="glossary__term">リンクトデータ</span>
             <span class="glossary__def">データ同士を参照で結びつけ、意味を保ったままつなげる考え方。NGSI-LD の核となる発想。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">レート制限（トークンバケット）</span>
+            <span class="glossary__def">一定時間あたりの利用回数に上限を設ける仕組み。許容量を超えると一時的に拒否する。</span>
           </div>
         </div>
       </div>
