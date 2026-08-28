@@ -900,6 +900,7 @@ html, body {
 .ha-arch { flex: 1 1 auto; width: 100%; height: auto; max-height: 430px; transform: translate(-42px, -40px); }
 
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.metrics--4 { grid-template-columns: repeat(4, 1fr); }
 .metrics--sm { gap: 18px; }
 .metrics--sm .metric { padding: 18px 14px; }
 .metrics--sm .metric__num { font-size: 38px; }
@@ -911,6 +912,7 @@ html, body {
   border-radius: 16px;
   padding: 38px 18px;
 }
+.metric--lead { border-color: rgba(252,108,0,.55); background: rgba(252,108,0,.08); }
 .metric__num {
   display: block; font-family: var(--font-mono); font-weight: 700;
   font-size: 56px; line-height: 1; color: var(--cyan);
