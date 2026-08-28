@@ -115,8 +115,8 @@
     {
       "@type": "WebPageElement",
       "position": 7,
-      "identifier": "multitenancy",
-      "name": "マルチテナンシー",
+      "identifier": "scale-out",
+      "name": "必要になってから、必要な分だけコスト負担",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#7"
     },
     {
@@ -129,48 +129,47 @@
     {
       "@type": "WebPageElement",
       "position": 9,
-      "identifier": "dual-protocol",
-      "name": "NGSIv2 と NGSI-LD に対応",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#9",
-      "keywords": "live-demo, entityType:EnvironmentSensor"
+      "identifier": "multitenancy",
+      "name": "マルチテナンシー",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#9"
     },
     {
       "@type": "WebPageElement",
       "position": 10,
-      "identifier": "live-feedback",
-      "name": "回答が「つながるデータ」になる",
+      "identifier": "dual-protocol",
+      "name": "NGSIv2 と NGSI-LD に対応",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#10",
-      "keywords": "live-demo, entityType:Feedback"
+      "keywords": "live-demo, entityType:EnvironmentSensor"
     },
     {
       "@type": "WebPageElement",
       "position": 11,
-      "identifier": "geo-query",
-      "name": "Geo クエリーでデータを絞り込む",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#11",
-      "keywords": "live-demo, entityType:AedLocation"
+      "identifier": "reactivecore-rules",
+      "name": "条件がそろえば、あとは自動",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#11"
     },
     {
       "@type": "WebPageElement",
       "position": 12,
-      "identifier": "temporal",
-      "name": "あらゆる時系列データを過去にさかのぼって取得",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#12",
-      "keywords": "live-demo, entityType:WeatherObserved"
+      "identifier": "federation",
+      "name": "組織をまたがってデータを集約",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#12"
     },
     {
       "@type": "WebPageElement",
       "position": 13,
-      "identifier": "reactivecore-rules",
-      "name": "条件がそろえば、あとは自動",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#13"
+      "identifier": "live-feedback",
+      "name": "回答が「つながるデータ」になる",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#13",
+      "keywords": "live-demo, entityType:Feedback"
     },
     {
       "@type": "WebPageElement",
       "position": 14,
-      "identifier": "federation",
-      "name": "組織をまたがってデータを集約",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#14"
+      "identifier": "geo-query",
+      "name": "Geo クエリーでデータを絞り込む",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#14",
+      "keywords": "live-demo, entityType:AedLocation"
     },
     {
       "@type": "WebPageElement",
@@ -674,33 +673,63 @@
       </div>
     </section>
 
-    <!-- マルチテナンシー -->
-    <section class="slide" data-bg="dark" data-slide="multitenancy">
+    <!-- スケールアウト — 小さく始めて大きく育てる -->
+    <section class="slide" data-bg="dark" data-slide="scale-out">
       <div class="slide__inner">
-        <span class="kicker">基礎 / Multi-tenancy</span>
-        <h2 class="slide__title">マルチテナンシー</h2>
-        <p class="map-desc">1 つの GeonicDB を<strong>テナント（組織・プロジェクト）単位で完全分離</strong>して共有。リクエストの <strong>NGSILD-Tenant / Fiware-Service ヘッダ</strong>でテナントが切り替わり、データも権限も混ざりません。エンティティ ID が同じでもテナントが違えば別物として扱われます。</p>
-        <div class="mt-diagram">
-          <div class="mt-clients">
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>city-a</b></span></div>
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>corp-b</b></span></div>
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>lab-c</b></span></div>
+        <span class="kicker">コスト構造 / Scale-up</span>
+        <h2 class="slide__title">必要になってから、必要な分だけコスト負担</h2>
+        <p class="map-desc">GeonicDB は後からでも瞬時にスケールアップできるので、<strong>無駄なインフラ投資が必要ありません</strong>。</p>
+        <div class="cmp-grid">
+          <div class="cmp-col">
+            <span class="cmp-col__head">従来のデータ連携基盤</span>
+            <svg class="cmp-chart" viewBox="0 0 520 235" role="img"
+                 aria-label="ピーク時を見込んで先に確保した容量に対し、実際の利用は少なく、その差分が使われないまま負担するコストになることを示すグラフ">
+              <title>従来: 先に確保した容量と実際の利用の差が、そのままムダになる</title>
+              <!-- 上限までまるごとコスト負担（オレンジの面積＝支払う額。右カラムと同じ色で面積を比較できる） -->
+              <rect x="1" y="44" width="518" height="150" fill="#cf3620"/>
+              <line x1="1" y1="44" x2="519" y2="44" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1.6" stroke-dasharray="6 4"/>
+              <text x="8" y="34" font-size="13" font-weight="700" fill="rgba(255,255,255,.6)">固定サーバーの上限</text>
+              <!-- 使われないまま負担するコスト -->
+              <text x="260" y="98" text-anchor="middle" font-size="14.5" font-weight="800" fill="#ffe0d8">使われないまま負担するコスト</text>
+              <!-- 実際の利用のライン（急増を含む）。塗りは分けず、境界を破線で示す -->
+              <path d="M1,178 L130,178 L130,158 L260,158 L260,140 L389,140 L389,126 L402,126 L429.7,44 L443.3,44 L471,126 L519,126"
+                    fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.6" stroke-dasharray="6 4"/>
+              <text x="260" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="#ffe0d8">実際の利用</text>
+              <!-- 本来必要だった量（点線）。固定サーバーの上限で頭打ち＝ダウン -->
+              <path d="M429.7,44 L436.5,24 L443.3,44" fill="none" stroke="#ffffff" stroke-width="1.4"
+                    stroke-dasharray="5 3" stroke-opacity="0.65"/>
+              <text x="436" y="16" text-anchor="middle" font-size="13.5" font-weight="800" fill="#ff8a73">⚡ ダウン</text>
+              <line x1="1" y1="194" x2="519" y2="194" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.4"/>
+              <text x="1" y="216" font-size="12.5" fill="rgba(255,255,255,.45)">導入</text>
+              <text x="519" y="216" text-anchor="end" font-size="12.5" fill="rgba(255,255,255,.45)">数年後</text>
+            </svg>
+            <p class="cmp-col__body">サーバーを固定で用意するため<strong class="cmp-warn">初期コストが重く</strong>、それでいて<strong class="cmp-warn">想定を超えれば落ちてしまいます</strong>。</p>
           </div>
-          <div class="mt-arrows"><span>▼</span><span>▼</span><span>▼</span></div>
-          <div class="mt-broker">
-            <div class="mt-broker__label">🗄 1 つの GeonicDB</div>
-            <div class="mt-tenants">
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント city-a</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント corp-b</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント lab-c</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-            </div>
+          <div class="cmp-col cmp-col--after">
+            <span class="cmp-col__head cmp-col__head--accent">GeonicDB なら</span>
+            <svg class="cmp-chart" viewBox="0 0 520 235" role="img"
+                 aria-label="容量が実際の利用に沿って階段状に増え、余剰なく利用度合いに見合ったコスト負担になることを示すグラフ">
+              <title>GeonicDB: 容量が利用にぴったり追従し、ムダが出ない</title>
+              <!-- 従来なら先に確保していた容量（負担しない分） -->
+              <line x1="1" y1="44" x2="519" y2="44" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="6 4"/>
+              <text x="8" y="34" font-size="13" font-weight="700" fill="rgba(255,255,255,.42)">従来の固定サーバーの上限</text>
+              <text x="260" y="98" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fba40c">この分は負担しなくていい</text>
+              <!-- 利用に追従する容量＋災害時の急増を 1 本のパスで描く。左カラムと同じ色・濃さで面積を比較できる -->
+              <path d="M1,194 L1,178 L130,178 L130,158 L260,158 L260,140 L389,140 L389,126 L402,126 L436.5,24 L471,126 L519,126 L519,194 Z"
+                    fill="#cf3620" stroke="#cf3620" stroke-width="2"/>
+              <text x="260" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd9b8">利用度にあわせてスケールアップ</text>
+              <text x="436" y="16" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fba40c">オートスケール</text>
+              <line x1="1" y1="194" x2="519" y2="194" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.4"/>
+              <text x="1" y="216" font-size="12.5" fill="rgba(255,255,255,.45)">導入</text>
+              <text x="519" y="216" text-anchor="end" font-size="12.5" fill="rgba(255,255,255,.45)">数年後</text>
+            </svg>
+            <p class="cmp-col__body">小さく始めて<strong>使われた分だけ負担</strong>。災害時の急増も自動で吸収するので、<strong>いざというときも落ちません</strong>。</p>
           </div>
         </div>
-        <div class="std-grid">
-          <div class="std-card"><span class="std-card__name">🔒 完全分離</span><span class="std-card__desc">別テナントのデータ・購読は一切見えない。ID 衝突も起きない</span></div>
-          <div class="std-card"><span class="std-card__name">🛡 テナント別の認可</span><span class="std-card__desc">XACML ポリシー・API キーもテナント境界内で有効</span></div>
-          <div class="std-card"><span class="std-card__name">💴 運用レス・データ主権</span><span class="std-card__desc">1 基盤を相乗りしコスト減、各組織のデータ主権は維持</span></div>
-        </div>
+        <p class="footnote">
+          ※ スケールアップにはご契約プランのアップグレードが必要です。<br />
+          ※ GeonicDB のレート制限はソフトリミットです。災害等の理由で一時的に上限を超えた場合は無料でオートスケールします。
+        </p>
       </div>
     </section>
 
@@ -763,6 +792,36 @@
       </div>
     </section>
 
+    <!-- マルチテナンシー -->
+    <section class="slide" data-bg="dark" data-slide="multitenancy">
+      <div class="slide__inner">
+        <span class="kicker">基礎 / Multi-tenancy</span>
+        <h2 class="slide__title">マルチテナンシー</h2>
+        <p class="map-desc">1 つの GeonicDB を<strong>テナント（組織・プロジェクト）単位で完全分離</strong>して共有。リクエストの <strong>NGSILD-Tenant / Fiware-Service ヘッダ</strong>でテナントが切り替わり、データも権限も混ざりません。エンティティ ID が同じでもテナントが違えば別物として扱われます。</p>
+        <div class="mt-diagram">
+          <div class="mt-clients">
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>city-a</b></span></div>
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>corp-b</b></span></div>
+            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>lab-c</b></span></div>
+          </div>
+          <div class="mt-arrows"><span>▼</span><span>▼</span><span>▼</span></div>
+          <div class="mt-broker">
+            <div class="mt-broker__label">🗄 1 つの GeonicDB</div>
+            <div class="mt-tenants">
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント city-a</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント corp-b</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント lab-c</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="std-grid">
+          <div class="std-card"><span class="std-card__name">🔒 完全分離</span><span class="std-card__desc">別テナントのデータ・購読は一切見えない。ID 衝突も起きない</span></div>
+          <div class="std-card"><span class="std-card__name">🛡 テナント別の認可</span><span class="std-card__desc">XACML ポリシー・API キーもテナント境界内で有効</span></div>
+          <div class="std-card"><span class="std-card__name">💴 運用レス・データ主権</span><span class="std-card__desc">1 基盤を相乗りしコスト減、各組織のデータ主権は維持</span></div>
+        </div>
+      </div>
+    </section>
+
     <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
     <section class="slide slide--dual" data-bg="dark" data-slide="dual-protocol" data-live="true" data-demo="dual-protocol" data-entity-types="EnvironmentSensor">
       <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
@@ -788,217 +847,6 @@
           <span class="demo-note__dot"></span>
           <span id="dual-entity">GeonicDB に実接続し、実際の API レスポンスを表示しています</span>
           <button id="dual-run" class="geo-btn dual-run">▶ GET 実行</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. NGSI-LD live demo — フィードバックをカスタムデータモデルで作成し WS で受信 -->
-    <section class="slide slide--fb" data-bg="dark" data-slide="live-feedback" data-live="true" data-demo="feedback" data-entity-types="Feedback">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">リンクトデータ / NGSI-LD</span>
-          <h2 class="slide__title map-title">回答が「つながるデータ」になる</h2>
-          <p class="map-desc"><strong>NGSI-LD</strong>（ETSI 国際標準）は、エンティティ同士が <strong>Relationship</strong> でつながる<strong>リンクトデータ</strong>。組織を越えても意味を保ったまま連携できます。</p>
-        </div>
-        <div class="demo-body fb-body">
-          <!-- LEFT: form -->
-          <form id="fb-form" class="fb-form" autocomplete="off">
-            <label class="fb-field">
-              <span class="fb-field__label">ご所属</span>
-              <select id="fb-role" class="fb-select">
-                <option value="municipality">自治体</option>
-                <option value="sier">SIer・受託開発</option>
-                <option value="startup">スタートアップ</option>
-                <option value="research">研究・教育</option>
-                <option value="other">その他</option>
-              </select>
-            </label>
-            <label class="fb-field">
-              <span class="fb-field__label">関心のあるユースケース</span>
-              <select id="fb-interest" class="fb-select">
-                <option value="disaster">防災・減災</option>
-                <option value="environment">環境モニタリング</option>
-                <option value="mobility">交通・モビリティ</option>
-                <option value="energy">エネルギー</option>
-                <option value="opendata">オープンデータ</option>
-              </select>
-            </label>
-            <label class="fb-field">
-              <span class="fb-field__label">お住まいの地域</span>
-              <select id="fb-region" class="fb-select">
-                <option value="01">北海道</option>
-                <option value="02">青森県</option>
-                <option value="03">岩手県</option>
-                <option value="04">宮城県</option>
-                <option value="05">秋田県</option>
-                <option value="06">山形県</option>
-                <option value="07">福島県</option>
-                <option value="08">茨城県</option>
-                <option value="09">栃木県</option>
-                <option value="10">群馬県</option>
-                <option value="11">埼玉県</option>
-                <option value="12">千葉県</option>
-                <option value="13" selected>東京都</option>
-                <option value="14">神奈川県</option>
-                <option value="15">新潟県</option>
-                <option value="16">富山県</option>
-                <option value="17">石川県</option>
-                <option value="18">福井県</option>
-                <option value="19">山梨県</option>
-                <option value="20">長野県</option>
-                <option value="21">岐阜県</option>
-                <option value="22">静岡県</option>
-                <option value="23">愛知県</option>
-                <option value="24">三重県</option>
-                <option value="25">滋賀県</option>
-                <option value="26">京都府</option>
-                <option value="27">大阪府</option>
-                <option value="28">兵庫県</option>
-                <option value="29">奈良県</option>
-                <option value="30">和歌山県</option>
-                <option value="31">鳥取県</option>
-                <option value="32">島根県</option>
-                <option value="33">岡山県</option>
-                <option value="34">広島県</option>
-                <option value="35">山口県</option>
-                <option value="36">徳島県</option>
-                <option value="37">香川県</option>
-                <option value="38">愛媛県</option>
-                <option value="39">高知県</option>
-                <option value="40">福岡県</option>
-                <option value="41">佐賀県</option>
-                <option value="42">長崎県</option>
-                <option value="43">熊本県</option>
-                <option value="44">大分県</option>
-                <option value="45">宮崎県</option>
-                <option value="46">鹿児島県</option>
-                <option value="47">沖縄県</option>
-              </select>
-            </label>
-            <div class="fb-field">
-              <span class="fb-field__label">GeonicDB への期待度</span>
-              <div id="fb-expect" class="fb-stars" role="radiogroup" aria-label="期待度">
-                <button type="button" class="fb-star" data-val="1" role="radio" aria-checked="false" aria-label="1">★</button>
-                <button type="button" class="fb-star" data-val="2" role="radio" aria-checked="false" aria-label="2">★</button>
-                <button type="button" class="fb-star" data-val="3" role="radio" aria-checked="false" aria-label="3">★</button>
-                <button type="button" class="fb-star" data-val="4" role="radio" aria-checked="false" aria-label="4">★</button>
-                <button type="button" class="fb-star" data-val="5" role="radio" aria-checked="false" aria-label="5">★</button>
-              </div>
-            </div>
-            <button type="submit" id="fb-submit" class="geo-btn fb-submit">▶ NGSI-LD で送信</button>
-          </form>
-          <!-- RIGHT: annotated entity -->
-          <div class="fb-result">
-            <div class="fb-json-wrap">
-              <div class="fb-tabs" role="tablist">
-                <button type="button" class="fb-tab is-active" data-panel="chart" role="tab">集計結果</button>
-                <button type="button" class="fb-tab" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
-                <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
-              </div>
-              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity" hidden>送信するとここに実エンティティが表示されます…</pre>
-              <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
-              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart">
-                <div class="fb-chart__title">回答の集計<span id="fb-chart-total" class="fb-chart__total"></span></div>
-                <div class="fb-pies">
-                  <div class="fb-pie-col">
-                    <div class="fb-pie-col__title">ご所属</div>
-                    <svg id="fb-pie-role" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="所属別の回答割合の円グラフ"></svg>
-                    <div id="fb-chips-role" class="fb-pie-chips"></div>
-                  </div>
-                  <div class="fb-pie-col">
-                    <div class="fb-pie-col__title">関心のあるユースケース</div>
-                    <svg id="fb-pie-interest" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
-                    <div id="fb-chips-interest" class="fb-pie-chips"></div>
-                  </div>
-                  <div class="fb-pie-col">
-                    <div class="fb-pie-col__title">お住まいの地域</div>
-                    <svg id="fb-pie-region" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="地域別の回答割合の円グラフ"></svg>
-                    <div id="fb-chips-region" class="fb-pie-chips"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="demo-note">
-          <span class="rsv-live"><span class="rsv-live__dot" id="fb-dot"></span><span id="fb-conn">接続中…</span></span>
-          <span class="fb-note-text">回答は GeonicDB に実接続して作成し、WebSocket で受信しています</span>
-          <span id="fb-count" class="fb-count">これまでの回答 0 件</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9. Live demo — Cafe map (Geolonia Maps + GeonicDB DPoP) -->
-    <section class="slide slide--map" data-bg="dark" data-slide="geo-query" data-live="true" data-demo="geo-query" data-entity-types="AedLocation">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">ジオクエリー / Geo-Query</span>
-          <h2 class="slide__title map-title">Geo クエリーでデータを絞り込む</h2>
-        </div>
-        <div class="demo-body">
-          <div class="map-wrap">
-            <div id="aed-map" class="aed-map" data-navigation-control="off" data-marker="off"></div>
-            <div class="aed-count" id="aed-count"><div class="aed-count-bar" id="aed-count-bar"></div><div class="aed-count-text" id="aed-count-text"></div></div>
-          </div>
-          <aside class="geo-panel">
-            <h3 class="geo-panel__title">ジオクエリー</h3>
-            <p class="geo-panel__desc">中心点からの近傍検索（NGSI-LD）</p>
-            <button id="geo-pick" class="geo-btn">📍 地図で中心を指定</button>
-            <div class="geo-row">
-              <label class="geo-label">半径 <span id="geo-radius-val">10</span> km</label>
-              <input id="geo-radius" class="geo-range" type="range" min="1" max="10" value="10" />
-            </div>
-            <div id="geo-result" class="geo-result">中心が未指定です</div>
-            <button id="geo-clear" class="geo-btn geo-btn--ghost">全件表示に戻す</button>
-          </aside>
-        </div>
-        <div class="demo-note">
-          <span class="demo-note__dot"></span>
-          このページのデモは実際に GeonicDB に接続して動作しています。
-          <span class="demo-src">地図データは香川県高松市が公開するオープンデータ（AED 設置場所）を利用しています。</span>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 10. Temporal time-machine (live) -->
-    <section class="slide slide--tmp" data-bg="dark" data-slide="temporal" data-live="true" data-demo="temporal" data-entity-types="WeatherObserved">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">時系列 / Temporal API</span>
-          <h2 class="slide__title map-title">あらゆる時系列データを過去にさかのぼって取得</h2>
-          <p class="map-desc">GeonicDB はすべての変化を履歴として保持。<strong>Temporal API</strong> で「いつ・どの瞬間の状態だったか」を期間指定で問い合わせられます。下のスライダーで時刻をさかのぼれます。</p>
-        </div>
-        <div class="demo-body tmp-body">
-          <!-- LEFT: snapshot at the selected time -->
-          <div class="tmp-panel">
-            <div class="tmp-snap-label">この時刻の状態</div>
-            <div id="tmp-time" class="tmp-time">--:--</div>
-            <div class="tmp-readout">
-              <div class="tmp-metric"><span class="tmp-metric__v" id="tmp-temp">--</span><span class="tmp-metric__u">°C</span><span class="tmp-metric__k">気温</span></div>
-              <div class="tmp-metric"><span class="tmp-metric__v" id="tmp-hum">--</span><span class="tmp-metric__u">%</span><span class="tmp-metric__k">湿度</span></div>
-            </div>
-            <div class="tmp-controls">
-              <button id="tmp-play" class="geo-btn">▶ 再生</button>
-              <input id="tmp-slider" class="geo-range" type="range" min="0" max="0" value="0" step="1" />
-            </div>
-            <pre id="tmp-query" class="tmp-query"></pre>
-          </div>
-          <!-- RIGHT: temperature history chart -->
-          <div class="tmp-chart-wrap">
-            <div class="tmp-chart-head">
-              <span class="tmp-chart-title">気温の推移 <span id="tmp-range" class="tmp-range"></span></span>
-              <span class="rsv-live"><span class="rsv-live__dot" id="tmp-dot"></span><span id="tmp-conn">接続中…</span></span>
-            </div>
-            <svg id="tmp-chart" class="tmp-chart" viewBox="0 0 760 360" preserveAspectRatio="none"></svg>
-          </div>
-        </div>
-        <div class="demo-note">
-          <span class="demo-note__dot"></span>
-          グラフは GeonicDB の Temporal API から取得した実際の履歴データです
         </div>
       </div>
     </section>
@@ -1231,6 +1079,176 @@
           </g>
         </svg>
         <p class="footnote">Context Source Registration にもとづく分散クエリ／更新の転送・結果マージ。ループ検知（Via）・警告ヘッダ（NGSILD-Warning）に対応（ETSI GS CIM 009）。</p>
+      </div>
+    </section>
+
+    <!-- 8. NGSI-LD live demo — フィードバックをカスタムデータモデルで作成し WS で受信 -->
+    <section class="slide slide--fb" data-bg="dark" data-slide="live-feedback" data-live="true" data-demo="feedback" data-entity-types="Feedback">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">リンクトデータ / NGSI-LD</span>
+          <h2 class="slide__title map-title">回答が「つながるデータ」になる</h2>
+          <p class="map-desc"><strong>NGSI-LD</strong>（ETSI 国際標準）は、エンティティ同士が <strong>Relationship</strong> でつながる<strong>リンクトデータ</strong>。組織を越えても意味を保ったまま連携できます。</p>
+        </div>
+        <div class="demo-body fb-body">
+          <!-- LEFT: form -->
+          <form id="fb-form" class="fb-form" autocomplete="off">
+            <label class="fb-field">
+              <span class="fb-field__label">ご所属</span>
+              <select id="fb-role" class="fb-select">
+                <option value="municipality">自治体</option>
+                <option value="sier">SIer・受託開発</option>
+                <option value="startup">スタートアップ</option>
+                <option value="research">研究・教育</option>
+                <option value="other">その他</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">関心のあるユースケース</span>
+              <select id="fb-interest" class="fb-select">
+                <option value="disaster">防災・減災</option>
+                <option value="environment">環境モニタリング</option>
+                <option value="mobility">交通・モビリティ</option>
+                <option value="energy">エネルギー</option>
+                <option value="opendata">オープンデータ</option>
+              </select>
+            </label>
+            <label class="fb-field">
+              <span class="fb-field__label">お住まいの地域</span>
+              <select id="fb-region" class="fb-select">
+                <option value="01">北海道</option>
+                <option value="02">青森県</option>
+                <option value="03">岩手県</option>
+                <option value="04">宮城県</option>
+                <option value="05">秋田県</option>
+                <option value="06">山形県</option>
+                <option value="07">福島県</option>
+                <option value="08">茨城県</option>
+                <option value="09">栃木県</option>
+                <option value="10">群馬県</option>
+                <option value="11">埼玉県</option>
+                <option value="12">千葉県</option>
+                <option value="13" selected>東京都</option>
+                <option value="14">神奈川県</option>
+                <option value="15">新潟県</option>
+                <option value="16">富山県</option>
+                <option value="17">石川県</option>
+                <option value="18">福井県</option>
+                <option value="19">山梨県</option>
+                <option value="20">長野県</option>
+                <option value="21">岐阜県</option>
+                <option value="22">静岡県</option>
+                <option value="23">愛知県</option>
+                <option value="24">三重県</option>
+                <option value="25">滋賀県</option>
+                <option value="26">京都府</option>
+                <option value="27">大阪府</option>
+                <option value="28">兵庫県</option>
+                <option value="29">奈良県</option>
+                <option value="30">和歌山県</option>
+                <option value="31">鳥取県</option>
+                <option value="32">島根県</option>
+                <option value="33">岡山県</option>
+                <option value="34">広島県</option>
+                <option value="35">山口県</option>
+                <option value="36">徳島県</option>
+                <option value="37">香川県</option>
+                <option value="38">愛媛県</option>
+                <option value="39">高知県</option>
+                <option value="40">福岡県</option>
+                <option value="41">佐賀県</option>
+                <option value="42">長崎県</option>
+                <option value="43">熊本県</option>
+                <option value="44">大分県</option>
+                <option value="45">宮崎県</option>
+                <option value="46">鹿児島県</option>
+                <option value="47">沖縄県</option>
+              </select>
+            </label>
+            <div class="fb-field">
+              <span class="fb-field__label">GeonicDB への期待度</span>
+              <div id="fb-expect" class="fb-stars" role="radiogroup" aria-label="期待度">
+                <button type="button" class="fb-star" data-val="1" role="radio" aria-checked="false" aria-label="1">★</button>
+                <button type="button" class="fb-star" data-val="2" role="radio" aria-checked="false" aria-label="2">★</button>
+                <button type="button" class="fb-star" data-val="3" role="radio" aria-checked="false" aria-label="3">★</button>
+                <button type="button" class="fb-star" data-val="4" role="radio" aria-checked="false" aria-label="4">★</button>
+                <button type="button" class="fb-star" data-val="5" role="radio" aria-checked="false" aria-label="5">★</button>
+              </div>
+            </div>
+            <button type="submit" id="fb-submit" class="geo-btn fb-submit">▶ NGSI-LD で送信</button>
+          </form>
+          <!-- RIGHT: annotated entity -->
+          <div class="fb-result">
+            <div class="fb-json-wrap">
+              <div class="fb-tabs" role="tablist">
+                <button type="button" class="fb-tab is-active" data-panel="chart" role="tab">集計結果</button>
+                <button type="button" class="fb-tab" data-panel="entity" role="tab">NGSI-LD エンティティ</button>
+                <button type="button" class="fb-tab" data-panel="model" role="tab">カスタムデータモデル</button>
+              </div>
+              <pre id="fb-json" class="fb-json fb-panel" data-panel="entity" hidden>送信するとここに実エンティティが表示されます…</pre>
+              <pre id="fb-model" class="fb-json fb-panel" data-panel="model" hidden></pre>
+              <div id="fb-chart" class="fb-chart fb-panel" data-panel="chart">
+                <div class="fb-chart__title">回答の集計<span id="fb-chart-total" class="fb-chart__total"></span></div>
+                <div class="fb-pies">
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">ご所属</div>
+                    <svg id="fb-pie-role" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="所属別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-role" class="fb-pie-chips"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">関心のあるユースケース</div>
+                    <svg id="fb-pie-interest" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="関心のあるユースケース別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-interest" class="fb-pie-chips"></div>
+                  </div>
+                  <div class="fb-pie-col">
+                    <div class="fb-pie-col__title">お住まいの地域</div>
+                    <svg id="fb-pie-region" class="fb-pie" viewBox="0 0 200 200" role="img" aria-label="地域別の回答割合の円グラフ"></svg>
+                    <div id="fb-chips-region" class="fb-pie-chips"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="rsv-live"><span class="rsv-live__dot" id="fb-dot"></span><span id="fb-conn">接続中…</span></span>
+          <span class="fb-note-text">回答は GeonicDB に実接続して作成し、WebSocket で受信しています</span>
+          <span id="fb-count" class="fb-count">これまでの回答 0 件</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Live demo — Cafe map (Geolonia Maps + GeonicDB DPoP) -->
+    <section class="slide slide--map" data-bg="dark" data-slide="geo-query" data-live="true" data-demo="geo-query" data-entity-types="AedLocation">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">ジオクエリー / Geo-Query</span>
+          <h2 class="slide__title map-title">Geo クエリーでデータを絞り込む</h2>
+        </div>
+        <div class="demo-body">
+          <div class="map-wrap">
+            <div id="aed-map" class="aed-map" data-navigation-control="off" data-marker="off"></div>
+            <div class="aed-count" id="aed-count"><div class="aed-count-bar" id="aed-count-bar"></div><div class="aed-count-text" id="aed-count-text"></div></div>
+          </div>
+          <aside class="geo-panel">
+            <h3 class="geo-panel__title">ジオクエリー</h3>
+            <p class="geo-panel__desc">中心点からの近傍検索（NGSI-LD）</p>
+            <button id="geo-pick" class="geo-btn">📍 地図で中心を指定</button>
+            <div class="geo-row">
+              <label class="geo-label">半径 <span id="geo-radius-val">10</span> km</label>
+              <input id="geo-radius" class="geo-range" type="range" min="1" max="10" value="10" />
+            </div>
+            <div id="geo-result" class="geo-result">中心が未指定です</div>
+            <button id="geo-clear" class="geo-btn geo-btn--ghost">全件表示に戻す</button>
+          </aside>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          このページのデモは実際に GeonicDB に接続して動作しています。
+          <span class="demo-src">地図データは香川県高松市が公開するオープンデータ（AED 設置場所）を利用しています。</span>
+        </div>
       </div>
     </section>
 
@@ -1902,8 +1920,8 @@
             <span class="glossary__def">NGSI-LD を定める、欧州 ETSI の国際標準仕様。</span>
           </div>
           <div class="glossary__item">
-            <span class="glossary__term">FIWARE</span>
-            <span class="glossary__def">スマートシティ／IoT 向けのオープンソース基盤群。NGSIv2 などの API を定義。</span>
+            <span class="glossary__term">FIWARE／FIWARE Orion-LD</span>
+            <span class="glossary__def">FIWARE はスマートシティ／IoT 向けのオープンソース基盤群。Orion-LD はその中核となる NGSI-LD 対応コンテキストブローカー実装。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">Geo-query（ジオクエリー）</span>
@@ -1970,8 +1988,16 @@
             <span class="glossary__def">正規表現の弱点を突き、処理を極端に遅延させてサービスを止める攻撃。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">Scorpio</span>
+            <span class="glossary__def">NGSI-LD に対応する OSS コンテキストブローカーの一つ（FIWARE Foundation のコンポーネント）。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">SSRF</span>
             <span class="glossary__def">サーバーをだまし、内部ネットワークやクラウド管理情報など内部資源へアクセスさせる攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Stellio</span>
+            <span class="glossary__def">NGSI-LD に対応する OSS コンテキストブローカーの一つ（FIWARE Foundation のコンポーネント）。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">Temporal API</span>

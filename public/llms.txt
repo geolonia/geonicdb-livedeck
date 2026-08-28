@@ -64,8 +64,8 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 4. **近傍検索で分析（AED マップ相当）**
    - `entities` / `search_by_location`：type=`AedLocation`、中心座標＋半径で近傍を取得。
    - REST 等価: `GET /ngsi-ld/v1/entities?type=AedLocation&georel=near;maxDistance==<m>&geometry=Point&coordinates=[lng,lat]&count=true`。
-5. **時系列を分析（Temporal タイムマシン / 避難所の混雑度 相当）**
-   - `temporal`：type=`WeatherObserved`（`temperature`/`humidity`）や `EvacuationArea`（`occupancy`）を期間・集約付きで取得。
+5. **時系列を分析（避難所の混雑度 相当）**
+   - `temporal`：type=`EvacuationArea`（`occupancy`）を期間・集約付きで取得。
    - REST 等価: `GET /ngsi-ld/v1/temporal/entities?type=...&timerel=between&timeAt=...&endTimeAt=...&attrs=...`。
 
 > 注意: 投入したデータはステージングの共有テナント `miya` に残ります。デッキ用リソースには `geonicdb-livedeck-` プレフィックス、または `Feedback` などデッキ用と分かる型名を使い、他用途のデータと混ざらないようにしてください。プレゼン後の後始末（削除）は `entities` / `delete` または `batch` で行えます。
@@ -110,18 +110,6 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - 使用属性: `location`（GeoProperty / Point）、`name`、`address`、`installationPosition`
 - 主なクエリ: `GET /ngsi-ld/v1/entities?type=AedLocation&georel=near;maxDistance==<meters>&geometry=Point&coordinates=[lng,lat]&count=true`（総数は `NGSILD-Results-Count` ヘッダ）
 - データ出典: 香川県高松市のオープンデータ（AED 設置場所）
-
-### Temporal タイムマシン — 時系列（読み取り専用 / Temporal API）
-
-> `data-slide: temporal`（デッキ #N の解決先。上「URL の読み方」参照）
-
-過去にさかのぼって「いつ・どの瞬間の状態か」を再生するデモ。
-
-- 型: `WeatherObserved`
-- 対象エンティティ: `urn:ngsi-ld:WeatherObserved:takamatsu-1`
-- 時系列属性: `temperature`、`humidity`（各インスタンスに `observedAt`）
-- 期間（固定）: `2026-06-26T00:00:00Z` 〜 `2026-06-27T00:30:00Z`
-- クエリ: `GET /ngsi-ld/v1/temporal/entities/{id}?timerel=between&timeAt=...&endTimeAt=...&attrs=temperature,humidity`
 
 ### 避難所の混雑度 — 自治体ユースケース（読み取り専用 / 地図 + Temporal API）
 
@@ -177,14 +165,14 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - **GeonicDB を中心としたエコシステム（図解）** — 分野を越えてつなぐデータ連携基盤。自治体のデータ（通報・センサー・住民窓口・施設台帳など）がサービスを生み、サービスがデータを育てる循環。地理空間情報・人流・住所（ジオテクノロジーズ／Geolonia）が基盤として支える。
 - **国際標準に準拠** — NGSI-LD（ETSI GS CIM 009 V1.9.1）を軸に、FIWARE NGSIv2・OpenAPI 3.0.3・JSON-LD・DCAT-AP/CKAN・CADDE・各種 RFC（ETag/Link/DPoP 9449/GeoJSON 7946）。
 - **ETSI 適合度** — ETSI GS CIM 009 適合性テストスイート（全 1033 項目）を GeonicDB と主要 OSS コンテキストブローカー 3 製品（FIWARE Orion-LD・Stellio・Scorpio）に同一条件で実行。GeonicDB 84.2%（870/1033）で 4 製品中 1 位（測定日 2026-08-28 / GeonicDB v0.17.0）。
-- **マルチテナンシー** — 1 基盤をテナント単位で完全分離。`NGSILD-Tenant` / `Fiware-Service` で切替。データ・ポリシー・API キー・購読が独立し、ID 衝突も起きない。
+- **必要になってから、必要な分だけコスト負担（コスト構造）** — 従来のデータ連携基盤と GeonicDB のコスト負担を 2 つのグラフで対比。従来はサーバーを固定で用意するため初期コストが重い（固定サーバーの上限と実際の利用の差＝使われないまま負担するコスト）。それでいて災害などでアクセスが急増すると、固定サーバーの上限で頭打ちになり落ちてしまう。GeonicDB は後からでも瞬時にスケールアップできるため、無駄なインフラ投資が必要ない。容量が実際の利用に追従し、負担するのは実際に使われた分だけ。災害時のアクセス集中も自動で吸収するので、いざというときに落ちない。スライド下部には注記が 2 つある: (1) スケールアップにはご契約プランのアップグレードが必要。(2) GeonicDB のレート制限はソフトリミットであり、災害等の理由で一時的に上限を超えた場合は無料でオートスケールする。
 - **AI Native** — 「むずかしいことや面倒なことは AI におまかせ」。MCP サーバー・CLI により、設定・データ作成・アプリ開発を自然言語で AI に依頼できる（AI サービスは別途契約）。
+- **マルチテナンシー** — 1 基盤をテナント単位で完全分離。`NGSILD-Tenant` / `Fiware-Service` で切替。データ・ポリシー・API キー・購読が独立し、ID 衝突も起きない。
 - **[LIVE] 標準 API（デュアルプロトコル）** — 同一実体を NGSIv2 と NGSI-LD の両 API から取得して左右に並べる（型 `EnvironmentSensor`）。
-- **[LIVE] ライブフィードバック（NGSI-LD リンクトデータ）** — 回答が Property/Relationship/GeoProperty を持つ「つながるデータ」になる。集計を WS でリアルタイム更新（型 `Feedback`）。
-- **[LIVE] Geo クエリー（AED マップ）** — 中心＋半径の近傍検索でデータを絞り込む（型 `AedLocation`）。
-- **[LIVE] Temporal タイムマシン** — すべての変化を履歴として保持し、過去の瞬間を期間指定で再生（型 `WeatherObserved`）。
 - **ReactiveCore Rules（図解）** — 内蔵ルールエンジン。しきい値超過などの条件で、通知・Webhook・属性更新・派生エンティティ生成を自動実行。
 - **フェデレーション** — テナント/ドメインの異なる複数 GeonicDB を 1 窓口に統合。Context Source Registration にもとづく並列転送＋結果マージ、ループ検知（Via）・`NGSILD-Warning` 対応。
+- **[LIVE] ライブフィードバック（NGSI-LD リンクトデータ）** — 回答が Property/Relationship/GeoProperty を持つ「つながるデータ」になる。集計を WS でリアルタイム更新（型 `Feedback`）。
+- **[LIVE] Geo クエリー（AED マップ）** — 中心＋半径の近傍検索でデータを絞り込む（型 `AedLocation`）。
 - **[LIVE] 避難所の混雑度（自治体ユースケース）** — 指定避難所に Temporal の受入状況を重ね、混雑度で色分け再生（型 `EvacuationArea`）。
 - **[LIVE] 共同編集 GIS（民間ユースケース）** — 地図に描いた地物を NGSI-LD として作成し WS で全員に反映（型 `geonicdb-livedeck-MapFeature`）。
 - **[LIVE] リアルタイムメッセージング + Rules ログ（民間ユースケース）** — 投稿を NGSI-LD エンティティで作成 → WS 配信、Rules がログを自動生成（型 `geonicdb-livedeck-Message` / `geonicdb-livedeck-MessageLog`）。

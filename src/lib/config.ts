@@ -17,8 +17,6 @@ export interface DeckConfig {
     dual: { ldId: string; v2Id: string };
     /** スライド: ジオクエリ（地図） */
     map: { type: string; center: [number, number]; zoom: number };
-    /** スライド: 時系列（Temporal API） */
-    temporal: { entityId: string; from: string; to: string };
     /** スライド: ライブアンケート（WebSocket） */
     /** スライド: NGSI-LD フィードバック（カスタムデータモデル Feedback + WebSocket） */
     feedback: {
@@ -67,11 +65,6 @@ export const config: DeckConfig = {
   demos: {
     dual: { ldId: "urn:ngsi-ld:EnvironmentSensor:001", v2Id: "env-sensor-001" },
     map: { type: "AedLocation", center: [134.0475, 34.34], zoom: 11 },
-    temporal: {
-      entityId: "urn:ngsi-ld:WeatherObserved:takamatsu-1",
-      from: "2026-06-26T00:00:00Z",
-      to: "2026-06-27T00:30:00Z",
-    },
     feedback: {
       type: "Feedback",
       venue: { name: "会場（高松）", coordinates: [134.0475, 34.34] },

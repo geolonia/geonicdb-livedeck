@@ -56,14 +56,14 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → 会社紹介 → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → 会社紹介 → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
 いずれも `https://geonicdb.geolonia.com`（テナント `miya`）へ DPoP 認証で接続します。
 
-### 標準API（`src/demos/dual.ts`） / ジオクエリ（`src/demos/map.ts`） / 時系列（`src/demos/temporal.ts`）
-- いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、**同じ内容の環境センサーを NGSIv2 と NGSI-LD の両形式で取得**（`env-sensor-001` / `urn:ngsi-ld:EnvironmentSensor:001`）してプロトコル差を対比、`WeatherObserved` の **Temporal API** 履歴など。デモデータは特定地域を想起させない中立的な内容にしている。
+### 標準API（`src/demos/dual.ts`） / ジオクエリ（`src/demos/map.ts`）
+- いずれも読み取りのみ。`AedLocation` の地図表示＋ **NGSI-LD `georel=near` 検索**、**同じ内容の環境センサーを NGSIv2 と NGSI-LD の両形式で取得**（`env-sensor-001` / `urn:ngsi-ld:EnvironmentSensor:001`）してプロトコル差を対比。デモデータは特定地域を想起させない中立的な内容にしている。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（GET + WS。origin 制限・DPoP 必須）。
 
 ### NGSI-LD フィードバック（`src/demos/feedback.ts`）
@@ -95,10 +95,10 @@ npm run dev        # → http://localhost:8745
 
 ### 0. 統合 API キー ＋ ポリシー（全デモ共通・最初に作る）
 
-デッキ全体で **1 つのキー `geonicdb-livedeck-deck`** を使う（テナントの API キー上限対策）。ポリシー `geonicdb-livedeck-deck` に、各デモが必要とする型別 GET/POST・WS・パスをまとめて許可する。**新デモを足すときは新キーを作らず、この 1 ポリシーに権限を追記**する（`geonic me policies update geonicdb-livedeck-deck @patch.json`）。
+デッキ全体で **1 つのキー `geonicdb-livedeck-deck`** を使う（テナントの API キー上限対策）。ポリシー `geonicdb-livedeck-deck` に、各デモが必要とする型別 GET/POST・WS・パスをまとめて許可する。**新デモを足すときは新キーを作らず、この 1 ポリシーに権限を追記**する（`geonic me policies update geonicdb-livedeck-deck @patch.json`）。**デモを削除するときも同様に、このファイル（README）の該当箇所とあわせて、使わなくなった型・パスの許可をこのポリシーから外す**（`rules` は部分更新ではなく配列ごと差し替わるため、`@patch.json` には残す `rules` 全体を書く）。
 
 このキーは公開バンドルに埋め込まれるため、**最小権限**を保つ（破壊系 `PUT`/`PATCH`/`DELETE` は一切許可しない・append-only）。読み取りも実使用分だけに絞る:
-- `allow-read-types`（型別 GET）は**型別クエリで読む型のみ**列挙する。`EnvironmentSensor`（dual: by-id 取得）と `WeatherObserved`（temporal 取得）は型別 GET しないため含めず、`allow-get-paths` の個別パスだけで許可する。
+- `allow-read-types`（型別 GET）は**型別クエリで読む型のみ**列挙する。`EnvironmentSensor`（dual: by-id 取得）は型別 GET しないため含めず、`allow-get-paths` の個別パスだけで許可する。
 - `allow-get-paths` の `/custom-data-models/**` は実際に読む `/custom-data-models/Feedback` に限定する。
 
 ```bash
@@ -129,7 +129,6 @@ cat > deck-policy.json <<'JSON'
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EnvironmentSensor*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/entities/*EvacuationArea*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities","matchFunction":"glob"},
-        {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*WeatherObserved*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/ngsi-ld/v1/temporal/entities/*EvacuationArea*","matchFunction":"glob"},
         {"attributeId":"path","matchValue":"/custom-data-models/Feedback","matchFunction":"glob"}
       ],
@@ -151,17 +150,17 @@ geonic -s miya me api-keys create \
 > 以下 §1〜§6 は各デモが必要とする **権限の内訳**（統合ポリシーに含める型・アクション）とデモ用データの作成手順。
 > かつては per-demo にキーを分けていたが、API キー上限のため 1 キーに統合した（#37）。
 
-### 1. 読み取り系の権限（標準API・ジオクエリ・時系列・避難所）
+### 1. 読み取り系の権限（標準API・ジオクエリ・避難所）
 
 読み取り系デモに個別のポリシー・キーは作らない。§0 の統合ポリシーの以下のルールでカバーする:
 
 - `allow-read-types` — 型別クエリ GET（`?type=…`）: `AedLocation` / `EvacuationArea`
 - `allow-get-paths` — ID 指定・temporal・NGSIv2 の個別パス GET:
   - `/ngsi-ld/v1/entities/*EnvironmentSensor*`（標準API デモの by-id 取得）
-  - `/ngsi-ld/v1/temporal/entities`（避難所デモの型指定一括取得）・`*WeatherObserved*`・`*EvacuationArea*`
+  - `/ngsi-ld/v1/temporal/entities`（避難所デモの型指定一括取得）・`*EvacuationArea*`
   - `/v2/entities`・`/v2/entities/env-sensor-001`（NGSIv2 側）
 
-> ID 指定 GET は entityType が認可に乗らないためパスで許可する。`EnvironmentSensor` と `WeatherObserved` は
+> ID 指定 GET は entityType が認可に乗らないためパスで許可する。`EnvironmentSensor` は
 > 型別クエリ GET をしないので `allow-read-types` には含めない（§0 の最小権限の方針）。
 
 ### 2. フィードバックの権限＋データモデル（NGSI-LD デモ）
@@ -199,9 +198,6 @@ geonic -s miya entities create '{
 
 # 地図デモ用 AedLocation（NGSI-LD）
 geonic -s miya entities create '{"id":"urn:ngsi-ld:AedLocation:1","type":"AedLocation","name":{"type":"Property","value":"…"},"location":{"type":"GeoProperty","value":{"type":"Point","coordinates":[134.045,34.341]}}}'
-
-# 時系列デモ用 WeatherObserved（observedAt 付きの配列）
-geonic -s miya temporal entities create @weather-temporal.json
 ```
 
 ### 4. 避難所の混雑デモ用データ（自治体ユースケース・`slide--shelter`）
@@ -273,7 +269,6 @@ geonic -s miya rules create '{
 | `src/deck/slides.ts` | スライドエンジン（ナビゲーション・背景同期・スケーリング） |
 | `src/demos/dual.ts` | 標準API（NGSIv2 / NGSI-LD 二面取得）デモ |
 | `src/demos/map.ts` | ジオクエリの地図デモ（Geolonia Maps + near 検索） |
-| `src/demos/temporal.ts` | 時系列（Temporal API）デモ |
 | `src/demos/shelter.ts` | 避難所の混雑（地図 + Temporal API・自治体ユースケース）デモ |
 | `src/demos/collab.ts` | 共同編集 GIS（作図 + WebSocket・民間ユースケース）デモ |
 | `src/demos/messaging.ts` | メッセージング + ReactiveCore Rules ログ（民間ユースケース）デモ |
