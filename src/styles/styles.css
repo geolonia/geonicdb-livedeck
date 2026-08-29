@@ -492,8 +492,10 @@ html, body {
 }
 
 .accent { color: var(--cyan); }
-/* 欧文は和文より字面が小さく見えるため、見出しに混在させるときだけ光学補正する */
-.title-latin { font-size: 1.25em; line-height: 1; }
+/* 欧文は和文より字面が小さく見えるため、見出しに混在させるときだけ光学補正する。
+   欧文はベースラインに乗り、和文の字面は少し下まで伸びるので、拡大すると欧文が浮いて見える。
+   vertical-align で下へ 4px 相当ずらし、和文の字面の上端・下端に揃える（実測: 44px 見出しで 4px）。 */
+.title-latin { font-size: 1.25em; line-height: 1; vertical-align: -0.072em; }
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
 
 /* when a description directly follows the title: tighten the gap above it,
