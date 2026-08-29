@@ -769,11 +769,9 @@ html, body {
 
 /* AI-native illustration (animated SVG) */
 .ai-illus, .rc-illus { display: block; width: 100%; max-width: 1040px; margin: 6px auto 0; height: auto; }
-/* ReactiveCore Rules: 図解が実際のルール定義 (CEL 式) を抱えるぶん縦に大きい。
-   本文の余白を詰めて、空いた高さをそのまま図解へ渡す。 */
-.slide--rules .slide__inner { padding: 20px 60px 14px; }
-.slide--rules .slide__inner > .map-desc { margin-bottom: 14px; }
-.slide--rules .rc-illus { max-width: 1060px; margin-top: 0; }
+/* ReactiveCore Rules: 図解自身が上下の余白を持たないので、本文との間隔を詰める。 */
+.slide--rules .rc-illus { margin-top: 0; }
+.slide--rules .slide__inner > .map-desc { margin-bottom: 18px; }
 .rc-illus--demo { max-width: 660px; margin-bottom: 8px; }
 .rc-code-wrap { max-width: 900px; margin: 0 auto; }
 .rc-code-label { display: block; font-family: var(--font-mono); font-size: 11.5px; color: rgba(255,255,255,.5); margin-bottom: 6px; }
