@@ -37,7 +37,7 @@ Sum: **1192 s = 19:52** — desk buffer to 20:00 is **8 s**, plus the contingenc
 - **Checkpoint A — start of Act V ("The build story") at 9:17.** More than one minute late → plan to skip the live audience question in Act VII (saves ~45 s).
 - **Checkpoint B — start of Act VII (map full screen) at 14:50.** More than one minute late → skip the audience question AND use the two-question Close (saves ~50 s total).
 - 🎙️ is budgeted at 60 s. If it runs to 90 s, that 30 s overrun consumes most of the 45 s audience-question reserve — that is fine; the reserve exists for exactly this.
-- **Demo time is never cut.** All savings come from speech.
+- **Demo time is never cut** — the posting window and the three core queries are untouchable; all savings come from speech. The one planned exception is the optional audience question (Cue ⑧), which is a reserve, not part of the core demo.
 - Fallback (Act VII): if the venue network or the live pipeline stalls for **15 seconds**, switch to the pre-recorded demo video and narrate over it. Never debug on stage. **Announce the switch honestly** — say that this is a recording of the same pipeline made earlier, and that the room's live posts are still being collected. Never present recorded output as the room's live data.
 
 ---
@@ -197,7 +197,7 @@ Enough claiming. Let's query.
 
 **[⏱ CHECKPOINT B — you should be here at ~14:50. More than a minute late → skip the audience question AND use the two-question Close.]**
 
-**[FALLBACK, say nothing unless needed: if the network or pipeline stalls for 15 seconds, switch to the pre-recorded demo video and narrate over it. On switching, say the honest line: "The venue network is fighting us — what follows is a recording of this same demo, made earlier. Your live posts are still being collected." From that point, do not call the recorded output live. Never debug on stage.]**
+**[FALLBACK, say nothing unless needed: if the network or pipeline stalls for 15 seconds, switch to the pre-recorded demo video and narrate over it. On switching, say the honest line: "The venue network is fighting us — what follows is a recording of this same demo, made earlier. Your live posts are still being collected." From that point, do not call the recorded output live: narrate the queries in past tense ("here it called…", "this is what it found"), drop the word "live" from the spoken lines below, and SKIP the audience question (Cue ⑧) — a recording cannot answer the room. Never debug on stage.]**
 
 **[SLIDE 14 — DEMO CUE ④: map goes FULL SCREEN. Beat — let the full map land. This is the visual payoff of the whole talk. Then split-screen: map + Claude connected to the broker's /mcp endpoint.]**
 
