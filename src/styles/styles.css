@@ -1332,6 +1332,14 @@ html, body {
 .baas-card { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 14px 15px; }
 .baas-card__name { display: block; font-size: 15px; font-weight: 800; color: var(--amber); margin-bottom: 4px; }
 .baas-card__desc { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.72); }
+/* BaaS の要点（導入の速さ／標準準拠でロックインしない）を図解の下に 2 つ並べる */
+.baas-wins { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.baas-win {
+  padding: 10px 16px; border: 1px solid rgba(252,108,0,.35); border-radius: 10px;
+  background: rgba(252,108,0,.08);
+  font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,.82);
+}
+.baas-win b { color: var(--cyan); font-weight: 800; margin-right: 10px; }
 
 /* ---- スケールアップ説明スライド（従来 vs GeonicDB のコスト構造を対比） ---- */
 .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 42px; }

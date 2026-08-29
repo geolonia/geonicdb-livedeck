@@ -116,7 +116,7 @@
       "@type": "WebPageElement",
       "position": 7,
       "identifier": "baas",
-      "name": "アプリのバックエンドは、まるごとおまかせ（BaaS）",
+      "name": "つくるのは画面だけ。裏側はおまかせ（BaaS）",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#7"
     },
     {
@@ -694,40 +694,45 @@
       </div>
     </section>
 
-    <!-- BaaS — アプリのバックエンドをまるごとサービスとして提供 -->
+    <!-- BaaS — アプリの「裏側」をまるごとサービスとして提供（自治体・政府職員向けに平易な言い回しで統一） -->
     <section class="slide" data-bg="dark" data-slide="baas">
       <div class="slide__inner">
         <span class="kicker">提供形態 / BaaS</span>
-        <h2 class="slide__title">アプリのバックエンドは、<span class="accent">まるごとおまかせ</span></h2>
-        <p class="map-desc map-desc--wide">GeonicDB は <strong>BaaS（Backend as a Service）</strong>です。アプリに必要なバックエンド一式が<strong>最初から動いている</strong>ので、<strong>サーバーを 1 台も立てず</strong>、API キーを発行したその日から使いはじめられます。</p>
+        <h2 class="slide__title">つくるのは画面だけ。<span class="accent">裏側はおまかせ</span></h2>
+        <p class="map-desc map-desc--wide">GeonicDB は <strong>BaaS</strong>（バース。アプリの「裏側」をサービスとして貸し出す方式）です。<strong>サーバーの調達</strong>、データの置き場や利用者管理の作り込み、OS の更新・脆弱性対応といった<strong>基盤の構築と保守が、まとめて不要</strong>になります。</p>
         <div class="baas-stack">
           <div class="baas-layer baas-layer--app">
-            <span class="baas-layer__tag">お客様がつくるのはここだけ</span>
+            <span class="baas-layer__tag">自治体・事業者がつくるのは、ここだけ</span>
             <div class="baas-apps">
-              <div class="baas-app"><span aria-hidden="true">🗺️</span>Web・地図アプリ</div>
-              <div class="baas-app"><span aria-hidden="true">📱</span>モバイルアプリ</div>
-              <div class="baas-app"><span aria-hidden="true">📡</span>IoT デバイス</div>
-              <div class="baas-app"><span aria-hidden="true">✦</span>AI エージェント</div>
+              <div class="baas-app"><span aria-hidden="true">🗺️</span>住民向けのアプリ・Web</div>
+              <div class="baas-app"><span aria-hidden="true">🖥️</span>職員が使う庁内画面</div>
+              <div class="baas-app"><span aria-hidden="true">📡</span>センサー・計測機器</div>
+              <div class="baas-app"><span aria-hidden="true">✦</span>AI アシスタント</div>
             </div>
           </div>
-          <p class="baas-wire">SDK / REST / WebSocket / MCP で<b>直結</b>　—　自前の中間サーバーは不要</p>
+          <p class="baas-wire">インターネット経由で<b>そのままつながる</b>　—　間に自前のサーバーを置く必要はありません</p>
           <div class="baas-layer baas-layer--core">
-            <span class="baas-layer__tag baas-layer__tag--accent">GeonicDB が引き受ける</span>
+            <span class="baas-layer__tag baas-layer__tag--accent">GeonicDB が引き受ける ＝ これまで自前で構築・保守していた部分</span>
             <div class="baas-grid">
-              <div class="baas-card"><span class="baas-card__name">データストア</span><span class="baas-card__desc">エンティティ管理・スキーマ検証</span></div>
-              <div class="baas-card"><span class="baas-card__name">標準 API</span><span class="baas-card__desc">NGSI-LD / NGSIv2 をそのまま公開</span></div>
-              <div class="baas-card"><span class="baas-card__name">認証・認可</span><span class="baas-card__desc">JWT・API キー・OAuth・XACML</span></div>
-              <div class="baas-card"><span class="baas-card__name">リアルタイム</span><span class="baas-card__desc">WebSocket 配信・Webhook 購読</span></div>
-              <div class="baas-card"><span class="baas-card__name">時系列</span><span class="baas-card__desc">Temporal API で履歴・推移を保持</span></div>
-              <div class="baas-card"><span class="baas-card__name">地理空間</span><span class="baas-card__desc">近傍・範囲検索／ベクトルタイル</span></div>
-              <div class="baas-card"><span class="baas-card__name">自動処理</span><span class="baas-card__desc">ReactiveCore Rules で条件実行</span></div>
-              <div class="baas-card"><span class="baas-card__name">運用・スケール</span><span class="baas-card__desc">オートスケール・監視・監査ログ</span></div>
+              <div class="baas-card"><span class="baas-card__name">データの保管・管理</span><span class="baas-card__desc">入力ミスや形式の誤りも自動チェック</span></div>
+              <div class="baas-card"><span class="baas-card__name">データの受け渡し口</span><span class="baas-card__desc">国際標準なので他システムとも直結</span></div>
+              <div class="baas-card"><span class="baas-card__name">誰に何を見せるか</span><span class="baas-card__desc">職員・事業者・一般公開を使い分け</span></div>
+              <div class="baas-card"><span class="baas-card__name">更新をその場で反映</span><span class="baas-card__desc">変わった瞬間に全員の画面へ届く</span></div>
+              <div class="baas-card"><span class="baas-card__name">過去の記録を残す</span><span class="baas-card__desc">「いつ・どうだったか」を後から確認</span></div>
+              <div class="baas-card"><span class="baas-card__name">地図でさがす</span><span class="baas-card__desc">「この場所の近く」を条件に検索</span></div>
+              <div class="baas-card"><span class="baas-card__name">決めた条件で自動処理</span><span class="baas-card__desc">基準を超えたら通知、を無人で実行</span></div>
+              <div class="baas-card"><span class="baas-card__name">監視・障害対応・増強</span><span class="baas-card__desc">24 時間監視。混雑時は自動で増強</span></div>
             </div>
+          </div>
+          <div class="baas-wins">
+            <p class="baas-win"><b>契約したその日から使える</b>基盤をつくる期間がゼロ</p>
+            <p class="baas-win"><b>特定ベンダーに閉じない</b>国際標準なのでデータを持ち出せる</p>
           </div>
         </div>
-        <p class="footnote">※ ご利用には GeonicDB のご契約が必要です。フロントエンドの配信（静的ホスティング）費用は含まれません。</p>
+        <p class="footnote">※ 技術的な内容は Appendix に掲載。ご利用には GeonicDB のご契約が必要です（住民向け画面の制作費・配信費用は含みません）。</p>
       </div>
     </section>
+
     <!-- スケールアウト — 小さく始めて大きく育てる -->
     <section class="slide" data-bg="dark" data-slide="scale-out">
       <div class="slide__inner">
