@@ -5,9 +5,10 @@
 # 反映されないまま古いバンドルが配信され続けた（geonicdb-livedeck#42）。
 # デプロイ直後にここで実配信を突き合わせ、ズレていれば赤にする。
 #
-# 検証は**訪問者がそのまま叩く URL**（クエリなし）に対して行う。キャッシュバスタ
-# 付きの URL は誰も要求しないので、それが新しくても「利用者に新しい版が届いて
-# いる」ことの証明にならない。エッジに古い HTML が残っている間はリトライで待つ。
+# 検証は**訪問者とまったく同じ条件**で行う。クエリなしの素の URL、かつ
+# キャッシュ制御ヘッダも付けない。キャッシュバスタ付きの URL や再検証を強制した
+# リクエストは誰も送らないので、それが新しくても「利用者に新しい版が届いている」
+# ことの証明にならない。エッジに古い HTML が残っている間はリトライで待つ。
 #
 #   PAGE_URL  検証対象の URL（末尾スラッシュあり／なしどちらでも可）
 #   EXPECTED  配信されているべきエントリ JS のパス（例 assets/index-Bo3msxiW.js）
@@ -26,7 +27,15 @@ attempts="${ATTEMPTS:-45}"
 interval="${INTERVAL:-15}"
 base="${PAGE_URL%/}"
 
+# 通常アクセス。訪問者のブラウザと同じ条件（追加ヘッダなし）で叩く。
+# `Cache-Control: no-cache` を付けるとキャッシュに再検証を強制してしまい、
+# 訪問者が受け取る経路とは別の応答を検証することになる（RFC 9111）。
 fetch() {
+  curl -fsSL --max-time 30 "$1"
+}
+
+# 診断用。再検証を強制し、キャッシュを迂回してオリジンの中身を見る。
+probe_origin() {
   curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "$1"
 }
 
@@ -77,7 +86,7 @@ if [ "$kind" = "js_missing" ]; then
   exit 1
 fi
 
-origin=$(fetch "${base}/?cachebust=${GITHUB_RUN_ID:-local}-final") || origin=""
+origin=$(probe_origin "${base}/?cachebust=${GITHUB_RUN_ID:-local}-final") || origin=""
 origin_entry=$(entry_of "$origin")
 case "$origin" in
   *"$EXPECTED"*)
