@@ -1323,6 +1323,7 @@ html, body {
   border: 1px solid rgba(252,108,0,.35); border-radius: 10px;
   background: rgba(252,108,0,.08);
   font-size: 16px; line-height: 1.6; color: rgba(255,255,255,.85);
+  text-align: center;
 }
 .callout strong { color: var(--cyan); font-weight: 800; }
 .cmp-col__body { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); margin: auto 0 0; }
