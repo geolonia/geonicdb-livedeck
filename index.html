@@ -1034,75 +1034,103 @@
       <div class="slide__inner">
         <span class="kicker">自動化 / ReactiveCore Rules</span>
         <h2 class="slide__title">条件がそろえば、あとは自動</h2>
-        <p class="map-desc">ReactiveCore Rules は GeonicDB 内蔵のルールエンジン。エンティティの変化を監視し、条件に一致すると通知・Webhook・属性更新などのアクションを自動実行します。</p>
+        <p class="map-desc">ReactiveCore Rules は GeonicDB 内蔵のルールエンジン。エンティティの変化を監視し、条件に一致すると通知・Webhook・属性更新などのアクションを自動実行します。条件は CEL 式で書けるので、<strong>温度と湿度から不快指数を計算する</strong>ような複数属性を組み合わせた判定もそのまま定義できます。</p>
         <svg class="rc-illus" viewBox="0 0 1120 360" role="img"
              font-family="'Inter','Noto Sans JP',sans-serif"
-             aria-label="温度センサーがしきい値を超えるとルールエンジンが発火し、通知・Webhook などのアクションが実行される流れ">
+             aria-label="温湿度センサーの値から不快指数を計算し、80 以上になるとルールエンジンが発火して通知・Webhook などのアクションが実行される流れ">
           <defs>
             <marker id="rcArrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#fc6c00"/></marker>
             <marker id="rcArrowR" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8401e"/></marker>
           </defs>
 
           <!-- connectors -->
-          <line x1="282" y1="200" x2="430" y2="200" stroke="rgba(252,108,0,.45)" stroke-width="2" marker-end="url(#rcArrow)"/>
-          <circle r="4" fill="#fc6c00"><animateMotion dur="1.5s" repeatCount="indefinite" path="M284,200 L430,200"/><animate attributeName="r" dur="1.5s" values="2;6;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
-          <circle r="4" fill="#fc6c00"><animateMotion dur="1.5s" begin="-0.75s" repeatCount="indefinite" path="M284,200 L430,200"/><animate attributeName="r" dur="1.5s" begin="-0.75s" values="2.5;5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
+          <line x1="286" y1="200" x2="396" y2="200" stroke="rgba(252,108,0,.45)" stroke-width="2" marker-end="url(#rcArrow)"/>
+          <circle r="4" fill="#fc6c00"><animateMotion dur="1.5s" repeatCount="indefinite" path="M288,200 L396,200"/><animate attributeName="r" dur="1.5s" values="2;6;2.5" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
+          <circle r="4" fill="#fc6c00"><animateMotion dur="1.5s" begin="-0.75s" repeatCount="indefinite" path="M288,200 L396,200"/><animate attributeName="r" dur="1.5s" begin="-0.75s" values="2.5;5;2" keyTimes="0;0.5;1" repeatCount="indefinite"/></circle>
           <!-- engine → actions: fan-out to all four actions, flashes red on fire -->
           <g stroke="#e8401e" stroke-width="2" fill="none" stroke-linecap="round">
             <animate attributeName="stroke-opacity" dur="4.5s" values="0.22;0.22;1;1;0.3;0.22" keyTimes="0;0.5;0.55;0.72;0.8;1" repeatCount="indefinite"/>
-            <path d="M716,198 H760"/>
-            <path d="M760,119 V281"/>
-            <path d="M760,119 H842" marker-end="url(#rcArrowR)"/>
-            <path d="M760,173 H842" marker-end="url(#rcArrowR)"/>
-            <path d="M760,227 H842" marker-end="url(#rcArrowR)"/>
-            <path d="M760,281 H842" marker-end="url(#rcArrowR)"/>
+            <path d="M740,200 H780"/>
+            <path d="M780,119 V281"/>
+            <path d="M780,119 H842" marker-end="url(#rcArrowR)"/>
+            <path d="M780,173 H842" marker-end="url(#rcArrowR)"/>
+            <path d="M780,227 H842" marker-end="url(#rcArrowR)"/>
+            <path d="M780,281 H842" marker-end="url(#rcArrowR)"/>
           </g>
           <!-- pulse dots fanning to each action during fire -->
           <g fill="#ff6a2b">
-            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.54;0.62;0.8;1" calcMode="linear" repeatCount="indefinite" path="M762,198 L762,119 L842,119"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.53;0.55;0.62;0.64;1" repeatCount="indefinite"/></circle>
-            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.56;0.64;0.8;1" calcMode="linear" repeatCount="indefinite" path="M762,198 L762,173 L842,173"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.55;0.57;0.64;0.66;1" repeatCount="indefinite"/></circle>
-            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.58;0.66;0.8;1" calcMode="linear" repeatCount="indefinite" path="M762,198 L762,227 L842,227"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.57;0.59;0.66;0.68;1" repeatCount="indefinite"/></circle>
-            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.6;0.68;0.8;1" calcMode="linear" repeatCount="indefinite" path="M762,198 L762,281 L842,281"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.59;0.61;0.68;0.7;1" repeatCount="indefinite"/></circle>
+            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.54;0.62;0.8;1" calcMode="linear" repeatCount="indefinite" path="M782,200 L782,119 L842,119"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.53;0.55;0.62;0.64;1" repeatCount="indefinite"/></circle>
+            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.56;0.64;0.8;1" calcMode="linear" repeatCount="indefinite" path="M782,200 L782,173 L842,173"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.55;0.57;0.64;0.66;1" repeatCount="indefinite"/></circle>
+            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.58;0.66;0.8;1" calcMode="linear" repeatCount="indefinite" path="M782,200 L782,227 L842,227"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.57;0.59;0.66;0.68;1" repeatCount="indefinite"/></circle>
+            <circle r="3.5"><animateMotion dur="4.5s" keyPoints="0;0;1;1;1" keyTimes="0;0.6;0.68;0.8;1" calcMode="linear" repeatCount="indefinite" path="M782,200 L782,281 L842,281"/><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.59;0.61;0.68;0.7;1" repeatCount="indefinite"/></circle>
           </g>
 
-          <!-- ===== SENSOR ===== -->
+          <!-- ===== SENSOR (temperature + humidity) ===== -->
           <g>
             <rect x="70" y="96" width="212" height="208" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.16)"/>
-            <text x="176" y="132" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">温度センサー</text>
-            <!-- thermometer track -->
-            <rect x="166" y="152" width="20" height="120" rx="4" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.14)"/>
-            <!-- fill (animated rise/fall + colour) -->
-            <rect x="166" width="20" rx="4" fill="#fba40c">
-              <animate attributeName="height" dur="4.5s" values="40;40;112;112;46;40" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
-              <animate attributeName="y" dur="4.5s" values="232;232;160;160;226;232" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
+            <text x="176" y="126" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">温湿度センサー</text>
+
+            <!-- readouts: 平常時 / 高温多湿時 をクロスフェード -->
+            <g font-size="17" font-weight="700" font-family="'JetBrains Mono',monospace" text-anchor="middle">
+              <g>
+                <animate attributeName="opacity" dur="4.5s" values="1;1;0;0;1;1" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
+                <text x="126" y="156" fill="#fba40c">26.0°C</text>
+                <text x="226" y="156" fill="#39d6c6">50%</text>
+              </g>
+              <g>
+                <animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
+                <text x="126" y="156" fill="#e8401e">31.0°C</text>
+                <text x="226" y="156" fill="#39d6c6">70%</text>
+              </g>
+            </g>
+
+            <!-- gauge tracks -->
+            <rect x="117" y="168" width="18" height="114" rx="4" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.14)"/>
+            <rect x="217" y="168" width="18" height="114" rx="4" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.14)"/>
+            <!-- temperature fill (rises and turns red) -->
+            <rect x="117" width="18" rx="4" fill="#fba40c">
+              <animate attributeName="height" dur="4.5s" values="34;34;63;63;36;34" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
+              <animate attributeName="y" dur="4.5s" values="248;248;219;219;246;248" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
               <animate attributeName="fill" dur="4.5s" values="#fba40c;#fba40c;#e8401e;#e8401e;#fba40c;#fba40c" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
             </rect>
-            <!-- bulb -->
-            <circle cx="176" cy="280" r="15" fill="#fba40c">
-              <animate attributeName="fill" dur="4.5s" values="#fba40c;#fba40c;#e8401e;#e8401e;#fba40c;#fba40c" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
-            </circle>
-            <!-- threshold -->
-            <line x1="150" y1="186" x2="278" y2="186" stroke="#39d6c6" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <text x="278" y="180" text-anchor="end" fill="#39d6c6" font-size="11">しきい値 28°C</text>
+            <!-- humidity fill (rises, stays cyan — 単独ではしきい値を持たない) -->
+            <rect x="217" width="18" rx="4" fill="#39d6c6">
+              <animate attributeName="height" dur="4.5s" values="57;57;80;80;59;57" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
+              <animate attributeName="y" dur="4.5s" values="225;225;202;202;223;225" keyTimes="0;0.34;0.48;0.72;0.86;1" repeatCount="indefinite"/>
+            </rect>
+            <text x="126" y="298" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="11">温度</text>
+            <text x="226" y="298" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="11">湿度</text>
           </g>
 
           <!-- ===== RULE ENGINE ===== -->
           <g>
-            <rect x="430" y="124" width="286" height="148" rx="18" fill="rgba(252,108,0,.10)" stroke="rgba(252,108,0,.5)"/>
+            <rect x="400" y="116" width="336" height="168" rx="18" fill="rgba(252,108,0,.10)" stroke="rgba(252,108,0,.5)"/>
             <!-- fire glow overlay -->
-            <rect x="430" y="124" width="286" height="148" rx="18" fill="#e8401e">
+            <rect x="400" y="116" width="336" height="168" rx="18" fill="#e8401e">
               <animate attributeName="opacity" dur="4.5s" values="0;0;0.28;0.28;0;0" keyTimes="0;0.46;0.5;0.72;0.8;1" repeatCount="indefinite"/>
             </rect>
-            <text x="573" y="156" text-anchor="middle" fill="#fc6c00" font-size="19" font-weight="800">ルールエンジン</text>
-            <text x="573" y="190" text-anchor="middle" fill="#fff" font-size="15" font-family="'JetBrains Mono',monospace">WHEN  温度 &gt; 28°C</text>
-            <text x="573" y="216" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13">THEN  アクション実行</text>
+            <text x="568" y="148" text-anchor="middle" fill="#fc6c00" font-size="19" font-weight="800">ルールエンジン</text>
+            <text x="568" y="184" text-anchor="middle" fill="#fff" font-size="15" font-family="'JetBrains Mono',monospace">WHEN  不快指数 &#8805; 80</text>
+            <text x="568" y="210" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13">THEN  アクション実行</text>
+            <!-- 現在の不快指数（平常 / 発火）をクロスフェード -->
+            <g>
+              <animate attributeName="opacity" dur="4.5s" values="1;1;0;0;1;1" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
+              <rect x="436" y="230" width="264" height="34" rx="17" fill="rgba(57,214,198,.12)" stroke="rgba(57,214,198,.5)"/>
+              <text x="568" y="252" text-anchor="middle" fill="#39d6c6" font-size="14" font-family="'JetBrains Mono',monospace">いま 73.1 — やや暑い</text>
+            </g>
+            <g>
+              <animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
+              <rect x="436" y="230" width="264" height="34" rx="17" fill="rgba(232,64,30,.22)" stroke="#e8401e"/>
+              <text x="568" y="252" text-anchor="middle" fill="#fff" font-size="14" font-family="'JetBrains Mono',monospace">いま 82.9 — 全員が不快</text>
+            </g>
             <!-- 発火 badge -->
             <g>
-              <rect x="516" y="102" width="116" height="30" rx="15" fill="#e8401e"/>
-              <text x="574" y="122" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">⚡ 発火！</text>
+              <rect x="510" y="94" width="116" height="30" rx="15" fill="#e8401e"/>
+              <text x="568" y="114" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">⚡ 発火！</text>
               <animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.47;0.51;0.72;0.78;1" repeatCount="indefinite"/>
             </g>
           </g>
+          <text x="568" y="308" text-anchor="middle" fill="rgba(255,255,255,.45)" font-size="11.5" font-family="'JetBrains Mono',monospace">不快指数 = 0.81T + 0.01H(0.99T &#8722; 14.3) + 46.3</text>
 
           <!-- ===== ACTIONS ===== -->
           <g font-size="14" font-weight="700">
@@ -1110,7 +1138,7 @@
             <g>
               <rect x="846" y="96" width="244" height="46" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
               <rect x="846" y="96" width="244" height="46" rx="10" fill="rgba(232,64,30,.16)" stroke="#e8401e"><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.5;0.54;0.72;0.8;1" repeatCount="indefinite"/></rect>
-              <text x="866" y="125" fill="#fff">🔔 通知 / アラート</text>
+              <text x="866" y="125" fill="#fff">🔔 熱中症アラート通知</text>
             </g>
             <g>
               <rect x="846" y="150" width="244" height="46" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
@@ -1120,7 +1148,7 @@
             <g>
               <rect x="846" y="204" width="244" height="46" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
               <rect x="846" y="204" width="244" height="46" rx="10" fill="rgba(232,64,30,.16)" stroke="#e8401e"><animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.56;0.6;0.72;0.8;1" repeatCount="indefinite"/></rect>
-              <text x="866" y="233" fill="#fff">✏️ 属性を更新</text>
+              <text x="866" y="233" fill="#fff">✏️ 警戒レベルを更新</text>
             </g>
             <g>
               <rect x="846" y="258" width="244" height="46" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.14)"/>
