@@ -303,9 +303,16 @@
     {
       "@type": "WebPageElement",
       "position": 33,
+      "identifier": "glossary-terms-4",
+      "name": "用語集 ④",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#33"
+    },
+    {
+      "@type": "WebPageElement",
+      "position": 34,
       "identifier": "closing",
       "name": "都市 OS を、 フルマネージドサービスで。",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#33"
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#34"
     }
   ]
 }
@@ -1924,6 +1931,10 @@
             <span class="glossary__def">FIWARE はスマートシティ／IoT 向けのオープンソース基盤群。Orion-LD はその中核となる NGSI-LD 対応コンテキストブローカー実装。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">GeoJSON</span>
+            <span class="glossary__def">位置や形（点・線・面）を JSON で表す標準形式（RFC 7946）。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">Geo-query（ジオクエリー）</span>
             <span class="glossary__def">「この範囲内」「近い順」など、位置情報でデータを絞り込む検索。</span>
           </div>
@@ -1935,14 +1946,6 @@
             <span class="glossary__term">JWT</span>
             <span class="glossary__def">改ざん検知の署名が付いた認証トークン。ログイン状態の受け渡しに使う。</span>
           </div>
-          <div class="glossary__item">
-            <span class="glossary__term">MCP（Model Context Protocol）</span>
-            <span class="glossary__def">AI（LLM）が外部のツールやデータへ安全に接続するための標準プロトコル。</span>
-          </div>
-          <div class="glossary__item">
-            <span class="glossary__term">NGSI-LD</span>
-            <span class="glossary__def">コンテキスト情報を相互運用可能に表現する国際標準 API（ETSI）。</span>
-          </div>
         </div>
       </div>
     </section>
@@ -1951,6 +1954,18 @@
     <section class="slide" data-bg="dark" data-slide="glossary-terms-2">
       <div class="slide__inner">
         <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">MCP（Model Context Protocol）</span>
+            <span class="glossary__def">AI（LLM）が外部のツールやデータへ安全に接続するための標準プロトコル。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">MQTT</span>
+            <span class="glossary__def">IoT 機器で広く使われる軽量な通信プロトコル。少ない通信量でメッセージを配信できる。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">NGSI-LD</span>
+            <span class="glossary__def">コンテキスト情報を相互運用可能に表現する国際標準 API（ETSI）。</span>
+          </div>
           <div class="glossary__item">
             <span class="glossary__term">NGSIv2</span>
             <span class="glossary__def">FIWARE が定めるコンテキスト API 仕様。GeonicDB は NGSI-LD と両対応。</span>
@@ -1972,12 +1987,20 @@
             <span class="glossary__def">パスワードを復元できない形へ変換（ハッシュ）して保存する技術。ソルトは各パスワードに加える個別の値。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">PEP（Policy Enforcement Point）</span>
+            <span class="glossary__def">認可の判断を実際に適用する箇所。GeonicDB は本体に内蔵するため、別途プロキシを立てる必要がない。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">PoW（Proof of Work）</span>
             <span class="glossary__def">処理の前に一定量の計算を求め、機械的な大量実行を割に合わなくする仕組み。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">Property／Relationship／GeoProperty</span>
             <span class="glossary__def">NGSI-LD の属性タイプ。値は Property、他エンティティへの参照は Relationship、位置は GeoProperty で表す。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">RBAC</span>
+            <span class="glossary__def">役割（ロール）ごとに権限をまとめて管理する方式。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">ReactiveCore Rules</span>
@@ -1987,9 +2010,25 @@
             <span class="glossary__term">ReDoS</span>
             <span class="glossary__def">正規表現の弱点を突き、処理を極端に遅延させてサービスを止める攻撃。</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 21. Glossary — page 3 (A–Z → あいうえお) -->
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-3">
+      <div class="slide__inner">
+        <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">RTO／RPO</span>
+            <span class="glossary__def">障害復旧の目標値。RTO は復旧までにかかる時間、RPO は失われうるデータの時間幅。</span>
+          </div>
           <div class="glossary__item">
             <span class="glossary__term">Scorpio</span>
             <span class="glossary__def">NGSI-LD に対応する OSS コンテキストブローカーの一つ（FIWARE Foundation のコンポーネント）。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">Smart Data Models</span>
+            <span class="glossary__def">分野ごとに標準化された NGSI-LD のデータモデル集。型と属性の定義を共通化できる。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">SSRF</span>
@@ -2011,14 +2050,6 @@
             <span class="glossary__term">XACML</span>
             <span class="glossary__def">属性に基づき「誰が何をできるか」を細かく定義する、認可ポリシーの標準。</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 21. Glossary — page 3 (A–Z → あいうえお) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-3">
-      <div class="slide__inner">
-        <div class="glossary">
           <div class="glossary__item">
             <span class="glossary__term">エンティティ（Entity）</span>
             <span class="glossary__def">NGSI-LD でデータを表す単位。型と id を持ち、属性や Relationship で他のエンティティとつながる。</span>
@@ -2036,20 +2067,36 @@
             <span class="glossary__def">監査ログは「いつ・誰が・何をしたか」の証跡。トークン失効は漏れた認証情報を無効化する仕組み。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">空間 ID（ZFXY）</span>
+            <span class="glossary__def">空間を立体的なマス目に区切り、1 つの ID で位置と範囲を表す日本発の方式。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">サーバーレス</span>
             <span class="glossary__def">サーバーの調達・管理をクラウド側に任せ、実際に処理された分だけ自動で確保・課金される方式。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glossary — page 4 (あいうえお) -->
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-4">
+      <div class="slide__inner">
+        <div class="glossary">
+          <div class="glossary__item">
+            <span class="glossary__term">サブスクリプション（購読）</span>
+            <span class="glossary__def">データの作成・更新・削除を条件付きで待ち受け、変化があった時点で通知を受け取る仕組み。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">指数バックオフ</span>
             <span class="glossary__def">失敗のたびに待ち時間を倍々に延ばし、連続した試行を成立しにくくする手法。</span>
           </div>
           <div class="glossary__item">
-            <span class="glossary__term">スケールアップ／スケールアウト</span>
-            <span class="glossary__def">処理能力の増やし方。スケールアップは 1 台あたりの性能を上げ、スケールアウトは台数を増やす。</span>
-          </div>
-          <div class="glossary__item">
             <span class="glossary__term">冗長構成</span>
             <span class="glossary__def">同じ機能を複数用意し、一部が壊れても止まらないようにする構成。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">スケールアップ／スケールアウト</span>
+            <span class="glossary__def">処理能力の増やし方。スケールアップは 1 台あたりの性能を上げ、スケールアウトは台数を増やす。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">ソフトリミット</span>
@@ -2060,12 +2107,24 @@
             <span class="glossary__def">処理にかかる時間のわずかな差から、秘密情報を推測しようとする攻撃。</span>
           </div>
           <div class="glossary__item">
+            <span class="glossary__term">テナント／マルチテナンシー</span>
+            <span class="glossary__def">1 つの基盤を組織・プロジェクト単位で完全に分離して共有する仕組み。データも権限も混ざらない。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">フェデレーション</span>
+            <span class="glossary__def">複数のブローカーを 1 つの窓口に束ね、データを移さずに横断して問い合わせる仕組み（Context Source Registration にもとづく）。</span>
+          </div>
+          <div class="glossary__item">
             <span class="glossary__term">フルマネージド</span>
             <span class="glossary__def">サーバー運用・保守を提供側が引き受け、利用者は運用不要で使える形態。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">ブルートフォース／パスワードスプレー</span>
             <span class="glossary__def">前者はパスワードを総当たりで試す攻撃。後者はありがちなパスワードを多数のアカウントへ広く試す攻撃。</span>
+          </div>
+          <div class="glossary__item">
+            <span class="glossary__term">ベクトルタイル</span>
+            <span class="glossary__def">地図データを座標のまま小さなタイルに分けて配信する方式。拡大しても輪郭が滑らかで、表示を後から変えられる。</span>
           </div>
           <div class="glossary__item">
             <span class="glossary__term">リンクトデータ</span>

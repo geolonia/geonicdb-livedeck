@@ -186,7 +186,7 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - **認証・認可** — 5 種の認証（JWT・API Key・OAuth 2.0・OIDC・DPoP）、XACML 3.0 単一レイヤ、per-tenant IP 制限、PEP プロキシ不要。
 - **セキュリティ** — ブルートフォース/スプレー対策、レート制限、PoW＋Nonce、入力の厳格検証（ReDoS/SSRF 対策）、PBKDF2-SHA512、AES-256-GCM＋AWS KMS。
 - **クエリで使えるパラメータ** — ページング・件数、フィルタ（`type`/`id`/`idPattern`/`q`/`mq`/`attrs`）、属性選択・整形（`pick`/`omit`/`lang`/`scopeQ`/`orderBy`）、ジオクエリ（`georel`/`geometry`/`coordinates`/`geoproperty`）、空間 ID・連携、主な制限値。
-- **用語集** — 全 44 語を 3 ページに分載（A–Z → あいうえお順）。A2A・NGSI-LD・NGSIv2・MCP・XACML・DPoP・Temporal API・ReactiveCore Rules・リンクトデータ、競合ブローカー（FIWARE Orion-LD・Scorpio・Stellio）、コスト構造スライド関連（サーバーレス・オートスケール・スケールアップ／スケールアウト・ソフトリミット・レート制限）ほか、本資料の専門用語の平易な説明。
+- **用語集 ①〜④** — 全 55 語を 4 ページに分載（A–Z → あいうえお順）。A2A・NGSI-LD・NGSIv2・MCP・XACML・DPoP・Temporal API・ReactiveCore Rules・リンクトデータ、競合ブローカー（FIWARE Orion-LD・Scorpio・Stellio）、コスト構造スライド関連（サーバーレス・オートスケール・スケールアップ／スケールアウト・ソフトリミット・レート制限）、地理空間・連携系（空間 ID／ZFXY・ベクトルタイル・GeoJSON・フェデレーション・Smart Data Models）、運用・認可系（テナント／マルチテナンシー・サブスクリプション・RTO／RPO・RBAC・PEP・MQTT）ほか、本資料の専門用語の平易な説明。
 - **クロージング** — 「都市 OS を、フルマネージドサービスで。」お問い合わせ・デモの案内。
 
 ## 標準準拠とプロトコル（製品概要）
