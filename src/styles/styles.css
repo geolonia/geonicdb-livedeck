@@ -769,6 +769,9 @@ html, body {
 
 /* AI-native illustration (animated SVG) */
 .ai-illus, .rc-illus { display: block; width: 100%; max-width: 1040px; margin: 6px auto 0; height: auto; }
+/* ReactiveCore Rules: 図解自身が上下の余白を持たないので、本文との間隔を詰める。 */
+.slide--rules .rc-illus { margin-top: 0; }
+.slide--rules .slide__inner > .map-desc { margin-bottom: 18px; }
 .rc-illus--demo { max-width: 660px; margin-bottom: 8px; }
 .rc-code-wrap { max-width: 900px; margin: 0 auto; }
 .rc-code-label { display: block; font-family: var(--font-mono); font-size: 11.5px; color: rgba(255,255,255,.5); margin-bottom: 6px; }
