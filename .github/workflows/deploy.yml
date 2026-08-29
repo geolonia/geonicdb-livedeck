@@ -19,21 +19,32 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # configure-pages が Pages 設定を書き換えるため pages: write のみ。
+    # Pages 設定の読み取り（build_type の確認）だけなので read で足りる。
     permissions:
       contents: read
-      pages: write
+      pages: read
     outputs:
       # 公開後のスモークチェックで「ライブが最新バンドルか」を突き合わせるための
       # エントリ JS のファイル名（内容ハッシュ付き）。
       bundle: ${{ steps.bundle.outputs.name }}
     steps:
       - uses: actions/checkout@v4
-      # Pages を "GitHub Actions" ソースで有効化する（未設定なら切り替える）。
-      # これにより公開の成否がこのワークフロー 1 本に収束する。
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      # Pages の公開ソースが "GitHub Actions" かを先に確かめる。
+      # actions/configure-pages の enablement は「Pages サイトが未作成のときに
+      # build_type=workflow で作る」だけで、既存サイト（旧 gh-pages 運用のように
+      # build_type=legacy で作成済み）のソースは切り替えない。設定がズレたまま
+      # 走ると deploy-pages が分かりにくいエラーで落ちるので、ここで理由付きで倒す。
+      - name: Assert Pages source is "GitHub Actions"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          build_type=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.build_type' 2>/dev/null || echo "none")
+          if [ "$build_type" != "workflow" ]; then
+            echo "::error::Pages の公開ソースが \"GitHub Actions\" ではありません（build_type=${build_type}）。Settings → Pages の Source を \"GitHub Actions\" に切り替えてください（gh api -X PUT repos/${GITHUB_REPOSITORY}/pages -f build_type=workflow）。"
+            exit 1
+          fi
+          echo "Pages source: GitHub Actions (build_type=workflow)"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
