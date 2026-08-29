@@ -745,21 +745,6 @@ html, body {
 .tile-art__pin { position: absolute; font-size: 42px; filter: drop-shadow(0 8px 12px rgba(0,0,0,.5)); top: 64px; }
 
 /* ===== Standards compliance slide ===== */
-.std-hero {
-  display: flex; align-items: center; gap: 24px;
-  background: linear-gradient(120deg, rgba(252,108,0,.18), rgba(251,164,12,.06));
-  border: 1px solid rgba(252,108,0,.4); border-radius: 16px;
-  padding: 22px 28px; margin-bottom: 24px;
-}
-.std-hero__badge {
-  flex: 0 0 auto; font-size: 32px; font-weight: 900; color: #fc6c00;
-  letter-spacing: -.01em; padding: 12px 24px;
-  border: 2px solid rgba(252,108,0,.55); border-radius: 12px; background: rgba(0,0,0,.25);
-}
-.std-hero__title { font-size: 18px; color: #fff; font-weight: 700; }
-.std-hero__title span { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.6); margin-left: 8px; }
-.std-hero__body p { margin-top: 8px; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.78); }
-.std-hero__body strong { color: var(--cyan); }
 .std-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .std-card {
   background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
@@ -1299,6 +1284,29 @@ html, body {
 .msg-log__tag { flex: 0 0 auto; font-family: var(--font-mono); font-size: 11px; color: var(--amber); }
 .msg-log__summary { font-size: 14px; color: rgba(255,255,255,.82); }
 .msg-empty { margin: auto; font-size: 14px; color: rgba(255,255,255,.45); }
+
+/* ---- NGSI-LD 説明スライド（1 エンティティの実例で「もの・値・つながり・場所」を見せる） ---- */
+/* 等幅での桁揃えに頼らず dl で組む（日本語の等幅は環境差が大きい） */
+.ld-entity {
+  background: rgba(0,0,0,.4); border: 1px solid rgba(252,108,0,.25);
+  border-radius: 12px; padding: 22px 24px 20px;
+}
+.ld-entity__head { padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 14px; }
+.ld-entity__type { display: block; font-size: 17px; font-weight: 800; color: var(--amber); }
+.ld-entity__id { display: block; margin-top: 5px; font-family: var(--font-mono); font-size: 12.5px; color: rgba(255,255,255,.5); }
+.ld-rows { display: flex; flex-direction: column; gap: 11px; }
+.ld-row { display: grid; grid-template-columns: 84px 1fr; align-items: baseline; gap: 12px; }
+.ld-row dt { font-size: 14px; color: rgba(255,255,255,.6); }
+.ld-row dd { font-size: 15px; color: rgba(255,255,255,.9); display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+/* 3 種の要素は色とラベルで区別する（凡例を別に置かなくても読める） */
+.ld-tag {
+  flex: 0 0 auto; font-size: 11.5px; font-weight: 800; line-height: 1.6;
+  padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor;
+}
+.ld-tag--val { color: var(--amber); }
+.ld-tag--geo { color: #5fd39b; }
+.ld-tag--rel { color: var(--cyan); }
+.ld-when { font-size: 12px; color: rgba(255,255,255,.45); }
 
 /* ---- BaaS 説明スライド（GeonicDB が引き受ける範囲を 6 つのタイルで示す） ---- */
 .baas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 10px; }

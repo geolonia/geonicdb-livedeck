@@ -108,8 +108,8 @@
     {
       "@type": "WebPageElement",
       "position": 6,
-      "identifier": "standards",
-      "name": "国際標準に準拠したコンテキストブローカー",
+      "identifier": "ngsi-ld",
+      "name": "意味までそろえる国際標準 NGSI-LD",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#6"
     },
     {
@@ -703,26 +703,38 @@
       </div>
     </section>
 
-    <!-- 4. Standards compliance -->
-    <section class="slide" data-bg="dark" data-slide="standards">
+    <!-- NGSI-LD とは — 「意味までそろう」を実例で示す（自治体・政府職員向け） -->
+    <section class="slide" data-bg="dark" data-slide="ngsi-ld">
       <div class="slide__inner">
-        <span class="kicker">国際標準準拠 / Standards</span>
-        <h2 class="slide__title">国際標準に準拠したコンテキストブローカー</h2>
-        <div class="std-hero">
-          <div class="std-hero__badge">NGSI-LD</div>
-          <div class="std-hero__body">
-            <div class="std-hero__title"><strong>ETSI GS CIM 009 V1.9.1 準拠</strong> <span>欧州 ETSI 標準 / 2025-07</span></div>
-            <p>スマートシティ・IoT のコンテキスト情報を、相互運用可能な形で表現・管理する国際標準。GeonicDB は <strong>NGSI-LD</strong> と FIWARE <strong>NGSIv2</strong> を 1 エンジンで両対応します。</p>
+        <span class="kicker">国際標準 / NGSI-LD</span>
+        <h2 class="slide__title">意味までそろえる国際標準 <span class="accent">NGSI-LD</span></h2>
+        <p class="map-desc map-desc--wide">欧州 ETSI が策定した、都市・IoT のデータを表すための国際標準（ETSI GS CIM 009）です。</p>
+        <div class="split">
+          <div class="split__text">
+            <ul class="ticks">
+              <li><strong>特定ベンダーの仕様ではない</strong> — 欧州 ETSI が策定・公開する国際標準。仕様書は誰でも読める</li>
+              <li><strong>表し方が決まっている</strong> — どのデータも「もの・値・つながり・場所」の 4 つで表す</li>
+              <li><strong>組織を越えて追える</strong> — つながりをたどれば、別部署・別システムのデータにも届く</li>
+              <li><strong>後から足しても壊れない</strong> — 項目や関係を増やしても、既存の連携はそのまま動く</li>
+            </ul>
+          </div>
+          <div class="split__visual">
+            <div class="ld-entity">
+              <div class="ld-entity__head">
+                <span class="ld-entity__type">もの：避難所</span>
+                <span class="ld-entity__id">urn:ngsi-ld:EvacuationArea:001</span>
+              </div>
+              <dl class="ld-rows">
+                <div class="ld-row"><dt>名称</dt><dd><span class="ld-tag ld-tag--val">値</span>△△小学校</dd></div>
+                <div class="ld-row"><dt>収容人数</dt><dd><span class="ld-tag ld-tag--val">値</span>420 人</dd></div>
+                <div class="ld-row"><dt>場所</dt><dd><span class="ld-tag ld-tag--geo">場所</span>34.3401, 134.0434</dd></div>
+                <div class="ld-row"><dt>管理者</dt><dd><span class="ld-tag ld-tag--rel">つながり</span>○○市 防災課</dd></div>
+                <div class="ld-row"><dt>受入状況</dt><dd><span class="ld-tag ld-tag--val">値</span>78 %<span class="ld-when">2026-06-26 09:00 時点</span></dd></div>
+              </dl>
+            </div>
           </div>
         </div>
-        <div class="std-grid">
-          <div class="std-card"><span class="std-card__name">FIWARE NGSIv2</span><span class="std-card__desc">FIWARE のコンテキスト API 仕様</span></div>
-          <div class="std-card"><span class="std-card__name">OpenAPI 3.0.3</span><span class="std-card__desc">機械可読な API 契約</span></div>
-          <div class="std-card"><span class="std-card__name">JSON-LD</span><span class="std-card__desc">W3C リンクトデータ</span></div>
-          <div class="std-card"><span class="std-card__name">DCAT-AP / CKAN</span><span class="std-card__desc">オープンデータカタログ標準</span></div>
-          <div class="std-card"><span class="std-card__name">CADDE</span><span class="std-card__desc">クロスドメインデータ連携（日本）</span></div>
-          <div class="std-card"><span class="std-card__name">RFC 群</span><span class="std-card__desc">ETag・Link・DPoP(9449)・GeoJSON(7946)</span></div>
-        </div>
+        <p class="footnote">※ 実例は説明用の架空データです。GeonicDB がこの標準にどこまで適合しているかは次のページ。</p>
       </div>
     </section>
 
