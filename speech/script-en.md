@@ -23,22 +23,22 @@
 |---|---------|------:|----------------:|-------------:|------:|--------:|
 | I | Seed — the room starts posting | 183 | 100 s | 15 s | 115 s | 1:55 |
 | II | The open data decade (minimized) | 142 | 77 s | — | 77 s | 3:12 |
-| III | The meaning gap | 290 | 158 s | 10 s | 168 s | 6:00 |
+| III | The meaning gap | 289 | 158 s | 10 s | 168 s | 6:00 |
 | IV | The objection — two answers (incl. 🎙️ 60 s) | 224 | 122 s | 75 s | 197 s | 9:17 |
 | V | The build story + ETSI conformance | 480 | 262 s | 10 s | 272 s | 13:49 |
 | VI | The payoff | 111 | 61 s | — | 61 s | 14:50 |
 | VII | Harvest — the agent reads the room | 202 | 110 s | 105 s | 215 s | 18:25 |
 | VIII | Close — three questions | 150 | 82 s | 5 s | 87 s | **19:52** |
 
-Sum: **1192 s = 19:52** — desk buffer to 20:00 is **8 s**, plus the contingency plan below. The alternate two-question Close is 76 s spoken (saves ~6 s more). Word counts are machine-counted from the spoken paragraphs of this file (cue lines, on-slide text, and 🎙️ frames excluded).
+Sum: **1192 s = 19:52** — desk buffer to 20:00 is **8 s**, plus the contingency plan below. The alternate two-question Close is 76 s spoken + the same 5 s beat = 81 s total (saves ~6 s more). Word counts are machine-counted from the spoken paragraphs of this file (cue lines, on-slide text, and 🎙️ frames excluded).
 
 ## Checkpoints & contingency
 
 - **Checkpoint A — start of Act V ("The build story") at 9:17.** More than one minute late → plan to skip the live audience question in Act VII (saves ~45 s).
 - **Checkpoint B — start of Act VII (map full screen) at 14:50.** More than one minute late → skip the audience question AND use the two-question Close (saves ~50 s total).
-- 🎙️ is budgeted at 60 s. If it runs to 90 s, that alone consumes the audience-question reserve — that is fine; the reserve exists for exactly this.
+- 🎙️ is budgeted at 60 s. If it runs to 90 s, that 30 s overrun consumes most of the 45 s audience-question reserve — that is fine; the reserve exists for exactly this.
 - **Demo time is never cut.** All savings come from speech.
-- Fallback (Act VII): if the venue network or the live pipeline stalls for **15 seconds**, switch to the pre-recorded demo video and narrate over it. Never debug on stage.
+- Fallback (Act VII): if the venue network or the live pipeline stalls for **15 seconds**, switch to the pre-recorded demo video and narrate over it. Never debug on stage. **Announce the switch honestly** — say that this is a recording of the same pipeline made earlier, and that the room's live posts are still being collected. Never present recorded output as the room's live data.
 
 ---
 
@@ -102,7 +102,7 @@ Now — look at what you have been making while I talked.
 
 This is one of your posts, typed a few minutes ago. This is what it became before it reached the database.
 
-The hometown: not a stray string in a comment box — a typed property from a published data model. The specialty: the same. Anything outside the model was rejected — it never reaches the database. A timestamp with a defined meaning. A permanent ID, so this post can be cited forever.
+The hometown: not a stray string in a comment box — a typed property from a published data model. The specialty: the same. Anything outside the model was rejected — it never reaches the database. A timestamp with a defined meaning. A stable ID, so this post can be cited.
 
 Here is the point. You did not fill in a schema. You answered two small questions. The data model did the agreeing for you. Two hundred strangers are producing interoperable data, right now, without ever having met.
 
@@ -197,7 +197,7 @@ Enough claiming. Let's query.
 
 **[⏱ CHECKPOINT B — you should be here at ~14:50. More than a minute late → skip the audience question AND use the two-question Close.]**
 
-**[FALLBACK, say nothing unless needed: if the network or pipeline stalls for 15 seconds, switch to the pre-recorded demo video and narrate over it. Never debug on stage.]**
+**[FALLBACK, say nothing unless needed: if the network or pipeline stalls for 15 seconds, switch to the pre-recorded demo video and narrate over it. On switching, say the honest line: "The venue network is fighting us — what follows is a recording of this same demo, made earlier. Your live posts are still being collected." From that point, do not call the recorded output live. Never debug on stage.]**
 
 **[SLIDE 14 — DEMO CUE ④: map goes FULL SCREEN. Beat — let the full map land. This is the visual payoff of the whole talk. Then split-screen: map + Claude connected to the broker's /mcp endpoint.]**
 
@@ -249,7 +249,7 @@ Open your data — yes, always. Then open its meaning.
 
 Thank you. I have five minutes for your questions — including the hard ones.
 
-### ALTERNATE CLOSE — two questions 【~76 s spoken · use when Checkpoint B says so】
+### ALTERNATE CLOSE — two questions 【76 s spoken + 5 s beat = ~81 s · use when Checkpoint B says so】
 
 **[Same slide, questions 1 and 3 only. Question 2 (agent-to-agent semantics) is the cut: it is the most specialized of the three, and question 1 already opens the standards-community thread for Q&A.]**
 
