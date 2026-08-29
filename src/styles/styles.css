@@ -1302,9 +1302,9 @@ html, body {
 
 /* ---- BaaS 説明スライド（従来の LAMP 相当のスタックと、GeonicDB のカバー範囲） ---- */
 .stack-chart { display: block; width: 100%; height: auto; margin-top: 8px; font-family: var(--font-sans); }
-.stack-chart__name { font-size: 16px; font-weight: 800; fill: #fff; }
-.stack-chart__sub  { font-size: 12.5px; font-weight: 500; fill: rgba(255,255,255,.55); }
-.stack-chart__tech { font-size: 13.5px; fill: rgba(255,255,255,.5); }
+.stack-chart__name { font-size: 17px; font-weight: 800; fill: #fff; }
+.stack-chart__sub  { font-size: 13px; font-weight: 500; fill: rgba(255,255,255,.55); }
+.stack-chart__tech { font-size: 14px; fill: rgba(255,255,255,.5); }
 .stack-chart__label { font-size: 17px; font-weight: 800; }
 .stack-chart__labelsub { font-size: 13px; fill: rgba(255,255,255,.55); }
 

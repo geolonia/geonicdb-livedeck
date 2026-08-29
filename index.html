@@ -630,50 +630,40 @@
       <div class="slide__inner">
         <span class="kicker">提供形態 / BaaS</span>
         <h2 class="slide__title">すべてのアプリケーションのための<br /><span class="accent title-latin">バックエンドサービス</span></h2>
-        <p class="map-desc map-desc--wide">従来の Web アプリケーションは、OS からデータベース・Web サーバー・アプリ実装まで一式を自前で用意する必要がありました。GeonicDB は、そのうち<strong>画面より下をすべて</strong>引き受けます。</p>
-        <svg class="stack-chart" viewBox="0 0 1120 306" role="img"
-             aria-label="従来の Web アプリケーションに必要だった構成要素を、上から画面（フロントエンド）・アプリケーション実装・データベース・Web サーバー・サーバー/OS・運用の 6 段で示した図。最上段の画面だけがお客様がつくる範囲で、それより下のすべてを GeonicDB が引き受ける">
-          <title>従来は OS から一式を自前で用意していた。GeonicDB は画面より下をすべて引き受ける</title>
+        <p class="map-desc map-desc--wide">従来の Web アプリケーションは、サーバーの調達から Web サーバー・データベース・アプリ実装まで一式を自前で用意し、その運用まで抱える必要がありました。GeonicDB は、そのうち<strong>画面より下をすべて</strong>引き受けます。</p>
+        <svg class="stack-chart" viewBox="0 0 1120 242" role="img"
+             aria-label="従来の Web アプリケーションに必要だった構成要素を、上から画面（フロントエンド）・アプリケーション実装・データベース・Web サーバーの 4 段で示した図。最上段の画面だけがお客様がつくる範囲で、それより下のすべてを GeonicDB が引き受ける">
+          <title>従来は一式を自前で用意していた。GeonicDB は画面より下をすべて引き受ける</title>
 
           <!-- 画面（お客様がつくる範囲） -->
-          <rect x="1" y="1" width="810" height="42" rx="8" fill="rgba(255,255,255,.045)" stroke="rgba(251,164,12,.55)" stroke-width="1.4" />
-          <rect x="1" y="1" width="5" height="42" rx="2.5" fill="#fba40c" />
-          <text x="22" y="28" class="stack-chart__name">画面（フロントエンド）</text>
-          <text x="788" y="28" class="stack-chart__tech" text-anchor="end">HTML・CSS・JavaScript</text>
+          <rect x="1" y="1" width="810" height="52" rx="9" fill="rgba(255,255,255,.045)" stroke="rgba(251,164,12,.55)" stroke-width="1.4" />
+          <rect x="1" y="1" width="5" height="52" rx="2.5" fill="#fba40c" />
+          <text x="22" y="34" class="stack-chart__name">画面（フロントエンド）</text>
+          <text x="788" y="34" class="stack-chart__tech" text-anchor="end">HTML・CSS・JavaScript</text>
 
-          <!-- 以下 5 段が GeonicDB のカバー範囲 -->
-          <rect x="1" y="53" width="810" height="42" rx="8" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
-          <rect x="1" y="53" width="5" height="42" rx="2.5" fill="#fc6c00" />
-          <text x="22" y="80" class="stack-chart__name">アプリケーション実装<tspan class="stack-chart__sub" dx="12">API・認証認可・入力検証・リアルタイム配信</tspan></text>
-          <text x="788" y="80" class="stack-chart__tech" text-anchor="end">PHP・Python・Node.js</text>
+          <!-- 以下 3 段が GeonicDB のカバー範囲。サーバー・OS と運用は各段に含まれる -->
+          <rect x="1" y="63" width="810" height="52" rx="9" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+          <rect x="1" y="63" width="5" height="52" rx="2.5" fill="#fc6c00" />
+          <text x="22" y="96" class="stack-chart__name">アプリケーション実装<tspan class="stack-chart__sub" dx="12">API・認証認可・入力検証・リアルタイム配信</tspan></text>
+          <text x="788" y="96" class="stack-chart__tech" text-anchor="end">PHP・Python・Node.js</text>
 
-          <rect x="1" y="105" width="810" height="42" rx="8" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
-          <rect x="1" y="105" width="5" height="42" rx="2.5" fill="#fc6c00" />
-          <text x="22" y="132" class="stack-chart__name">データベース<tspan class="stack-chart__sub" dx="12">設計・冗長化・バックアップ</tspan></text>
-          <text x="788" y="132" class="stack-chart__tech" text-anchor="end">MySQL・PostgreSQL</text>
+          <rect x="1" y="125" width="810" height="52" rx="9" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+          <rect x="1" y="125" width="5" height="52" rx="2.5" fill="#fc6c00" />
+          <text x="22" y="158" class="stack-chart__name">データベース<tspan class="stack-chart__sub" dx="12">設計・冗長化・バックアップ・容量拡張</tspan></text>
+          <text x="788" y="158" class="stack-chart__tech" text-anchor="end">MySQL・PostgreSQL</text>
 
-          <rect x="1" y="157" width="810" height="42" rx="8" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
-          <rect x="1" y="157" width="5" height="42" rx="2.5" fill="#fc6c00" />
-          <text x="22" y="184" class="stack-chart__name">Web サーバー<tspan class="stack-chart__sub" dx="12">TLS 証明書・アクセス制御</tspan></text>
-          <text x="788" y="184" class="stack-chart__tech" text-anchor="end">Apache・Nginx</text>
-
-          <rect x="1" y="209" width="810" height="42" rx="8" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
-          <rect x="1" y="209" width="5" height="42" rx="2.5" fill="#fc6c00" />
-          <text x="22" y="236" class="stack-chart__name">サーバー・OS<tspan class="stack-chart__sub" dx="12">調達・容量見積もり・OS 更新</tspan></text>
-          <text x="788" y="236" class="stack-chart__tech" text-anchor="end">Linux・仮想マシン・機器</text>
-
-          <rect x="1" y="261" width="810" height="42" rx="8" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
-          <rect x="1" y="261" width="5" height="42" rx="2.5" fill="#fc6c00" />
-          <text x="22" y="288" class="stack-chart__name">運用<tspan class="stack-chart__sub" dx="12">24 時間監視・障害対応・脆弱性対応・増強</tspan></text>
-          <text x="788" y="288" class="stack-chart__tech" text-anchor="end">情報システム担当・保守事業者</text>
+          <rect x="1" y="187" width="810" height="52" rx="9" fill="rgba(252,108,0,.09)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+          <rect x="1" y="187" width="5" height="52" rx="2.5" fill="#fc6c00" />
+          <text x="22" y="220" class="stack-chart__name">Web サーバー<tspan class="stack-chart__sub" dx="12">TLS 証明書・アクセス制御・脆弱性対応</tspan></text>
+          <text x="788" y="220" class="stack-chart__tech" text-anchor="end">Apache・Nginx</text>
 
           <!-- カバー範囲を示す括弧 -->
-          <path d="M838 3 H828 V41 H838" fill="none" stroke="rgba(251,164,12,.6)" stroke-width="1.6" stroke-linejoin="round" />
-          <text x="852" y="28" class="stack-chart__label" fill="#fba40c">お客様がつくる</text>
+          <path d="M838 4 H828 V50 H838" fill="none" stroke="rgba(251,164,12,.6)" stroke-width="1.6" stroke-linejoin="round" />
+          <text x="852" y="34" class="stack-chart__label" fill="#fba40c">お客様がつくる</text>
 
-          <path d="M838 55 H828 V301 H838" fill="none" stroke="#fc6c00" stroke-width="2" stroke-linejoin="round" />
-          <text x="852" y="172" class="stack-chart__label" fill="#fc6c00">GeonicDB が引き受ける</text>
-          <text x="852" y="196" class="stack-chart__labelsub">調達・構築・保守は発生しません</text>
+          <path d="M838 66 H828 V236 H838" fill="none" stroke="#fc6c00" stroke-width="2" stroke-linejoin="round" />
+          <text x="852" y="145" class="stack-chart__label" fill="#fc6c00">GeonicDB が引き受ける</text>
+          <text x="852" y="169" class="stack-chart__labelsub">サーバーの調達・構築・運用は発生しません</text>
         </svg>
       </div>
     </section>
