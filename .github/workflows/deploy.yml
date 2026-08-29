@@ -5,12 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Pages ソース = "GitHub Actions"。artifact のアップロードと deploy-pages の
-# OIDC 認証に必要な権限のみ（gh-pages ブランチへは push しないので contents は read）。
+# Pages ソース = "GitHub Actions"。gh-pages ブランチへ push しなくなったので
+# contents は read で足りる。pages: write / id-token: write は必要なジョブ側で
+# 個別に付ける（依存を実行する build ジョブに OIDC を持たせないため）。
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # 公開中のデプロイは中断しない（中断すると CDN が中途半端な状態で固まりうる）。
 concurrency:
@@ -20,6 +19,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # configure-pages が Pages 設定を書き換えるため pages: write のみ。
+    permissions:
+      contents: read
+      pages: write
     outputs:
       # 公開後のスモークチェックで「ライブが最新バンドルか」を突き合わせるための
       # エントリ JS のファイル名（内容ハッシュ付き）。
@@ -62,6 +65,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # deploy-pages は OIDC でデプロイするため id-token: write が要る。
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
