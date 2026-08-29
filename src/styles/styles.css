@@ -1300,6 +1300,39 @@ html, body {
 .msg-log__summary { font-size: 14px; color: rgba(255,255,255,.82); }
 .msg-empty { margin: auto; font-size: 14px; color: rgba(255,255,255,.45); }
 
+/* ---- BaaS 説明スライド（「お客様が作る層」と「GeonicDB が引き受ける層」の 2 段スタック図） ---- */
+.baas-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
+/* .baas-layer は .cmp-col と同じ「見出しが枠線に乗る箱」の様式を踏襲し、差分のみ指定 */
+.baas-layer {
+  position: relative; border-radius: 12px; padding: 24px 24px 22px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
+}
+.baas-layer--core { border-color: rgba(252,108,0,.45); background: linear-gradient(120deg, rgba(252,108,0,.1), rgba(251,164,12,.03)); }
+.baas-layer__tag {
+  position: absolute; top: -11px; left: 20px; background: #17171d; padding: 0 10px;
+  font-size: 14px; font-weight: 800; color: rgba(255,255,255,.7);
+}
+.baas-layer__tag--accent { color: var(--cyan); }
+.baas-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.baas-app {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 8px; border-radius: 10px;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+  font-size: 14.5px; font-weight: 700; color: rgba(255,255,255,.86);
+}
+.baas-app span { font-size: 17px; line-height: 1; }
+/* 2 層をつなぐ導線。左右の罫線は装飾なので pseudo 要素で引く */
+.baas-wire { display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,.62); }
+.baas-wire::before, .baas-wire::after {
+  content: ""; flex: 1 1 auto; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(252,108,0,.55), transparent);
+}
+.baas-wire b { color: var(--cyan); font-weight: 800; }
+.baas-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.baas-card { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 14px 15px; }
+.baas-card__name { display: block; font-size: 15px; font-weight: 800; color: var(--amber); margin-bottom: 4px; }
+.baas-card__desc { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.72); }
+
 /* ---- スケールアップ説明スライド（従来 vs GeonicDB のコスト構造を対比） ---- */
 .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 42px; }
 /* .cmp-col は .std-card と同じ面（背景・枠・角丸）を踏襲し、差分のみ指定 */
