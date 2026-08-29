@@ -625,8 +625,8 @@
         <h2 class="slide__title">すべてのアプリケーションのための<br /><span class="accent title-latin">バックエンドサービス</span></h2>
         <p class="map-desc map-desc--wide">従来の Web アプリケーションは、サーバーの調達から Web サーバー・データベース・アプリ実装まで一式を自前で用意し、その運用まで抱える必要がありました。</p>
         <svg class="stack-chart" viewBox="0 0 1120 282" role="img"
-             aria-label="従来の Web アプリケーションに必要だった構成要素を、上からフロントエンド・Web サーバー（API 公開）・アプリケーション実装・データベースの 4 段で示した図。最上段のフロントエンドは静的ホスティングサービスに置くだけで済み、それより下のすべてを GeonicDB が引き受ける">
-          <title>従来は一式を自前で用意していた。API の公開から下はすべて GeonicDB が引き受ける</title>
+             aria-label="従来の Web アプリケーションに必要だった構成要素を、上からフロントエンド・Web サーバー（API 公開）・アプリケーション実装・データベースの 4 段で示した図。最上段のフロントエンドは静的ホスティングサービスに置くだけで済み、それより下のすべてを GeonicDB が提供する">
+          <title>従来は一式を自前で用意していた。API の公開から下はすべて GeonicDB が提供する</title>
 
           <!-- フロントエンド。配信は残るが静的ホスティングで済む（GeonicDB のカバー範囲外） -->
           <rect x="1" y="1" width="810" height="62" rx="9" fill="rgba(255,255,255,.045)" stroke="rgba(251,164,12,.55)" stroke-width="1.4" />
@@ -652,8 +652,8 @@
 
           <!-- カバー範囲を示す括弧 -->
           <path d="M838 76 H828 V276 H838" fill="none" stroke="#fc6c00" stroke-width="2" stroke-linejoin="round" />
-          <text x="852" y="170" class="stack-chart__label" fill="#fc6c00">GeonicDB が引き受ける</text>
-          <text x="852" y="194" class="stack-chart__labelsub">サーバーの調達・構築・運用は発生しません</text>
+          <image href="assets/geonic-mark.svg" x="852" y="136" width="54" height="37.3" aria-hidden="true" />
+          <text x="852" y="206" class="stack-chart__label" fill="#fc6c00">GeonicDB が提供</text>
         </svg>
         <p class="callout callout--soft">データベースをアプリケーションごとに用意すると、コストが増えるだけでなく、<strong>データのサイロ化</strong>を招きます。<br />GeonicDB は <strong>NGSI-LD で標準化された API</strong> を提供するため、データのサイロ化とベンダーロックインを防ぐことができます。</p>
       </div>
