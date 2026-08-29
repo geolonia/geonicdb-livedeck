@@ -174,8 +174,8 @@ pre { font-family: var(--font-mono); font-size: 14px; line-height: 1.55; backgro
    KEYNOTE-SPECIFIC — components the product deck does not have
    =================================================================== */
 
-/* embed slot: where a live cmd_751 widget (QR / map / agent) will be
-   dropped in later. Renders a clearly-labeled placeholder until then. */
+/* embed slot: where a live widget (QR / map / agent) is shown, or a
+   clearly-labeled placeholder for content that only exists at showtime. */
 .embed-slot {
   border: 2px dashed rgba(252,108,0,.55); border-radius: 16px; background: rgba(252,108,0,.05);
   display: flex; flex-direction: column; align-items: center; justify-content: center;

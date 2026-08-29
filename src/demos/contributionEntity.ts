@@ -21,7 +21,7 @@ export const CONTRIBUTION_MODEL = {
   type: "Contribution",
   domain: "FOSS4G Hiroshima 2026 ライブデモ",
   description:
-    "geonicdb-livedeck / geonicdb-console: 会場投稿（出身地＋名物）の NGSI-LD リンクトデータデモ（cmd_751）",
+    "geonicdb-livedeck / geonicdb-console: 会場投稿（出身地＋名物）の NGSI-LD リンクトデータデモ",
   propertyDetails: {
     origin: { ngsiType: "Property", valueType: "string", example: "サンプル県", required: true, description: "出身地（都道府県 / 国レベル）", validation: { minLength: 1, maxLength: 100 } },
     specialty: { ngsiType: "Property", valueType: "string", example: "サンプル名物", required: true, description: "その土地の名物（自由入力）", validation: { minLength: 1, maxLength: 100 } },
