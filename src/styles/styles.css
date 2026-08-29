@@ -1317,6 +1317,26 @@ html, body {
 .cmp-chart { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
 /* スライド幅いっぱいの費用内訳グラフ */
 .cost-chart { display: block; width: 100%; height: auto; margin-top: 20px; font-family: var(--font-sans); }
+/* コスト削減のアニメーション。スライドが表示されるたびに再生される
+   （.is-active が付け直されるとアニメーションも再スタートする） */
+.cost-chart .cut-ghost { opacity: 0; }
+.cost-chart .cut-note  { opacity: 0; }
+.slide.is-active .cost-chart .cut-label { animation: costCutLabel .45s var(--ease) .9s both; }
+.slide.is-active .cost-chart .cut-fill  { animation: costCut .9s cubic-bezier(.4,0,.2,1) 1s both; }
+.slide.is-active .cost-chart .cut-ghost { animation: costGhostIn .5s var(--ease) 1.35s both; }
+.slide.is-active .cost-chart .cut-note  { animation: costNoteIn .45s var(--ease) 1.75s both; }
+@keyframes costCut      { to { width: 0; } }
+@keyframes costCutLabel { to { opacity: 0; } }
+@keyframes costGhostIn  { from { opacity: 0; } to { opacity: .6; } }
+@keyframes costNoteIn   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-active .cost-chart .cut-label,
+  .slide.is-active .cost-chart .cut-fill,
+  .slide.is-active .cost-chart .cut-ghost,
+  .slide.is-active .cost-chart .cut-note { animation: none; }
+  .cost-chart .cut-ghost { opacity: .6; }
+  .cost-chart .cut-note  { opacity: 1; }
+}
 /* 図解の下に置く一行の要点ボックス */
 .callout {
   margin-top: 18px; padding: 12px 20px;
