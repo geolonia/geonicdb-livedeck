@@ -1313,6 +1313,8 @@ html, body {
 }
 .cmp-col__head--accent { color: var(--cyan); }
 .cmp-chart { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
+/* スライド幅いっぱいの費用内訳グラフ */
+.cost-chart { display: block; width: 100%; height: auto; margin-top: 26px; font-family: var(--font-sans); }
 .cmp-col__body { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); margin: auto 0 0; }
 .cmp-col__body strong { color: var(--cyan); font-weight: 800; }
 .cmp-col__body .cmp-warn { color: #ff8a73; }
