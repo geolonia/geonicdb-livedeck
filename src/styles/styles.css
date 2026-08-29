@@ -1334,6 +1334,9 @@ html, body {
   .slide.is-active .cost-chart .cut-fill,
   .slide.is-active .cost-chart .cut-ghost,
   .slide.is-active .cost-chart .cut-note { animation: none; }
+  /* アニメーションの静止状態（削減後）をそのまま表示する。
+     .cut-fill を残すとゴーストがグレーの帯に重なり、破線が意味を失う */
+  .cost-chart .cut-fill  { transform: scaleX(0); }
   .cost-chart .cut-ghost { opacity: .6; }
   .cost-chart .cut-note  { opacity: 1; }
 }
