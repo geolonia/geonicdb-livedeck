@@ -161,7 +161,7 @@
   <div class="slide-cue">SLIDE 1 — QR code, full screen. Nothing else. No title, no logo.</div>
   <div class="script">
     <p>Good morning. Don't listen to me yet.</p>
-    <p>Before I introduce myself, please take out your phone. Point it at this code. A small form opens. Three steps. Pick a category: mobility, disaster, environment, community, or other. Write one line about a problem near you — something worth fixing. Then drop a pin on the map. Your neighborhood, or this venue, is fine.</p>
+    <p>Before I introduce myself, please take out your phone. Point it at this code. A small form opens. Two questions. Where are you from — prefecture or country. What is your hometown famous for — its specialty. A third field is optional: a hidden local spot the maps don't know.</p>
     <p>That's it. No account. No app. I will tell you why in about twenty minutes. For now, I make you one promise: what you just typed will not disappear. It will come back at the end of this talk.</p>
     <div class="stage">[Map inset appears bottom-right of the screen and stays there for the rest of the talk. First points appear within seconds. Pause — let the room notice the dots landing.]</div>
     <p>There it goes. Bottom-right corner — those dots are you. Keep posting whenever a thought strikes you. The form stays open for the whole talk. That corner of the screen is now live infrastructure. We will come back to it.</p>
@@ -219,8 +219,8 @@
   <div class="script">
     <div class="stage">[Pick one good post from the inset — ideally one of the two seeded colleague posts if the early crop is thin. Put its raw JSON full screen.]</div>
     <p>Now — look at what you have been making while I talked.</p>
-    <p>This is one of your posts. Someone in this room typed one line on a phone, four minutes ago. This is what it became before it reached the database. Look at the location. Not two mystery numbers — a typed <code>GeoProperty</code>. The order is fixed by the standard: longitude, latitude. Look at the category. Not free text — a value from a fixed list. Anything else was rejected. There is a timestamp with a defined meaning. And there is a permanent ID, so this small complaint about a broken streetlight can be cited forever.</p>
-    <p>Here is the point: <b>you did not fill in a schema.</b> You typed a sentence and tapped a map. The data model did the agreeing for you. Two hundred strangers are producing interoperable data right now — without ever having met.</p>
+    <p>This is one of your posts. Someone in this room typed it on a phone, four minutes ago. This is what it became before it reached the database. Look at the hometown. Not a stray string in a comment box — a typed <code>Property</code>, defined by a published data model. Look at the specialty. The same. Anything outside that model was rejected — it never reached the database. There is a timestamp with a defined meaning. And there is a permanent ID, so this small note about a hometown and its specialty can be cited forever.</p>
+    <p>Here is the point: <b>you did not fill in a schema.</b> You answered two small questions. The data model did the agreeing for you. Two hundred strangers are producing interoperable data right now — without ever having met.</p>
     <p>That is what a semantic layer is. Not paperwork. An agreement, enforced by the platform, so that meaning travels with the data — instead of living in a README nobody reads.</p>
   </div>
 </section>
@@ -313,7 +313,7 @@
   <div class="slide-cue">SLIDE 12 — "What a semantic layer gives an agent." Four tight bullets. The inset map is visibly full by now.</div>
   <div class="script">
     <p>Now it is time to keep my promise. For twenty minutes, that corner of the screen has been collecting your posts as validated NGSI-LD entities. In a moment, an AI agent will read them. Here is exactly what the semantic layer hands it.</p>
-    <p><b>Typed geography</b> — no coordinate guessing; location queries are native, not string parsing. <b>Validated writes</b> — every post was checked against a schema before it was saved. Wrong data fails immediately, with a clear error. It never enters the database. Remember the 588 silent nulls from my story? That is the failure this design prevents. <b>Relationships an agent can follow</b> — a graph to walk, instead of joins to invent. <b>And one MCP endpoint</b> — the agent discovers the tools and the data models by itself. Nobody teaches it this API.</p>
+    <p><b>Typed attributes</b> — the agent knows which field means what, before it reads a single record. <b>Validated writes</b> — every post was checked against a schema before it was saved. Wrong data fails immediately, with a clear error. It never enters the database. Remember the 588 silent nulls from my story? That is the failure this design prevents. <b>Relationships an agent can follow</b> — a graph to walk, instead of joins to invent. <b>And one MCP endpoint</b> — the agent discovers the tools and the data models by itself. Nobody teaches it this API.</p>
     <p>Enough claiming. Let's query.</p>
   </div>
 </section>
@@ -330,21 +330,21 @@
     <p>This is what two hundred people look like as a dataset.</p>
     <div class="stage">[Beat. Let the full map land — this is the visual payoff of the whole talk. Then bring up the agent side.]</div>
     <p>Now the agent. This is an AI agent, connecting to GeonicDB's <code>/mcp</code> endpoint — the same live database your phones have been writing to. Nobody taught it this API. It discovers the tools and the data models through the standard. Watch.</p>
-    <p><b>First question:</b> "How many posts are there, and how do they break down by category?"</p>
+    <p><b>First question:</b> "How many posts are there — and how many of them are our seeds?"</p>
     <div class="stage">[Agent queries live; counts appear. Narrate what it did, not just what it found: it called the entities tool with a typed query — no scraping, no guessing.]</div>
-    <p><b>Second:</b> "Where are the geographic clusters? What are people posting about near this venue versus elsewhere?"</p>
-    <div class="stage">[Geo query runs against typed GeoProperties. Point at a cluster; read one or two real posts aloud.]</div>
+    <p><b>Second:</b> "These posts mix Japanese, English, and more. Which ones mean the same thing? Group them. Quote your evidence."</p>
+    <div class="stage">[Origins and specialties are free text in mixed languages; the agent groups posts that mean the same thing and quotes the originals as evidence. Point at the map; read one or two quoted strings aloud. The agent will note, by itself, that it was given no dictionary — let that line land.]</div>
     <p><b>Third:</b> "In three sentences: what does this room care about?"</p>
     <div class="stage">[The digest appears. Read it aloud, slowly. This is the promise from minute two, kept.]</div>
     <p>And a live dataset deserves a live question — someone shout one. Ask this data anything.</p>
-    <div class="stage">[Take ONE audience question, repeat it clearly into the mic, pass it to the agent. If none comes, use the prepared spare: "Which category is most common within one kilometer of this venue?"]</div>
+    <div class="stage">[Take ONE audience question, repeat it clearly into the mic, pass it to the agent. If none comes, use the prepared spare: "Which hometown appears most often, and what is it famous for?"]</div>
   </div>
 
   <div class="slide-cue">SLIDE 14 — The meta-point. One sentence, full screen.</div>
   <div class="script">
     <p>Let me tell you what you just saw — because it was not an AI demo.</p>
     <div class="quoteline">"Two hundred strangers just produced an interoperable dataset in twenty minutes — without a single meeting about schema. The standard held the meeting for you."</div>
-    <p>No working group. No data dictionary. No integration project. You typed a sentence. The contract did the rest. And an agent none of you have ever met just used your data correctly, on the first try. That is the thing open data alone cannot do — and open standards can.</p>
+    <p>No working group. No data dictionary. No integration project. You answered two questions. The contract did the rest. And an agent none of you have ever met just used your data correctly, on the first try. That is the thing open data alone cannot do — and open standards can.</p>
   </div>
 </section>
 

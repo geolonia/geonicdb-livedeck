@@ -417,6 +417,27 @@ html, body {
 .fb-count { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--cyan); }
 .fb-note-text { font-size: 13px; color: rgba(255,255,255,.55); }
 
+/* ===== FOSS4G Hiroshima 2026 会場投稿 slide (contribution) ===== */
+/* 見出し・説明文の英語併記行(小さめ・少し薄く) */
+.cb-en { display: block; font-size: .62em; font-weight: 600; color: rgba(255,255,255,.55); margin-top: 2px; }
+.cb-en-break { display: none; }
+.fb-field__label .cb-en { display: inline; font-size: .82em; margin: 0 0 0 6px; }
+/* テキスト入力(feedback の select と見た目を揃える) */
+.cb-input { background: rgba(255,255,255,.05); }
+.cb-input[aria-invalid="true"] { border-color: #e8401e; }
+.cb-err { min-height: 14px; font-size: 11.5px; color: #ff9b7a; }
+/* 集計結果タブ: 出身地・名物の件数上位を横棒で(円グラフより単純・確実に動くことを優先) */
+.cb-bar-cols { flex: 1 1 auto; min-height: 0; display: flex; gap: 28px; overflow: auto; }
+.cb-bar-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.cb-bar-list { display: flex; flex-direction: column; gap: 7px; }
+.cb-bar-row { display: grid; grid-template-columns: minmax(70px, 34%) 1fr auto; align-items: center; gap: 8px; }
+.cb-bar-label { font-size: 12px; color: rgba(255,255,255,.85); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cb-bar-track { height: 10px; border-radius: 5px; background: rgba(255,255,255,.08); overflow: hidden; }
+.cb-bar-fill { display: block; height: 100%; background: var(--cyan); border-radius: 5px; transition: width .5s cubic-bezier(.22,.61,.36,1); }
+.cb-bar-n { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,.6); text-align: right; min-width: 20px; }
+/* 主催者による事前仕込み投稿の明示バッジ(会場のデータと偽らない) */
+.cb-tag--seed { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(57,214,198,.16); color: #7fe9d6; white-space: nowrap; }
+
 /* ===== Illustration slide ===== */
 /* 上下に余白を設けて図版を少し内側に収める（端に張り付かないように）。 */
 .slide--illus { padding: 40px 0; }

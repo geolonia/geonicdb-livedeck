@@ -11,6 +11,8 @@ import { initAiNative } from "./demos/aiNative";
 import { initTitleQr } from "./demos/titleQr";
 import { initDual } from "./demos/dual";
 import { initFeedback } from "./demos/feedback";
+import { initContribution } from "./demos/contribution";
+import { initContributionMap } from "./demos/contributionMap";
 import { initMap } from "./demos/map";
 import { initShelter } from "./demos/shelter";
 import { initCollab } from "./demos/collab";
@@ -23,6 +25,8 @@ function boot(): void {
   initAiNative();
   initDual();
   initFeedback();
+  initContribution();
+  initContributionMap();
   initMap();
   initShelter();
   initCollab();

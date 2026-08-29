@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond the API — FOSS4G Hiroshima 2026 投影資料(日本語版)</title>
+<meta name="description" content="FOSS4G Hiroshima 2026 基調講演「Beyond the API」の投影資料 日本語版(社内確認・配布用)。">
+<link rel="canonical" href="https://geolonia.github.io/geonicdb-livedeck/keynote/ja/" />
+<link rel="icon" type="image/svg+xml" href="../../assets/geonic-mark.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../keynote.css" />
+<link rel="alternate" hreflang="en" href="https://geolonia.github.io/geonicdb-livedeck/keynote/" />
+</head>
+<body>
+<main id="deck" class="deck">
+
+  <!-- 1 · Seed — QR全画面 -->
+  <section class="slide slide--title slide--noshield" data-bg="title" data-slide="seed">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner title__inner">
+      <span class="kicker">まずスマホをお出しください</span>
+      <p class="lead" style="max-width:520px;">質問は二つ。出身はどちらか（都道府県か国名で）、その土地の名物は何か。任意で、地元の隠れ名所も。アカウント不要・アプリ不要。</p>
+    </div>
+    <div class="title__qr">
+      <div class="title__qr-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" shape-rendering="crispEdges" style="width:100%;height:100%;" role="img" aria-label="https://geolonia.github.io/geonicdb-livedeck/#12"><path fill="#ffffff" d="M0 0h35v35H0z"/><path stroke="#17171d" d="M1 1.5h7m2 0h1m3 0h1m2 0h2m1 0h2m2 0h1m2 0h7M1 2.5h1m5 0h1m2 0h1m3 0h5m4 0h1m3 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h6m1 0h4m2 0h3m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m2 0h2m2 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h3m1 0h2m1 0h1m2 0h1m4 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h3m2 0h4m3 0h1m1 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m2 0h1m1 0h2m5 0h1m1 0h2M1 9.5h1m1 0h5m2 0h1m2 0h4m1 0h1m4 0h3m1 0h5M1 10.5h2m1 0h2m4 0h1m1 0h2m3 0h1m1 0h4m1 0h1m2 0h2m1 0h2m1 0h1M1 11.5h1m1 0h3m1 0h3m2 0h2m2 0h2m1 0h1m5 0h2m2 0h1m1 0h2M1 12.5h1m2 0h2m2 0h1m4 0h1m1 0h1m1 0h1m3 0h3m3 0h1m1 0h5M3 13.5h2m2 0h2m2 0h1m1 0h1m2 0h1m2 0h1m4 0h3m2 0h2M1 14.5h1m2 0h1m1 0h1m7 0h4m3 0h1m1 0h2m2 0h1m2 0h4M2 15.5h2m1 0h4m2 0h2m5 0h3m1 0h1m3 0h2m3 0h2M2 16.5h1m1 0h1m1 0h1m4 0h1m2 0h1m2 0h1m1 0h13M1 17.5h7m2 0h1m2 0h2m3 0h4m1 0h1m1 0h2m1 0h2m3 0h1M1 18.5h1m1 0h3m5 0h1m5 0h6m1 0h1m2 0h2m1 0h2m1 0h1M4 19.5h1m2 0h1m1 0h1m3 0h1m1 0h4m2 0h2m3 0h1m1 0h2m1 0h2M3 20.5h1m2 0h1m1 0h1m4 0h1m1 0h1m1 0h3m2 0h3m1 0h1m1 0h5M5 21.5h1m1 0h2m6 0h1m1 0h1m2 0h2m2 0h3m1 0h3m2 0h1M1 22.5h3m1 0h2m3 0h2m2 0h3m1 0h2m2 0h3m2 0h1m3 0h1m1 0h1M1 23.5h1m5 0h1m1 0h2m1 0h7m2 0h2m3 0h1m1 0h1m3 0h1M1 24.5h1m1 0h2m3 0h3m2 0h2m1 0h1m2 0h1m2 0h2m2 0h2m1 0h1m1 0h1M1 25.5h1m3 0h3m2 0h1m2 0h4m1 0h1m6 0h5M9 26.5h1m1 0h3m1 0h1m3 0h4m2 0h1m3 0h1m1 0h1m1 0h1M1 27.5h7m2 0h2m1 0h1m2 0h2m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m1 0h2M1 28.5h1m5 0h1m1 0h2m1 0h2m1 0h1m1 0h1m2 0h3m1 0h2m3 0h3m1 0h1M1 29.5h1m1 0h3m1 0h1m1 0h3m7 0h1m2 0h1m2 0h6m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m2 0h1m2 0h3m2 0h2m1 0h2M1 31.5h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h1m3 0h2m2 0h3m1 0h2m1 0h2M1 32.5h1m5 0h1m5 0h1m3 0h1m2 0h3m3 0h1m2 0h3M1 33.5h7m1 0h4m1 0h1m3 0h1m1 0h1m2 0h3m2 0h1m3 0h1"/></svg>
+      </div>
+      <p class="title__qr-cap">投稿はその場でエンティティになる。<br><span class="mono">geolonia.github.io/geonicdb-livedeck/#12</span></p>
+    </div>
+  </section>
+
+  <!-- 2 · Title -->
+  <section class="slide slide--title" data-bg="title" data-slide="title">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner title__inner">
+      <img class="brand-logo brand-logo--h" src="../../assets/geonic-logo-h-dark.svg" alt="GeonicDB" />
+      <h1 class="title__headline">Beyond the API</h1>
+      <p class="title__sub">AI時代のデータ連携に要るのは、オープンデータだけでなく、オープンな標準である。</p>
+      <div class="title__meta">
+        <span class="chip">関 治之 · 株式会社Geolonia</span>
+        <span class="chip">FOSS4G Hiroshima 2026 · 2026-09-03</span>
+      </div>
+    </div>
+    <div class="title__foot mono">Beyond the API</div>
+  </section>
+
+  <!-- 3 · オープンデータの10年、圧縮版(B案: 元の2枚を1枚へ統合。聴衆は当事者ゆえ説明を絞る) -->
+  <section class="slide" data-bg="dark" data-slide="decade">
+    <div class="slide__inner">
+      <span class="kicker">アクセスは解決した。意味はまだだ。</span>
+      <h2 class="slide__title slide__title--tight">サイロは壊れていない。ライセンスが良くなっただけだ</h2>
+      <p class="lead">ポータルごとにスキーマが違う。APIごとにフィールド名も、日付形式も、座標の並びも違う。</p>
+      <ul class="bullets">
+        <li>オープンデータ運動は「アクセスできるか」という問いを<strong>解決した</strong>。この功績は疑わない。</li>
+        <li>どのAPIも文書化され、ライセンスも開かれている——それでもサイロはサイロのままだ。</li>
+        <li>人はこの手間をプロジェクトごとに一度払う。<strong>AIエージェントは、クエリのたびに払わされる。</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · 意味のギャップ(柱a) -->
+  <section class="slide" data-bg="dark" data-slide="meaning-gap">
+    <div class="slide__inner">
+      <span class="kicker">柱 a · 意味論</span>
+      <h2 class="slide__title slide__title--tight">機械可読であることは、機械解釈可能であることとは違う</h2>
+      <div class="quad">
+        <div class="quad__card"><h3>同一性</h3><p>「中央コミュニティセンター」と「中央公民館」は同じ建物か？</p></div>
+        <div class="quad__card"><h3>意味論</h3><p><code>capacity</code>——設計上の定員か、今そこにいる人数か？</p></div>
+        <div class="quad__card"><h3>単位・慣習</h3><p>NGSIv2は緯度・経度の順。NGSI-LD/GeoJSONは経度・緯度の順。同じ数字が、地球上の別の場所を指す。</p></div>
+        <div class="quad__card"><h3>時間</h3><p>いつ計測されたか？いつまで有効か？誰が更新したか？</p></div>
+      </div>
+      <p class="footnote">人間は何十年もこの手間を静かに引き受けてきた。AIエージェントはこの曖昧さをそのまま受け継ぎ——「これは変だ」とは決して言わない。</p>
+    </div>
+  </section>
+
+  <!-- 5 · 種明かし — ライブJSON -->
+  <section class="slide" data-bg="dark" data-slide="reveal" data-live="true">
+    <div class="slide__inner">
+      <span class="kicker">種明かし</span>
+      <h2 class="slide__title slide__title--tight">スキーマを埋めたのではない。二つの質問に答えただけだ</h2>
+      <div class="embed-slot" style="min-height:280px;">
+        <span class="embed-slot__tag">仕込みサンプル</span>
+        <span class="embed-slot__msg">登壇当日は、この枠を <code>geolonia.github.io/geonicdb-livedeck/#12</code> から取得した実際の会場投稿へ差し替える。以下は実スキーマに基づく仕込み例(<code>seeded: true</code> により会場投稿ではないと明示)。</span>
+        <pre class="mono" style="margin-top:6px; max-width:720px; text-align:left;">{
+  "id": "urn:ngsi-ld:Contribution:seed-01",
+  "type": "Contribution",
+  "origin": { "type": "Property", "value": "香川県" },
+  "specialty": { "type": "Property", "value": "讃岐うどん" },
+  "seeded": { "type": "Property", "value": true },
+  "submittedAt": { "type": "Property", "value": "2026-09-03T09:58:00.000Z" }
+}</pre>
+      </div>
+      <p class="footnote">公開されたデータモデルが定義する型付き<code>Property</code>値であり、モデルの外にあるものは拒否される。真偽値の<code>seeded</code>フラグが、この仕込み例と会場からの実投稿とを区別する。恒久的なID。二百人の見知らぬ人々が、一度も打合せせずに相互運用可能なデータを作った。</p>
+    </div>
+  </section>
+
+  <!-- 6 · 反証: 確信の罠(最も強い一つとして残す) -->
+  <section class="slide" data-bg="dark" data-slide="objection">
+    <div class="slide__inner">
+      <span class="kicker">柱 a · 想定される反論</span>
+      <h2 class="slide__title slide__title--tight">「AIが賢くなれば、勝手に解決するのでは？」</h2>
+      <p class="lead">賢いモデルほど、曖昧なデータでの失敗が減るわけではない。<em>より上手く</em>失敗する——間違いがより正しく見えるようになる。</p>
+      <div class="factbox">
+        <span class="factbox__label">実際に起きたこと(実測・誇張なし)</span>
+        <ul>
+          <li>AIが実在しない文字エンコーディング名を書いた——二回連続で(<code>'shift-jis'</code>、次に<code>'shiftjis'</code>)。</li>
+          <li>変換スクリプトはエラーなく完走した。だが未処理の改行コードが、588件全ての「定員」欄を静かにnullへ変えていた。「完了」と報告された。</li>
+          <li><strong>「動いた」は「正しい」を意味しない。</strong></li>
+        </ul>
+      </div>
+      <div class="mic-cue">🎙️ 登壇者ご自身の体験談<small>目安60〜90秒・台詞はここに書かない(登壇スクリプト側を参照)</small></div>
+    </div>
+  </section>
+
+  <!-- 7 · これは繰り返し起きてきた(反証・残す一つ: 「AIが賢くなれば不要」への直接反証) -->
+  <section class="slide" data-bg="dark" data-slide="precedent">
+    <div class="slide__inner">
+      <span class="kicker">柱 a · これは前にも起きた</span>
+      <h2 class="slide__title slide__title--tight">機械が賢くなるたび、構造は増えてきた——減ったことは一度もない</h2>
+      <div class="history">
+        <span class="history__step">robots.txt</span><span class="history__arrow">→</span>
+        <span class="history__step">サイトマップ</span><span class="history__arrow">→</span>
+        <span class="history__step">schema.org</span><span class="history__arrow">→</span>
+        <span class="history__step">OpenAPI</span><span class="history__arrow">→</span>
+        <span class="history__step">function calling</span><span class="history__arrow">→</span>
+        <span class="history__step">llms.txt</span><span class="history__arrow">→</span>
+        <span class="history__step">MCP</span>
+      </div>
+      <p class="lead" style="margin-top:22px;">AIエージェントは<em>行動する</em>。単位の読み違いはもう笑い話では済まない——誤った行動になり、下流の全エージェントがそれを真実として扱う。</p>
+      <div class="quoteline">「賢いエージェントほど、意味は要らなくなるのではない。より速く、より多くの意味を、より高い賭け金で消費するのだ。」</div>
+    </div>
+  </section>
+
+  <!-- 8 · なぜNGSI-LDに賭けたか(柱b) -->
+  <section class="slide" data-bg="dark" data-slide="bet">
+    <div class="slide__inner">
+      <span class="kicker">柱 b · 賭けた先</span>
+      <h2 class="slide__title slide__title--tight">私たちはNGSI-LD(ETSI GS CIM 009)という標準に賭けた</h2>
+      <ul class="bullets">
+        <li><strong>エンティティ</strong>——安定したIDを持つ「もの」。</li>
+        <li><strong>プロパティ</strong>——その名前、その定員。</li>
+        <li><strong>リレーションシップ</strong>——推測ではなく、エージェントがたどれるリンク。</li>
+        <li><strong>GeoProperty / @context</strong>——位置・時間・共有語彙が、標準に組み込まれている。</li>
+      </ul>
+      <p class="footnote">意味はデータモデルに宿る。各APIの説明書には宿らない。それがこの標準の要点だ。</p>
+    </div>
+  </section>
+
+  <!-- 9 · 譲れなかった四つの要件 -->
+  <section class="slide" data-bg="dark" data-slide="requirements">
+    <div class="slide__inner">
+      <span class="kicker">柱 b · なぜOrion-LDをそのまま使わなかったか</span>
+      <h2 class="slide__title slide__title--tight">譲れなかった四つの要件</h2>
+      <ul class="bullets">
+        <li><strong>フルマネージド・サーバーレス。</strong>自治体が自前でブローカーを24時間運用すべきではない。</li>
+        <li><strong>1エンジンで2プロトコル。</strong>NGSIv2(レガシー)とNGSI-LD(将来)を、同じデータの上で。</li>
+        <li><strong>エージェントを一級市民として。</strong>ブローカー自体にMCPを、最初のコミットから。</li>
+        <li><strong>セキュリティは内蔵、後付けではない。</strong>単一のポリシー層、送信者に紐づくトークン。</li>
+      </ul>
+      <p class="footnote">これは<em>私たちの</em>要件として述べている——上流プロジェクトへの批判ではない。</p>
+    </div>
+  </section>
+
+  <!-- 10 · GeonicDBを一枚で -->
+  <section class="slide" data-bg="dark" data-slide="geonicdb-onepage">
+    <div class="slide__inner">
+      <span class="kicker">柱 b · 製品</span>
+      <h2 class="slide__title slide__title--tight">GeonicDBを、一枚で</h2>
+      <div class="history" style="margin-top:8px;">
+        <span class="history__step">書き込み — 標準がその場で検証</span><span class="history__arrow">→</span>
+        <span class="history__step">保存</span><span class="history__arrow">→</span>
+        <span class="history__step">アプリ向けAPI</span>
+        <span class="history__step">エージェント向けMCP</span>
+      </div>
+      <p class="lead" style="margin-top:24px;">両プロトコルを1エンジンで。フルマネージドゆえ自治体はサーバーを運用しない。皆様が投稿した地図こそ、稼働中のGeonicDBそのもの。</p>
+    </div>
+  </section>
+
+  <!-- 10b · ETSI適合度 — livedeck既存スライド(data-slide="etsi-conformance")の内容をそのまま流用し柱bへ組込み -->
+  <section class="slide" data-bg="dark" data-slide="etsi-conformance">
+    <div class="slide__inner">
+      <span class="kicker">自社計測であり、第三者認証ではない</span>
+      <h2 class="slide__title slide__title--tight">ETSI NGSI-LD 適合度 84.2%</h2>
+      <div class="ha-hero">
+        <div class="ha-hero__main">
+          <span class="ha-hero__num">84.2<small>%</small></span>
+          <span class="ha-hero__label">870 / 1033 項目</span>
+        </div>
+        <div class="ha-hero__desc">
+          <p>ETSI GS CIM 009(NGSI-LD)適合性テストスイート(全1033項目)を、GeonicDBと主要OSSコンテキストブローカー3製品へ<strong>同一条件で</strong>実行した。</p>
+          <p class="ha-hero__note">自社計測・計測日2026-08-28・GeonicDB v0.17.0。「準拠している」とは言い換えない——建て付け部の「サブセット」という誠実な言葉が、ここにも当てはまる。</p>
+        </div>
+      </div>
+      <div class="metrics metrics--4">
+        <div class="metric metric--lead"><span class="metric__num">84.2<small>%</small></span><span class="metric__label">GeonicDB</span></div>
+        <div class="metric"><span class="metric__num">51.6<small>%</small></span><span class="metric__label">Stellio</span></div>
+        <div class="metric"><span class="metric__num">36.5<small>%</small></span><span class="metric__label">Scorpio</span></div>
+        <div class="metric"><span class="metric__num">24.6<small>%</small></span><span class="metric__label">FIWARE Orion-LD</span></div>
+      </div>
+      <p class="footnote">出典: ETSI GS CIM 009適合性テストスイートを用いた自社計測(4ブローカーへ同一条件で実行)。測ったのであって、勝負に勝ったのではない。バージョン・設定条件は必要に応じて提示する。</p>
+    </div>
+  </section>
+
+  <!-- 11 · 払った代償と得たもの -->
+  <section class="slide" data-bg="dark" data-slide="cost-bought">
+    <div class="slide__inner">
+      <span class="kicker">柱 b · 正直な代償</span>
+      <h2 class="slide__title slide__title--tight">払った代償と、得たもの</h2>
+      <div class="twocol">
+        <div class="twocol__col twocol__col--cost">
+          <h3>代償</h3>
+          <ul>
+            <li>約3,200件の適合性テストシナリオ。製品コード1行につきテスト1.7行。</li>
+            <li>CIM 009 v1.9.1の<em>サブセット</em>——「準拠」ではない。</li>
+            <li>上流コミュニティが我々のバグを拾ってはくれない。標準は動き続け、追随はこちらの仕事になった。</li>
+          </ul>
+        </div>
+        <div class="twocol__col twocol__col--gain">
+          <h3>得たもの</h3>
+          <ul>
+            <li>自治体がサーバーを運用せずに導入できるサービス。</li>
+            <li>1エンジン・2プロトコル。</li>
+            <li>後付けでなく、最初からの一級市民としてのエージェント。</li>
+            <li>追加サーバーなしのセキュリティ。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="quoteline">「実装は手放せた。標準を手放さなかったから。」</div>
+      <p class="footnote">GeonicDBのオープンソース化は<strong>予定している</strong>——時期は明言しないが、この場で申し上げておく。</p>
+    </div>
+  </section>
+
+  <!-- 12 · 見返り(柱c) -->
+  <section class="slide" data-bg="dark" data-slide="payoff">
+    <div class="slide__inner">
+      <span class="kicker">柱 c · エージェントが得るもの</span>
+      <h2 class="slide__title slide__title--tight">意味の層がエージェントに渡すもの</h2>
+      <ul class="bullets">
+        <li><strong>型付きの地理情報</strong>——位置のクエリはネイティブに動く。文字列解析ではない。</li>
+        <li><strong>検証済みの書き込み</strong>——不正なデータは即座に弾かれ、明確なエラーが返る。データベースには決して入らない。</li>
+        <li><strong>たどれる関係</strong>——ジョインを発明するのではなく、グラフを歩く。</li>
+        <li><strong>単一のMCPエンドポイント</strong>——エージェントが自らツールとモデルを発見する。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 13 · 収穫 — 全画面地図からエージェントとの分割画面へ(デモ) -->
+  <section class="slide" data-bg="dark" data-slide="harvest" data-live="true">
+    <div class="slide__inner">
+      <span class="kicker">デモ · 柱 c</span>
+      <h2 class="slide__title slide__title--tight">これが、二百人をデータセットにした姿だ</h2>
+      <div class="embed-slot" style="min-height:340px;">
+        <span class="embed-slot__tag">登壇当日ライブ切替</span>
+        <span class="embed-slot__msg"><code>geolonia.github.io/geonicdb-livedeck/#12</code>(地図タブ)へ切り替え、全画面の投稿地図を映す。続けて、GeonicDBの<code>/mcp</code>エンドポイントに接続したAIエージェントとの分割画面へ。</span>
+      </div>
+      <p class="footnote">Q1: 投稿は何件、うち仕込みは何件？ Q2: 同じものを指す投稿はどれか——束ねて、根拠を引用。 Q3: 三文で、この会場はどんな顔ぶれか？ そして——会場から一問、その場で。</p>
+    </div>
+  </section>
+
+  <!-- 14 · メタな一点 -->
+  <section class="slide" data-bg="dark" data-slide="meta-point">
+    <div class="slide__inner" style="text-align:center;">
+      <div class="quoteline" style="margin:0 auto; text-align:left; font-size:22px;">「二百人の見知らぬ人々が、二十分で相互運用可能なデータセットを作った——スキーマ会議は一度も開かずに。会議の代わりを、標準が務めたのだ。」</div>
+    </div>
+  </section>
+
+  <!-- 15 · 締め — 3問版/2問版の両パターン。稽古で切替、最終版では片方を削除 -->
+  <section class="slide slide--closing" data-bg="title" data-slide="closing">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner closing__inner">
+      <h2 class="closing__headline">締め — このコミュニティへの問い</h2>
+
+      <ol class="close-q" data-variant="3q">
+        <li>適合性テストスイートこそ——リファレンス実装ではなく——標準コミュニティが守るべき共有財産ではないか？</li>
+        <li>人が介在しない「エージェント同士」のデータ交換について、NGSI-LDとOGCはどう答えるのか？</li>
+        <li class="close-q__q3">公共データの「意味を開く」政策とは何か——誰がそれを書くのか？</li>
+      </ol>
+
+      <p class="closing__sub">データを開く——それは常に正しい。次は、その意味を開こう。</p>
+      <p class="footnote">ご清聴ありがとうございました。</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="ui">
+  <div class="ui__progress"><div id="progressBar" class="ui__progress-bar"></div></div>
+  <div class="ui__controls">
+    <button id="prevBtn" class="ui__btn" aria-label="前のスライド">‹</button>
+    <span id="counter" class="ui__counter mono">1 / 15</span>
+    <button id="nextBtn" class="ui__btn" aria-label="次のスライド">›</button>
+    <button id="fsBtn" class="ui__btn" aria-label="全画面">⛶</button>
+  </div>
+</div>
+<div id="hint" class="hint mono">← → / Space で移動 · F で全画面</div>
+<button id="variantToggle" class="variant-toggle mono" type="button">締め: 3問版(クリックで2問版)</button>
+
+<div class="rotate-hint" role="alert">
+  <div class="rotate-hint__inner">
+    <span class="rotate-hint__icon" aria-hidden="true">📱↻</span>
+    <p class="rotate-hint__text">端末を<strong>横向き</strong>にしてください</p>
+    <p class="rotate-hint__sub">このデッキは横長レイアウトです</p>
+  </div>
+</div>
+
+<script src="../keynote.js"></script>
+</body>
+</html>
