@@ -1304,7 +1304,7 @@ html, body {
 .baas-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
 /* .baas-layer は .cmp-col と同じ「見出しが枠線に乗る箱」の様式を踏襲し、差分のみ指定 */
 .baas-layer {
-  position: relative; border-radius: 12px; padding: 24px 24px 22px;
+  position: relative; border-radius: 12px; padding: 30px 28px 28px;
   background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
 }
 .baas-layer--core { border-color: rgba(252,108,0,.45); background: linear-gradient(120deg, rgba(252,108,0,.1), rgba(251,164,12,.03)); }
@@ -1313,17 +1313,10 @@ html, body {
   font-size: 14px; font-weight: 800; color: rgba(255,255,255,.7);
 }
 .baas-layer__tag--accent { color: var(--cyan); }
-/* 2 層をつなぐ導線。左右の罫線は装飾なので pseudo 要素で引く */
-.baas-wire { display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,.62); }
-.baas-wire::before, .baas-wire::after {
-  content: ""; flex: 1 1 auto; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(252,108,0,.55), transparent);
-}
-.baas-wire b { color: var(--cyan); font-weight: 800; }
-.baas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.baas-card { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 16px 18px 18px; }
-.baas-card__name { display: block; font-size: 16.5px; font-weight: 800; color: var(--amber); margin-bottom: 6px; }
-.baas-card__desc { display: block; font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.75); }
+.baas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.baas-card { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 24px 24px 26px; }
+.baas-card__name { display: block; font-size: 19px; font-weight: 800; color: var(--amber); margin-bottom: 8px; }
+.baas-card__desc { display: block; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.66); }
 /* BaaS の要点（導入の速さ／標準準拠でロックインしない）を図解の下に 2 つ並べる */
 .baas-wins { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .baas-win {
