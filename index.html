@@ -723,9 +723,12 @@
               <line x1="1" y1="44" x2="519" y2="44" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="6 4"/>
               <text x="8" y="34" font-size="13" font-weight="700" fill="rgba(255,255,255,.42)">従来の固定サーバーの上限</text>
               <text x="260" y="98" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fba40c">この分は負担しなくていい</text>
-              <!-- 利用に追従する容量＋災害時の急増を 1 本のパスで描く。左カラムと同じ色・濃さで面積を比較できる -->
-              <path d="M1,194 L1,178 L130,178 L130,158 L260,158 L260,140 L389,140 L389,126 L402,126 L436.5,24 L471,126 L519,126 L519,194 Z"
+              <!-- コスト負担（塗り）は階段のみ。左カラムと同じ色・濃さで面積を比較できる -->
+              <path d="M1,194 L1,178 L130,178 L130,158 L260,158 L260,140 L389,140 L389,126 L519,126 L519,194 Z"
                     fill="#cf3620" stroke="#cf3620" stroke-width="2"/>
+              <!-- 災害時の急増は無料でオートスケールするため、コスト負担の塗りに含めず破線で示す -->
+              <path d="M402,126 L436.5,24 L471,126" fill="none" stroke="#fba40c" stroke-width="2"
+                    stroke-dasharray="6 4" stroke-linejoin="round"/>
               <text x="260" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd9b8">利用度にあわせてスケールアップ</text>
               <text x="436" y="16" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fba40c">オートスケール</text>
               <line x1="1" y1="194" x2="519" y2="194" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.4"/>
