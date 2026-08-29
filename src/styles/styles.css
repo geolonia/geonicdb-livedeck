@@ -490,8 +490,6 @@ html, body {
 }
 
 .accent { color: var(--cyan); }
-/* 長めの見出しを 1 行に収めるための変種（幅いっぱいまで使い、字送りを少し詰める） */
-.slide__title--wide { max-width: none; font-size: 40px; }
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
 
 /* when a description directly follows the title: tighten the gap above it,
