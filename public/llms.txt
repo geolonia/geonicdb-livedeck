@@ -178,10 +178,9 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 - **[LIVE] 避難所の混雑度（自治体ユースケース）** — 指定避難所に Temporal の受入状況を重ね、混雑度で色分け再生（型 `EvacuationArea`）。
 - **[LIVE] 共同編集 GIS（民間ユースケース）** — 地図に描いた地物を NGSI-LD として作成し WS で全員に反映（型 `geonicdb-livedeck-MapFeature`）。
 - **[LIVE] リアルタイムメッセージング + Rules ログ（民間ユースケース）** — 投稿を NGSI-LD エンティティで作成 → WS 配信、Rules がログを自動生成（型 `geonicdb-livedeck-Message` / `geonicdb-livedeck-MessageLog`）。
-- **ユースケース** — スマートシティ/自治体、AI 駆動 IoT 分析、オープンデータ公開、マルチテナント SaaS、地図・位置情報アプリ、LLM アシスタント付き Web。
-- **競合比較（vs FIWARE Orion）** — NGSIv2/NGSI-LD 両対応・Temporal・WebSocket/ベクトルタイル/空間 ID・組込み JWT/RBAC/XACML・外部 OIDC/IP 制限/DPoP・DCAT-AP/CKAN/CADDE・オートスケールで差別化。
 - **Appendix（補足資料）** — 以下は技術詳細。
 - **全機能カタログ ①/②** — NGSIv2 / NGSI-LD / Temporal / 地理空間 / データモデル・知識管理 / イベント・リアルタイム / 分散・フェデレーション / AI・LLM 統合 / SDK・CLI / マルチテナント・運用 / 入力検証。
+- **FIWARE Orion との比較** — Appendix の 1 ページ（デッキ内で唯一の明るい背景）。NGSIv2/NGSI-LD 両対応・Temporal・WebSocket/ベクトルタイル/空間 ID・組込み JWT/RBAC/XACML・外部 OIDC/IP 制限/DPoP・DCAT-AP/CKAN/CADDE・オートスケールで差別化。
 - **AI 連携の仕様** — ディスカバリ（`/.well-known/ai-plugin.json`・`/llms.txt`・`/openapi.json`・`/api.json`・`/tools.json`）、MCP（`POST /mcp`）、A2A（`POST /a2a`）、統一 5 ツール、ロール連動の認可。
 - **管理機能** — テナント管理、ユーザー・メンバーシップ、認証情報（API キー・OAuth クライアント）、XACML ポリシー、監査ログ、監視・運用。
 - **信頼性** — 想定可用性 99.95%+、サーバーレス自動スケール、冗長構成＋マルチリージョン、自動フェイルオーバー 10–30 秒、RTO < 5 分 / RPO < 1 分。
