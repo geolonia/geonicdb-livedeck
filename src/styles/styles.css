@@ -509,6 +509,8 @@ html, body {
   color: rgba(255,255,255,.5);
 }
 .slide[data-bg="light"] .footnote { color: rgba(11,19,32,.55); }
+.footnote a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; }
+.footnote a:hover { color: var(--amber); }
 
 /* ===== Grid background motif ===== */
 .grid-bg {
