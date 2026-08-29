@@ -493,7 +493,7 @@ html, body {
 
 .accent { color: var(--cyan); }
 /* 欧文は和文より字面が小さく見えるため、見出しに混在させるときだけ光学補正する */
-.title-latin { font-size: 1.22em; line-height: 1; }
+.title-latin { font-size: 1.4em; line-height: 1; }
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
 
 /* when a description directly follows the title: tighten the gap above it,
