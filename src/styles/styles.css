@@ -900,6 +900,7 @@ html, body {
 }
 .metric__num small { font-size: 26px; opacity: .8; }
 .metric__label { display: block; margin-top: 16px; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.75); }
+.metric__vendor { display: block; margin-top: 6px; font-size: 12px; line-height: 1.4; letter-spacing: .04em; color: rgba(255,255,255,.45); }
 
 /* ===== Code block ===== */
 .code {
