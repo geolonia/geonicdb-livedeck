@@ -144,90 +144,90 @@
       "@type": "WebPageElement",
       "position": 11,
       "identifier": "multitenancy",
-      "name": "マルチテナンシー",
+      "name": "1 つの基盤を分割してデータと権限を分離",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#11"
     },
     {
       "@type": "WebPageElement",
       "position": 12,
-      "identifier": "dual-protocol",
-      "name": "NGSIv2 と NGSI-LD に対応",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#12",
-      "keywords": "live-demo, entityType:EnvironmentSensor"
+      "identifier": "reactivecore-rules",
+      "name": "条件がそろえば、あとは自動",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#12"
     },
     {
       "@type": "WebPageElement",
       "position": 13,
-      "identifier": "reactivecore-rules",
-      "name": "条件がそろえば、あとは自動",
+      "identifier": "federation",
+      "name": "組織をまたがってデータを集約",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#13"
     },
     {
       "@type": "WebPageElement",
       "position": 14,
-      "identifier": "federation",
-      "name": "組織をまたがってデータを集約",
+      "identifier": "live-feedback",
+      "name": "回答が「つながるデータ」になる",
+      "keywords": "live-demo, entityType:Feedback",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#14"
     },
     {
       "@type": "WebPageElement",
       "position": 15,
-      "identifier": "live-feedback",
-      "name": "回答が「つながるデータ」になる",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#15",
-      "keywords": "live-demo, entityType:Feedback"
+      "identifier": "geo-query",
+      "name": "Geo クエリーでデータを絞り込む",
+      "keywords": "live-demo, entityType:AedLocation",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#15"
     },
     {
       "@type": "WebPageElement",
       "position": 16,
-      "identifier": "geo-query",
-      "name": "Geo クエリーでデータを絞り込む",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#16",
-      "keywords": "live-demo, entityType:AedLocation"
+      "identifier": "shelter-occupancy",
+      "name": "避難所の混雑度を時系列データで",
+      "keywords": "live-demo, entityType:EvacuationArea",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#16"
     },
     {
       "@type": "WebPageElement",
       "position": 17,
-      "identifier": "shelter-occupancy",
-      "name": "避難所の混雑度を時系列データで",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#17",
-      "keywords": "live-demo, entityType:EvacuationArea"
+      "identifier": "collab-gis",
+      "name": "共同編集が可能な GIS",
+      "keywords": "live-demo, entityType:geonicdb-livedeck-MapFeature",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#17"
     },
     {
       "@type": "WebPageElement",
       "position": 18,
-      "identifier": "collab-gis",
-      "name": "共同編集が可能な GIS",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#18",
-      "keywords": "live-demo, entityType:geonicdb-livedeck-MapFeature"
+      "identifier": "messaging",
+      "name": "リアルタイムメッセージング",
+      "keywords": "live-demo, entityType:geonicdb-livedeck-Message, entityType:geonicdb-livedeck-MessageLog",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#18"
     },
     {
       "@type": "WebPageElement",
       "position": 19,
-      "identifier": "messaging",
-      "name": "リアルタイムメッセージング",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#19",
-      "keywords": "live-demo, entityType:geonicdb-livedeck-Message, entityType:geonicdb-livedeck-MessageLog"
+      "identifier": "appendix",
+      "name": "Appendix",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#19"
     },
     {
       "@type": "WebPageElement",
       "position": 20,
-      "identifier": "appendix",
-      "name": "Appendix",
+      "identifier": "feature-catalog-1",
+      "name": "全機能カタログ ①",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#20"
     },
     {
       "@type": "WebPageElement",
       "position": 21,
-      "identifier": "feature-catalog-1",
-      "name": "全機能カタログ ①",
+      "identifier": "feature-catalog-2",
+      "name": "全機能カタログ ②",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#21"
     },
     {
       "@type": "WebPageElement",
       "position": 22,
-      "identifier": "feature-catalog-2",
-      "name": "全機能カタログ ②",
+      "identifier": "dual-protocol",
+      "name": "NGSIv2 と NGSI-LD に対応",
+      "keywords": "live-demo, entityType:EnvironmentSensor",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#22"
     },
     {
@@ -534,7 +534,7 @@
 
   <!-- ===== CENTER: the broker hub ===== -->
   <g filter="url(#soft)">
-    <rect x="470" y="185" width="340" height="415" rx="22" fill="url(#hubGrad)"/>
+    <rect x="500" y="185" width="340" height="415" rx="22" fill="url(#hubGrad)"/>
   </g>
   <!-- network icon -->
   <g stroke="#fff" stroke-width="2.5">
@@ -956,62 +956,76 @@
     <section class="slide" data-bg="dark" data-slide="multitenancy">
       <div class="slide__inner">
         <span class="kicker">基礎 / Multi-tenancy</span>
-        <h2 class="slide__title">マルチテナンシー</h2>
-        <p class="map-desc">1 つの GeonicDB を<strong>テナント（組織・プロジェクト）単位で完全分離</strong>して共有。リクエストの <strong>NGSILD-Tenant / Fiware-Service ヘッダ</strong>でテナントが切り替わり、データも権限も混ざりません。エンティティ ID が同じでもテナントが違えば別物として扱われます。</p>
-        <div class="mt-diagram">
-          <div class="mt-clients">
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>city-a</b></span></div>
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>corp-b</b></span></div>
-            <div class="std-card mt-client">アプリ / IoT <span>NGSILD-Tenant: <b>lab-c</b></span></div>
-          </div>
-          <div class="mt-arrows"><span>▼</span><span>▼</span><span>▼</span></div>
-          <div class="mt-broker">
-            <div class="mt-broker__label">🗄 1 つの GeonicDB</div>
-            <div class="mt-tenants">
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント city-a</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント corp-b</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-              <div class="std-card mt-tenant"><div class="mt-tenant__name">🏢 テナント lab-c</div><div class="mt-tenant__res"><b>エンティティ</b> / ポリシー / API キー / 購読 が独立</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="std-grid">
-          <div class="std-card"><span class="std-card__name">🔒 完全分離</span><span class="std-card__desc">別テナントのデータ・購読は一切見えない。ID 衝突も起きない</span></div>
-          <div class="std-card"><span class="std-card__name">🛡 テナント別の認可</span><span class="std-card__desc">XACML ポリシー・API キーもテナント境界内で有効</span></div>
-          <div class="std-card"><span class="std-card__name">💴 運用レス・データ主権</span><span class="std-card__desc">1 基盤を相乗りしコスト減、各組織のデータ主権は維持</span></div>
-        </div>
+        <h2 class="slide__title">1 つの基盤を分割して<span class="accent">データと権限を分離</span></h2>
+        <svg class="split-chart" viewBox="0 0 1120 300" role="img"
+             aria-label="1 つの GeonicDB をテナントに分割する図。分割後の都市計画課・住民課・デジタル戦略課の各テナントは独立した基盤として、データと権限をそれぞれ別に持つ">
+          <title>1 つの GeonicDB をテナントで分割すると、それぞれが独立した基盤として、データと権限を分けて持てる</title>
+          <defs>
+            <!-- 矢印の向き（左→右）に沿って薄れる塗り。3 本を単なる帯に見せないための奥行き -->
+            <linearGradient id="tenantRow" x1="500" y1="0" x2="1119" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="rgba(252,108,0,.20)" />
+              <stop offset="1" stop-color="rgba(252,108,0,.02)" />
+            </linearGradient>
+          </defs>
+
+          <!-- 分割前: 1 つの基盤 -->
+          <image href="assets/geonic-logo-dark.svg" x="40" y="55" width="190" height="190" aria-hidden="true" />
+
+          <!-- 分割 -->
+          <text x="340" y="136" text-anchor="middle" font-size="15" letter-spacing=".06em" fill="rgba(255,255,255,.6)">テナントで分離</text>
+          <path d="M250,150 H430" stroke="rgba(252,108,0,.55)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+          <!-- 1 本が 3 つに枝分かれするレール -->
+          <g stroke="rgba(252,108,0,.5)" stroke-width="2" stroke-linecap="round" fill="none">
+            <path d="M430,58 V242" />
+            <path d="M430,58 H482" />
+            <path d="M430,150 H482" />
+            <path d="M430,242 H482" />
+          </g>
+          <g fill="#fc6c00">
+            <circle cx="430" cy="58" r="3.5" />
+            <circle cx="430" cy="150" r="3.5" />
+            <circle cx="430" cy="242" r="3.5" />
+            <!-- 矢はテナントの直前に置く（流れの終点はテナント） -->
+            <path d="M482,51 L496,58 L482,65 Z" />
+            <path d="M482,143 L496,150 L482,157 Z" />
+            <path d="M482,235 L496,242 L482,249 Z" />
+          </g>
+
+          <!-- 分割後: それぞれが独立した基盤。データと権限を別に持つ -->
+          <g font-size="19" font-weight="800" fill="#fff">
+            <rect x="500" y="19" width="619" height="78" rx="12" fill="url(#tenantRow)" stroke="rgba(252,108,0,.32)" stroke-width="1.4" />
+            <line x1="514" y1="20" x2="1105" y2="20" stroke="rgba(255,255,255,.07)" stroke-width="1" />
+            <rect x="516" y="41" width="4" height="34" rx="2" fill="#fc6c00" />
+            <text x="538" y="65">都市計画課</text>
+            <rect x="860" y="43" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="915" y="63" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">データ</text>
+            <rect x="985" y="43" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="1040" y="63" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">権限</text>
+
+            <rect x="500" y="111" width="619" height="78" rx="12" fill="url(#tenantRow)" stroke="rgba(252,108,0,.32)" stroke-width="1.4" />
+            <line x1="514" y1="112" x2="1105" y2="112" stroke="rgba(255,255,255,.07)" stroke-width="1" />
+            <rect x="516" y="133" width="4" height="34" rx="2" fill="#fc6c00" />
+            <text x="538" y="157">住民課</text>
+            <rect x="860" y="135" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="915" y="155" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">データ</text>
+            <rect x="985" y="135" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="1040" y="155" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">権限</text>
+
+            <rect x="500" y="203" width="619" height="78" rx="12" fill="url(#tenantRow)" stroke="rgba(252,108,0,.32)" stroke-width="1.4" />
+            <line x1="514" y1="204" x2="1105" y2="204" stroke="rgba(255,255,255,.07)" stroke-width="1" />
+            <rect x="516" y="225" width="4" height="34" rx="2" fill="#fc6c00" />
+            <text x="538" y="249">デジタル戦略課</text>
+            <rect x="860" y="227" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="915" y="247" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">データ</text>
+            <rect x="985" y="227" width="110" height="30" rx="15" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2" />
+            <text x="1040" y="247" text-anchor="middle" font-size="14" font-weight="500" fill="rgba(255,255,255,.72)">権限</text>
+          </g>
+        </svg>
+        <p class="split-note">テナントは、<strong>独立した基盤</strong>として使うことができ、データと権限を分離することが可能</p>
       </div>
     </section>
 
-    <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
-    <section class="slide slide--dual" data-bg="dark" data-slide="dual-protocol" data-live="true" data-demo="dual-protocol" data-entity-types="EnvironmentSensor">
-      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
-      <div class="slide__inner slide__inner--map">
-        <div class="map-head">
-          <span class="kicker">標準API / Dual Protocol</span>
-          <h2 class="slide__title map-title">NGSIv2 と NGSI-LD に対応</h2>
-          <p class="map-desc"><strong>1 つのブローカー</strong>で <strong>NGSIv2</strong> と <strong>NGSI-LD</strong> の両方の標準 API に対応。用途に合わせてどちらの形式でもエンティティを取得できます。下のボタンで実際の API レスポンスを取得します。</p>
-        </div>
-        <div class="demo-body dual-body">
-          <div class="dual-col">
-            <div class="dual-col__head"><span class="dual-badge dual-badge--v2">NGSIv2</span><span class="dual-sub">FIWARE NGSIv2</span></div>
-            <pre class="dual-req" id="dual-v2-req">GET /v2/entities/{id}</pre>
-            <pre class="dual-json" id="dual-v2-json">取得を待機中…</pre>
-          </div>
-          <div class="dual-col">
-            <div class="dual-col__head"><span class="dual-badge">NGSI-LD</span><span class="dual-sub">ETSI GS CIM 009</span></div>
-            <pre class="dual-req" id="dual-ld-req">GET /ngsi-ld/v1/entities/{id}</pre>
-            <pre class="dual-json" id="dual-ld-json">取得を待機中…</pre>
-          </div>
-        </div>
-        <div class="demo-note">
-          <span class="demo-note__dot"></span>
-          <span id="dual-entity">GeonicDB に実接続し、実際の API レスポンスを表示しています</span>
-          <button id="dual-run" class="geo-btn dual-run">▶ GET 実行</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10. ReactiveCore Rules -->
     <section class="slide" data-bg="dark" data-slide="reactivecore-rules">
       <div class="slide__inner">
         <span class="kicker">自動化 / ReactiveCore Rules</span>
@@ -1533,7 +1547,6 @@
       </div>
     </section>
 
-    <!-- Appendix: Feature catalog (1/2) -->
     <section class="slide" data-bg="dark" data-slide="feature-catalog-1">
       <div class="slide__inner">
         <span class="kicker">全機能カタログ / Feature Catalog</span>
@@ -1659,6 +1672,39 @@
     </section>
 
     <!-- Appendix: Comparison vs FIWARE Orion -->
+    <!-- 9a. Live demo — Entity API (NGSIv2 / NGSI-LD dual protocol) -->
+    <section class="slide slide--dual" data-bg="dark" data-slide="dual-protocol" data-live="true" data-demo="dual-protocol" data-entity-types="EnvironmentSensor">
+      <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
+      <div class="slide__inner slide__inner--map">
+        <div class="map-head">
+          <span class="kicker">標準API / Dual Protocol</span>
+          <h2 class="slide__title map-title">NGSIv2 と NGSI-LD に対応</h2>
+          <p class="map-desc"><strong>1 つのブローカー</strong>で <strong>NGSIv2</strong> と <strong>NGSI-LD</strong> の両方の標準 API に対応。用途に合わせてどちらの形式でもエンティティを取得できます。下のボタンで実際の API レスポンスを取得します。</p>
+        </div>
+        <div class="demo-body dual-body">
+          <div class="dual-col">
+            <div class="dual-col__head"><span class="dual-badge dual-badge--v2">NGSIv2</span><span class="dual-sub">FIWARE NGSIv2</span></div>
+            <pre class="dual-req" id="dual-v2-req">GET /v2/entities/{id}</pre>
+            <pre class="dual-json" id="dual-v2-json">取得を待機中…</pre>
+          </div>
+          <div class="dual-col">
+            <div class="dual-col__head"><span class="dual-badge">NGSI-LD</span><span class="dual-sub">ETSI GS CIM 009</span></div>
+            <pre class="dual-req" id="dual-ld-req">GET /ngsi-ld/v1/entities/{id}</pre>
+            <pre class="dual-json" id="dual-ld-json">取得を待機中…</pre>
+          </div>
+        </div>
+        <div class="demo-note">
+          <span class="demo-note__dot"></span>
+          <span id="dual-entity">GeonicDB に実接続し、実際の API レスポンスを表示しています</span>
+          <button id="dual-run" class="geo-btn dual-run">▶ GET 実行</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. ReactiveCore Rules -->
+
+    <!-- Appendix: Feature catalog (1/2) -->
+
     <section class="slide" data-bg="light" data-slide="comparison">
       <div class="slide__inner">
         <span class="kicker">競合比較 / Comparison</span>
