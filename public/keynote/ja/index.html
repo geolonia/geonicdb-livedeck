@@ -21,7 +21,7 @@
     <div class="grid-bg" aria-hidden="true"></div>
     <div class="slide__inner title__inner">
       <span class="kicker">まずスマホをお出しください</span>
-      <p class="lead" style="max-width:520px;">カテゴリを一つ選び、近くの課題を一行で。地図にピンを置く。アカウント不要・アプリ不要。</p>
+      <p class="lead" style="max-width:520px;">質問は二つ。出身はどちらか（都道府県か国名で）、その土地の名物は何か。任意で、地元の隠れ名所も。アカウント不要・アプリ不要。</p>
     </div>
     <div class="title__qr">
       <div class="title__qr-card">
@@ -79,7 +79,7 @@
   <section class="slide" data-bg="dark" data-slide="reveal" data-live="true">
     <div class="slide__inner">
       <span class="kicker">種明かし</span>
-      <h2 class="slide__title slide__title--tight">スキーマを埋めたのではない。一文を打ち込んだだけだ</h2>
+      <h2 class="slide__title slide__title--tight">スキーマを埋めたのではない。二つの質問に答えただけだ</h2>
       <div class="embed-slot" style="min-height:280px;">
         <span class="embed-slot__tag">仕込みサンプル</span>
         <span class="embed-slot__msg">登壇当日は、この枠を <code>geolonia.github.io/geonicdb-livedeck/#12</code> から取得した実際の会場投稿へ差し替える。以下は実スキーマに基づく仕込み例(<code>seeded: true</code> により会場投稿ではないと明示)。</span>
@@ -92,7 +92,7 @@
   "submittedAt": { "type": "Property", "value": "2026-09-03T09:58:00.000Z" }
 }</pre>
       </div>
-      <p class="footnote">型付きの<code>Property</code>値であり、生の文字列をそのままJSONへ貼り付けたものではない。真偽値の<code>seeded</code>フラグが、この仕込み例と会場からの実投稿とを区別する。恒久的なID。二百人の見知らぬ人々が、一度も打合せせずに相互運用可能なデータを作った。</p>
+      <p class="footnote">公開されたデータモデルが定義する型付き<code>Property</code>値であり、モデルの外にあるものは拒否される。真偽値の<code>seeded</code>フラグが、この仕込み例と会場からの実投稿とを区別する。恒久的なID。二百人の見知らぬ人々が、一度も打合せせずに相互運用可能なデータを作った。</p>
     </div>
   </section>
 
@@ -255,7 +255,7 @@
         <span class="embed-slot__tag">登壇当日ライブ切替</span>
         <span class="embed-slot__msg"><code>geolonia.github.io/geonicdb-livedeck/#12</code>(地図タブ)へ切り替え、全画面の投稿地図を映す。続けて、GeonicDBの<code>/mcp</code>エンドポイントに接続したAIエージェントとの分割画面へ。</span>
       </div>
-      <p class="footnote">Q1: 投稿は何件、カテゴリの内訳は？ Q2: どこに集まっているか？ Q3: 三文で、この会場は何を気にかけているか？ そして——会場から一問、その場で。</p>
+      <p class="footnote">Q1: 投稿は何件、うち仕込みは何件？ Q2: 同じものを指す投稿はどれか——束ねて、根拠を引用。 Q3: 三文で、この会場はどんな顔ぶれか？ そして——会場から一問、その場で。</p>
     </div>
   </section>
 
