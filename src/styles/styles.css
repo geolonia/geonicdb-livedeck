@@ -101,6 +101,8 @@ html, body {
 .map-title { font-size: 30px; margin-bottom: 0; max-width: none; }
 .map-desc { margin-top: 2px; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.72); max-width: 1000px; }
 .map-desc strong { color: var(--cyan); font-weight: 700; }
+/* 長めのリード文を 1 行に収める（スライド幅いっぱいまで使う） */
+.map-desc--wide { max-width: none; }
 .demo-body { flex: 1 1 auto; display: flex; gap: 16px; min-height: 0; }
 .demo-body .map-wrap { flex: 1 1 auto; }
 .map-wrap {
