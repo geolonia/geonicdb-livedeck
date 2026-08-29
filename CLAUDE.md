@@ -23,7 +23,7 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 ## デモの識別
 
 スライド順序は `index.html` の `<section class="slide">` の並びで決まる。各ライブデモは
-`.slide--dual` / `.slide--map` / `.slide--tmp` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
+`.slide--dual` / `.slide--map` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
 のクラスで自分のスライドを特定する（`slides.indexOf(...)`）。**スライドを挿入・並べ替えても番号は自動追従するので、ドキュメントでは極力ハードな番号参照を避ける。**
 
 ### AI エージェント向けメタデータ（`data-slide` / JSON-LD / llms.txt）

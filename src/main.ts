@@ -13,7 +13,6 @@ import { initDual } from "./demos/dual";
 import { initFeedback } from "./demos/feedback";
 import { initContribution } from "./demos/contribution";
 import { initContributionMap } from "./demos/contributionMap";
-import { initTemporal } from "./demos/temporal";
 import { initMap } from "./demos/map";
 import { initShelter } from "./demos/shelter";
 import { initCollab } from "./demos/collab";
@@ -28,7 +27,6 @@ function boot(): void {
   initFeedback();
   initContribution();
   initContributionMap();
-  initTemporal();
   initMap();
   initShelter();
   initCollab();

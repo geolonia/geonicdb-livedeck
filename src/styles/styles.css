@@ -295,50 +295,6 @@ html, body {
   100% { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); transform: translateX(0); opacity: 1; }
 }
 
-/* ===== Temporal time-machine demo ===== */
-.tmp-body { align-items: stretch; gap: 18px; }
-
-/* left: snapshot + controls */
-.tmp-panel {
-  flex: 0 0 320px; width: 320px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(252,108,0,.25);
-  border-radius: 14px; padding: 20px 20px 18px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-.tmp-snap-label { font-size: 12px; letter-spacing: .06em; color: rgba(255,255,255,.55); }
-.tmp-time { font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: #39d6c6; margin-top: -6px; }
-.tmp-readout { display: flex; gap: 14px; }
-.tmp-metric {
-  flex: 1 1 0; background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 12px; padding: 12px 8px 10px; text-align: center; position: relative;
-}
-.tmp-metric__v { font-family: var(--font-mono); font-size: 30px; font-weight: 800; color: #fff; }
-.tmp-metric__u { font-size: 14px; color: rgba(255,255,255,.6); margin-left: 2px; }
-.tmp-metric__k { display: block; font-size: 11px; color: rgba(255,255,255,.5); margin-top: 4px; }
-.tmp-controls { display: flex; flex-direction: column; gap: 10px; margin-top: 2px; }
-.tmp-query {
-  margin: auto 0 0; font-family: var(--font-mono); font-size: 8px; line-height: 1.5;
-  color: #d6e4f0; white-space: pre-wrap; word-break: break-all;
-  background: rgba(0,0,0,.4); border: 1px solid rgba(252,108,0,.22);
-  border-radius: 8px; padding: 10px 12px;
-}
-
-/* right: history chart */
-.tmp-chart-wrap {
-  flex: 1 1 auto; min-width: 0;
-  background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.12);
-  border-radius: 14px; padding: 16px 18px;
-  display: flex; flex-direction: column; min-height: 0;
-}
-.tmp-chart-head {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding-bottom: 12px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.1);
-}
-.tmp-chart-title { font-size: 16px; font-weight: 800; color: #fff; }
-.tmp-range { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); margin-left: 4px; }
-.tmp-chart { flex: 1 1 auto; min-height: 0; width: 100%; display: block; }
-
 /* ===== Dual-protocol entity API demo (slide 9a) ===== */
 .dual-body { gap: 20px; }
 .dual-col {
@@ -1339,6 +1295,25 @@ html, body {
 .msg-log__tag { flex: 0 0 auto; font-family: var(--font-mono); font-size: 11px; color: var(--amber); }
 .msg-log__summary { font-size: 14px; color: rgba(255,255,255,.82); }
 .msg-empty { margin: auto; font-size: 14px; color: rgba(255,255,255,.45); }
+
+/* ---- スケールアップ説明スライド（従来 vs GeonicDB のコスト構造を対比） ---- */
+.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 42px; }
+/* .cmp-col は .std-card と同じ面（背景・枠・角丸）を踏襲し、差分のみ指定 */
+.cmp-col {
+  position: relative; display: flex; flex-direction: column; gap: 20px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px; padding: 30px 26px 26px;
+}
+.cmp-col--after { border-color: rgba(252,108,0,.45); background: linear-gradient(120deg, rgba(252,108,0,.1), rgba(251,164,12,.03)); }
+.cmp-col__head {
+  position: absolute; top: -11px; left: 20px; background: #17171d; padding: 0 10px;
+  font-size: 14px; font-weight: 800; color: rgba(255,255,255,.7);
+}
+.cmp-col__head--accent { color: var(--cyan); }
+.cmp-chart { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
+.cmp-col__body { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); margin: auto 0 0; }
+.cmp-col__body strong { color: var(--cyan); font-weight: 800; }
+.cmp-col__body .cmp-warn { color: #ff8a73; }
 
 /* ---- マルチテナンシー説明スライド ---- */
 .mt-diagram { display: flex; flex-direction: column; gap: 12px; margin: 20px 0 22px; }
