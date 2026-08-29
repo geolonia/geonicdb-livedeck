@@ -23,7 +23,7 @@
   --white:    #ffffff;
 
   --font-sans: "Inter", "Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", menlo, monospace;
 
   --slide-w: 1280px;
   --slide-h: 720px;

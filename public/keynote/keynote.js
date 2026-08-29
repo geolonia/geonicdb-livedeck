@@ -124,7 +124,14 @@
     var toggle = document.getElementById("variantToggle");
     if (toggle) {
       var is2q = deck.classList.contains("is-2q");
-      function paint() { toggle.textContent = is2q ? "Close: 2Q (click for 3Q)" : "Close: 3Q (click for 2Q)"; }
+      var isJa = document.documentElement.lang === "ja";
+      function paint() {
+        if (isJa) {
+          toggle.textContent = is2q ? "締め: 2問版(クリックで3問版)" : "締め: 3問版(クリックで2問版)";
+        } else {
+          toggle.textContent = is2q ? "Close: 2Q (click for 3Q)" : "Close: 3Q (click for 2Q)";
+        }
+      }
       toggle.addEventListener("click", function () {
         is2q = !is2q;
         deck.classList.toggle("is-2q", is2q);
