@@ -1302,23 +1302,13 @@ html, body {
 
 /* ---- BaaS 説明スライド（「お客様が作る層」と「GeonicDB が引き受ける層」の 2 段スタック図） ---- */
 .baas-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
-/* .baas-layer は .cmp-col と同じ「見出しが枠線に乗る箱」の様式を踏襲し、差分のみ指定 */
-.baas-layer {
-  position: relative; border-radius: 12px; padding: 30px 28px 28px;
-  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
-}
-.baas-layer--core { border-color: rgba(252,108,0,.45); background: linear-gradient(120deg, rgba(252,108,0,.1), rgba(251,164,12,.03)); }
-.baas-layer__tag {
-  position: absolute; top: -11px; left: 20px; background: #17171d; padding: 0 10px;
-  font-size: 14px; font-weight: 800; color: rgba(255,255,255,.7);
-}
-.baas-layer__tag--accent { color: var(--cyan); }
 .baas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .baas-card { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 24px 24px 26px; }
 .baas-card__name { display: block; font-size: 19px; font-weight: 800; color: var(--amber); margin-bottom: 8px; }
 .baas-card__desc { display: block; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.66); }
 /* BaaS の要点（導入の速さ／標準準拠でロックインしない）を図解の下に 2 つ並べる */
-.baas-wins { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+/* タイルの一部に見えないよう、要点の 2 つはタイル群から離して置く */
+.baas-wins { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
 .baas-win {
   padding: 10px 16px; border: 1px solid rgba(252,108,0,.35); border-radius: 10px;
   background: rgba(252,108,0,.08);
