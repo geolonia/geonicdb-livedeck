@@ -708,30 +708,83 @@
       <div class="slide__inner">
         <span class="kicker">国際標準 / NGSI-LD</span>
         <h2 class="slide__title">意味までそろえる国際標準 <span class="accent title-latin">NGSI-LD</span></h2>
-        <p class="map-desc map-desc--wide">欧州 ETSI が策定した、都市・IoT のデータを表すための国際標準（ETSI GS CIM 009）です。</p>
+        <p class="map-desc map-desc--wide">欧州電気通信標準化機構（ETSI）が策定した、都市・IoT のデータを表すための国際標準（ETSI GS CIM 009）です。</p>
         <div class="split">
           <div class="split__text">
             <ul class="ticks">
-              <li><strong>オープンな仕様</strong> — 欧州 ETSI が策定・公開する国際標準。仕様書は誰でも読める</li>
+              <li><strong>オープンな仕様</strong> — 欧州電気通信標準化機構（ETSI）が策定・公開する国際標準。仕様書は誰でも読める</li>
               <li><strong>統一されたデータ表現</strong> — どのデータも「もの・値・つながり・場所」の 4 つで表す</li>
               <li><strong>組織を越えた相互運用性</strong> — つながりをたどれば、別部署・別システムのデータにも届く</li>
               <li><strong>後方互換性</strong> — 項目や関係を増やしても、既存の連携はそのまま動く</li>
             </ul>
           </div>
           <div class="split__visual">
-            <div class="ld-entity">
-              <div class="ld-entity__head">
-                <span class="ld-entity__type">もの：避難所</span>
-                <span class="ld-entity__id">urn:ngsi-ld:EvacuationArea:001</span>
-              </div>
-              <dl class="ld-rows">
-                <div class="ld-row"><dt>名称</dt><dd><span class="ld-tag ld-tag--val">値</span>△△小学校</dd></div>
-                <div class="ld-row"><dt>収容人数</dt><dd><span class="ld-tag ld-tag--val">値</span>420 人</dd></div>
-                <div class="ld-row"><dt>場所</dt><dd><span class="ld-tag ld-tag--geo">場所</span>34.3401, 134.0434</dd></div>
-                <div class="ld-row"><dt>管理者</dt><dd><span class="ld-tag ld-tag--rel">つながり</span>○○市 防災課</dd></div>
-                <div class="ld-row"><dt>受入状況</dt><dd><span class="ld-tag ld-tag--val">値</span>78 %<span class="ld-when">2026-06-26 09:00 時点</span></dd></div>
-              </dl>
-            </div>
+            <svg class="ld-svg" viewBox="0 0 560 410" role="img"
+                 aria-label="避難所（施設台帳）と水位計（河川センサー）が、どちらも「つながり」で同じ○○地区という「もの」を指しているため、別部署のデータどうしがつながることを示す図">
+              <title>別部署のデータが、同じ「もの」を指すことでつながる</title>
+              <defs>
+                <marker id="ld-arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#fc6c00" />
+                </marker>
+              </defs>
+
+              <!-- もの① 避難所（施設台帳） -->
+              <rect x="1" y="1" width="260" height="178" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+              <g transform="translate(15,11)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M2 11 L12 4 L22 11" /><path d="M4 11 V23 H20 V11" /><path d="M9.5 23 V16 H14.5 V23" />
+              </g>
+              <text x="46" y="24" class="ld-svg__type">もの：避難所</text>
+              <text x="46" y="41" class="ld-svg__id">urn:ngsi-ld:EvacuationArea:001</text>
+              <line x1="15" y1="55" x2="246" y2="55" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+              <text x="15" y="79" class="ld-svg__key">名称</text>
+              <rect x="70" y="68" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="82" y="79" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+              <text x="102" y="79" class="ld-svg__val">△△小学校</text>
+              <text x="15" y="107" class="ld-svg__key">収容人数</text>
+              <rect x="70" y="96" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="82" y="107" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+              <text x="102" y="107" class="ld-svg__val">420 人</text>
+              <text x="15" y="135" class="ld-svg__key">場所</text>
+              <rect x="70" y="124" width="34" height="16" rx="8" fill="none" stroke="#5fd39b" /><text x="87" y="135" class="ld-svg__chip" fill="#5fd39b" text-anchor="middle">場所</text>
+              <text x="112" y="135" class="ld-svg__val">34.3401, 134.0434</text>
+              <text x="15" y="163" class="ld-svg__key">所在地区</text>
+              <rect x="70" y="152" width="52" height="16" rx="8" fill="none" stroke="#fc6c00" /><text x="96" y="163" class="ld-svg__chip" fill="#fc6c00" text-anchor="middle">つながり</text>
+
+              <!-- もの② 水位計（河川センサー） -->
+              <rect x="299" y="1" width="260" height="122" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+              <g transform="translate(313,11)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M8 2 V16" /><path d="M8 5 H13 M8 9 H13 M8 13 H13" />
+                <path d="M1 20 q5 -3.5 10 0 t10 0" /><path d="M1 25 q5 -3.5 10 0 t10 0" />
+              </g>
+              <text x="344" y="24" class="ld-svg__type">もの：水位計</text>
+              <text x="344" y="41" class="ld-svg__id">urn:ngsi-ld:Device:water-001</text>
+              <line x1="313" y1="55" x2="544" y2="55" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+              <text x="313" y="79" class="ld-svg__key">水位</text>
+              <rect x="368" y="68" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="380" y="79" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+              <text x="400" y="79" class="ld-svg__val">3.2 m</text>
+              <text x="443" y="79" class="ld-svg__when">09:00 時点</text>
+              <text x="313" y="107" class="ld-svg__key">監視区域</text>
+              <rect x="368" y="96" width="52" height="16" rx="8" fill="none" stroke="#fc6c00" /><text x="394" y="107" class="ld-svg__chip" fill="#fc6c00" text-anchor="middle">つながり</text>
+
+              <!-- 2 つの「つながり」が同じ「もの」を指す -->
+              <path d="M96 172 C96 216 130 226 178 266" fill="none" stroke="#fc6c00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ld-arrow)" />
+              <path d="M394 116 C394 200 400 226 356 266" fill="none" stroke="#fc6c00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ld-arrow)" />
+              <text x="266" y="205" class="ld-svg__edge" text-anchor="middle">別部署のデータが</text>
+              <text x="266" y="223" class="ld-svg__edge" text-anchor="middle">同じ「もの」を指す</text>
+
+              <!-- もの③ ○○地区（区域） -->
+              <rect x="150" y="277" width="260" height="122" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.55)" stroke-width="1.6" />
+              <g transform="translate(164,287)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M3 8 L12 4 L21 9 L19 21 L6 20 Z" /><path d="M12 4 V13" /><path d="M19 9 L12 13" />
+              </g>
+              <text x="195" y="300" class="ld-svg__type">もの：○○地区</text>
+              <text x="164" y="317" class="ld-svg__id">urn:ngsi-ld:AdministrativeArea:37201</text>
+              <line x1="164" y1="331" x2="395" y2="331" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+              <text x="164" y="355" class="ld-svg__key">名称</text>
+              <rect x="219" y="344" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="231" y="355" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+              <text x="251" y="355" class="ld-svg__val">○○地区</text>
+              <text x="164" y="383" class="ld-svg__key">人口</text>
+              <rect x="219" y="372" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="231" y="383" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+              <text x="251" y="383" class="ld-svg__val">12,480 人</text>
+            </svg>
           </div>
         </div>
       </div>
