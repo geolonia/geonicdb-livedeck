@@ -1107,30 +1107,29 @@
             <rect x="294" y="44" width="546" height="452" rx="20" fill="#e8401e">
               <animate attributeName="opacity" dur="4.5s" values="0;0;0.22;0.22;0;0" keyTimes="0;0.46;0.5;0.72;0.8;1" repeatCount="indefinite"/>
             </rect>
-            <text x="567" y="96" text-anchor="middle" fill="#fc6c00" font-size="22" font-weight="800">ルールエンジン</text>
+            <text x="567" y="100" text-anchor="middle" fill="#fc6c00" font-size="22" font-weight="800">ルールエンジン</text>
 
             <!-- 日本語の意図 → 実際の記述 -->
-            <text x="322" y="152" fill="#fff" font-size="18" font-weight="700">不快指数が 80 以上になったら</text>
-            <text x="322" y="190" fill="rgba(252,108,0,.85)" font-size="13" font-weight="700" font-family="'JetBrains Mono',monospace">"conditions"</text>
+            <text x="322" y="168" fill="#fff" font-size="18" font-weight="700">不快指数が 80 以上になったら</text>
             <g font-size="15" font-family="'JetBrains Mono',monospace">
-              <text x="322" y="234" fill="rgba(255,255,255,.78)">{ "type": "celExpression",</text>
-              <text x="340" y="260" fill="rgba(255,255,255,.78)">"expression":</text>
-              <text x="358" y="286" fill="#fba40c">"0.81 * attribute.temperature.value</text>
-              <text x="349" y="312" fill="#fba40c">+ 0.01 * attribute.humidity.value</text>
-              <text x="385" y="338" fill="#fba40c">* (0.99 * attribute.temperature.value - 14.3)</text>
-              <text x="349" y="364" fill="#fba40c">+ 46.3 &gt;= 80" }</text>
+              <text x="322" y="226" fill="rgba(255,255,255,.78)">{ "type": "celExpression",</text>
+              <text x="340" y="252" fill="rgba(255,255,255,.78)">"expression":</text>
+              <text x="358" y="278" fill="#fba40c">"0.81 * attribute.temperature.value</text>
+              <text x="349" y="304" fill="#fba40c">+ 0.01 * attribute.humidity.value</text>
+              <text x="385" y="330" fill="#fba40c">* (0.99 * attribute.temperature.value - 14.3)</text>
+              <text x="349" y="356" fill="#fba40c">+ 46.3 &gt;= 80" }</text>
             </g>
 
             <!-- 現在の評価結果（平常 / 発火）をクロスフェード -->
             <g>
               <animate attributeName="opacity" dur="4.5s" values="1;1;0;0;1;1" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
-              <rect x="319" y="402" width="496" height="58" rx="29" fill="rgba(57,214,198,.12)" stroke="rgba(57,214,198,.5)"/>
-              <text x="567" y="438" text-anchor="middle" fill="#39d6c6" font-size="17" font-family="'JetBrains Mono',monospace">評価値 73.1 — 条件を満たさない</text>
+              <rect x="319" y="398" width="496" height="58" rx="29" fill="rgba(57,214,198,.12)" stroke="rgba(57,214,198,.5)"/>
+              <text x="567" y="434" text-anchor="middle" fill="#39d6c6" font-size="17" font-family="'JetBrains Mono',monospace">評価値 73.1 — 条件を満たさない</text>
             </g>
             <g>
               <animate attributeName="opacity" dur="4.5s" values="0;0;1;1;0;0" keyTimes="0;0.4;0.47;0.78;0.86;1" repeatCount="indefinite"/>
-              <rect x="319" y="402" width="496" height="58" rx="29" fill="rgba(232,64,30,.24)" stroke="#e8401e"/>
-              <text x="567" y="438" text-anchor="middle" fill="#fff" font-size="17" font-family="'JetBrains Mono',monospace">評価値 82.9 — 全員が不快</text>
+              <rect x="319" y="398" width="496" height="58" rx="29" fill="rgba(232,64,30,.24)" stroke="#e8401e"/>
+              <text x="567" y="434" text-anchor="middle" fill="#fff" font-size="17" font-family="'JetBrains Mono',monospace">評価値 82.9 — 全員が不快</text>
             </g>
 
             <!-- 発火 badge -->
