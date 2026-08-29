@@ -207,36 +207,46 @@ export function initContributionMap(): void {
     map.on("click", "contrib-seeded", (ev: any) => ev.features?.[0] && showPopup(ev.features[0]));
   }
 
-  function loadAndSubscribe(): void {
-    if (dataStarted) return;
-    dataStarted = true;
-    setStatus("読み込み中…");
+  let historyFetched = false;
+  function fetchHistory(): void {
+    if (historyFetched) return; // WS失敗時のfallbackと'subscribed'の二重発火を防ぐ
+    historyFetched = true;
     db!
       .getEntities({ type: CONTRIBUTION_TYPE, limit: 1000 })
       .then((res: unknown) => {
         const list: Record<string, unknown>[] = Array.isArray(res) ? res : [];
         list.forEach((e) => {
           const id = e.id as string | undefined;
-          if (id) entities[id] = e;
+          if (id) entities[id] = e; // entityCreatedと同じid上書きゆえ二重計上なし
         });
         render();
       })
       .catch((err: unknown) => {
         console.error("[contributionMap]", err);
         setStatus("データ取得に失敗しました");
-      })
-      .finally(() => {
-        db!.on("entityCreated", (evt: any) => {
-          const e: Record<string, unknown> =
-            evt && evt.entity && evt.entity.id ? evt.entity : null;
-          const id = e ? (e.id as string) : evt?.entityId;
-          if (!id) return;
-          entities[id] = e ?? { id, type: CONTRIBUTION_TYPE, ...(evt?.data ?? {}) };
-          render();
-        });
-        db!.subscribe({ entityTypes: [CONTRIBUTION_TYPE] });
-        db!.connect().catch((err: unknown) => console.warn("[contributionMap] ws", err));
       });
+  }
+
+  function loadAndSubscribe(): void {
+    if (dataStarted) return;
+    dataStarted = true;
+    setStatus("読み込み中…");
+    // ★先にentityCreated購読を確立してから初期取得する（取得〜購読確立の間に
+    // 届いた投稿を取りこぼさぬため）。idベースの上書きゆえ二重計上はしない。
+    db!.on("entityCreated", (evt: any) => {
+      const e: Record<string, unknown> =
+        evt && evt.entity && evt.entity.id ? evt.entity : null;
+      const id = e ? (e.id as string) : evt?.entityId;
+      if (!id) return;
+      entities[id] = e ?? { id, type: CONTRIBUTION_TYPE, ...(evt?.data ?? {}) };
+      render();
+    });
+    db!.on("subscribed", () => fetchHistory());
+    db!.subscribe({ entityTypes: [CONTRIBUTION_TYPE] });
+    db!.connect().catch((err: unknown) => {
+      console.warn("[contributionMap] ws", err);
+      fetchHistory(); // WS不通でも初期表示だけは試みる(画面が空白のまま止まらぬよう)
+    });
   }
 
   function start(): void {
