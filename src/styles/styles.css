@@ -1317,20 +1317,20 @@ html, body {
 .cmp-chart { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
 /* スライド幅いっぱいの費用内訳グラフ */
 .cost-chart { display: block; width: 100%; height: auto; margin-top: 20px; font-family: var(--font-sans); }
-/* コスト削減のアニメーション。スライドが表示されるたびに再生される
-   （.is-active が付け直されるとアニメーションも再スタートする） */
+/* コスト削減のアニメーション（6 秒周期でループ）。
+   グレーの帯が右へ縮んで消え、元の範囲に破線のゴーストが残る。
+   .slide.is-active 起点なので、スライドに戻るたび先頭から再生される。 */
+.cost-chart .cut-fill  { transform-box: fill-box; transform-origin: left center; }
 .cost-chart .cut-ghost { opacity: 0; }
 .cost-chart .cut-note  { opacity: 0; }
-.slide.is-active .cost-chart .cut-label { animation: costCutLabel .45s var(--ease) .9s both; }
-.slide.is-active .cost-chart .cut-fill  { animation: costCut .9s cubic-bezier(.4,0,.2,1) 1s both; }
-.slide.is-active .cost-chart .cut-ghost { animation: costGhostIn .5s var(--ease) 1.35s both; }
-.slide.is-active .cost-chart .cut-note  { animation: costNoteIn .45s var(--ease) 1.75s both; }
-@keyframes costCut      { to { width: 0; } }
-@keyframes costCutLabel { to { opacity: 0; } }
-@keyframes costGhostIn  { from { opacity: 0; } to { opacity: .6; } }
-@keyframes costNoteIn   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.slide.is-active .cost-chart .cut-fill  { animation: costCut 6s var(--ease) infinite; }
+.slide.is-active .cost-chart .cut-ghost { animation: costGhost 6s var(--ease) infinite; }
+.slide.is-active .cost-chart .cut-note  { animation: costNote 6s var(--ease) infinite; }
+/* 100% と次の周期の 0% が隣接するため、削減後 -> 元の状態への復帰は補間されず一瞬で戻る */
+@keyframes costCut   { 0%, 16% { transform: scaleX(1); } 31%, 100% { transform: scaleX(0); } }
+@keyframes costGhost { 0%, 22% { opacity: 0; } 31%, 100% { opacity: .6; } }
+@keyframes costNote  { 0%, 29% { opacity: 0; } 37%, 100% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .slide.is-active .cost-chart .cut-label,
   .slide.is-active .cost-chart .cut-fill,
   .slide.is-active .cost-chart .cut-ghost,
   .slide.is-active .cost-chart .cut-note { animation: none; }
