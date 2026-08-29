@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond the API — FOSS4G Hiroshima 2026 Keynote Slides</title>
+<meta name="description" content="Projection slides for the FOSS4G Hiroshima 2026 keynote 'Beyond the API: Why AI-Era Data Integration Needs Open Standards, Not Just Open Data' by Geolonia.">
+<link rel="canonical" href="https://geolonia.github.io/geonicdb-livedeck/keynote/" />
+<link rel="icon" type="image/svg+xml" href="../assets/geonic-mark.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="keynote.css" />
+<link rel="alternate" hreflang="ja" href="https://geolonia.github.io/geonicdb-livedeck/keynote/ja/" />
+</head>
+<body>
+<main id="deck" class="deck">
+
+  <!-- 1 · Seed — QR full screen -->
+  <section class="slide slide--title slide--noshield" data-bg="title" data-slide="seed">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner title__inner">
+      <span class="kicker">Scan to begin</span>
+      <p class="lead" style="max-width:520px;">Pick a category. Write one line about a problem near you. Drop a pin. No account, no app.</p>
+    </div>
+    <div class="title__qr">
+      <div class="embed-slot" style="width:320px; height:320px; border-radius:24px;">
+        <span class="embed-slot__tag">Live embed — cmd_751</span>
+        <span class="embed-slot__msg">QR code to the audience contribution form (branch <code>subtask/751c-contribution-form</code>, pending merge). Drop the real QR image/link here once live.</span>
+      </div>
+      <p class="title__qr-cap">Your post becomes a live entity.<br><span class="mono">It comes back at the end.</span></p>
+    </div>
+  </section>
+
+  <!-- 2 · Title -->
+  <section class="slide slide--title" data-bg="title" data-slide="title">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner title__inner">
+      <img class="brand-logo brand-logo--h" src="../assets/geonic-logo-h-dark.svg" alt="GeonicDB" />
+      <h1 class="title__headline">Beyond the API</h1>
+      <p class="title__sub">Why AI-era data integration needs open standards — not just open data.</p>
+      <div class="title__meta">
+        <span class="chip">Hal Seki · Geolonia, Inc.</span>
+        <span class="chip">FOSS4G Hiroshima 2026 · 2026-09-03</span>
+      </div>
+    </div>
+    <div class="title__foot mono">Beyond the API</div>
+  </section>
+
+  <!-- 3 · Open data decade, compressed (B-plan: merges the two original slides into one; audience already knows the open-data win) -->
+  <section class="slide" data-bg="dark" data-slide="decade">
+    <div class="slide__inner">
+      <span class="kicker">Access: solved. Meaning: not yet.</span>
+      <h2 class="slide__title slide__title--tight">We rebuilt the silos — with better licenses</h2>
+      <p class="lead">Every portal has its own schema. Every API, its own field names, its own date format, its own coordinate order.</p>
+      <ul class="bullets">
+        <li>Open data movement: access problem <strong>solved</strong>. Credit due.</li>
+        <li>Each API: documented, licensed, open — and still a silo.</li>
+        <li>Humans pay this cost once per project. <strong>Agents pay it on every query, forever.</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · The four ambiguities (pillar a) -->
+  <section class="slide" data-bg="dark" data-slide="meaning-gap">
+    <div class="slide__inner">
+      <span class="kicker">Pillar A · Semantics</span>
+      <h2 class="slide__title slide__title--tight">Machine-readable ≠ machine-interpretable</h2>
+      <div class="quad">
+        <div class="quad__card"><h3>Identity</h3><p>Is "Chuo Community Center" the same building as "Chūō Kōminkan"?</p></div>
+        <div class="quad__card"><h3>Semantics</h3><p><code>capacity</code> — design capacity, or people inside right now?</p></div>
+        <div class="quad__card"><h3>Units &amp; conventions</h3><p>NGSIv2: lat, lon. NGSI-LD / GeoJSON: lon, lat. Same field, same numbers, opposite place.</p></div>
+        <div class="quad__card"><h3>Time</h3><p>Measured when? Valid until? Updated by whom?</p></div>
+      </div>
+      <p class="footnote">Humans absorbed these quietly for decades. Agents inherit the ambiguity — and never say "this looks strange."</p>
+    </div>
+  </section>
+
+  <!-- 5 · The reveal — live JSON -->
+  <section class="slide" data-bg="dark" data-slide="reveal" data-live="true">
+    <div class="slide__inner">
+      <span class="kicker">The reveal</span>
+      <h2 class="slide__title slide__title--tight">You didn't fill in a schema. You typed a sentence.</h2>
+      <div class="embed-slot" style="min-height:280px;">
+        <span class="embed-slot__tag">Live embed — cmd_751</span>
+        <span class="embed-slot__msg">At showtime, swap this panel for one real audience post (raw NGSI-LD JSON), pulled live from the contribution feed. Placeholder shown below.</span>
+        <pre class="mono" style="margin-top:6px; max-width:720px; text-align:left;">{
+  "id": "urn:ngsi-ld:Contribution:sample-01",
+  "type": "Contribution",
+  "category": { "type": "Property", "value": "mobility" },
+  "location": { "type": "GeoProperty",
+    "value": { "type": "Point", "coordinates": [132.459, 34.397] } },
+  "observedAt": { "type": "Property", "value": "2026-09-03T13:34:02Z" }
+}</pre>
+      </div>
+      <p class="footnote">Typed <code>GeoProperty</code>. Fixed coordinate order. Category from a closed list. Permanent ID. Two hundred strangers, producing interoperable data — without meeting.</p>
+    </div>
+  </section>
+
+  <!-- 6 · The objection + confidence trap (rebuttal, kept: strongest / most vivid) -->
+  <section class="slide" data-bg="dark" data-slide="objection">
+    <div class="slide__inner">
+      <span class="kicker">Pillar A · The objection</span>
+      <h2 class="slide__title slide__title--tight">"Won't smarter AI just figure it out?"</h2>
+      <p class="lead">A smarter model does not fail less on ambiguous data. It fails <em>better</em> — its mistakes look more correct.</p>
+      <div class="factbox">
+        <span class="factbox__label">What actually happened (measured, not embellished)</span>
+        <ul>
+          <li>An AI wrote a text-encoding name that doesn't exist — twice in a row (<code>'shift-jis'</code>, then <code>'shiftjis'</code>).</li>
+          <li>A conversion script ran with no errors. Unhandled line endings silently nulled one field — in every one of 588 records. Reported as "complete."</li>
+          <li><strong>"It ran" does not mean "it's right."</strong></li>
+        </ul>
+      </div>
+      <div class="mic-cue">🎙️ Speaker tells this story firsthand<small>~60–90 seconds · no scripted lines here (see speaker notes)</small></div>
+    </div>
+  </section>
+
+  <!-- 7 · This has happened before (rebuttal, kept: directly answers "smarter AI removes the need") -->
+  <section class="slide" data-bg="dark" data-slide="precedent">
+    <div class="slide__inner">
+      <span class="kicker">Pillar A · This has happened before</span>
+      <h2 class="slide__title slide__title--tight">Smarter machines always got more structure — never less</h2>
+      <div class="history">
+        <span class="history__step">robots.txt</span><span class="history__arrow">→</span>
+        <span class="history__step">sitemaps</span><span class="history__arrow">→</span>
+        <span class="history__step">schema.org</span><span class="history__arrow">→</span>
+        <span class="history__step">OpenAPI</span><span class="history__arrow">→</span>
+        <span class="history__step">function calling</span><span class="history__arrow">→</span>
+        <span class="history__step">llms.txt</span><span class="history__arrow">→</span>
+        <span class="history__step">MCP</span>
+      </div>
+      <p class="lead" style="margin-top:22px;">Agents <em>act</em>. A misread unit no longer produces a funny reply — it produces a wrong action, and every downstream agent treats it as truth.</p>
+      <div class="quoteline">"Smarter agents do not need less meaning. They consume more of it, faster, with higher stakes."</div>
+    </div>
+  </section>
+
+  <!-- 8 · So we bet on NGSI-LD (pillar b) -->
+  <section class="slide" data-bg="dark" data-slide="bet">
+    <div class="slide__inner">
+      <span class="kicker">Pillar B · The bet</span>
+      <h2 class="slide__title slide__title--tight">We bet on a standard: NGSI-LD (ETSI GS CIM 009)</h2>
+      <ul class="bullets">
+        <li><strong>Entity</strong> — a thing with a stable ID.</li>
+        <li><strong>Property</strong> — its name, its capacity.</li>
+        <li><strong>Relationship</strong> — a link an agent can follow, instead of guessing.</li>
+        <li><strong>GeoProperty / @context</strong> — location, time, and a shared vocabulary, built in.</li>
+      </ul>
+      <p class="footnote">Meaning lives in the data model, not in each API's documentation. That's the whole trick.</p>
+    </div>
+  </section>
+
+  <!-- 9 · Four requirements we couldn't compromise -->
+  <section class="slide" data-bg="dark" data-slide="requirements">
+    <div class="slide__inner">
+      <span class="kicker">Pillar B · Why we didn't just run Orion-LD</span>
+      <h2 class="slide__title slide__title--tight">Four requirements we couldn't compromise</h2>
+      <ul class="bullets">
+        <li><strong>Fully-managed, serverless.</strong> A city shouldn't run a 24/7 broker to own its data.</li>
+        <li><strong>One engine, two protocols.</strong> NGSIv2 (legacy) and NGSI-LD (future), over the same data.</li>
+        <li><strong>Agents as first-class users.</strong> MCP on the broker itself, from the first commit.</li>
+        <li><strong>Security built in, not bolted on.</strong> One policy layer, tokens tied to the sender.</li>
+      </ul>
+      <p class="footnote">Stated as <em>our</em> requirements — not as criticism of the upstream projects.</p>
+    </div>
+  </section>
+
+  <!-- 10 · GeonicDB in one page -->
+  <section class="slide" data-bg="dark" data-slide="geonicdb-onepage">
+    <div class="slide__inner">
+      <span class="kicker">Pillar B · The product</span>
+      <h2 class="slide__title slide__title--tight">GeonicDB, in one page</h2>
+      <div class="history" style="margin-top:8px;">
+        <span class="history__step">write in — checked by the standard</span><span class="history__arrow">→</span>
+        <span class="history__step">store</span><span class="history__arrow">→</span>
+        <span class="history__step">API for apps</span>
+        <span class="history__step">MCP for agents</span>
+      </div>
+      <p class="lead" style="margin-top:24px;">Both protocols, one engine. Fully managed — a city runs no servers. The map you seeded is GeonicDB, live.</p>
+    </div>
+  </section>
+
+  <!-- 10b · ETSI conformance — reused verbatim from the product deck (data-slide="etsi-conformance"), folded into pillar B per 殿裁可 -->
+  <section class="slide" data-bg="dark" data-slide="etsi-conformance">
+    <div class="slide__inner">
+      <span class="kicker">Self-measured, not a certification</span>
+      <h2 class="slide__title slide__title--tight">ETSI NGSI-LD conformance: 84.2%</h2>
+      <div class="ha-hero">
+        <div class="ha-hero__main">
+          <span class="ha-hero__num">84.2<small>%</small></span>
+          <span class="ha-hero__label">870 / 1033 test items</span>
+        </div>
+        <div class="ha-hero__desc">
+          <p>We ran the ETSI GS CIM 009 (NGSI-LD) conformance test suite — all 1,033 items — against GeonicDB and three open-source context brokers, <strong>under the same conditions</strong>.</p>
+          <p class="ha-hero__note">Self-measured 2026-08-28, GeonicDB v0.17.0. Not a subset claim — the same honest word from the build-story act applies here too.</p>
+        </div>
+      </div>
+      <div class="metrics metrics--4">
+        <div class="metric metric--lead"><span class="metric__num">84.2<small>%</small></span><span class="metric__label">GeonicDB</span></div>
+        <div class="metric"><span class="metric__num">51.6<small>%</small></span><span class="metric__label">Stellio</span></div>
+        <div class="metric"><span class="metric__num">36.5<small>%</small></span><span class="metric__label">Scorpio</span></div>
+        <div class="metric"><span class="metric__num">24.6<small>%</small></span><span class="metric__label">FIWARE Orion-LD</span></div>
+      </div>
+      <p class="footnote">Source: our own run of the ETSI GS CIM 009 conformance suite, all four brokers under identical conditions. We measured; we didn't win a competition. Versions and settings on request.</p>
+    </div>
+  </section>
+
+  <!-- 11 · What it cost, what it bought -->
+  <section class="slide" data-bg="dark" data-slide="cost-bought">
+    <div class="slide__inner">
+      <span class="kicker">Pillar B · The honest cost</span>
+      <h2 class="slide__title slide__title--tight">What it cost, and what it bought</h2>
+      <div class="twocol">
+        <div class="twocol__col twocol__col--cost">
+          <h3>Cost</h3>
+          <ul>
+            <li>~3,200 conformance test scenarios. 1.7 lines of test per line of product code.</li>
+            <li>A <em>subset</em> of CIM 009 v1.9.1 — not "compliant."</li>
+            <li>No upstream community carrying our bugs. The standard keeps moving; keeping up is now our job.</li>
+          </ul>
+        </div>
+        <div class="twocol__col twocol__col--gain">
+          <h3>Bought</h3>
+          <ul>
+            <li>A service a city can adopt without running servers.</li>
+            <li>One engine, two protocols.</li>
+            <li>Agents as first-class users, not an afterthought.</li>
+            <li>Security without extra servers.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="quoteline">"We could leave the implementation because we never left the standard."</div>
+      <p class="footnote">Open-sourcing GeonicDB is <strong>planned</strong> — no date, on the record.</p>
+    </div>
+  </section>
+
+  <!-- 12 · The payoff (pillar c) -->
+  <section class="slide" data-bg="dark" data-slide="payoff">
+    <div class="slide__inner">
+      <span class="kicker">Pillar C · What the agent gets</span>
+      <h2 class="slide__title slide__title--tight">What a semantic layer hands an agent</h2>
+      <ul class="bullets">
+        <li><strong>Typed geography</strong> — location queries are native, not string parsing.</li>
+        <li><strong>Validated writes</strong> — bad data fails immediately, with a clear error. It never enters the database.</li>
+        <li><strong>Relationships to follow</strong> — a graph to walk, not joins to invent.</li>
+        <li><strong>One MCP endpoint</strong> — the agent discovers the tools and models itself.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 13 · Harvest — full-screen map, then split with the agent (demo) -->
+  <section class="slide" data-bg="dark" data-slide="harvest" data-live="true">
+    <div class="slide__inner">
+      <span class="kicker">Demo · Pillar C</span>
+      <h2 class="slide__title slide__title--tight">This is what two hundred people look like as a dataset</h2>
+      <div class="embed-slot" style="min-height:340px;">
+        <span class="embed-slot__tag">Live embed — cmd_751</span>
+        <span class="embed-slot__msg">Full-screen contribution map, then split-screen with an AI agent connected to GeonicDB's <code>/mcp</code> endpoint. Connect the map (branch <code>subtask/751d-contribution-map</code>) and the agent session here once cmd_751 lands.</span>
+      </div>
+      <p class="footnote">Q1: How many posts, by category? Q2: Where are the clusters? Q3: In three sentences, what does this room care about? Then — one live question from the floor.</p>
+    </div>
+  </section>
+
+  <!-- 14 · Meta-point -->
+  <section class="slide" data-bg="dark" data-slide="meta-point">
+    <div class="slide__inner" style="text-align:center;">
+      <div class="quoteline" style="margin:0 auto; text-align:left; font-size:24px;">"Two hundred strangers just produced an interoperable dataset in twenty minutes — without a single meeting about schema. The standard held the meeting for you."</div>
+    </div>
+  </section>
+
+  <!-- 15 · Close — 3Q / 2Q variants; toggle at rehearsal, delete the unused variant before the final push -->
+  <section class="slide slide--closing" data-bg="title" data-slide="closing">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="slide__inner closing__inner">
+      <h2 class="closing__headline">Close — questions for this community</h2>
+
+      <ol class="close-q" data-variant="3q">
+        <li>Should conformance test suites — not reference implementations — become the commons?</li>
+        <li>What is the NGSI-LD / OGC story for <em>agent-to-agent</em> exchange, with no human in the loop?</li>
+        <li class="close-q__q3">What would an "open meaning" policy for public data look like — and who writes it?</li>
+      </ol>
+
+      <p class="closing__sub">Open your data — yes, always. Then open its meaning.</p>
+      <p class="footnote">Thank you.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="ui">
+  <div class="ui__progress"><div id="progressBar" class="ui__progress-bar"></div></div>
+  <div class="ui__controls">
+    <button id="prevBtn" class="ui__btn" aria-label="Previous slide">‹</button>
+    <span id="counter" class="ui__counter mono">1 / 15</span>
+    <button id="nextBtn" class="ui__btn" aria-label="Next slide">›</button>
+    <button id="fsBtn" class="ui__btn" aria-label="Fullscreen">⛶</button>
+  </div>
+</div>
+<div id="hint" class="hint mono">← → / Space to move · F fullscreen</div>
+<button id="variantToggle" class="variant-toggle mono" type="button">Close: 3Q (click for 2Q)</button>
+
+<div class="rotate-hint" role="alert">
+  <div class="rotate-hint__inner">
+    <span class="rotate-hint__icon" aria-hidden="true">📱↻</span>
+    <p class="rotate-hint__text">Please rotate to <strong>landscape</strong></p>
+    <p class="rotate-hint__sub">This deck is wide-format</p>
+  </div>
+</div>
+
+<script src="keynote.js"></script>
+</body>
+</html>

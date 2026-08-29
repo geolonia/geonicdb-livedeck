@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond the API — FOSS4G Hiroshima 2026 Keynote (Companion Script)</title>
+<meta name="description" content="Companion reading script for the FOSS4G Hiroshima 2026 keynote 'Beyond the API: Why AI-Era Data Integration Needs Open Standards, Not Just Open Data' by Geolonia.">
+<link rel="canonical" href="https://geolonia.github.io/geonicdb-livedeck/talk/" />
+<style>
+  :root {
+    --ink: #1a1f2b;
+    --ink-soft: #4a5268;
+    --paper: #fbfaf7;
+    --card: #ffffff;
+    --line: #e3e0d8;
+    --accent: #b3541e;      /* persimmon */
+    --accent-soft: #f6e8de;
+    --blue: #2c5f8a;
+    --blue-soft: #e4edf4;
+    --green: #3d7a4f;
+    --green-soft: #e5f0e8;
+    --gold: #8a6d2c;
+    --gold-soft: #f4eeda;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Hiragino Sans", Georgia, sans-serif;
+    line-height: 1.75; font-size: 16px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 96px; }
+  header.masthead { border-bottom: 3px double var(--line); padding: 48px 0 28px; margin-bottom: 8px; }
+  .kicker { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  h1 { font-size: 29px; line-height: 1.35; margin: 10px 0 6px; }
+  .sub { color: var(--ink-soft); font-size: 14px; }
+  nav.toc {
+    position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,.96);
+    backdrop-filter: blur(4px); border-bottom: 1px solid var(--line);
+    padding: 10px 0; margin: 0 -24px 36px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  }
+  nav.toc a {
+    text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card);
+  }
+  nav.toc a:hover { color: var(--accent); border-color: var(--accent); }
+  section.act { margin: 60px 0; scroll-margin-top: 70px; }
+  .act-head { border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 20px; }
+  .act-head .time { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: .06em; }
+  h2 { font-size: 23px; margin: 4px 0 0; line-height: 1.4; }
+  h3 { font-size: 16.5px; margin: 28px 0 8px; color: var(--ink); }
+  p { margin: 12px 0; }
+  .pill {
+    display: inline-block; font-size: 11.5px; font-weight: 700; padding: 1px 9px;
+    border-radius: 999px; margin-right: 4px; vertical-align: 1px; white-space: nowrap;
+  }
+  .pill.a { background: var(--blue-soft); color: var(--blue); }
+  .pill.b { background: var(--accent-soft); color: var(--accent); }
+  .pill.c { background: var(--green-soft); color: var(--green); }
+  .pill.r { background: var(--gold-soft); color: var(--gold); }
+  .pill.d { background: #ece7f5; color: #5b4a8a; }
+  .slide-cue {
+    font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: #5b4a8a;
+    background: #ece7f5; border-radius: 6px; padding: 6px 12px; margin: 26px 0 10px; display: inline-block;
+  }
+  .script { font-size: 16.5px; }
+  .script p { margin: 14px 0; }
+  .stage {
+    color: var(--ink-soft); font-style: italic; font-size: 14px;
+    border-left: 3px solid var(--line); padding-left: 12px; margin: 12px 0;
+  }
+  .note {
+    background: var(--blue-soft); border: 1px solid #c9d9e6; border-radius: 10px;
+    padding: 12px 18px; margin: 16px 0; font-size: 13.5px; color: #23425e;
+  }
+  .note b:first-child { color: var(--blue); }
+  .quoteline {
+    border-left: 4px solid var(--accent); background: var(--accent-soft);
+    padding: 12px 18px; margin: 16px 0; border-radius: 0 8px 8px 0;
+    font-style: italic; font-size: 15.5px;
+  }
+  .factbox {
+    background: var(--gold-soft); border: 1px solid #e0d3ab; border-radius: 10px;
+    padding: 16px 22px; margin: 16px 0;
+  }
+  .factbox ul { margin: 8px 0; padding-left: 20px; font-size: 15px; }
+  .factbox li { margin: 8px 0; }
+  .placeholder {
+    border: 2px dashed var(--accent); background: #fff8f3; border-radius: 10px;
+    padding: 16px 22px; margin: 16px 0; font-size: 15.5px; font-weight: 600; text-align: center;
+  }
+  code { font-family: var(--mono); font-size: 13px; background: #f1efe8; padding: 1px 6px; border-radius: 4px; }
+  .timebar { display: flex; height: 46px; border-radius: 8px; overflow: hidden; margin: 14px 0 4px; border: 1px solid var(--line); }
+  .timebar div {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 10.5px; font-weight: 700; color: #fff; line-height: 1.25; text-align: center;
+    padding: 0 2px; overflow: hidden;
+  }
+  .timebar div small { font-weight: 500; opacity: .85; font-size: 10px; }
+  .t1 { background: #46586e; } .t2 { background: #2c5f8a; } .t3 { background: #8a6d2c; }
+  .t4 { background: #3d7a4f; } .t5 { background: #b3541e; } .t6 { background: #7a4a8a; }
+  .t7 { background: #37474f; }
+  .timecap { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
+  footer { margin-top: 72px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 12.5px; color: var(--ink-soft); }
+  footer a { color: var(--accent); }
+  @media print { nav.toc { display: none; } body { font-size: 12px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="kicker">FOSS4G Hiroshima 2026 · Keynote · 25 min · Companion script</div>
+  <h1>Beyond the API<br>
+  <span style="font-size:18px; color:var(--ink-soft); font-weight:600;">Why AI-Era Data Integration Needs Open Standards, Not Just Open Data</span></h1>
+  <div class="sub">
+    Speaker: Hal Seki (Geolonia, Inc.) · FOSS4G Hiroshima 2026 · 2026-09-03<br>
+    This page is a reading companion to the live keynote — the same words spoken on stage, for anyone who wants to follow along or revisit it afterward.
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#runsheet">Run sheet</a>
+  <a href="#act1">I Seed</a>
+  <a href="#act2">II Decade</a>
+  <a href="#act3">III Meaning gap</a>
+  <a href="#act4">IV Objection</a>
+  <a href="#act5">V Build story</a>
+  <a href="#act6">VI Payoff</a>
+  <a href="#act7">VII Harvest</a>
+  <a href="#act8">VIII Close</a>
+</nav>
+
+<!-- ============================================================ -->
+<section id="runsheet">
+  <div class="act-head">
+    <span class="time">RUN SHEET</span>
+    <h2>25 minutes at a glance</h2>
+  </div>
+  <div class="timebar">
+    <div class="t1" style="width:10%">Seed<small>2.5</small></div>
+    <div class="t2" style="width:14%">Decade<small>3.5</small></div>
+    <div class="t4" style="width:14%">Meaning gap<small>3.5</small></div>
+    <div class="t3" style="width:12%">Objection<small>3</small></div>
+    <div class="t5" style="width:16%">Build story<small>4</small></div>
+    <div class="t2" style="width:6%">Payoff<small>1.5</small></div>
+    <div class="t6" style="width:20%">Harvest<small>5</small></div>
+    <div class="t7" style="width:8%">Close<small>2</small></div>
+  </div>
+  <div class="timecap">0:00 seed the demo → 2:30 open-data decade → 6:00 meaning gap → 9:30 objection &amp; confidence trap → 12:30 build story → 16:30 agent payoff → 18:00 harvest demo → 23:00 close (25:00)</div>
+  <p style="font-size:14px; color:var(--ink-soft);">The QR code goes up in minute one, before anything is explained. The audience's posts accumulate as live NGSI-LD entities on a corner-inset map while the talk unfolds — the room literally builds the dataset the talk is about. At the end, the AI agent harvests it. The demo is not a segment; it is the proof, running under the whole argument.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="act1" class="act">
+  <div class="act-head">
+    <span class="time">ACT I · 0:00 – 2:30</span>
+    <h2>Seed — the room starts posting <span class="pill d">Demo</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 1 — QR code, full screen. Nothing else. No title, no logo.</div>
+  <div class="script">
+    <p>Good morning. Don't listen to me yet.</p>
+    <p>Before I introduce myself, please take out your phone. Point it at this code. A small form opens. Three steps. Pick a category: mobility, disaster, environment, community, or other. Write one line about a problem near you — something worth fixing. Then drop a pin on the map. Your neighborhood, or this venue, is fine.</p>
+    <p>That's it. No account. No app. I will tell you why in about twenty minutes. For now, I make you one promise: what you just typed will not disappear. It will come back at the end of this talk.</p>
+    <div class="stage">[Map inset appears bottom-right of the screen and stays there for the rest of the talk. First points appear within seconds. Pause — let the room notice the dots landing.]</div>
+    <p>There it goes. Bottom-right corner — those dots are you. Keep posting whenever a thought strikes you. The form stays open for the whole talk. That corner of the screen is now live infrastructure. We will come back to it.</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 2 — Title: "Beyond the API — Why AI-Era Data Integration Needs Open Standards, Not Just Open Data"</div>
+  <div class="script">
+    <p>My name is Hal Seki. I run a company called Geolonia. We build geospatial data infrastructure for cities — and for the AI agents that are starting to use it.</p>
+    <p>Here is the promise of this talk. In twenty-five minutes, an AI agent will read what this room just wrote — all of it. And it will understand it. Not because the AI is clever. Because of what happened to your post on its way to the database.</p>
+    <p>That gap — between clever AI and understood data — is what this talk is about.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act2" class="act">
+  <div class="act-head">
+    <span class="time">ACT II · 2:30 – 6:00</span>
+    <h2>The open data decade — access is solved. So why is this still hard?</h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 3 — "Access: solved." Photos/logos of the open data movement's wins: portals, licenses, APIs.</div>
+  <div class="script">
+    <p>Let me start with credit. Much of it belongs to people in this room.</p>
+    <p>Over the last decade, the open data movement won. Governments publish. Licenses are open. Portals exist. APIs serve data around the clock. Ten years ago, the question was: "Can I get the data at all?" Today, for most public geospatial data, the answer is yes. Access is solved. This community — the FOSS4G community — did much of that work. Nothing I say today takes that away.</p>
+    <p>But here is the uncomfortable question. If access is solved, why is open data still so hard to <i>use</i>? Why does every integration project still start with a human staring at column names?</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 4 — "API sprawl: the silo we rebuilt." A wall of subtly different API doc screenshots.</div>
+  <div class="script">
+    <p>Here is what happened. Every portal invented its own schema. Every API invented its own field names, its own date formats, its own way to write a coordinate. Each one is documented, more or less. Each one is open, technically. And each one is a small silo with a nice license.</p>
+    <p>We did not tear down the silos. We rebuilt them with better licenses.</p>
+    <p>For a human developer, this is friction. It costs time and money. For an AI agent, it is worse — and this is the new part. Agents are becoming the main consumers of this data. Every new API is one more dialect an agent must be taught by hand. Open licenses freed the bytes. Nothing freed the meaning.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act3" class="act">
+  <div class="act-head">
+    <span class="time">ACT III · 6:00 – 9:30</span>
+    <h2>The meaning gap <span class="pill a">Pillar a</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 5 — "The four ambiguities." Four quadrants: Identity / Semantics / Units &amp; conventions / Time.</div>
+  <div class="script">
+    <p>Machine-<i>readable</i> is not machine-<i>interpretable</i>. Every dataset I have ever worked with has the same four problems.</p>
+    <p><b>Identity.</b> Is "Chuo Community Center" in this file the same building as "Chūō Kōminkan" in that one? Which shelter is this row, exactly?</p>
+    <p><b>Semantics.</b> A column named <code>capacity</code> — is that the design capacity, or the number of people inside right now? Those two numbers save lives differently.</p>
+    <p><b>Units and conventions.</b> My favorite, because it is geospatial and it is real. NGSIv2 — an older standard for city data — writes coordinates as latitude, longitude. NGSI-LD and GeoJSON write longitude, latitude. Same two numbers. Same field. Two different places on Earth, depending on which spec you think you are reading.</p>
+    <p><b>Time.</b> Measured when? Valid until? Updated by whom?</p>
+    <p>For decades, humans absorbed these problems quietly. An intern reads the PDF data dictionary. An engineer "just knows" that column seven is Shift-JIS. That was the hidden cost of every integration — paid in overtime, and never written down.</p>
+    <p>AI agents inherit all of the ambiguity, and none of the caution. Unlike the intern, they never say: "This looks strange. Let me ask someone."</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 6 — THE REVEAL: one real audience post from the last five minutes, shown as raw NGSI-LD JSON.</div>
+  <div class="script">
+    <div class="stage">[Pick one good post from the inset — ideally one of the two seeded colleague posts if the early crop is thin. Put its raw JSON full screen.]</div>
+    <p>Now — look at what you have been making while I talked.</p>
+    <p>This is one of your posts. Someone in this room typed one line on a phone, four minutes ago. This is what it became before it reached the database. Look at the location. Not two mystery numbers — a typed <code>GeoProperty</code>. The order is fixed by the standard: longitude, latitude. Look at the category. Not free text — a value from a fixed list. Anything else was rejected. There is a timestamp with a defined meaning. And there is a permanent ID, so this small complaint about a broken streetlight can be cited forever.</p>
+    <p>Here is the point: <b>you did not fill in a schema.</b> You typed a sentence and tapped a map. The data model did the agreeing for you. Two hundred strangers are producing interoperable data right now — without ever having met.</p>
+    <p>That is what a semantic layer is. Not paperwork. An agreement, enforced by the platform, so that meaning travels with the data — instead of living in a README nobody reads.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act4" class="act">
+  <div class="act-head">
+    <span class="time">ACT IV · 9:30 – 12:30</span>
+    <h2>The objection — "won't smarter AI just figure it out?" <span class="pill r">Rebuttal</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 7 — The objection, stated in its strongest form: "LLMs already parse messy data. Why bother?"</div>
+  <div class="script">
+    <p>Right now, every AI engineer in this room is thinking the same thing. Let me say it out loud — in its strongest form, because it deserves that.</p>
+    <p>"Modern language models already parse messy CSVs. They guess column meanings. They read PDFs. For one-off, human-supervised analysis, this mostly works. So why build a semantic layer at all? Won't the next generation of models make it unnecessary?"</p>
+    <p>That is a serious argument. I have four answers. The first one I did not learn from a paper. I watched it happen.</p>
+    <p><b>Answer one: the confidence trap.</b> A smarter model does not fail less on ambiguous data. It fails better — its mistakes look more correct. Faced with an unknown field, it never says "I don't know." It picks the most likely meaning and keeps going, fluently. Wrong answers that look right are the most expensive kind. They survive review.</p>
+    <div class="stage">[Shift register: slower, personal. The speaker now recounts a firsthand experience — building a civic mapping app with an AI coding agent, recently, in a hackathon-support context. The measured facts, exactly as recorded at the time:]</div>
+    <div class="factbox">
+      <b>What actually happened (measured, not embellished):</b>
+      <ul>
+        <li>The AI wrote a text-encoding name that does not exist — twice in a row (<code>'shift-jis'</code>, then <code>'shiftjis'</code>). Each looked perfectly plausible. Neither worked.</li>
+        <li>A data-conversion script ran with no errors. But unhandled CRLF line endings had silently turned the "capacity" field into <code>null</code> — in all 588 records. Zero out of 588 converted. The work was reported as "complete."</li>
+        <li>The lesson, straight from the log: <b>"It ran" does not mean "it's right."</b> Nothing surfaced the defect until a human inspected the output.</li>
+      </ul>
+    </div>
+    <p>That is the confidence trap, live. And notice: nothing in that story improves when the model gets smarter. A smarter model invents <i>more</i> plausible names. It writes scripts that fail <i>more</i> quietly.</p>
+    <p><b>Answer two: pay once, not every time.</b> If agents must guess the meaning at read time, you pay for that guess on every query, from every agent, forever. A semantic layer does the work once, at write time. And query volume is exploding — that is the whole point of the agent era. The busier your agents get, the better the one-time work looks.</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 8 — "Autonomy raises the stakes" + the history strip: robots.txt → sitemaps → schema.org → OpenAPI → function calling → llms.txt → MCP.</div>
+  <div class="script">
+    <p><b>Answer three: autonomy removes the safety net.</b> "AI will figure it out" was tested in a world where a human checked every answer. Agents <i>act</i>. They call tools. They write records. They trigger other agents. A misread unit or a flipped coordinate no longer produces a funny chat reply. It produces a wrong action — and every downstream agent treats that action as truth. The cost of misreading data goes up as AI advances. Not down.</p>
+    <p><b>Answer four: this has happened before, every time.</b> Every jump in machine capability brought <i>more</i> machine-readable structure, not less. Smarter crawlers got robots.txt, then sitemaps, then schema.org. Smarter models got OpenAPI, then function-calling schemas, then llms.txt, then MCP. If intelligence made structure unnecessary, MCP would not exist.</p>
+    <div class="quoteline">"Smarter agents do not need less meaning. They consume more of it, faster, with higher stakes. Meaning is a contract — and contracts are what scale."</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act5" class="act">
+  <div class="act-head">
+    <span class="time">ACT V · 12:30 – 16:30</span>
+    <h2>The build story — the bet, the cost, the gains <span class="pill b">Pillar b</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 9 — "So we bet on a standard: NGSI-LD (ETSI GS CIM 009)." One honest diagram: Entity / Property / Relationship / GeoProperty / @context.</div>
+  <div class="script">
+    <p>So if meaning is a contract, which contract? We bet on NGSI-LD. In plain words: NGSI-LD is an open standard for describing the things in a city — shelters, buses, sensors, complaints — in one common format. It is published by ETSI, a European standards body. Here is one slide of it, honestly.</p>
+    <p>Everything is an <b>entity</b>: a thing with a stable ID. An entity has <b>properties</b> — its name, its capacity. It also has <b>relationships</b>: a shelter can point to the organization that runs it, and an agent can follow that link instead of guessing. Location and time are built into the model — remember the coordinate-order problem? Fixed here, by the standard. And a shared vocabulary ties field names to common definitions, so <code>capacity</code> means the same thing in the next city over.</p>
+    <p>Meaning lives in the data model, not in each API's documentation. That is the whole trick. It is what turned your one-line posts into the dataset filling that corner.</p>
+    <p>Now. This is FOSS4G, and I can hear the question forming. NGSI-LD has a well-known open-source reference broker — the server that stores and serves this data. <b>"Why didn't you just run Orion-LD?"</b></p>
+    <p>Fair question. It deserves a straight answer — and an honest cost.</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 10 — "Four requirements we couldn't compromise." Stated as OUR requirements, not as anyone's failings.</div>
+  <div class="script">
+    <p>We had four requirements. I state them as <i>our</i> requirements — not as criticism of the upstream projects. Those are good software, maintained by people I respect.</p>
+    <p><b>One: fully-managed and serverless.</b> Our users are city governments. A city should not have to operate a 24/7 broker to own its data. If the first requirement is "run your own servers," most cities are excluded on day one.</p>
+    <p><b>Two: one engine for two protocols.</b> Upstream, the older standard (NGSIv2) and the newer one (NGSI-LD) live in two different products. Our customers' legacy systems speak the old one. Their future speaks the new one. We needed one engine that serves both, over the same data.</p>
+    <p><b>Three: agents as first-class users, from the first commit.</b> An MCP endpoint on the broker itself — MCP is the standard that lets an AI agent discover and call tools. Plus machine-readable guides: llms.txt, tools.json, and per-tenant API documentation that updates itself when the data models change. Not add-ons in front of the broker. Properties of the broker.</p>
+    <p><b>Four: security built in, not bolted on.</b> One policy layer, with tokens tied to the sender — instead of a chain of extra servers, each holding one piece of the security.</p>
+    <p>We looked at those four together and made an uncomfortable decision: reimplement the standard, from scratch. That product is GeonicDB.</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 10A — "GeonicDB in one page." One diagram: write in (checked by the standard) → store → read out (API for apps / MCP for agents).</div>
+  <div class="script">
+    <p>I just said the name, so let me give it one page. No more.</p>
+    <p>GeonicDB is a database service for city data. You write data in, and the standard checks every write before it is saved. Applications and AI agents read data out — through normal web APIs, and through MCP for agents. It speaks both standards I mentioned: NGSI-LD and the older NGSIv2, from one engine. It runs as a managed cloud service, so a city runs no servers. That is the whole idea.</p>
+    <p>Why does it exist? Because of those four requirements. We could not meet them by hosting the existing brokers, so we implemented the standard ourselves. And you have already seen it working: the map in that corner is GeonicDB, live. Your phones have been writing into it since minute one.</p>
+    <p>That is the product. The rest of this act is about what building it cost.</p>
+  </div>
+
+  <div class="slide-cue">SLIDE 11 — "What it cost, and what it bought." Both columns visible at once.</div>
+  <div class="script">
+    <p>Here is what that decision cost — because a keynote that hides the cost is an advertisement.</p>
+    <p>Reimplementing a standard is hard. Our conformance suite is about 3,200 test scenarios. We have 1.7 lines of test for every line of product code — there is more test than product. And after all of that, what we ship is honestly a <i>subset</i> of CIM 009 version 1.9.1. I say "subset," not "compliant," because this audience deserves the precise word. We also walked away from the upstream community, which means nobody upstream carries our bugs. And the standard keeps evolving under us. Keeping up is now our job, permanently.</p>
+    <p>What we got: a service a city can adopt without running servers. One engine, two protocols. Agents as first-class users instead of an afterthought. Security without extra servers. You now have both columns. You can do the math.</p>
+    <p>And one more thing, which I owe to this community in particular: open-sourcing GeonicDB is <b>planned</b>. I will not put a date on that today — but I am saying it from this stage, on the record.</p>
+    <p>Here is the sentence I most want you to keep from this act: <b>we could leave the implementation because we never left the standard.</b> That is what open standards are <i>for</i>. They make implementations replaceable — including ours, someday. Interoperability lives in the contract, not in any codebase. That is the difference between open source and open standards. In the long run, you want both.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act6" class="act">
+  <div class="act-head">
+    <span class="time">ACT VI · 16:30 – 18:00</span>
+    <h2>The payoff — what the agent is about to use <span class="pill c">Pillar c</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 12 — "What a semantic layer gives an agent." Four tight bullets. The inset map is visibly full by now.</div>
+  <div class="script">
+    <p>Now it is time to keep my promise. For twenty minutes, that corner of the screen has been collecting your posts as validated NGSI-LD entities. In a moment, an AI agent will read them. Here is exactly what the semantic layer hands it.</p>
+    <p><b>Typed geography</b> — no coordinate guessing; location queries are native, not string parsing. <b>Validated writes</b> — every post was checked against a schema before it was saved. Wrong data fails immediately, with a clear error. It never enters the database. Remember the 588 silent nulls from my story? That is the failure this design prevents. <b>Relationships an agent can follow</b> — a graph to walk, instead of joins to invent. <b>And one MCP endpoint</b> — the agent discovers the tools and the data models by itself. Nobody teaches it this API.</p>
+    <p>Enough claiming. Let's query.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act7" class="act">
+  <div class="act-head">
+    <span class="time">ACT VII · 18:00 – 23:00</span>
+    <h2>Harvest — the agent reads the room <span class="pill d">Demo</span> <span class="pill c">Pillar c</span></h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 13 — Map goes FULL SCREEN. It has been filling for twenty minutes. Then split-screen: map + an AI agent connected to the broker's /mcp endpoint.</div>
+  <div class="script">
+    <p>This is what two hundred people look like as a dataset.</p>
+    <div class="stage">[Beat. Let the full map land — this is the visual payoff of the whole talk. Then bring up the agent side.]</div>
+    <p>Now the agent. This is an AI agent, connecting to GeonicDB's <code>/mcp</code> endpoint — the same live database your phones have been writing to. Nobody taught it this API. It discovers the tools and the data models through the standard. Watch.</p>
+    <p><b>First question:</b> "How many posts are there, and how do they break down by category?"</p>
+    <div class="stage">[Agent queries live; counts appear. Narrate what it did, not just what it found: it called the entities tool with a typed query — no scraping, no guessing.]</div>
+    <p><b>Second:</b> "Where are the geographic clusters? What are people posting about near this venue versus elsewhere?"</p>
+    <div class="stage">[Geo query runs against typed GeoProperties. Point at a cluster; read one or two real posts aloud.]</div>
+    <p><b>Third:</b> "In three sentences: what does this room care about?"</p>
+    <div class="stage">[The digest appears. Read it aloud, slowly. This is the promise from minute two, kept.]</div>
+    <p>And a live dataset deserves a live question — someone shout one. Ask this data anything.</p>
+    <div class="stage">[Take ONE audience question, repeat it clearly into the mic, pass it to the agent. If none comes, use the prepared spare: "Which category is most common within one kilometer of this venue?"]</div>
+  </div>
+
+  <div class="slide-cue">SLIDE 14 — The meta-point. One sentence, full screen.</div>
+  <div class="script">
+    <p>Let me tell you what you just saw — because it was not an AI demo.</p>
+    <div class="quoteline">"Two hundred strangers just produced an interoperable dataset in twenty minutes — without a single meeting about schema. The standard held the meeting for you."</div>
+    <p>No working group. No data dictionary. No integration project. You typed a sentence. The contract did the rest. And an agent none of you have ever met just used your data correctly, on the first try. That is the thing open data alone cannot do — and open standards can.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="act8" class="act">
+  <div class="act-head">
+    <span class="time">ACT VIII · 23:00 – 25:00</span>
+    <h2>Close — three questions for this community</h2>
+  </div>
+
+  <div class="slide-cue">SLIDE 15 — Three questions, on screen while spoken. Then the final line alone.</div>
+  <div class="script">
+    <p>I want to end with homework — not for you alone, but for us as a community. These are questions no vendor should answer alone.</p>
+    <p><b>One.</b> Should conformance test suites — not reference implementations — become the main artifact that open standards communities maintain? Our 3,200 scenarios were the hardest and most valuable thing we built. What if that layer were the commons?</p>
+    <p><b>Two.</b> What is the NGSI-LD and OGC story for <i>agent-to-agent</i> data exchange? When no human is in the loop, who owns semantics?</p>
+    <p><b>Three.</b> Open data policy took a decade to win. What would an "open meaning" policy for public data look like — and who should write it?</p>
+    <p>The map behind me stays up. Your posts are real entities in a real database. They will still be there, still queryable, when you walk out of this hall.</p>
+    <p>Open your data — yes, always. Then open its meaning.</p>
+    <p>Thank you.</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 Geolonia, Inc. · This is a companion reading page for the FOSS4G Hiroshima 2026 keynote by Hal Seki. It mirrors the words spoken on stage.<br>
+  Live product deck &amp; demos: <a href="https://geolonia.github.io/geonicdb-livedeck/">geolonia.github.io/geonicdb-livedeck</a> · GeonicDB: <a href="https://geonicdb.geolonia.com/">geonicdb.geolonia.com</a>
+</footer>
+
+</div>
+</body></html>
