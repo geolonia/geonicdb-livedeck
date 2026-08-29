@@ -64,9 +64,10 @@ export interface DeckConfig {
  * 会場投稿（Contribution）専用の接続設定。
  *
  * 他デモはデッキ共通テナント `miya` を使うが、Contribution は ENTERPRISE 契約・
- * 200名規模の負荷試験済みテナント `foss4g_hiroshima_2026` へ書き込む必要があるため、
- * テナント・API キーとも別建てにする（統合ポリシー geonicdb-livedeck-deck とは別の
- * integration key。Secrets Manager `geonicdb/foss4g-hiroshima-2026/contribution-key`）。
+ * 川上さん作成テナント `foss4g_2026`（将軍裁定 2026-08-29・旧 `foss4g_hiroshima_2026` から
+ * 切替）へ書き込む必要があるため、テナント・API キーとも別建てにする（統合ポリシー
+ * geonicdb-livedeck-deck とは別の integration key。Secrets Manager
+ * `geonicdb/foss4g-2026/contribution-key`）。
  */
 export interface ContributionConnConfig {
   baseUrl: string;
@@ -76,7 +77,7 @@ export interface ContributionConnConfig {
 
 export const contributionConnConfig: ContributionConnConfig = {
   baseUrl: "https://geonicdb.geolonia.com",
-  tenant: "foss4g_hiroshima_2026",
+  tenant: "foss4g_2026",
   key: import.meta.env.VITE_GEONICDB_CONTRIBUTION_KEY ?? "",
 };
 

@@ -32,7 +32,7 @@ npm run dev        # → http://localhost:8745
 | 変数 | 用途 |
 |---|---|
 | `VITE_GEONICDB_KEY` | 全デモ共通の統合キー（統合ポリシー `geonicdb-livedeck-deck`。GET/POST/WS を型別に許可・origin 制限＋DPoP） |
-| `VITE_GEONICDB_CONTRIBUTION_KEY` | 会場投稿(Contribution)専用キー。テナント `foss4g_hiroshima_2026`(ENTERPRISE契約・200名負荷試験済み)向け。上記の全デモ共通キーとは別物・別テナント |
+| `VITE_GEONICDB_CONTRIBUTION_KEY` | 会場投稿(Contribution)専用キー。テナント `foss4g_2026`(ENTERPRISE契約)向け。上記の全デモ共通キーとは別物・別テナント |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
