@@ -492,6 +492,10 @@ html, body {
 }
 
 .accent { color: var(--cyan); }
+/* 欧文は和文より字面が小さく見えるため、見出しに混在させるときだけ光学補正する。
+   欧文はベースラインに乗り、和文の字面は少し下まで伸びるので、拡大すると欧文が浮いて見える。
+   vertical-align で下へ 4px 相当ずらし、和文の字面の上端・下端に揃える（実測: 44px 見出しで 4px）。 */
+.title-latin { font-size: 1.25em; line-height: 1; vertical-align: -0.072em; }
 .slide[data-bg="light"] .accent { color: var(--cyan-2); }
 
 /* when a description directly follows the title: tighten the gap above it,
@@ -745,21 +749,6 @@ html, body {
 .tile-art__pin { position: absolute; font-size: 42px; filter: drop-shadow(0 8px 12px rgba(0,0,0,.5)); top: 64px; }
 
 /* ===== Standards compliance slide ===== */
-.std-hero {
-  display: flex; align-items: center; gap: 24px;
-  background: linear-gradient(120deg, rgba(252,108,0,.18), rgba(251,164,12,.06));
-  border: 1px solid rgba(252,108,0,.4); border-radius: 16px;
-  padding: 22px 28px; margin-bottom: 24px;
-}
-.std-hero__badge {
-  flex: 0 0 auto; font-size: 32px; font-weight: 900; color: #fc6c00;
-  letter-spacing: -.01em; padding: 12px 24px;
-  border: 2px solid rgba(252,108,0,.55); border-radius: 12px; background: rgba(0,0,0,.25);
-}
-.std-hero__title { font-size: 18px; color: #fff; font-weight: 700; }
-.std-hero__title span { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.6); margin-left: 8px; }
-.std-hero__body p { margin-top: 8px; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.78); }
-.std-hero__body strong { color: var(--cyan); }
 .std-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .std-card {
   background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
@@ -1300,6 +1289,25 @@ html, body {
 .msg-log__summary { font-size: 14px; color: rgba(255,255,255,.82); }
 .msg-empty { margin: auto; font-size: 14px; color: rgba(255,255,255,.45); }
 
+/* ---- NGSI-LD 説明スライド（1 つの「もの」に値・場所・つながりが付き、つながりが別の「もの」を指す図） ---- */
+/* 図は 1 枚のインライン SVG。文字サイズは viewBox 座標なので、列幅に合わせて等倍で縮む */
+.ld-svg { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
+.ld-svg__type { font-size: 14px; font-weight: 800; fill: var(--amber); }
+.ld-svg__id   { font-family: var(--font-mono); font-size: 10px; fill: rgba(255,255,255,.45); }
+.ld-svg__key  { font-size: 11.5px; fill: rgba(255,255,255,.58); }
+.ld-svg__val  { font-size: 13px; font-weight: 600; fill: rgba(255,255,255,.92); }
+.ld-svg__chip { font-size: 9.5px; font-weight: 800; }
+.ld-svg__when { font-size: 10px; fill: rgba(255,255,255,.42); }
+.ld-svg__edge { font-size: 12px; font-weight: 700; fill: var(--cyan); }
+
+/* ---- BaaS 説明スライド（従来の LAMP 相当のスタックと、GeonicDB のカバー範囲） ---- */
+.stack-chart { display: block; width: 100%; height: auto; margin-top: 8px; font-family: var(--font-sans); }
+.stack-chart__name { font-size: 17px; font-weight: 800; fill: #fff; }
+.stack-chart__sub  { font-size: 13px; font-weight: 500; fill: rgba(255,255,255,.55); }
+.stack-chart__tech { font-size: 14px; fill: rgba(255,255,255,.5); }
+.stack-chart__label { font-size: 17px; font-weight: 800; }
+.stack-chart__labelsub { font-size: 13px; fill: rgba(255,255,255,.55); }
+
 /* ---- スケールアップ説明スライド（従来 vs GeonicDB のコスト構造を対比） ---- */
 .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 42px; }
 /* .cmp-col は .std-card と同じ面（背景・枠・角丸）を踏襲し、差分のみ指定 */
@@ -1349,6 +1357,9 @@ html, body {
   text-align: center;
 }
 .callout strong { color: var(--cyan); font-weight: 800; }
+/* 面を上の積み上げ図の「フロントエンド」ボックスと同じ色にそろえたバリエーション
+   （BaaS スライド。9 ページ目の .callout はオレンジの塗りのまま） */
+.callout--soft { background: rgba(255,255,255,.045); }
 .cmp-col__body { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); margin: auto 0 0; }
 .cmp-col__body strong { color: var(--cyan); font-weight: 800; }
 .cmp-col__body .cmp-warn { color: #ff8a73; }

@@ -58,7 +58,7 @@ npm run dev        # → http://localhost:8745
 
 ## 構成
 
-本編（タイトル → 会社紹介 → Context Broker → 標準準拠 → AI Native → 競合比較 → 各ライブデモ → ユースケース）と、**Appendix**（全機能カタログ・管理機能・セキュリティ・信頼性・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
+本編（タイトル → 会社紹介 → Context Broker → BaaS → エコシステム → NGSI-LD → ETSI 適合度 → コスト構造 → AI Native → マルチテナンシー → 各ライブデモ）と、**Appendix**（全機能カタログ・FIWARE Orion との比較・AI 連携・管理機能・信頼性・認証認可・セキュリティ・クエリパラメータ・用語集）＋クロージングで構成。スライド順序は `index.html` の `<section class="slide">` の並びで決まり、ライブデモは `.slide--dual` / `.slide--map` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg` のクラスで識別する（番号がずれても各デモが自分のスライドを自動追従）。
 
 ## ライブデモ
 
@@ -81,7 +81,7 @@ npm run dev        # → http://localhost:8745
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
 
 ### 共同編集 GIS（`src/demos/collab.ts`・民間ユースケース）
-- 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近1週間**に作成された地物のみ。
+- 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近 24 時間**に作成された地物のみ。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（`geonicdb-livedeck-MapFeature` の GET|POST ＋ WS）。
 - 地図の初期表示は広島県尾道市周辺（`src/lib/config.ts` の `demos.collab`）。
 
@@ -229,7 +229,7 @@ geonic -s miya temporal entities create @shelter-001-temporal.json
 `allow-stream` / `allow-read-types` / `allow-write-types` に含まれている。個別ポリシー・キーは作らない。
 
 > 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
-> 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
+> 表示は**直近 24 時間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
 
 ### 6. メッセージング + Rules ログ（`slide--msg`）
 
