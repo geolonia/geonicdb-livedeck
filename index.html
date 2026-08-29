@@ -694,27 +694,71 @@
       </div>
     </section>
 
-    <!-- BaaS — アプリの「裏側」をまるごとサービスとして提供（自治体・政府職員向け。文言は平易に、項目は 6 つに絞る） -->
+    <!-- BaaS — GeonicDB が引き受ける範囲を 6 つのタイルで示す（自治体・政府職員向けに平易な言い回しで統一） -->
     <section class="slide" data-bg="dark" data-slide="baas">
       <div class="slide__inner">
         <span class="kicker">提供形態 / BaaS</span>
         <h2 class="slide__title">つくるのは画面だけ。<span class="accent">裏側はおまかせ</span></h2>
         <p class="map-desc map-desc--wide">サーバーの調達も、基盤の作り込みも、OS の更新・脆弱性対応もありません。</p>
-        <div class="baas-stack">
-          <div class="baas-grid">
-            <div class="baas-card"><span class="baas-card__name">データベース</span><span class="baas-card__desc">データの置き場</span></div>
-            <div class="baas-card"><span class="baas-card__name">標準化された API</span><span class="baas-card__desc">他システムと直結</span></div>
-            <div class="baas-card"><span class="baas-card__name">認証・認可</span><span class="baas-card__desc">見せる相手を制御</span></div>
-            <div class="baas-card"><span class="baas-card__name">リアルタイム配信</span><span class="baas-card__desc">変化を即時に届ける</span></div>
-            <div class="baas-card"><span class="baas-card__name">開発キット（SDK・CLI）</span><span class="baas-card__desc">画面側は数行で書ける</span></div>
-            <div class="baas-card"><span class="baas-card__name">運用・監視</span><span class="baas-card__desc">24 時間おまかせ</span></div>
+        <div class="baas-grid">
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <ellipse cx="12" cy="5.6" rx="7.4" ry="2.9" />
+              <path d="M4.6 5.6v6.2c0 1.6 3.3 2.9 7.4 2.9s7.4-1.3 7.4-2.9V5.6" />
+              <path d="M4.6 11.8V18c0 1.6 3.3 2.9 7.4 2.9s7.4-1.3 7.4-2.9v-6.2" />
+            </svg>
+            <span class="baas-card__name">データベース</span>
+            <span class="baas-card__desc">施設台帳もセンサーの数値も同じ場所に。項目や形式の誤りは自動でチェック</span>
           </div>
-          <div class="baas-wins">
-            <p class="baas-win"><b>契約したその日から使える</b>基盤をつくる期間がゼロ</p>
-            <p class="baas-win"><b>特定ベンダーに閉じない</b>国際標準なのでデータを持ち出せる</p>
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 2.8v5.4" />
+              <path d="M15 2.8v5.4" />
+              <path d="M5.6 8.2h12.8v3.4a6.4 6.4 0 0 1-12.8 0V8.2Z" />
+              <path d="M12 18v3.2" />
+            </svg>
+            <span class="baas-card__name">標準化された API</span>
+            <span class="baas-card__desc">国際標準の形式で出し入れ。他システムやオープンデータ公開にもそのまま使える</span>
+          </div>
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2.8 4.9 5.4v6c0 4.3 3 7.8 7.1 9.8 4.1-2 7.1-5.5 7.1-9.8v-6L12 2.8Z" />
+              <circle cx="12" cy="10.8" r="1.8" />
+              <path d="M12 12.6v2.8" />
+            </svg>
+            <span class="baas-card__name">認証・認可</span>
+            <span class="baas-card__desc">職員・事業者・一般公開をデータ単位で使い分け。ログインの仕組みも内蔵</span>
+          </div>
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="2.1" />
+              <path d="M8.3 8.3a5.3 5.3 0 0 0 0 7.4" />
+              <path d="M15.7 15.7a5.3 5.3 0 0 0 0-7.4" />
+              <path d="M5.6 5.6a9.1 9.1 0 0 0 0 12.8" />
+              <path d="M18.4 18.4a9.1 9.1 0 0 0 0-12.8" />
+            </svg>
+            <span class="baas-card__name">リアルタイム配信</span>
+            <span class="baas-card__desc">データが変わった瞬間に、開いている全員の画面へ届く</span>
+          </div>
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3.2" y="4.4" width="17.6" height="15.2" rx="2.6" />
+              <path d="M3.2 8.6h17.6" />
+              <path d="M7 12.4l2.2 2.2L7 16.8" />
+              <path d="M11.8 16.8h5.2" />
+            </svg>
+            <span class="baas-card__name">開発キット（SDK・CLI）</span>
+            <span class="baas-card__desc">画面側は数行でつながる。型定義つきなので AI にも実装を任せられる</span>
+          </div>
+          <div class="baas-card">
+            <svg class="baas-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.7" />
+              <path d="M6.4 12h2.5l1.7-3.6 2.3 7.2 1.6-3.6h2.9" />
+            </svg>
+            <span class="baas-card__name">運用・監視</span>
+            <span class="baas-card__desc">24 時間の監視と障害対応、バックアップ、混雑時の自動増強まで込み</span>
           </div>
         </div>
-        <p class="footnote">※ 技術的な内容は Appendix に掲載。ご利用には GeonicDB のご契約が必要です（住民向け画面の制作費・配信費用は含みません）。</p>
       </div>
     </section>
 
