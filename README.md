@@ -81,7 +81,7 @@ npm run dev        # → http://localhost:8745
 - カスタムデータモデル `Feedback`（`role`・`expectation`・`interestedIn`・`region`・`location`）でサーバ側バリデーション。
 
 ### 共同編集 GIS（`src/demos/collab.ts`・民間ユースケース）
-- 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近1週間**に作成された地物のみ。
+- 地図に**ポイント／ライン／ポリゴン**を描くと、地物が NGSI-LD エンティティ（`type=geonicdb-livedeck-MapFeature`、`location` は GeoProperty）として作成され、**WebSocket で全クライアントの地図にリアルタイム反映**される（＝共同編集）。参加者ごとに色を割り当て。表示は**直近 24 時間**に作成された地物のみ。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（`geonicdb-livedeck-MapFeature` の GET|POST ＋ WS）。
 - 地図の初期表示は広島県尾道市周辺（`src/lib/config.ts` の `demos.collab`）。
 
@@ -229,7 +229,7 @@ geonic -s miya temporal entities create @shelter-001-temporal.json
 `allow-stream` / `allow-read-types` / `allow-write-types` に含まれている。個別ポリシー・キーは作らない。
 
 > 地物は自由形状（GeoProperty に Point / LineString / Polygon）なのでカスタムデータモデルは使わない。
-> 表示は**直近1週間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
+> 表示は**直近 24 時間**に作成された地物のみ（クライアント側で `drawnAt`／id 埋め込み時刻でフィルタ）。
 
 ### 6. メッセージング + Rules ログ（`slide--msg`）
 
