@@ -5,19 +5,46 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# gh-pages ブランチへ publish するためソースへの書き込み権限のみ。
+# Pages ソース = "GitHub Actions"。gh-pages ブランチへ push しなくなったので
+# contents は read で足りる。pages: write / id-token: write は必要なジョブ側で
+# 個別に付ける（依存を実行する build ジョブに OIDC を持たせないため）。
 permissions:
-  contents: write
+  contents: read
 
+# 公開中のデプロイは中断しない（中断すると CDN が中途半端な状態で固まりうる）。
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
+    # Pages 設定の読み取り（build_type の確認）だけなので read で足りる。
+    permissions:
+      contents: read
+      pages: read
+    outputs:
+      # 公開後のスモークチェックで「ライブが最新バンドルか」を突き合わせるための
+      # エントリ JS のファイル名（内容ハッシュ付き）。
+      bundle: ${{ steps.bundle.outputs.name }}
     steps:
       - uses: actions/checkout@v4
+      # Pages の公開ソースが "GitHub Actions" かを先に確かめる。
+      # actions/configure-pages の enablement は「Pages サイトが未作成のときに
+      # build_type=workflow で作る」だけで、既存サイト（旧 gh-pages 運用のように
+      # build_type=legacy で作成済み）のソースは切り替えない。設定がズレたまま
+      # 走ると deploy-pages が分かりにくいエラーで落ちるので、ここで理由付きで倒す。
+      - name: Assert Pages source is "GitHub Actions"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          build_type=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.build_type' 2>/dev/null || echo "none")
+          if [ "$build_type" != "workflow" ]; then
+            echo "::error::Pages の公開ソースが \"GitHub Actions\" ではありません（build_type=${build_type}）。Settings → Pages の Source を \"GitHub Actions\" に切り替えてください（gh api -X PUT repos/${GITHUB_REPOSITORY}/pages -f build_type=workflow）。"
+            exit 1
+          fi
+          echo "Pages source: GitHub Actions (build_type=workflow)"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -33,10 +60,41 @@ jobs:
           VITE_GEONICDB_KEY: ${{ secrets.GEONICDB_KEY }}
           VITE_GEONICDB_CONTRIBUTION_KEY: ${{ secrets.GEONICDB_CONTRIBUTION_KEY }}
           VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
-      # ビルド成果物（dist/）だけを gh-pages ブランチへ公開（.nojekyll 自動付与）。
-      # ソース側（main）にはビルド出力を残さない。
-      - uses: peaceiris/actions-gh-pages@v4
+      - id: bundle
+        run: |
+          set -euo pipefail
+          # dist/index.html が読み込むエントリ JS（assets/index-<hash>.js）を取り出す。
+          # 取れなければ後段のスモークチェックが無意味になるので fail-loud。
+          name=$(grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' dist/index.html | head -n 1 || true)
+          [ -n "$name" ] || { echo "エントリ JS を dist/index.html から特定できません"; exit 1; }
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "expected bundle: $name"
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./dist
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # deploy-pages は OIDC でデプロイするため id-token: write が要る。
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 公開後のスモークチェック用スクリプトだけ取得する。
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      # 公開が CDN へ反映され、かつ今ビルドしたバンドルが配信されているかを検証する。
+      # 「push は成功／公開は古いまま」のズレ（issue #42）をここで赤にする。
+      - name: Verify live site serves the freshly built bundle
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          EXPECTED: ${{ needs.build.outputs.bundle }}
+        run: .github/scripts/verify-pages-deploy.sh

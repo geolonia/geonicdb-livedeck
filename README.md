@@ -50,6 +50,47 @@ npm run dev        # → http://localhost:8745
 
 > いずれかの GeonicDB キーが未設定だと、そのデモが `AuthenticationError`（空キー）で動かない。新しいライブデモを足したら deploy.yml の env とこの表も更新すること。
 
+### デプロイの仕組み
+
+`main` への push（と `workflow_dispatch`）で `.github/workflows/deploy.yml` が
+**ビルドから公開までを 1 本のワークフローで**行う（Pages のソース設定は **"GitHub Actions"**）。
+
+1. `build` — Vite ビルド → `actions/upload-pages-artifact` で `dist/` をアップロード
+2. `deploy` — `actions/deploy-pages` で公開 → `.github/scripts/verify-pages-deploy.sh` で
+   **ライブが今ビルドしたバンドル（`assets/index-<hash>.js`）を配信しているか**を検証
+
+検証は**訪問者がそのまま叩く URL**（クエリなし）に対して行い、HTML だけでなく
+**エントリ JS の実体まで取得**して初めて成功とする。エッジに古い HTML が残っている間は
+リトライで待つ（既定 45 回 x 15 秒 ≒ 11 分。Pages の HTML は `max-age=600` のため）。
+反映が正常なら 1〜2 回目で抜ける。
+
+> かつては peaceiris で `gh-pages` ブランチへ push し、GitHub 標準の
+> 「pages build and deployment」が別途公開する二重構成だった。公開側だけが失敗しても
+> `deploy.yml` は緑のままで、**ライブが古いバンドルのまま固まる事故**が起きた（#42）。
+> 現構成では公開の成否がこのワークフロー 1 本に集約され、反映のズレもステップ 2 で赤になる。
+
+検証スクリプトはローカルでも実行できる:
+
+```bash
+PAGE_URL=https://geolonia.github.io/geonicdb-livedeck/ \
+EXPECTED='assets/index-<hash>.js' ATTEMPTS=1 \
+  ./.github/scripts/verify-pages-deploy.sh
+```
+
+> `EXPECTED` の値はクォートすること。`<hash>` を裸で書くと Bash がリダイレクトとして解釈する。
+
+#### Pages の公開ソース設定（一度だけ必要）
+
+この構成は Pages の Source が **"GitHub Actions"** であることが前提。旧 `gh-pages`
+運用から移行する場合は一度だけ切り替えが要る（`actions/configure-pages` の
+`enablement` は**サイトが未作成のときに作るだけ**で、既存サイトのソースは変えない）。
+
+```bash
+gh api -X PUT repos/geolonia/geonicdb-livedeck/pages -f build_type=workflow
+```
+
+切り替え忘れは `deploy.yml` の "Assert Pages source" ステップが理由付きで落とす。
+
 ## 操作
 
 - **→ / Space / PageDown**: 次へ　**← / PageUp**: 戻る　**Home / End**: 先頭・末尾
