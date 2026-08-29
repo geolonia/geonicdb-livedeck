@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildContributionEntity, CONTRIBUTION_MODEL } from "../contributionEntity";
 
-const INPUT = { origin: "香川県", specialty: "讃岐うどん", hiddenSpot: "" };
+const INPUT = { origin: "サンプル県", specialty: "サンプル名物", hiddenSpot: "" };
 
 describe("buildContributionEntity", () => {
   it("builds an NGSI-LD entity with @context/id/type", () => {
@@ -14,8 +14,8 @@ describe("buildContributionEntity", () => {
 
   it("encodes origin/specialty as NGSI-LD Property attributes", () => {
     const entity = buildContributionEntity(INPUT, { seeded: false, submittedAt: "2026-08-28T10:00:00.000Z" });
-    expect(entity.origin).toEqual({ type: "Property", value: "香川県" });
-    expect(entity.specialty).toEqual({ type: "Property", value: "讃岐うどん" });
+    expect(entity.origin).toEqual({ type: "Property", value: "サンプル県" });
+    expect(entity.specialty).toEqual({ type: "Property", value: "サンプル名物" });
   });
 
   it("omits hiddenSpot entirely when blank (optional second-stage field)", () => {
@@ -26,10 +26,10 @@ describe("buildContributionEntity", () => {
 
   it("includes hiddenSpot as a Property when provided", () => {
     const entity = buildContributionEntity(
-      { ...INPUT, hiddenSpot: "地元の展望台" },
+      { ...INPUT, hiddenSpot: "サンプル展望台" },
       { seeded: false, submittedAt: "2026-08-28T10:00:00.000Z" },
     );
-    expect(entity.hiddenSpot).toEqual({ type: "Property", value: "地元の展望台" });
+    expect(entity.hiddenSpot).toEqual({ type: "Property", value: "サンプル展望台" });
   });
 
   it("marks seeded contributions distinctly from real submissions", () => {
@@ -52,11 +52,11 @@ describe("buildContributionEntity", () => {
 
   it("trims whitespace from origin/specialty/hiddenSpot before encoding", () => {
     const entity = buildContributionEntity(
-      { origin: "  香川県  ", specialty: "  讃岐うどん  ", hiddenSpot: "  地元の展望台  " },
+      { origin: "  サンプル県  ", specialty: "  サンプル名物  ", hiddenSpot: "  サンプル展望台  " },
       { seeded: false, submittedAt: "2026-08-28T10:00:00.000Z" },
     );
-    expect(entity.origin).toEqual({ type: "Property", value: "香川県" });
-    expect(entity.specialty).toEqual({ type: "Property", value: "讃岐うどん" });
-    expect(entity.hiddenSpot).toEqual({ type: "Property", value: "地元の展望台" });
+    expect(entity.origin).toEqual({ type: "Property", value: "サンプル県" });
+    expect(entity.specialty).toEqual({ type: "Property", value: "サンプル名物" });
+    expect(entity.hiddenSpot).toEqual({ type: "Property", value: "サンプル展望台" });
   });
 });
