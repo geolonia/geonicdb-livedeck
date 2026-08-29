@@ -5,19 +5,32 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# gh-pages ブランチへ publish するためソースへの書き込み権限のみ。
+# Pages ソース = "GitHub Actions"。artifact のアップロードと deploy-pages の
+# OIDC 認証に必要な権限のみ（gh-pages ブランチへは push しないので contents は read）。
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
+# 公開中のデプロイは中断しない（中断すると CDN が中途半端な状態で固まりうる）。
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      # 公開後のスモークチェックで「ライブが最新バンドルか」を突き合わせるための
+      # エントリ JS のファイル名（内容ハッシュ付き）。
+      bundle: ${{ steps.bundle.outputs.name }}
     steps:
       - uses: actions/checkout@v4
+      # Pages を "GitHub Actions" ソースで有効化する（未設定なら切り替える）。
+      # これにより公開の成否がこのワークフロー 1 本に収束する。
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -33,10 +46,36 @@ jobs:
           VITE_GEONICDB_KEY: ${{ secrets.GEONICDB_KEY }}
           VITE_GEONICDB_CONTRIBUTION_KEY: ${{ secrets.GEONICDB_CONTRIBUTION_KEY }}
           VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
-      # ビルド成果物（dist/）だけを gh-pages ブランチへ公開（.nojekyll 自動付与）。
-      # ソース側（main）にはビルド出力を残さない。
-      - uses: peaceiris/actions-gh-pages@v4
+      - id: bundle
+        run: |
+          set -euo pipefail
+          # dist/index.html が読み込むエントリ JS（assets/index-<hash>.js）を取り出す。
+          # 取れなければ後段のスモークチェックが無意味になるので fail-loud。
+          name=$(grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' dist/index.html | head -n 1 || true)
+          [ -n "$name" ] || { echo "エントリ JS を dist/index.html から特定できません"; exit 1; }
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "expected bundle: $name"
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./dist
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 公開後のスモークチェック用スクリプトだけ取得する。
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      # 公開が CDN へ反映され、かつ今ビルドしたバンドルが配信されているかを検証する。
+      # 「push は成功／公開は古いまま」のズレ（issue #42）をここで赤にする。
+      - name: Verify live site serves the freshly built bundle
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          EXPECTED: ${{ needs.build.outputs.bundle }}
+        run: .github/scripts/verify-pages-deploy.sh
