@@ -21,28 +21,28 @@
 
 | # | Section | Words | Spoken @110 wpm | Beats / demo | Total | Ends at |
 |---|---------|------:|----------------:|-------------:|------:|--------:|
-| I | Seed — the room starts posting | 185 | 101 s | 15 s | 116 s | 1:56 |
-| II | The open data decade (minimized) | 142 | 77 s | — | 77 s | 3:13 |
-| III | The meaning gap | 286 | 156 s | 10 s | 166 s | 5:59 |
-| IV | The objection — two answers (incl. 🎙️ 60 s) | 224 | 122 s | 75 s | 197 s | 9:16 |
-| V | The build story + ETSI conformance | 482 | 263 s | 10 s | 273 s | 13:49 |
+| I | Seed — the room starts posting | 183 | 100 s | 15 s | 115 s | 1:55 |
+| II | The open data decade (minimized) | 142 | 77 s | — | 77 s | 3:12 |
+| III | The meaning gap | 290 | 158 s | 10 s | 168 s | 6:00 |
+| IV | The objection — two answers (incl. 🎙️ 60 s) | 224 | 122 s | 75 s | 197 s | 9:17 |
+| V | The build story + ETSI conformance | 480 | 262 s | 10 s | 272 s | 13:49 |
 | VI | The payoff | 111 | 61 s | — | 61 s | 14:50 |
-| VII | Harvest — the agent reads the room | 199 | 109 s | 105 s | 214 s | 18:24 |
-| VIII | Close — three questions | 151 | 82 s | 5 s | 87 s | **19:51** |
+| VII | Harvest — the agent reads the room | 202 | 110 s | 105 s | 215 s | 18:25 |
+| VIII | Close — three questions | 150 | 82 s | 5 s | 87 s | **19:52** |
 
-Sum: **1191 s = 19:51** — desk buffer to 20:00 is **9 s**, plus the contingency plan below. The alternate two-question Close is 72 s spoken (saves ~10 s more). Word counts are machine-counted from the spoken paragraphs of this file (cue lines, on-slide text, and 🎙️ frames excluded).
+Sum: **1192 s = 19:52** — desk buffer to 20:00 is **8 s**, plus the contingency plan below. The alternate two-question Close is 76 s spoken (saves ~6 s more). Word counts are machine-counted from the spoken paragraphs of this file (cue lines, on-slide text, and 🎙️ frames excluded).
 
 ## Checkpoints & contingency
 
-- **Checkpoint A — start of Act V ("The build story") at 9:16.** More than one minute late → plan to skip the live audience question in Act VII (saves ~45 s).
-- **Checkpoint B — start of Act VII (map full screen) at 14:50.** More than one minute late → skip the audience question AND use the two-question Close (saves ~55 s total).
+- **Checkpoint A — start of Act V ("The build story") at 9:17.** More than one minute late → plan to skip the live audience question in Act VII (saves ~45 s).
+- **Checkpoint B — start of Act VII (map full screen) at 14:50.** More than one minute late → skip the audience question AND use the two-question Close (saves ~50 s total).
 - 🎙️ is budgeted at 60 s. If it runs to 90 s, that alone consumes the audience-question reserve — that is fine; the reserve exists for exactly this.
 - **Demo time is never cut.** All savings come from speech.
 - Fallback (Act VII): if the venue network or the live pipeline stalls for **15 seconds**, switch to the pre-recorded demo video and narrate over it. Never debug on stage.
 
 ---
 
-## ACT I — Seed: the room starts posting 【0:00–1:56 / 116 s】
+## ACT I — Seed: the room starts posting 【0:00–1:55 / 115 s】
 
 **[SLIDE 1 — QR code, full screen. Nothing else. No title, no logo.]**
 
@@ -50,13 +50,13 @@ Sum: **1191 s = 19:51** — desk buffer to 20:00 is **9 s**, plus the contingenc
 
 Good morning. Don't listen to me yet.
 
-Please take out your phone. Point it at this code. A small form opens. Three steps. Pick a category: mobility, disaster, environment, community, or other. Write one line about a problem near you. Then drop a pin on the map. Your neighborhood, or this venue, is fine.
+Please take out your phone. Point it at this code. A small form opens. Two questions. Where are you from — prefecture or country. What is your hometown famous for — its specialty. A third field is optional: a hidden local spot the maps don't know.
 
 That's it. No account. No app. I will tell you why later. One promise: what you just typed will not disappear. It will come back at the end.
 
 **[DEMO CUE ② — Map inset appears bottom-right and stays for the rest of the talk. ★FROM HERE THE ROOM IS POSTING — KEEP TALKING. Do not wait in silence; the posting happens under your voice.]**
 
-Bottom-right corner — those dots are you. Keep posting; the form stays open. That corner is now live infrastructure.
+Bottom-right corner — those dots are your hometowns. Keep posting; the form stays open. That corner is now live infrastructure.
 
 **[SLIDE 2 — Title: "Beyond the API".]**
 
@@ -66,7 +66,7 @@ Here is the promise of this talk. Before we finish, an AI agent will read what t
 
 That gap — between clever AI and understood data — is what this talk is about.
 
-## ACT II — The open data decade, minimized 【1:56–3:13 / 77 s】
+## ACT II — The open data decade, minimized 【1:55–3:12 / 77 s】
 
 **[SLIDE 3 — "Access: solved. Meaning: not yet." One slide; the old two slides are merged.]**
 
@@ -78,7 +78,7 @@ Here is what happened. Every portal invented its own schema. Every API invented 
 
 And now the new part. AI agents are becoming the main consumers of this data. Every new API is one more dialect an agent must be taught by hand. Open licenses freed the bytes. Nothing freed the meaning.
 
-## ACT III — The meaning gap 【3:13–5:59 / 166 s】 — Pillar a
+## ACT III — The meaning gap 【3:12–6:00 / 168 s】 — Pillar a
 
 **[SLIDE 4 — "The four ambiguities." Four quadrants: Identity / Semantics / Units & conventions / Time.]**
 
@@ -88,7 +88,7 @@ Identity. Is "Chuo Community Center" in this file the same building as "Chūō K
 
 Semantics. A column named capacity — is that the design capacity, or the people inside right now? Those two numbers save lives differently.
 
-Units and conventions. My favorite, because it is geospatial. NGSIv2, an older standard for city data, writes latitude, longitude. NGSI-LD and GeoJSON write longitude, latitude. Same two numbers. Two different places on Earth.
+Units and conventions. My favorite, because it is geospatial. NGSIv2, an older standard for city data, writes latitude, longitude in its legacy location format. NGSI-LD and GeoJSON write longitude, latitude. Same two numbers. Two different places on Earth.
 
 Time. Measured when? Valid until? Updated by whom?
 
@@ -102,13 +102,13 @@ Now — look at what you have been making while I talked.
 
 This is one of your posts, typed a few minutes ago. This is what it became before it reached the database.
 
-The location: not two mystery numbers — a typed GeoProperty, longitude first, fixed by the standard. The category: not free text — a value from a fixed list. Anything else was rejected. A timestamp with a defined meaning. A permanent ID, so this post can be cited forever.
+The hometown: not a stray string in a comment box — a typed property from a published data model. The specialty: the same. Anything outside the model was rejected — it never reaches the database. A timestamp with a defined meaning. A permanent ID, so this post can be cited forever.
 
-Here is the point. You did not fill in a schema. You typed a sentence and tapped a map. The data model did the agreeing for you. Two hundred strangers are producing interoperable data, right now, without ever having met.
+Here is the point. You did not fill in a schema. You answered two small questions. The data model did the agreeing for you. Two hundred strangers are producing interoperable data, right now, without ever having met.
 
 That is a semantic layer. Not paperwork. An agreement, enforced by the platform, so meaning travels with the data.
 
-## ACT IV — The objection, and two answers 【5:59–9:16 / 197 s】 — Rebuttal
+## ACT IV — The objection, and two answers 【6:00–9:17 / 197 s】 — Rebuttal
 
 **[SLIDE 6 — The objection, stated in its strongest form.]**
 
@@ -135,9 +135,9 @@ Answer two: this has happened before, every time. Every jump in machine capabili
 
 Smarter agents do not need less meaning. They consume more of it, faster, with higher stakes. Meaning is a contract — and contracts are what scale.
 
-## ACT V — The build story, with the ETSI numbers 【9:16–13:49 / 273 s】 — Pillar b
+## ACT V — The build story, with the ETSI numbers 【9:17–13:49 / 272 s】 — Pillar b
 
-**[⏱ CHECKPOINT A — you should be here at 9:16. More than a minute late → plan to skip the audience question in Act VII.]**
+**[⏱ CHECKPOINT A — you should be here at 9:17. More than a minute late → plan to skip the audience question in Act VII.]**
 
 **[SLIDE 8 — "So we bet on a standard: NGSI-LD (ETSI GS CIM 009)." One honest diagram.]**
 
@@ -189,11 +189,11 @@ Here is the sentence to keep: we could leave the implementation because we never
 
 Now it is time to keep my promise. All talk long, that corner has been collecting your posts as validated NGSI-LD entities. In a moment, an AI agent will read them. Here is what the semantic layer hands it.
 
-Typed geography — location queries are native, not string parsing. Validated writes — wrong data fails immediately, with a clear error. It never enters the database. Remember the 588 silent nulls from my story? That is the failure this design prevents. Relationships an agent can follow — a graph to walk, instead of joins to invent. And one MCP endpoint — the agent discovers the tools and the data models by itself.
+Typed attributes — the agent knows which field means what. Validated writes — wrong data fails immediately, with a clear error. It never enters the database. Remember the 588 silent nulls from my story? That is the failure this design prevents. Relationships an agent can follow — a graph to walk, instead of joins to invent. And one MCP endpoint — the agent discovers the tools and the data models by itself.
 
 Enough claiming. Let's query.
 
-## ACT VII — Harvest: the agent reads the room 【14:50–18:24 / 214 s】 — Demo · Pillar c
+## ACT VII — Harvest: the agent reads the room 【14:50–18:25 / 215 s】 — Demo · Pillar c
 
 **[⏱ CHECKPOINT B — you should be here at ~14:50. More than a minute late → skip the audience question AND use the two-question Close.]**
 
@@ -207,19 +207,19 @@ Now the agent. This is Claude, connecting to GeonicDB's /mcp endpoint — the sa
 
 **[DEMO CUE ⑤ — Query 1. Type or trigger it; narrate what it DID, not just what it found. ~15 s wait.]**
 
-First question: "How many posts are there, and how do they break down by category?"
+First question: "How many posts are there — and how many of them are our seeds?"
 
 It called the entities tool with a typed query. No scraping. No guessing.
 
-**[DEMO CUE ⑥ — Query 2. Geo query against typed GeoProperties. Point at a cluster; read one or two real posts aloud. ~20 s wait + reading.]**
+**[DEMO CUE ⑥ — Query 2. The bundling. Origins and specialties are free text in mixed languages; the agent groups posts that mean the same thing and quotes the originals as evidence. Point at the map; read one or two quoted strings aloud. The agent will note, by itself, that it was given no dictionary — let that line land; do not talk over it. ~20 s wait + reading.]**
 
-Second: "Where are the clusters? What are people posting about near this venue, versus elsewhere?"
+Second: "These posts mix Japanese, English, and more. Which ones mean the same thing? Group them. Quote your evidence."
 
 **[DEMO CUE ⑦ — Query 3. The digest. Read it aloud, slowly. This is the promise from minute two, kept. ~15 s wait.]**
 
-Third: "In three sentences: what does this room care about?"
+Third: "In three sentences — who is in this room?"
 
-**[DEMO CUE ⑧ — OPTIONAL audience question (~45 s). SKIP this block if behind schedule — this is the planned cut. If no question comes, use the spare: "Which category is most common within one kilometer of this venue?" Repeat the question clearly into the mic before passing it to the agent.]**
+**[DEMO CUE ⑧ — OPTIONAL audience question (~45 s). SKIP this block if behind schedule — this is the planned cut. If no question comes, use the spare: "Which hometown appears most often, and what is it famous for?" Repeat the question clearly into the mic before passing it to the agent.]**
 
 A live dataset deserves a live question. Someone shout one. Ask this data anything.
 
@@ -229,9 +229,9 @@ Let me tell you what you just saw — because it was not an AI demo.
 
 Two hundred strangers just produced an interoperable dataset in twenty minutes — without a single meeting about schema. The standard held the meeting for you.
 
-No working group. No data dictionary. No integration project. You typed a sentence. The contract did the rest. And an agent none of you have ever met just used your data correctly, on the first try. That is the thing open data alone cannot do — and open standards can.
+No working group. No data dictionary. No integration project. You answered two questions. The contract did the rest. And an agent none of you have ever met just used your data correctly, on the first try. That is the thing open data alone cannot do — and open standards can.
 
-## ACT VIII — Close: three questions 【18:24–19:51 / 87 s】
+## ACT VIII — Close: three questions 【18:25–19:52 / 87 s】
 
 **[SLIDE 16 — Three questions, on screen while spoken. Then the final line alone.]**
 
@@ -249,7 +249,7 @@ Open your data — yes, always. Then open its meaning.
 
 Thank you. I have five minutes for your questions — including the hard ones.
 
-### ALTERNATE CLOSE — two questions 【~72 s · use when Checkpoint B says so】
+### ALTERNATE CLOSE — two questions 【~76 s spoken · use when Checkpoint B says so】
 
 **[Same slide, questions 1 and 3 only. Question 2 (agent-to-agent semantics) is the cut: it is the most specialized of the three, and question 1 already opens the standards-community thread for Q&A.]**
 
