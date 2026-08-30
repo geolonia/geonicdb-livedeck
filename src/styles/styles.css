@@ -802,7 +802,7 @@ html, body {
    図の座標・文字サイズは実測で収まる固定値でよい（ビューポート幅に依存しない）。 */
 .dpop-illus { display: block; width: 100%; max-width: 1120px; height: auto; margin: 4px auto 14px; }
 .dpop-illus text { font-family: var(--font-sans); }
-.dpop-illus__mono { font-family: var(--font-mono); }
+.dpop-illus text.dpop-illus__mono { font-family: var(--font-mono); }
 /* 図＋カード＋脚注で縦が埋まるページなので、脚注の上余白だけ詰める */
 .footnote--tight { margin-top: 14px; }
 
