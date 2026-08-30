@@ -797,6 +797,15 @@ html, body {
 .ai-node--core { background: linear-gradient(120deg, rgba(252,108,0,.2), rgba(251,164,12,.12)); border-color: rgba(252,108,0,.5); color: var(--cyan); }
 .ai-arrow { font-family: var(--font-mono); font-size: 14px; color: rgba(252,108,0,.7); }
 
+/* ===== DPoP スライドの図解 =====
+   1120x200 のインライン SVG。スライドは 1280x720 固定を JS で拡縮するだけなので、
+   図の座標・文字サイズは実測で収まる固定値でよい（ビューポート幅に依存しない）。 */
+.dpop-illus { display: block; width: 100%; max-width: 1120px; height: auto; margin: 4px auto 14px; }
+.dpop-illus text { font-family: var(--font-sans); }
+.dpop-illus text.dpop-illus__mono { font-family: var(--font-mono); }
+/* 図＋カード＋脚注で縦が埋まるページなので、脚注の上余白だけ詰める */
+.footnote--tight { margin-top: 14px; }
+
 /* ===== Comparison table ===== */
 .cmp {
   width: 100%; border-collapse: collapse; font-size: 17px;
@@ -1350,9 +1359,9 @@ html, body {
 .cost-chart .cut-fill  { transform-box: fill-box; transform-origin: left center; }
 .cost-chart .cut-ghost { opacity: 0; }
 .cost-chart .cut-note  { opacity: 0; }
-.slide.is-active .cost-chart .cut-fill  { animation: costCut 6s var(--ease) infinite; }
-.slide.is-active .cost-chart .cut-ghost { animation: costGhost 6s var(--ease) infinite; }
-.slide.is-active .cost-chart .cut-note  { animation: costNote 6s var(--ease) infinite; }
+.slide.is-active .cost-chart .cut-fill  { animation: costCut 4s var(--ease) infinite; }
+.slide.is-active .cost-chart .cut-ghost { animation: costGhost 4s var(--ease) infinite; }
+.slide.is-active .cost-chart .cut-note  { animation: costNote 4s var(--ease) infinite; }
 /* 100% と次の周期の 0% が隣接するため、削減後 -> 元の状態への復帰は補間されず一瞬で戻る */
 @keyframes costCut   { 0%, 16% { transform: scaleX(1); } 31%, 100% { transform: scaleX(0); } }
 @keyframes costGhost { 0%, 22% { opacity: 0; } 31%, 100% { opacity: .6; } }
