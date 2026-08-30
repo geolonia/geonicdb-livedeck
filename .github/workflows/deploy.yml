@@ -28,7 +28,7 @@ jobs:
       # エントリ JS のファイル名（内容ハッシュ付き）。
       bundle: ${{ steps.bundle.outputs.name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Pages の公開ソースが "GitHub Actions" かを先に確かめる。
       # actions/configure-pages の enablement は「Pages サイトが未作成のときに
       # build_type=workflow で作る」だけで、既存サイト（旧 gh-pages 運用のように
@@ -45,7 +45,7 @@ jobs:
             exit 1
           fi
           echo "Pages source: GitHub Actions (build_type=workflow)"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -69,7 +69,7 @@ jobs:
           [ -n "$name" ] || { echo "エントリ JS を dist/index.html から特定できません"; exit 1; }
           echo "name=$name" >> "$GITHUB_OUTPUT"
           echo "expected bundle: $name"
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
@@ -86,11 +86,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # 公開後のスモークチェック用スクリプトだけ取得する。
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: .github/scripts
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
       # 公開が CDN へ反映され、かつ今ビルドしたバンドルが配信されているかを検証する。
       # 「push は成功／公開は古いまま」のズレ（issue #42）をここで赤にする。
       - name: Verify live site serves the freshly built bundle
