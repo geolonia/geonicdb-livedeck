@@ -268,58 +268,65 @@
     {
       "@type": "WebPageElement",
       "position": 28,
-      "identifier": "security",
-      "name": "セキュリティ",
+      "identifier": "dpop",
+      "name": "セキュアなアプリケーションのための開発支援（DPoP と SDK）",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#28"
     },
     {
       "@type": "WebPageElement",
       "position": 29,
-      "identifier": "query-parameters",
-      "name": "クエリで使えるパラメータ",
+      "identifier": "password-security",
+      "name": "パスワードの保護",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#29"
     },
     {
       "@type": "WebPageElement",
       "position": 30,
-      "identifier": "glossary",
-      "name": "用語集",
+      "identifier": "query-parameters",
+      "name": "クエリで使えるパラメータ",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#30"
     },
     {
       "@type": "WebPageElement",
       "position": 31,
-      "identifier": "glossary-terms-1",
-      "name": "用語集 ①",
+      "identifier": "glossary",
+      "name": "用語集",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#31"
     },
     {
       "@type": "WebPageElement",
       "position": 32,
-      "identifier": "glossary-terms-2",
-      "name": "用語集 ②",
+      "identifier": "glossary-terms-1",
+      "name": "用語集 ①",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#32"
     },
     {
       "@type": "WebPageElement",
       "position": 33,
-      "identifier": "glossary-terms-3",
-      "name": "用語集 ③",
+      "identifier": "glossary-terms-2",
+      "name": "用語集 ②",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#33"
     },
     {
       "@type": "WebPageElement",
       "position": 34,
-      "identifier": "glossary-terms-4",
-      "name": "用語集 ④",
+      "identifier": "glossary-terms-3",
+      "name": "用語集 ③",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#34"
     },
     {
       "@type": "WebPageElement",
       "position": 35,
+      "identifier": "glossary-terms-4",
+      "name": "用語集 ④",
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#35"
+    },
+    {
+      "@type": "WebPageElement",
+      "position": 36,
       "identifier": "closing",
       "name": "都市 OS を、 フルマネージドサービスで。",
-      "url": "https://geolonia.github.io/geonicdb-livedeck/#35"
+      "url": "https://geolonia.github.io/geonicdb-livedeck/#36"
     }
   ]
 }
@@ -2008,35 +2015,101 @@
       </div>
     </section>
 
-    <!-- Appendix: Abuse / brute-force protection -->
-    <section class="slide" data-bg="dark" data-slide="security">
+    <!-- Appendix: セキュアなアプリケーションのための開発支援（DPoP + SDK が主役） -->
+    <section class="slide" data-bg="dark" data-slide="dpop">
       <div class="slide__inner">
-        <span class="kicker">セキュリティ詳細 / Security</span>
-        <h2 class="slide__title">セキュリティ</h2>
+        <span class="kicker">アプリ開発 / Secure by Default</span>
+        <h2 class="slide__title">セキュアなアプリケーションのための<span class="accent">開発支援</span></h2>
+        <p class="map-desc map-desc--wide">GeonicDB は、認証情報を守る仕組みを<strong>ブローカー本体と公式 SDK</strong> に寄せています。中心にあるのが <strong>DPoP</strong>（Demonstrating Proof-of-Possession / <strong>RFC 9449</strong>）— アクセストークンを<strong>そのクライアントだけが持つ秘密鍵</strong>に紐づけ、盗まれたトークンを使えなくします。</p>
+        <svg class="dpop-illus" viewBox="0 0 1120 200" role="img"
+             aria-label="正規のアプリはトークンに加えて秘密鍵で署名した proof を送るため 200 OK になる。トークンを盗んだ第三者は秘密鍵を持たず proof を作れないため 401 Unauthorized で拒否される。">
+          <title>DPoP はアクセストークンをクライアントの秘密鍵に紐づけるため、トークンだけを盗んでも API を呼べない</title>
+
+          <!-- 正規のアプリ -->
+          <rect x="1" y="18" width="266" height="68" rx="12" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.18)"/>
+          <text x="24" y="48" font-size="16" font-weight="800" fill="#ffffff">正規のアプリ</text>
+          <text x="24" y="70" font-size="12.5" fill="rgba(255,255,255,.6)">秘密鍵はブラウザの中</text>
+          <text class="dpop-illus__mono" x="286" y="36" font-size="12.5" fill="rgba(255,255,255,.72)">Authorization: DPoP &lt;トークン&gt;</text>
+          <text class="dpop-illus__mono" x="286" y="54" font-size="12.5" fill="#5fd39b">DPoP: &lt;秘密鍵で署名した proof&gt;</text>
+          <path d="M276,68 H626" stroke="rgba(255,255,255,.35)" stroke-width="1.6"/>
+          <path d="M636,68 L624,62 L624,74 Z" fill="rgba(255,255,255,.5)"/>
+
+          <!-- トークンを盗んだ第三者 -->
+          <rect x="1" y="114" width="266" height="68" rx="12" fill="rgba(230,60,36,.08)" stroke="rgba(230,60,36,.45)"/>
+          <text x="24" y="144" font-size="16" font-weight="800" fill="#ff9b7a">トークンを盗んだ第三者</text>
+          <text x="24" y="166" font-size="12.5" fill="rgba(255,255,255,.55)">秘密鍵は盗めない</text>
+          <text class="dpop-illus__mono" x="286" y="132" font-size="12.5" fill="rgba(255,255,255,.72)">Authorization: DPoP &lt;盗んだトークン&gt;</text>
+          <text class="dpop-illus__mono" x="286" y="150" font-size="12.5" fill="#ff8a73">DPoP: 署名を作れない</text>
+          <path d="M276,164 H626" stroke="rgba(230,60,36,.5)" stroke-width="1.6" stroke-dasharray="6 4"/>
+          <path d="M636,164 L624,158 L624,170 Z" fill="rgba(230,60,36,.7)"/>
+
+          <!-- GeonicDB 側の検証 -->
+          <rect x="656" y="6" width="170" height="188" rx="12" fill="rgba(252,108,0,.10)" stroke="rgba(252,108,0,.5)"/>
+          <text x="741" y="92" text-anchor="middle" font-size="18" font-weight="800" fill="#fc6c00">GeonicDB</text>
+          <text x="741" y="114" text-anchor="middle" font-size="13" fill="rgba(255,255,255,.8)">DPoP 検証</text>
+          <text x="741" y="134" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.5)">署名・宛先・時刻・鍵の一致</text>
+
+          <!-- 結果 -->
+          <path d="M826,52 H864" stroke="rgba(95,211,155,.6)" stroke-width="1.6"/>
+          <path d="M874,52 L862,46 L862,58 Z" fill="rgba(95,211,155,.8)"/>
+          <rect x="876" y="18" width="243" height="68" rx="12" fill="rgba(95,211,155,.10)" stroke="rgba(95,211,155,.5)"/>
+          <text x="898" y="48" font-size="16" font-weight="800" fill="#5fd39b">✓ 200 OK</text>
+          <text x="898" y="70" font-size="12.5" fill="rgba(255,255,255,.65)">データを返す</text>
+
+          <path d="M826,148 H864" stroke="rgba(230,60,36,.5)" stroke-width="1.6"/>
+          <path d="M874,148 L862,142 L862,154 Z" fill="rgba(230,60,36,.7)"/>
+          <rect x="876" y="114" width="243" height="68" rx="12" fill="rgba(230,60,36,.10)" stroke="rgba(230,60,36,.5)"/>
+          <text x="898" y="144" font-size="16" font-weight="800" fill="#ff8a73">✕ 401 Unauthorized</text>
+          <text x="898" y="166" font-size="12.5" fill="rgba(255,255,255,.65)">トークンだけでは通らない</text>
+        </svg>
         <div class="std-grid">
           <div class="std-card">
-            <span class="std-card__name">パスワードの総当たり</span>
-            <span class="std-card__desc">アカウント単位で連続失敗を検知し、<strong>5 回で 60 秒ロック</strong>＋指数バックオフ（試行のたびに待ち時間が倍増）。同一 IP から多数のアカウントを狙う<strong>パスワードスプレー</strong>も <strong>20 回 / 15 分</strong>で遮断。ロック判定にも遅延を入れタイミング分析を防止。</span>
+            <span class="std-card__name">DPoP による API キーの保護</span>
+            <span class="std-card__desc">上図のとおり、トークンの文字列を盗まれても、秘密鍵がなければ API は呼べません（RFC 9449）。</span>
           </div>
           <div class="std-card">
-            <span class="std-card__name">アクセス集中による停止</span>
-            <span class="std-card__desc">プラン別の<strong>レート制限</strong>（トークンバケット方式、FREE 60 〜 ENTERPRISE 12,000 req/min）。操作の重さで重み付け（参照 1・書込 3・一括 5）。認証前の公開 API は IP 単位で個別制限し、リクエスト/レスポンスのサイズ上限も設定。</span>
+            <span class="std-card__name">アクセスコントロール</span>
+            <span class="std-card__desc">API キーに <strong>origin 制限</strong>と <strong>DPoP 必須</strong>を設定。他サイトへコピーされた鍵は通りません。</span>
           </div>
           <div class="std-card">
-            <span class="std-card__name">プログラムによる自動攻撃</span>
-            <span class="std-card__desc">API キー → アクセストークン交換時に <strong>Proof of Work</strong>（16 bit 相当の計算）と、<strong>Origin に紐づく使い捨て Nonce</strong>（有効 60 秒）を要求。機械的な大量試行のコストを引き上げ、API キーの他サイト流用も防止。</span>
+            <span class="std-card__name">XACML による認可</span>
+            <span class="std-card__desc"><strong>XACML</strong> で型・操作ごとに最小権限を割り当て。フロントに置く鍵でも被害範囲を限定できます。</span>
+          </div>
+        </div>
+        <p class="footnote footnote--tight">※ このデッキのライブデモも、origin 制限＋ DPoP 必須の API キー 1 つで GeonicDB（ステージング）へ接続しています。</p>
+      </div>
+    </section>
+
+    <!-- Appendix: パスワードの保護（保存・照合・当てにいく攻撃の遮断） -->
+    <section class="slide" data-bg="dark" data-slide="password-security">
+      <div class="slide__inner">
+        <span class="kicker">セキュリティ詳細 / Password</span>
+        <h2 class="slide__title">パスワードの保護</h2>
+        <p class="map-desc map-desc--wide">パスワードそのものを守る仕組みと、パスワードを当てにいく攻撃を止める仕組みの二段構えで守ります。</p>
+        <div class="std-grid">
+          <div class="std-card">
+            <span class="std-card__name">パスワードのハッシュ化</span>
+            <span class="std-card__desc">パスワードは <strong>PBKDF2-SHA512・10 万回反復</strong>、利用者ごとのランダムソルト付きで保存。万一 DB が流出しても、総当たり解読は非現実的です。</span>
           </div>
           <div class="std-card">
-            <span class="std-card__name">不正データの送り込み</span>
-            <span class="std-card__desc">全入力をスキーマで<strong>厳格検証</strong>（文字数・要素数・型の上限を強制）。正規表現を悪用した攻撃（<strong>ReDoS</strong>）を検出し、通知先 URL は社内ネットワークやクラウド管理情報を狙う <strong>SSRF</strong> を IP・DNS 再解決まで含めて遮断。</span>
+            <span class="std-card__name">タイミング攻撃対策</span>
+            <span class="std-card__desc">比較は <strong>timingSafeEqual</strong> で定数時間。存在しないアカウントでも同じハッシュ計算を挟むため、応答時間からアカウントの有無を推測できません。</span>
           </div>
           <div class="std-card">
-            <span class="std-card__name">パスワードの漏えい</span>
-            <span class="std-card__desc">パスワードは復元不可能な一方向変換で保存（<strong>PBKDF2-SHA512・10 万回反復・ランダムソルト</strong>付き）。万一 DB が流出しても総当たり解読は非現実的。照合は <strong>timingSafeEqual</strong> で時間差攻撃を防止。</span>
+            <span class="std-card__name">ブルートフォースアタック対策</span>
+            <span class="std-card__desc">15 分以内に <strong>5 回失敗でアカウントを 60 秒ロック</strong>。2 回目の失敗からは待ち時間が <strong>2 → 4 → 8 秒</strong>と倍増し、機械的な試行が続けられません。</span>
           </div>
           <div class="std-card">
-            <span class="std-card__name">データの盗み見・改ざん</span>
-            <span class="std-card__desc">保存データはテナントごとに <strong>AES-256-GCM</strong> で暗号化（鍵は <strong>AWS KMS</strong> で管理・自動ローテーション）。作成・更新・削除はすべて<strong>監査ログ</strong>に記録し、漏れたトークンは<strong>失効リスト</strong>で無効化できる。</span>
+            <span class="std-card__name">パスワードスプレー対策</span>
+            <span class="std-card__desc">1 つの IP から多数のアカウントを 1 回ずつ試す攻撃には、<strong>5 分間に 20 回失敗でその IP を 15 分ブロック</strong>して対処します。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">パスワードポリシー</span>
+            <span class="std-card__desc"><strong>12 文字以上</strong>を必須とし（NIST SP 800-63B に沿い記号や大文字は強制しない）、管理者が発行した一時パスワードは <strong>7 日で失効</strong>します。</span>
+          </div>
+          <div class="std-card">
+            <span class="std-card__name">セッションの即時失効</span>
+            <span class="std-card__desc">パスワードの変更・リセット・管理者による上書きのたびに、その利用者の<strong>既存トークンをすべて失効</strong>。旧パスワード時代のセッションは残りません。</span>
           </div>
         </div>
       </div>
