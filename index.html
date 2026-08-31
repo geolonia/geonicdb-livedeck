@@ -171,105 +171,105 @@
     {
       "@type": "WebPageElement",
       "position": 15,
-      "identifier": "live-feedback",
-      "name": "回答が「つながるデータ」になる",
-      "keywords": "live-demo, entityType:Feedback",
+      "identifier": "auth",
+      "name": "認証・認可",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#15"
     },
     {
       "@type": "WebPageElement",
       "position": 16,
-      "identifier": "geo-query",
-      "name": "Geo クエリーでデータを絞り込む",
-      "keywords": "live-demo, entityType:AedLocation",
+      "identifier": "reliability",
+      "name": "信頼性",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#16"
     },
     {
       "@type": "WebPageElement",
       "position": 17,
-      "identifier": "shelter-occupancy",
-      "name": "避難所の混雑度を時系列データで",
-      "keywords": "live-demo, entityType:EvacuationArea",
+      "identifier": "live-feedback",
+      "name": "回答が「つながるデータ」になる",
+      "keywords": "live-demo, entityType:Feedback",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#17"
     },
     {
       "@type": "WebPageElement",
       "position": 18,
-      "identifier": "collab-gis",
-      "name": "共同編集が可能な GIS",
-      "keywords": "live-demo, entityType:geonicdb-livedeck-MapFeature",
+      "identifier": "geo-query",
+      "name": "Geo クエリーでデータを絞り込む",
+      "keywords": "live-demo, entityType:AedLocation",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#18"
     },
     {
       "@type": "WebPageElement",
       "position": 19,
-      "identifier": "messaging",
-      "name": "リアルタイムメッセージング",
-      "keywords": "live-demo, entityType:geonicdb-livedeck-Message, entityType:geonicdb-livedeck-MessageLog",
+      "identifier": "shelter-occupancy",
+      "name": "避難所の混雑度を時系列データで",
+      "keywords": "live-demo, entityType:EvacuationArea",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#19"
     },
     {
       "@type": "WebPageElement",
       "position": 20,
-      "identifier": "appendix",
-      "name": "Appendix",
+      "identifier": "collab-gis",
+      "name": "共同編集が可能な GIS",
+      "keywords": "live-demo, entityType:geonicdb-livedeck-MapFeature",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#20"
     },
     {
       "@type": "WebPageElement",
       "position": 21,
-      "identifier": "feature-catalog-1",
-      "name": "全機能カタログ ①",
+      "identifier": "messaging",
+      "name": "リアルタイムメッセージング",
+      "keywords": "live-demo, entityType:geonicdb-livedeck-Message, entityType:geonicdb-livedeck-MessageLog",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#21"
     },
     {
       "@type": "WebPageElement",
       "position": 22,
-      "identifier": "feature-catalog-2",
-      "name": "全機能カタログ ②",
+      "identifier": "appendix",
+      "name": "Appendix",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#22"
     },
     {
       "@type": "WebPageElement",
       "position": 23,
-      "identifier": "dual-protocol",
-      "name": "NGSIv2 と NGSI-LD に対応",
-      "keywords": "live-demo, entityType:EnvironmentSensor",
+      "identifier": "feature-catalog-1",
+      "name": "全機能カタログ ①",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#23"
     },
     {
       "@type": "WebPageElement",
       "position": 24,
-      "identifier": "comparison",
-      "name": "FIWARE Orion との比較",
+      "identifier": "feature-catalog-2",
+      "name": "全機能カタログ ②",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#24"
     },
     {
       "@type": "WebPageElement",
       "position": 25,
-      "identifier": "ai-integration",
-      "name": "AI 連携の仕様",
+      "identifier": "dual-protocol",
+      "name": "NGSIv2 と NGSI-LD に対応",
+      "keywords": "live-demo, entityType:EnvironmentSensor",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#25"
     },
     {
       "@type": "WebPageElement",
       "position": 26,
-      "identifier": "admin",
-      "name": "管理機能",
+      "identifier": "comparison",
+      "name": "FIWARE Orion との比較",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#26"
     },
     {
       "@type": "WebPageElement",
       "position": 27,
-      "identifier": "reliability",
-      "name": "信頼性",
+      "identifier": "ai-integration",
+      "name": "AI 連携の仕様",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#27"
     },
     {
       "@type": "WebPageElement",
       "position": 28,
-      "identifier": "auth",
-      "name": "認証・認可",
+      "identifier": "admin",
+      "name": "管理機能",
       "url": "https://geolonia.github.io/geonicdb-livedeck/#28"
     },
     {
@@ -1375,6 +1375,113 @@
       </div>
     </section>
 
+    <!-- Appendix: Auth / XACML -->
+    <section class="slide" data-bg="accent" data-slide="auth">
+      <div class="slide__inner">
+        <span class="kicker">セキュリティ / Auth & Authz</span>
+        <h2 class="slide__title">認証・認可</h2>
+        <div class="split">
+          <div class="split__text">
+            <ul class="ticks">
+              <li><strong>5 種の認証</strong> — JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）</li>
+              <li><strong>XACML 3.0 単一レイヤ</strong> — 5 ロール × 属性ベースのきめ細かいポリシー</li>
+              <li><strong>per-tenant IP 制限</strong>・監査ログ・トークン失効</li>
+              <li>PEP プロキシ（Wilma 等）を別途立てる必要がない</li>
+            </ul>
+          </div>
+          <div class="split__visual">
+            <pre class="code"><code><span class="c-key">Policy</span>: owner-only-access
+<span class="c-key">target</span>: entity.owner == <span class="c-str">${subject.userId}</span>
+<span class="c-key">rules</span>:
+  - <span class="c-ok">Permit</span> read   if owner
+  - <span class="c-ok">Permit</span> write  if owner
+  - <span class="c-no">Deny</span>   *      otherwise
+<span class="c-cmt"># 所有者のみがアクセス可能</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appendix: Reliability / availability -->
+    <section class="slide" data-bg="dark" data-slide="reliability">
+      <div class="slide__inner">
+        <span class="kicker">信頼性 / Reliability</span>
+        <h2 class="slide__title">信頼性</h2>
+        <div class="ha-layout">
+          <div class="ha-hero__main">
+            <span class="ha-hero__num">99.95<small>%+</small></span>
+            <span class="ha-hero__label">想定可用性（稼働率）</span>
+            <ul class="ha-points">
+              <li>サーバーレスで<strong>自動スケール</strong></li>
+              <li><strong>冗長構成</strong>＋マルチリージョン</li>
+              <li>自動フェイルオーバー <strong>10–30 秒</strong></li>
+              <li>RTO &lt; 5 分 / RPO &lt; 1 分</li>
+            </ul>
+          </div>
+          <svg class="ha-arch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 430"
+               role="img" aria-label="GeonicDB の高可用システム構成図">
+            <title>GeonicDB の高可用システム構成図</title>
+            <defs>
+              <marker id="ha-arr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b8"/>
+              </marker>
+              <marker id="ha-arrT" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#39d6c6"/>
+              </marker>
+            </defs>
+            <!-- client -->
+            <rect x="210" y="0" width="180" height="34" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+            <text x="300" y="22" text-anchor="middle" font-size="13" fill="#e8edf5">クライアント / SDK・CLI</text>
+            <line x1="300" y1="34" x2="300" y2="48" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
+            <!-- Route 53 -->
+            <rect x="70" y="50" width="460" height="38" rx="8" fill="#fc6c00" fill-opacity="0.14" stroke="#fc6c00" stroke-opacity="0.6"/>
+            <text x="300" y="74" text-anchor="middle" font-size="13" fill="#ffd9b8">Route 53 — ヘルスチェック / 自動フェイルオーバー</text>
+            <line x1="300" y1="88" x2="300" y2="104" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
+            <!-- failover arrow to region B -->
+            <path d="M530,69 C600,69 640,84 640,106" fill="none" stroke="#39d6c6" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ha-arrT)"/>
+            <text x="648" y="92" font-size="10.5" fill="#39d6c6">切替</text>
+            <!-- Region A (primary) -->
+            <rect x="40" y="110" width="520" height="300" rx="14" fill="#fc6c00" fill-opacity="0.05" stroke="#fc6c00" stroke-opacity="0.55" stroke-width="2"/>
+            <text x="60" y="133" font-size="12.5" font-weight="700" fill="#ffb277">リージョン A（プライマリ・稼働中）</text>
+            <!-- API GW -->
+            <rect x="150" y="146" width="300" height="38" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+            <text x="300" y="170" text-anchor="middle" font-size="13" fill="#e8edf5">API Gateway</text>
+            <line x1="300" y1="184" x2="300" y2="202" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
+            <!-- Lambda -->
+            <rect x="150" y="204" width="300" height="56" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+            <text x="300" y="227" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">AWS Lambda ×N（自動スケール）</text>
+            <text x="300" y="246" text-anchor="middle" font-size="11.5" fill="#aeb8c8">マルチ AZ 冗長 / 指数バックオフ再試行</text>
+            <!-- split to data -->
+            <line x1="300" y1="260" x2="210" y2="300" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
+            <line x1="300" y1="260" x2="395" y2="300" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
+            <!-- MongoDB -->
+            <rect x="120" y="302" width="180" height="66" rx="8" fill="#3aa88033" stroke="#5bb98c" stroke-opacity="0.6"/>
+            <text x="210" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="#bfe9d6">MongoDB Atlas</text>
+            <text x="210" y="348" text-anchor="middle" font-size="11" fill="#9fd6bf">3 ノード レプリカセット</text>
+            <!-- DynamoDB -->
+            <rect x="312" y="302" width="168" height="66" rx="8" fill="#5b6bc033" stroke="#8a97d8" stroke-opacity="0.6"/>
+            <text x="396" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="#cdd4f5">DynamoDB</text>
+            <text x="396" y="348" text-anchor="middle" font-size="11" fill="#aab3e8">Global Tables</text>
+            <text x="300" y="392" text-anchor="middle" font-size="11" fill="#8893a6">MongoDB 自動リーダー選出（10–30 秒）・重要テーブルは PITR</text>
+            <!-- Region B (secondary) -->
+            <rect x="580" y="110" width="120" height="300" rx="14" fill="#ffffff" fill-opacity="0.03" stroke="#ffffff" stroke-opacity="0.22" stroke-dasharray="5 4"/>
+            <text x="640" y="133" text-anchor="middle" font-size="12" font-weight="700" fill="#aeb8c8">リージョン B</text>
+            <text x="640" y="149" text-anchor="middle" font-size="10.5" fill="#8893a6">（セカンダリ・待機）</text>
+            <rect x="600" y="170" width="80" height="30" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
+            <text x="640" y="190" text-anchor="middle" font-size="10.5" fill="#c2cad6">API GW</text>
+            <rect x="600" y="210" width="80" height="30" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
+            <text x="640" y="230" text-anchor="middle" font-size="10.5" fill="#c2cad6">Lambda</text>
+            <rect x="600" y="302" width="80" height="66" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
+            <text x="640" y="330" text-anchor="middle" font-size="10" fill="#c2cad6">Mongo /</text>
+            <text x="640" y="346" text-anchor="middle" font-size="10" fill="#c2cad6">DynamoDB</text>
+            <!-- cross-region replication -->
+            <line x1="480" y1="335" x2="600" y2="335" stroke="#39d6c6" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#ha-arrT)"/>
+            <text x="540" y="327" text-anchor="middle" font-size="10" fill="#39d6c6">レプリカ同期</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
     <!-- 8. NGSI-LD live demo — フィードバックをカスタムデータモデルで作成し WS で受信 -->
     <section class="slide slide--fb" data-bg="dark" data-slide="live-feedback" data-live="true" data-demo="feedback" data-entity-types="Feedback">
       <div class="live-badge" aria-label="ライブデモ"><span class="live-badge__dot"></span>LIVE</div>
@@ -1968,113 +2075,6 @@
               <li>テナント削除＋暗号消去（crypto-shred・KMS 鍵失効）＋削除レポート</li>
               <li>CADDE 設定管理</li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Appendix: Reliability / availability -->
-    <section class="slide" data-bg="dark" data-slide="reliability">
-      <div class="slide__inner">
-        <span class="kicker">信頼性 / Reliability</span>
-        <h2 class="slide__title">信頼性</h2>
-        <div class="ha-layout">
-          <div class="ha-hero__main">
-            <span class="ha-hero__num">99.95<small>%+</small></span>
-            <span class="ha-hero__label">想定可用性（稼働率）</span>
-            <ul class="ha-points">
-              <li>サーバーレスで<strong>自動スケール</strong></li>
-              <li><strong>冗長構成</strong>＋マルチリージョン</li>
-              <li>自動フェイルオーバー <strong>10–30 秒</strong></li>
-              <li>RTO &lt; 5 分 / RPO &lt; 1 分</li>
-            </ul>
-          </div>
-          <svg class="ha-arch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 430"
-               role="img" aria-label="GeonicDB の高可用システム構成図">
-            <title>GeonicDB の高可用システム構成図</title>
-            <defs>
-              <marker id="ha-arr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b8"/>
-              </marker>
-              <marker id="ha-arrT" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6 Z" fill="#39d6c6"/>
-              </marker>
-            </defs>
-            <!-- client -->
-            <rect x="210" y="0" width="180" height="34" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
-            <text x="300" y="22" text-anchor="middle" font-size="13" fill="#e8edf5">クライアント / SDK・CLI</text>
-            <line x1="300" y1="34" x2="300" y2="48" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
-            <!-- Route 53 -->
-            <rect x="70" y="50" width="460" height="38" rx="8" fill="#fc6c00" fill-opacity="0.14" stroke="#fc6c00" stroke-opacity="0.6"/>
-            <text x="300" y="74" text-anchor="middle" font-size="13" fill="#ffd9b8">Route 53 — ヘルスチェック / 自動フェイルオーバー</text>
-            <line x1="300" y1="88" x2="300" y2="104" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
-            <!-- failover arrow to region B -->
-            <path d="M530,69 C600,69 640,84 640,106" fill="none" stroke="#39d6c6" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ha-arrT)"/>
-            <text x="648" y="92" font-size="10.5" fill="#39d6c6">切替</text>
-            <!-- Region A (primary) -->
-            <rect x="40" y="110" width="520" height="300" rx="14" fill="#fc6c00" fill-opacity="0.05" stroke="#fc6c00" stroke-opacity="0.55" stroke-width="2"/>
-            <text x="60" y="133" font-size="12.5" font-weight="700" fill="#ffb277">リージョン A（プライマリ・稼働中）</text>
-            <!-- API GW -->
-            <rect x="150" y="146" width="300" height="38" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
-            <text x="300" y="170" text-anchor="middle" font-size="13" fill="#e8edf5">API Gateway</text>
-            <line x1="300" y1="184" x2="300" y2="202" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
-            <!-- Lambda -->
-            <rect x="150" y="204" width="300" height="56" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
-            <text x="300" y="227" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">AWS Lambda ×N（自動スケール）</text>
-            <text x="300" y="246" text-anchor="middle" font-size="11.5" fill="#aeb8c8">マルチ AZ 冗長 / 指数バックオフ再試行</text>
-            <!-- split to data -->
-            <line x1="300" y1="260" x2="210" y2="300" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
-            <line x1="300" y1="260" x2="395" y2="300" stroke="#9aa6b8" stroke-width="1.6" marker-end="url(#ha-arr)"/>
-            <!-- MongoDB -->
-            <rect x="120" y="302" width="180" height="66" rx="8" fill="#3aa88033" stroke="#5bb98c" stroke-opacity="0.6"/>
-            <text x="210" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="#bfe9d6">MongoDB Atlas</text>
-            <text x="210" y="348" text-anchor="middle" font-size="11" fill="#9fd6bf">3 ノード レプリカセット</text>
-            <!-- DynamoDB -->
-            <rect x="312" y="302" width="168" height="66" rx="8" fill="#5b6bc033" stroke="#8a97d8" stroke-opacity="0.6"/>
-            <text x="396" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="#cdd4f5">DynamoDB</text>
-            <text x="396" y="348" text-anchor="middle" font-size="11" fill="#aab3e8">Global Tables</text>
-            <text x="300" y="392" text-anchor="middle" font-size="11" fill="#8893a6">MongoDB 自動リーダー選出（10–30 秒）・重要テーブルは PITR</text>
-            <!-- Region B (secondary) -->
-            <rect x="580" y="110" width="120" height="300" rx="14" fill="#ffffff" fill-opacity="0.03" stroke="#ffffff" stroke-opacity="0.22" stroke-dasharray="5 4"/>
-            <text x="640" y="133" text-anchor="middle" font-size="12" font-weight="700" fill="#aeb8c8">リージョン B</text>
-            <text x="640" y="149" text-anchor="middle" font-size="10.5" fill="#8893a6">（セカンダリ・待機）</text>
-            <rect x="600" y="170" width="80" height="30" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
-            <text x="640" y="190" text-anchor="middle" font-size="10.5" fill="#c2cad6">API GW</text>
-            <rect x="600" y="210" width="80" height="30" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
-            <text x="640" y="230" text-anchor="middle" font-size="10.5" fill="#c2cad6">Lambda</text>
-            <rect x="600" y="302" width="80" height="66" rx="6" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
-            <text x="640" y="330" text-anchor="middle" font-size="10" fill="#c2cad6">Mongo /</text>
-            <text x="640" y="346" text-anchor="middle" font-size="10" fill="#c2cad6">DynamoDB</text>
-            <!-- cross-region replication -->
-            <line x1="480" y1="335" x2="600" y2="335" stroke="#39d6c6" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#ha-arrT)"/>
-            <text x="540" y="327" text-anchor="middle" font-size="10" fill="#39d6c6">レプリカ同期</text>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- Appendix: Auth / XACML -->
-    <section class="slide" data-bg="accent" data-slide="auth">
-      <div class="slide__inner">
-        <span class="kicker">セキュリティ / Auth & Authz</span>
-        <h2 class="slide__title">認証・認可</h2>
-        <div class="split">
-          <div class="split__text">
-            <ul class="ticks">
-              <li><strong>5 種の認証</strong> — JWT・API Key・OAuth 2.0・OIDC 外部 IdP・DPoP（RFC 9449）</li>
-              <li><strong>XACML 3.0 単一レイヤ</strong> — 5 ロール × 属性ベースのきめ細かいポリシー</li>
-              <li><strong>per-tenant IP 制限</strong>・監査ログ・トークン失効</li>
-              <li>PEP プロキシ（Wilma 等）を別途立てる必要がない</li>
-            </ul>
-          </div>
-          <div class="split__visual">
-            <pre class="code"><code><span class="c-key">Policy</span>: owner-only-access
-<span class="c-key">target</span>: entity.owner == <span class="c-str">${subject.userId}</span>
-<span class="c-key">rules</span>:
-  - <span class="c-ok">Permit</span> read   if owner
-  - <span class="c-ok">Permit</span> write  if owner
-  - <span class="c-no">Deny</span>   *      otherwise
-<span class="c-cmt"># 所有者のみがアクセス可能</span></code></pre>
           </div>
         </div>
       </div>
