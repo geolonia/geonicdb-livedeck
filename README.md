@@ -28,14 +28,22 @@ npm run dev        # → http://localhost:8745
 
 ### PDF 版
 
-デッキ右下の「⇩」ボタン、またはトップページ（1 ページ目）の QR コード下の「⇩ PDFをダウンロード」ボタンから、全スライドを 1 枚 16:9 の PDF としてダウンロードできる。CI（`.github/workflows/deploy.yml`）が
+デッキ右下の「⇩」ボタン、またはトップページ（1 ページ目）の QR コード下の「⇩ PDFをダウンロード」ボタンから、PDF をダウンロードできる。CI（`.github/workflows/deploy.yml`）が
 `npm run build:pdf`（[Playwright](https://playwright.dev/) で各スライドをキャプチャし [pdf-lib](https://pdf-lib.js.org/) で結合）を
 `npm run build` の直後に実行し、`dist/geonicdb-livedeck.pdf` として一緒にデプロイする。手動生成する場合はローカルでも
 初回のみ `npx playwright install chromium` が要る。
 
-ライブデモ（`data-live="true"` の 6 スライド）は、実データを焼き込まず「オンライン版でお試しください」という静的カードに
-差し替えて出力する（WS 接続やデータのタイミング次第で見た目が揺れる・ビルドが不安定になるのを避けるための意図的な仕様）。
-新しいライブデモを追加したら `scripts/build-pdf.mjs` の `LIVE_DEMO_LABELS` にもラベルを足すこと。
+PDF に収録するのは 1〜16 ページ目（タイトル〜信頼性）まで（`scripts/build-pdf.mjs` の `PDF_SLIDE_LIMIT`）。
+17 ページ目以降（ライブデモ・全機能カタログ・競合比較・AI 連携仕様・管理機能・パスワードの保護・クエリパラメータ・
+用語集・クロージング）は Web 版専用とし、PDF には含めない。代わりに末尾へ「この続きは Web 版で」という
+案内・お問い合わせページを動的に追加する（デッキ本体の Closing スライドと同じ CSS を流用しており、
+Web 版のスライド構成・ハッシュ番号には影響しない）。
+
+ライブデモ（`data-live="true"` の 6 スライド）は PDF_SLIDE_LIMIT の範囲外だが、将来 16 ページ目までの範囲に
+ライブデモを追加する場合に備え、実データを焼き込まず「オンライン版でお試しください」という静的カードに
+差し替えて出力する仕組みを残している（WS 接続やデータのタイミング次第で見た目が揺れる・ビルドが不安定になるのを
+避けるための意図的な仕様）。新しいライブデモを追加したら `scripts/build-pdf.mjs` の `LIVE_DEMO_LABELS` にも
+ラベルを足すこと。
 
 ### 環境変数（`.env`）
 
