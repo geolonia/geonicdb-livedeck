@@ -143,6 +143,14 @@ async function main() {
     await page.addStyleTag({ content: `.ui, .hint, .title__pdf-btn { display: none !important; }` });
 
     const total = await page.evaluate(() => document.querySelectorAll(".slide").length);
+    if (total < PDF_SLIDE_LIMIT) {
+      // スライドを減らす方向の変更で PDF_SLIDE_LIMIT を更新し忘れると、nextBtn が
+      // 末尾で何度クリックしても同じスライドに留まる（src/deck/slides.ts の next() が
+      // 範囲外を無視するため）ため、気づかないまま同一ページが重複した PDF ができてしまう。
+      throw new Error(
+        `スライド数 (${total}) が PDF_SLIDE_LIMIT (${PDF_SLIDE_LIMIT}) 未満です。scripts/build-pdf.mjs の PDF_SLIDE_LIMIT を見直してください。`,
+      );
+    }
     console.log(`slides: ${total} (PDF に収録するのは 1-${PDF_SLIDE_LIMIT}。${PDF_SLIDE_LIMIT + 1}-${total} は Web 版専用のため除外し、末尾に Web 版案内ページを追加する)`);
 
     const pdfDoc = await PDFDocument.create();
