@@ -28,7 +28,7 @@ npm run dev        # → http://localhost:8745
 
 ### PDF 版
 
-デッキ右下の「⇩」ボタンから、全スライドを 1 枚 16:9 の PDF としてダウンロードできる。CI（`.github/workflows/deploy.yml`）が
+デッキ右下の「⇩」ボタン、またはトップページ（1 ページ目）の QR コード下の「⇩ PDFをダウンロード」ボタンから、全スライドを 1 枚 16:9 の PDF としてダウンロードできる。CI（`.github/workflows/deploy.yml`）が
 `npm run build:pdf`（[Playwright](https://playwright.dev/) で各スライドをキャプチャし [pdf-lib](https://pdf-lib.js.org/) で結合）を
 `npm run build` の直後に実行し、`dist/geonicdb-livedeck.pdf` として一緒にデプロイする。手動生成する場合はローカルでも
 初回のみ `npx playwright install chromium` が要る。

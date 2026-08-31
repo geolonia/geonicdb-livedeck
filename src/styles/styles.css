@@ -589,6 +589,18 @@ html, body {
   color: rgba(255,255,255,.92);
 }
 .title__qr-cap .mono { font-size: 14px; font-weight: 500; color: var(--cyan); }
+.title__pdf-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(252,108,0,.4);
+  background: rgba(252,108,0,.08);
+  color: var(--white);
+  font-size: 14px; font-weight: 700;
+  text-decoration: none;
+  transition: background .2s, border-color .2s;
+}
+.title__pdf-btn:hover { background: rgba(252,108,0,.18); border-color: var(--cyan); }
 .title__headline {
   font-size: 56px;
   font-weight: 900;
