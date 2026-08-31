@@ -60,6 +60,19 @@ jobs:
           VITE_GEONICDB_KEY: ${{ secrets.GEONICDB_KEY }}
           VITE_GEONICDB_CONTRIBUTION_KEY: ${{ secrets.GEONICDB_CONTRIBUTION_KEY }}
           VITE_GEOLONIA_API_KEY: ${{ secrets.VITE_GEOLONIA_API_KEY }}
+      # デッキ内の「PDFをダウンロード」ボタン（geonicdb-livedeck.pdf）用。
+      # 1 スライド 1 ページで dist/ に書き出す（BASE_URL は preview のアセット解決を
+      # ビルド時と揃えるために必須。ズレると資産 404 でキャプチャが壊れる）。
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - run: npm run build:pdf
+        env:
+          BASE_URL: /${{ github.event.repository.name }}/
       - id: bundle
         run: |
           set -euo pipefail
