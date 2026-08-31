@@ -39,6 +39,48 @@ URL の `#N`（先頭から N 番目のスライド）を、AI エージェン�
 - 親リポジトリ `geonicdb` の `CLAUDE.md` のワークツリー運用・ラベル規約に従う。
 - 変更後は `npm run build`（`tsc --noEmit` + `vite build`）が通ることを確認してから push する。
 - ライブデモの動作確認は `npm run dev`（`http://localhost:8745`、origin 制限のためポート固定）。
+- **`npm run dev` / `npm run preview` を実行する前に、必ず下記「ローカルサーバー起動時の環境変数」を確認する。** `VITE_GEONICDB_KEY` 未設定のまま起動すると、ライブデモは空文字キーで動き `AuthenticationError` になり見た目では気づきにくい。
+
+## ローカルサーバー起動時の環境変数（必須）
+
+`npm run dev` / `npm run preview` の**前に毎回**、`VITE_GEONICDB_KEY` 等が実際に読み込まれることを確認する。ワークツリー（`.worktrees/` 配下）で作業している場合も同様。
+
+### 1. まず確認する
+
+```bash
+direnv exec . env | grep VITE_GEONICDB_KEY
+```
+
+値（`gdb_...`）が出力されれば OK。何も出力されない場合は 2 または 3 に進む。
+
+### 2. direnv が使える場合（推奨）
+
+リポジトリルート（`geonicdb-livedeck/`）に `.envrc`（gitignore 済み、実キー入り）がある。`.worktrees/` 配下のワークツリーでも、direnv は親ディレクトリを自動的に辿ってこの `.envrc` を見つけるため、ワークツリー側に `.envrc` を新規作成する必要はない。
+
+- 1. の確認で値が出ない場合、その `.envrc` がまだ `direnv allow` されていない可能性がある。リポジトリルートで:
+  ```bash
+  cd /path/to/geonicdb-livedeck   # ワークツリーではなく本体側
+  direnv allow
+  ```
+- シェルの direnv フック（`eval "$(direnv hook bash)"` 等）が効いていない環境（非ログインシェル・CI・一部のターミナル）では、`npm run dev` を素で叩いても環境変数が乗らない。その場合は `direnv exec` で明示的に環境変数を注入してから起動する:
+  ```bash
+  direnv exec . npx vite            # dev サーバー
+  direnv exec . npx vite preview    # ビルド成果物の確認サーバー
+  ```
+
+### 3. direnv が無い/使わない場合
+
+```bash
+cp .env.example .env
+```
+`.env` を開き、`VITE_GEONICDB_KEY`（および必要なら `VITE_GEONICDB_CONTRIBUTION_KEY` / `VITE_GEOLONIA_API_KEY`）に実キーを設定する。値はリポジトリルートの `.envrc` に書かれているものと同じでよい。Vite は `.env` を自動で読み込むため、以降は `npm run dev` をそのまま実行してよい。
+
+### 4. 起動後の確認（値が実際に注入されたか）
+
+```bash
+curl -s http://localhost:8745/src/lib/config.ts | head -1
+```
+1 行目に `import.meta.env = {...}` として `VITE_GEONICDB_KEY` の実値が展開されていればライブデモは動く。`""`（空文字）のままなら 1〜3 をやり直す。
 
 ## デモデータの原則
 
