@@ -23,6 +23,10 @@ const ROOT = path.join(__dirname, "..");
 const OUT_PATH = process.argv[2] || path.join(ROOT, "dist", "geonicdb-livedeck.pdf");
 const W = 1280;
 const H = 720;
+// 表紙の QR コードは実行時の window.location からデッキ URL を自己判定する
+// （src/demos/titleQr.ts）ため、そのままでは PDF 撮影用の preview サーバー
+// （http://localhost:8745）を指してしまう。撮影時だけ本番 URL に固定する。
+const DECK_URL = "https://geolonia.github.io/geonicdb-livedeck/";
 
 const LIVE_DEMO_LABELS = {
   feedback: "ライブフィードバック（NGSI-LD リンクトデータ）",
@@ -91,6 +95,11 @@ async function main() {
     // 二重管理になっているので、接続先を変えたらここも合わせて直すこと。
     await page.route(/geonicdb\.geolonia\.com|cdn\.geolonia\.com/, (route) => route.abort());
     await page.emulateMedia({ reducedMotion: "reduce" });
+    // 表紙 QR コードの URL 自己判定（src/demos/titleQr.ts の __DECK_URL_OVERRIDE__）を
+    // 本番 URL に固定する。ページのスクリプトが読み込まれるより前に定義する必要がある。
+    await page.addInitScript((url) => {
+      window.__DECK_URL_OVERRIDE__ = url;
+    }, DECK_URL);
     await page.goto(url, { waitUntil: "networkidle" });
     // ナビゲーション UI（矢印・カウンター・進捗バー・ヒント）と、
     // トップページの PDF ダウンロードボタン（PDF 内では押せないので無意味）は PDF では不要。
@@ -125,7 +134,7 @@ async function main() {
       if (isLive) {
         const demo = await slide.getAttribute("data-demo");
         const label = LIVE_DEMO_LABELS[demo] || demo || "Live Demo";
-        await injectLiveOverlay(slide, label, `https://geolonia.github.io/geonicdb-livedeck/#${i + 1}`);
+        await injectLiveOverlay(slide, label, `${DECK_URL}#${i + 1}`);
       }
 
       const buf = await slide.screenshot();
