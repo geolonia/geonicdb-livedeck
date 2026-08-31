@@ -29,7 +29,7 @@
 
 得られたスラグで、下の「スライド（ページ）の内容」と「ライブデモの接続先・データモデル」を引くと、そのページが使う型・データモデル・投入手順まで辿れます。番号ではなくスラグで対応づけているので、スライドを並べ替えても壊れません。
 
-**例（`…/geonicdb-livedeck/#18`）**: 18 番目の `<section>` → `data-slide="collab-gis"` / `data-entity-types="geonicdb-livedeck-MapFeature"` → 「共同編集 GIS」。この型のダミー地物を後述のデータモデルどおりに `entities`/`create`（複数なら `batch`）で投入すると、地図に WebSocket 経由で反映されます（表示は直近 24 時間に作成された地物のみ）。
+**例（`…/geonicdb-livedeck/#21`）**: 21 番目の `<section>` → `data-slide="collab-gis"` / `data-entity-types="geonicdb-livedeck-MapFeature"` → 「共同編集 GIS」。この型のダミー地物を後述のデータモデルどおりに `entities`/`create`（複数なら `batch`）で投入すると、地図に WebSocket 経由で反映されます（表示は直近 24 時間に作成された地物のみ）。
 
 ## MCP / CLI でデータを投入・分析する（プレゼン中）
 
