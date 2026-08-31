@@ -1048,6 +1048,10 @@ html, body {
 }
 .ui__btn:hover { background: rgba(255,255,255,.12); }
 .ui__btn--fs { font-size: 18px; }
+.ui__btn--pdf {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 17px; text-decoration: none; box-sizing: border-box;
+}
 .ui__counter { font-size: 14px; color: rgba(255,255,255,.8); min-width: 64px; text-align: center; }
 
 /* ===== Hint ===== */

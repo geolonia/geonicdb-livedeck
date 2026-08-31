@@ -22,8 +22,20 @@ npm run dev        # → http://localhost:8745
 | `npm run build` | 型チェック（`tsc --noEmit`）＋ 本番ビルド（`dist/`） |
 | `npm run preview` | ビルド成果物の確認サーバー（8745） |
 | `npm run typecheck` | 型チェックのみ |
+| `npm run build:pdf` | `dist/` を 1 スライド 1 ページの PDF（`dist/geonicdb-livedeck.pdf`）に書き出す。事前に `npm run build` が必要 |
 
 > ライブデモ用の API キーは **origin 制限**付きのため、`http://localhost:8745` または `https://geolonia.github.io` から開く必要があります（ポート 8745 固定）。
+
+### PDF 版
+
+デッキ右下の「⇩」ボタンから、全スライドを 1 枚 16:9 の PDF としてダウンロードできる。CI（`.github/workflows/deploy.yml`）が
+`npm run build:pdf`（[Playwright](https://playwright.dev/) で各スライドをキャプチャし [pdf-lib](https://pdf-lib.js.org/) で結合）を
+`npm run build` の直後に実行し、`dist/geonicdb-livedeck.pdf` として一緒にデプロイする。手動生成する場合はローカルでも
+初回のみ `npx playwright install chromium` が要る。
+
+ライブデモ（`data-live="true"` の 6 スライド）は、実データを焼き込まず「オンライン版でお試しください」という静的カードに
+差し替えて出力する（WS 接続やデータのタイミング次第で見た目が揺れる・ビルドが不安定になるのを避けるための意図的な仕様）。
+新しいライブデモを追加したら `scripts/build-pdf.mjs` の `LIVE_DEMO_LABELS` にもラベルを足すこと。
 
 ### 環境変数（`.env`）
 
@@ -55,7 +67,7 @@ npm run dev        # → http://localhost:8745
 `main` への push（と `workflow_dispatch`）で `.github/workflows/deploy.yml` が
 **ビルドから公開までを 1 本のワークフローで**行う（Pages のソース設定は **"GitHub Actions"**）。
 
-1. `build` — Vite ビルド → `actions/upload-pages-artifact` で `dist/` をアップロード
+1. `build` — Vite ビルド → `npm run build:pdf` で PDF 版を `dist/` に追加 → `actions/upload-pages-artifact` で `dist/` をアップロード
 2. `deploy` — `actions/deploy-pages` で公開 → `.github/scripts/verify-pages-deploy.sh` で
    **ライブが今ビルドしたバンドル（`assets/index-<hash>.js`）を配信しているか**を検証
 
