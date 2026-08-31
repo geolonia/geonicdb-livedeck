@@ -27,6 +27,11 @@ const H = 720;
 // （src/demos/titleQr.ts）ため、そのままでは PDF 撮影用の preview サーバー
 // （http://localhost:8745）を指してしまう。撮影時だけ本番 URL に固定する。
 const DECK_URL = "https://geolonia.github.io/geonicdb-livedeck/";
+// PDF 版に収録するのは 1〜16 ページ目（タイトル〜信頼性）まで。17 ページ目以降
+// （ライブデモ・全機能カタログ・競合比較・AI 連携仕様・管理機能・パスワードの保護・
+// クエリパラメータ・用語集・クロージング）は Web 版専用とし、PDF には含めない
+// （代わりに末尾へ Web 版への案内ページを追加する。下記 buildWebOutroSlide 参照）。
+const PDF_SLIDE_LIMIT = 16;
 
 const LIVE_DEMO_LABELS = {
   feedback: "ライブフィードバック（NGSI-LD リンクトデータ）",
@@ -63,6 +68,38 @@ async function removeLiveOverlay(slide) {
     const overlay = el.querySelector('[data-pdf-overlay="1"]');
     if (overlay) overlay.remove();
   });
+}
+
+/**
+ * PDF 専用の最終ページ（Web 版への案内）を組み立てて #deck に追加する。
+ * デッキ本体の "Closing" スライドと同じ CSS クラス（.slide--closing 等）を
+ * そのまま流用するため、追加の CSS は不要。デッキの初期化スクリプト
+ * （src/deck/slides.ts）はページ読み込み時点の `.slide` 要素だけを見て
+ * ナビゲーションを組むため、ここで動的に足しても Web 版のスライド数・
+ * ハッシュ番号・キーボード操作には一切影響しない。
+ */
+async function buildWebOutroSlide(page, deckUrl) {
+  await page.evaluate((deckUrl) => {
+    const deck = document.getElementById("deck");
+    const section = document.createElement("section");
+    section.className = "slide slide--closing is-active";
+    section.setAttribute("data-bg", "title");
+    section.innerHTML = `
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="slide__inner closing__inner">
+        <img class="brand-logo brand-logo--center" src="assets/geonic-logo-dark.svg" alt="GeonicDB" />
+        <h2 class="closing__headline">この続きは<br /><span class="accent">Web 版</span>で</h2>
+        <p class="closing__sub">ライブデモ・全機能カタログ・競合比較・AI 連携仕様・管理機能・パスワードの保護・クエリパラメータ・用語集は、この PDF には含まれていません。詳しくは Web 版をご覧ください。</p>
+        <div class="closing__cta">
+          <span class="chip chip--lg mono">${deckUrl}</span>
+        </div>
+        <p class="closing__sub" style="font-size:16px;margin-bottom:24px;">お問い合わせ・デモのご相談は <span class="mono">https://geolonia.com/</span> まで</p>
+        <p class="closing__foot mono">Geolonia, Inc. · GeonicDB Context Broker</p>
+      </div>
+    `;
+    deck.appendChild(section);
+  }, deckUrl);
+  return page.locator(".slide--closing.is-active");
 }
 
 async function main() {
@@ -106,11 +143,11 @@ async function main() {
     await page.addStyleTag({ content: `.ui, .hint, .title__pdf-btn { display: none !important; }` });
 
     const total = await page.evaluate(() => document.querySelectorAll(".slide").length);
-    console.log(`slides: ${total}`);
+    console.log(`slides: ${total} (PDF に収録するのは 1-${PDF_SLIDE_LIMIT}。${PDF_SLIDE_LIMIT + 1}-${total} は Web 版専用のため除外し、末尾に Web 版案内ページを追加する)`);
 
     const pdfDoc = await PDFDocument.create();
 
-    for (let i = 0; i < total; i++) {
+    for (let i = 0; i < PDF_SLIDE_LIMIT; i++) {
       if (i > 0) {
         await page.evaluate(() => document.getElementById("nextBtn")?.click());
       }
@@ -149,6 +186,13 @@ async function main() {
 
       console.log(`captured ${i + 1}/${total} (${slug}${isLive ? ", live->overlay" : ""})`);
     }
+
+    const outroSlide = await buildWebOutroSlide(page, DECK_URL);
+    const outroBuf = await outroSlide.screenshot();
+    const outroImg = await pdfDoc.embedPng(outroBuf);
+    const outroPage = pdfDoc.addPage([W, H]);
+    outroPage.drawImage(outroImg, { x: 0, y: 0, width: W, height: H });
+    console.log(`captured ${PDF_SLIDE_LIMIT + 1}/${PDF_SLIDE_LIMIT + 1} (pdf-outro, PDF専用)`);
 
     fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
     fs.writeFileSync(OUT_PATH, await pdfDoc.save());
