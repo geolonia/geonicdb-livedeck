@@ -441,30 +441,121 @@
         <span class="kicker">エグゼクティブサマリー / Executive Summary</span>
         <h2 class="slide__title">自前運用の<span class="accent">コストと手間</span>をなくした<br />FIWARE 互換コンテキストブローカー</h2>
         <p class="lead">GeonicDB は FIWARE Orion 互換のコンテキストブローカー。刻々と変わるモノ・場所・人の状態を標準 API で登録・保持・問い合わせ・購読できる基盤を、運用レスな SaaS として提供します。</p>
-        <div class="std-grid">
-          <div class="std-card">
-            <span class="std-card__name">標準化された API でロックインなし</span>
-            <span class="std-card__desc"><strong>NGSIv2</strong> と国際標準 <strong>NGSI-LD</strong> を 1 エンジンで両対応。ETSI 適合性テストスイート（全 1033 項目）で <strong>84.2%</strong>、主要 OSS 3 製品を上回り 1 位。</span>
+        <div class="exec-pillars">
+          <div class="exec-pillar">
+            <!-- ngsi-ld スライド（data-slide="ngsi-ld"）の ld-svg を縮小複製。図の内容を変えたら両方同期すること -->
+            <div class="exec-pillar__art">
+              <svg class="ld-svg" viewBox="0 0 560 362" role="img" aria-hidden="true">
+                <defs>
+                  <marker id="execArrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 Z" fill="#fc6c00" />
+                  </marker>
+                </defs>
+                <rect x="1" y="1" width="260" height="178" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+                <g transform="translate(15,11)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M2 11 L12 4 L22 11" /><path d="M4 11 V23 H20 V11" /><path d="M9.5 23 V16 H14.5 V23" />
+                </g>
+                <text x="46" y="24" class="ld-svg__type">もの：避難所</text>
+                <text x="46" y="41" class="ld-svg__id">urn:ngsi-ld:EvacuationArea:001</text>
+                <line x1="15" y1="55" x2="246" y2="55" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+                <text x="15" y="79" class="ld-svg__key">名称</text>
+                <rect x="70" y="68" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="82" y="79" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+                <text x="102" y="79" class="ld-svg__val">△△小学校</text>
+                <text x="15" y="135" class="ld-svg__key">場所</text>
+                <rect x="70" y="124" width="34" height="16" rx="8" fill="none" stroke="#5fd39b" /><text x="87" y="135" class="ld-svg__chip" fill="#5fd39b" text-anchor="middle">場所</text>
+                <text x="112" y="135" class="ld-svg__val">34.3401, 134.0434</text>
+                <text x="15" y="163" class="ld-svg__key">所在地区</text>
+                <rect x="70" y="152" width="52" height="16" rx="8" fill="none" stroke="#fc6c00" /><text x="96" y="163" class="ld-svg__chip" fill="#fc6c00" text-anchor="middle">つながり</text>
+                <rect x="299" y="1" width="260" height="122" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.35)" stroke-width="1.4" />
+                <g transform="translate(313,11)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M8 2 V16" /><path d="M8 5 H13 M8 9 H13 M8 13 H13" />
+                  <path d="M1 20 q5 -3.5 10 0 t10 0" /><path d="M1 25 q5 -3.5 10 0 t10 0" />
+                </g>
+                <text x="344" y="24" class="ld-svg__type">もの：水位計</text>
+                <text x="344" y="41" class="ld-svg__id">urn:ngsi-ld:Device:water-001</text>
+                <line x1="313" y1="55" x2="544" y2="55" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+                <text x="313" y="79" class="ld-svg__key">水位</text>
+                <rect x="368" y="68" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="380" y="79" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+                <text x="400" y="79" class="ld-svg__val">3.2 m</text>
+                <text x="313" y="107" class="ld-svg__key">監視区域</text>
+                <rect x="368" y="96" width="52" height="16" rx="8" fill="none" stroke="#fc6c00" /><text x="394" y="107" class="ld-svg__chip" fill="#fc6c00" text-anchor="middle">つながり</text>
+                <path d="M96 172 C96 196 128 202 172 226" fill="none" stroke="#fc6c00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#execArrow)" />
+                <path d="M394 116 C394 176 398 202 360 226" fill="none" stroke="#fc6c00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#execArrow)" />
+                <text x="266" y="196" class="ld-svg__edge" text-anchor="middle">別部署のデータが</text>
+                <text x="266" y="214" class="ld-svg__edge" text-anchor="middle">同じ「もの」を指す</text>
+                <rect x="150" y="237" width="260" height="122" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(252,108,0,.55)" stroke-width="1.6" />
+                <g transform="translate(164,247)" stroke="#fba40c" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M3 8 L12 4 L21 9 L19 21 L6 20 Z" /><path d="M12 4 V13" /><path d="M19 9 L12 13" />
+                </g>
+                <text x="195" y="260" class="ld-svg__type">もの：○○地区</text>
+                <text x="164" y="277" class="ld-svg__id">urn:ngsi-ld:AdministrativeArea:37201</text>
+                <line x1="164" y1="291" x2="395" y2="291" stroke="rgba(255,255,255,.12)" stroke-width="1" />
+                <text x="164" y="315" class="ld-svg__key">名称</text>
+                <rect x="219" y="304" width="24" height="16" rx="8" fill="none" stroke="#fba40c" /><text x="231" y="315" class="ld-svg__chip" fill="#fba40c" text-anchor="middle">値</text>
+                <text x="251" y="315" class="ld-svg__val">○○地区</text>
+              </svg>
+            </div>
+            <span class="exec-pillar__title">標準化された API</span>
+            <span class="exec-pillar__desc"><strong>NGSIv2</strong> と国際標準 <strong>NGSI-LD</strong> を 1 エンジンで両対応。ETSI 適合度 <strong>84.2%</strong> で主要 OSS 3 製品を上回り 1 位、ベンダーロックインもありません。</span>
           </div>
-          <div class="std-card">
-            <span class="std-card__name">サーバー運用の手間とコストをゼロに</span>
-            <span class="std-card__desc">Web サーバー・アプリ実装・DB の運用まで丸ごと引き受けるフルマネージド BaaS。想定可用性 <strong>99.95%+</strong>、自動フェイルオーバー 10〜30 秒、マルチリージョン冗長化。</span>
+          <div class="exec-pillar">
+            <!-- ai-native スライド（data-slide="ai-native"）のブラウザプレビューを静止画として複製。
+                 id は付けず（.slide--ai のクラスも付けない）、src/demos/aiNative.ts の byId/querySelector と衝突させない -->
+            <div class="exec-pillar__art exec-pillar__art--ai">
+              <div class="ai-browser">
+                <div class="ai-browser__bar">
+                  <span class="ai-browser__btns"><i></i><i></i><i></i></span>
+                  <div class="ai-browser__addr"><span class="ai-browser__lock">🔒</span>shelter-map.geonicdb.app</div>
+                </div>
+                <div class="ai-browser__view">
+                  <div class="ai-app is-on">
+                    <div class="ai-app__map">
+                      <svg viewBox="0 0 360 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                        <rect width="360" height="220" fill="#12121d"/>
+                        <g stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" fill="none">
+                          <path d="M0,78 H360"/><path d="M0,150 H360"/><path d="M120,0 V220"/><path d="M250,0 V220"/>
+                        </g>
+                        <path d="M-10,40 C80,70 70,140 150,168 C220,192 250,206 370,196" stroke="#243150" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.5"/>
+                        <g transform="translate(70,78)"><g class="ai-pin"><path d="M0,0 C-7,-10 -7,-17 0,-17 C7,-17 7,-10 0,0 Z" fill="#39d6c6"/><circle cx="0" cy="-11.5" r="3.4" fill="#0d0d14"/></g></g>
+                        <g transform="translate(160,66)"><g class="ai-pin" style="--d:.08s"><path d="M0,0 C-7,-10 -7,-17 0,-17 C7,-17 7,-10 0,0 Z" fill="#39d6c6"/><circle cx="0" cy="-11.5" r="3.4" fill="#0d0d14"/></g></g>
+                        <g transform="translate(250,84)"><g class="ai-pin" style="--d:.16s"><path d="M0,0 C-7,-10 -7,-17 0,-17 C7,-17 7,-10 0,0 Z" fill="#39d6c6"/><circle cx="0" cy="-11.5" r="3.4" fill="#0d0d14"/></g></g>
+                        <g transform="translate(205,116)"><g class="ai-pin" style="--d:.24s"><path d="M0,0 C-7,-10 -7,-17 0,-17 C7,-17 7,-10 0,0 Z" fill="#39d6c6"/><circle cx="0" cy="-11.5" r="3.4" fill="#0d0d14"/></g></g>
+                      </svg>
+                    </div>
+                    <div class="ai-app__ui">
+                      <div class="ai-app__top">
+                        <span class="ai-app__icon" aria-hidden="true">☰</span>
+                        <span class="ai-app__search"><span class="ai-app__searchicon" aria-hidden="true">🔍</span>避難所を検索</span>
+                      </div>
+                      <div class="ai-app__chip"><span class="ai-app__livedot"></span>近くの避難所 <b>10</b> 件</div>
+                      <span class="ai-app__fab" aria-hidden="true">＋</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="exec-pillar__title">AI 対応</span>
+            <span class="exec-pillar__desc"><strong>MCP</strong> 対応で生成 AI から直接データ操作・アプリ開発が可能。「避難所アプリを作って」と頼むだけで、データもアプリも AI が組み上げます。</span>
           </div>
-          <div class="std-card">
-            <span class="std-card__name">過剰投資なしでコストを最適化</span>
-            <span class="std-card__desc">固定サーバーを持たず、利用に応じて自動スケールアウト。初期投資も待機コストも不要で、連携アプリ側のインフラコストも大幅削減。</span>
-          </div>
-          <div class="std-card">
-            <span class="std-card__name">AI との連携で価値の高い業務に集中</span>
-            <span class="std-card__desc"><strong>MCP</strong> 対応で生成 AI から直接データ操作・アプリ開発が可能。内蔵ルールエンジン <strong>ReactiveCore Rules</strong> が条件成立で通知・更新を自動実行。</span>
-          </div>
-          <div class="std-card">
-            <span class="std-card__name">組織をまたいでも安全にデータ活用</span>
-            <span class="std-card__desc">1 つの基盤をテナントで分割し、部署・組織単位でデータと権限を分離。<strong>フェデレーション</strong>で複数 GeonicDB を 1 窓口に統合できます。</span>
-          </div>
-          <div class="std-card">
-            <span class="std-card__name">セキュリティリスクを最小化</span>
-            <span class="std-card__desc">JWT・API Key・OAuth 2.0・OIDC・<strong>DPoP</strong> の 5 方式と <strong>XACML 3.0</strong> による最小権限の認可で、フロントに置く鍵でも被害範囲を限定。</span>
+          <div class="exec-pillar">
+            <!-- scale-out スライド（data-slide="scale-out"）の「GeonicDB なら」チャートを縮小複製。図の内容を変えたら同期すること -->
+            <div class="exec-pillar__art">
+              <svg class="cmp-chart" viewBox="0 0 520 235" role="img" aria-hidden="true">
+                <line x1="1" y1="44" x2="519" y2="44" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="6 4"/>
+                <text x="8" y="34" font-size="13" font-weight="700" fill="rgba(255,255,255,.42)">従来の固定サーバーの上限</text>
+                <text x="260" y="98" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fba40c">この分は負担しなくていい</text>
+                <path d="M1,194 L1,178 L130,178 L130,158 L260,158 L260,140 L389,140 L389,126 L519,126 L519,194 Z"
+                      fill="#cf3620" stroke="#cf3620" stroke-width="2"/>
+                <text x="260" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd9b8">利用度にあわせてスケールアップ</text>
+                <line x1="1" y1="194" x2="519" y2="194" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.4"/>
+                <text x="65" y="216" text-anchor="middle" font-size="12.5" fill="rgba(255,255,255,.45)">1 年目</text>
+                <text x="195" y="216" text-anchor="middle" font-size="12.5" fill="rgba(255,255,255,.45)">2 年目</text>
+                <text x="324" y="216" text-anchor="middle" font-size="12.5" fill="rgba(255,255,255,.45)">3 年目</text>
+                <text x="454" y="216" text-anchor="middle" font-size="12.5" fill="rgba(255,255,255,.45)">4 年目</text>
+              </svg>
+            </div>
+            <span class="exec-pillar__title">最適化されたコスト</span>
+            <span class="exec-pillar__desc">固定サーバーを持たず、小さく始めて必要な分だけスケールアップ。事業計画にあわせて無理なく拡張できます。</span>
           </div>
         </div>
       </div>
