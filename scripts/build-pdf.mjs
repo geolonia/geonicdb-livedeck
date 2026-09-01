@@ -27,11 +27,11 @@ const H = 720;
 // （src/demos/titleQr.ts）ため、そのままでは PDF 撮影用の preview サーバー
 // （http://localhost:8745）を指してしまう。撮影時だけ本番 URL に固定する。
 const DECK_URL = "https://geolonia.github.io/geonicdb-livedeck/";
-// PDF 版に収録するのは 1〜16 ページ目（タイトル〜信頼性）まで。17 ページ目以降
+// PDF 版に収録するのは 1〜17 ページ目（タイトル〜信頼性）まで。18 ページ目以降
 // （ライブデモ・全機能カタログ・競合比較・AI 連携仕様・管理機能・パスワードの保護・
 // クエリパラメータ・用語集・クロージング）は Web 版専用とし、PDF には含めない
 // （代わりに末尾へ Web 版への案内ページを追加する。下記 buildWebOutroSlide 参照）。
-const PDF_SLIDE_LIMIT = 16;
+const PDF_SLIDE_LIMIT = 17;
 
 const LIVE_DEMO_LABELS = {
   feedback: "ライブフィードバック（NGSI-LD リンクトデータ）",
