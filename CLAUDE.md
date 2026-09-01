@@ -45,6 +45,8 @@ URL の `#N`（先頭から N 番目のスライド）を、AI エージェン�
 
 `npm run dev` / `npm run preview` の**前に毎回**、`VITE_GEONICDB_KEY` 等が実際に読み込まれることを確認する。ワークツリー（`.worktrees/` 配下）で作業している場合も同様。
 
+**`npm run preview` は `dist/` に焼き込み済みの静的ビルドを配信するだけ**なので、環境変数を後から設定・変更しても `preview` 自体には反映されない。`preview` する前に、環境変数を設定した状態で `npm run build` を実行し直すこと（順序: 環境変数を設定 → `npm run build` → `npm run preview`）。
+
 ### 1. まず確認する
 
 ```bash
@@ -77,10 +79,17 @@ cp .env.example .env
 
 ### 4. 起動後の確認（値が実際に注入されたか）
 
+`npm run dev`（開発サーバー）の場合:
 ```bash
 curl -s http://localhost:8745/src/lib/config.ts | head -1
 ```
 1 行目に `import.meta.env = {...}` として `VITE_GEONICDB_KEY` の実値が展開されていればライブデモは動く。`""`（空文字）のままなら 1〜3 をやり直す。
+
+`npm run preview`（ビルド成果物）の場合は上記の動的トランスフォームが効かないため、ビルド後の静的バンドルに実キーが焼き込まれているかを直接確認する:
+```bash
+grep -o "gdb_[A-Za-z0-9]*" dist/assets/index-*.js
+```
+`.envrc` / `.env` に設定した実キー（`gdb_...`）と一致する文字列が出力に含まれていれば OK（プレースホルダ由来の別の断片が一緒に出ることがあるので、実キーと突き合わせて確認する）。含まれていなければ、環境変数が未設定のまま `npm run build` してしまっている。環境変数を設定し直して `npm run build` → `npm run preview` をやり直す。
 
 ## デモデータの原則
 
