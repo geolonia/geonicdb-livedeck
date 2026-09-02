@@ -55,7 +55,7 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
 以下は「MCP の `entities` / `temporal` ツールでこう呼ぶ」ことを示す擬似指示です（実際の引数名は `/tools.json` に準拠）。REST 等価も併記します。各デモの型・属性は後述の「ライブデモの接続先・データモデル」を参照。
 
 1. **フィードバックを投入 →「回答が『つながるデータ』になる」スライドの集計に即反映**
-   - `entities` / `create`：type=`Feedback`、下記データモデルどおりの属性（`role`/`expectation`/`interestedIn`/`region`/`location`）を持つ NGSI-LD エンティティを作成。
+   - `entities` / `create`：type=`Feedback`、下記データモデルどおりの属性（`role`/`expectation`/`interestedIn`/`region`/`location`）を持つ NGSI-LD エンティティを作成。※集計に載るのは**直近 1 週間**に作成された回答のみ（`expectation.observedAt` を古い日時にすると集計から外れる）。
    - REST 等価: `POST /ngsi-ld/v1/entities`（tenant=miya）。
 2. **メッセージを投入 → メッセージング＆ReactiveCore Rules ログのデモに反映**
    - `entities` / `create`：type=`geonicdb-livedeck-Message`（`name`・`text`）。サーバ側の Rules が自動で `geonicdb-livedeck-MessageLog` を生成し、両方が WS で配信される。
@@ -99,6 +99,7 @@ MCP（Model Context Protocol）クライアント（Claude Desktop / Claude Code
   - `region` — Relationship → `urn:ngsi-ld:AdministrativeArea:<都道府県コード2桁>`（例 `13`）／必須
   - `location` — GeoProperty / GeoJSON Point（会場の位置。固定座標）／必須
 - 購読: `entityTypes: ["Feedback"]` の WebSocket で `entityCreated` を受信
+- 表示条件: 件数・集計に使うのは**直近 1 週間に作成された回答のみ**（`createdAt`／`expectation.observedAt`／id 埋め込み時刻で判定）。対象がゼロ件のときは円グラフの代わりに「直近 1 週間の回答はまだありません」を表示する
 
 ### Geo クエリー — AED マップ（読み取り専用 + 近傍検索）
 

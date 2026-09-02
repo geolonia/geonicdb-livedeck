@@ -15,7 +15,7 @@ import { config } from "../lib/config";
 import { createClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
-import { entityCreatedAt, RECENT_WINDOW_MS } from "../lib/recency";
+import { isRecent } from "../lib/recency";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type AnyMap = any;
@@ -87,7 +87,7 @@ export function initCollab(): void {
   function ingest(e: Record<string, any> | null): boolean {
     const id = e?.id as string | undefined;
     if (!e || !id || features[id]) return false;
-    if (Date.now() - entityCreatedAt(e) > RECENT_WINDOW_MS) return false; // 直近24時間のみ表示
+    if (!isRecent(e)) return false; // 直近24時間のみ表示（未来に振れた時刻も除外）
     const f = toFeature(e);
     if (!f) return false;
     features[id] = f;

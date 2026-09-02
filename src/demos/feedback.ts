@@ -13,6 +13,11 @@
    「カスタムデータモデル（GET /custom-data-models/Feedback の実データ）」
    「集計結果（関心・所属・地域の 3 つの円グラフ）」を表示し、
    件数・集計は WebSocket の entityCreated でリアルタイム更新する。
+
+   件数・集計に使うのは**直近 1 週間の回答のみ**（起動時ロードを
+   lib/recency でフィルタ。過去の登壇分が混ざって傾向が薄まるのを防ぐ）。
+   対象がゼロ件でも円グラフは描かず「まだ回答がありません」を出す
+   （0 除算・空配列でエラーを出さない）。
    認可はデッキ共通の統合キー（VITE_GEONICDB_KEY / 統合ポリシー geonicdb-livedeck-deck）。
    Feedback の GET|POST ＋ WS ＋ custom-data-models の GET、origin 制限・DPoP 必須。
    =================================================================== */
@@ -21,6 +26,8 @@ import { config } from "../lib/config";
 import { createClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
+import { isRecent, WEEK_WINDOW_MS } from "../lib/recency";
+import { groupSmall, pieSegments, PIE_COLORS, type PieItem } from "./feedbackChart";
 
 /** WS / 楽観更新で共通に扱う、エンティティ風イベントの最小形。 */
 interface FbEvent {
@@ -50,7 +57,6 @@ const FEEDBACK_MODEL = {
 // 集計結果タブの選択肢と色（キー・ラベルは左フォームの選択肢と一致させる）。
 const USECASE_PREFIX = "urn:ngsi-ld:UseCase:";
 const REGION_PREFIX = "urn:ngsi-ld:AdministrativeArea:";
-const PIE_COLORS = ["#fc6c00", "#39d6c6", "#fba40c", "#e8401e", "#c89bff", "#6b7a90"];
 const INTERESTS = [
   { key: "disaster", label: "防災・減災", color: PIE_COLORS[0] },
   { key: "environment", label: "環境モニタリング", color: PIE_COLORS[1] },
@@ -66,13 +72,6 @@ const ROLES = [
   { key: "other", label: "その他", color: PIE_COLORS[4] },
 ];
 
-/** 円グラフの 1 スライス。 */
-interface PieItem {
-  key: string;
-  label: string;
-  color: string;
-  n: number;
-}
 /** 1 回答が各グラフに与える集計キー（bump 対象の伝搬用）。 */
 interface TallyKeys {
   interest?: string;
@@ -110,7 +109,7 @@ export function initFeedback(): void {
   }
   function setCount(): void {
     const el = byId("fb-count");
-    if (el) el.textContent = "これまでの回答 " + Object.keys(seen).length + " 件";
+    if (el) el.textContent = "直近 1 週間の回答 " + Object.keys(seen).length + " 件";
   }
   // 送信の成否はメッセージではなくボタン内の表示で示す（数秒で元に戻る）。
   const SUBMIT_LABEL = "▶ NGSI-LD で送信";
@@ -328,26 +327,6 @@ export function initFeedback(): void {
       }));
   }
 
-  // 全体の 10% 未満のスライスは「その他」（グレー）に集約する。
-  // スライス数の上限（色数）を超えた分も同様に丸める。
-  const OTHER_KEY = "__other";
-  const OTHER_SHARE = 0.1;
-  function groupSmall(items: PieItem[]): PieItem[] {
-    const t = items.reduce((s, it) => s + it.n, 0);
-    if (t === 0) return [];
-    const major = items.filter((it) => it.n / t >= OTHER_SHARE);
-    const shown = major.slice(0, PIE_COLORS.length - 1);
-    const restN = t - shown.reduce((s, it) => s + it.n, 0);
-    if (restN > 0)
-      shown.push({
-        key: OTHER_KEY,
-        label: "その他",
-        color: PIE_COLORS[PIE_COLORS.length - 1],
-        n: restN,
-      });
-    return shown;
-  }
-
   // ドーナツ円グラフ。セグメントは固定数の circle を使い回し、stroke-dasharray/-offset の
   // 更新を CSS transition で滑らかに見せる。凡例は「バンド上の％ラベル＋グラフ下の色チップ」
   // の 2 段構え（％はスライスが細いと重なるため 6% 以上のみ表示）。
@@ -368,28 +347,25 @@ export function initFeedback(): void {
           '" transform="rotate(-90 100 100)"/>';
       svg.innerHTML = circles + '<g class="fb-pie__labels"></g>';
     }
-    const t = items.reduce((s, it) => s + it.n, 0);
-    let acc = 0; // 累積割合（次セグメントの開始位置）
+    // 割合の計算は純粋ロジック側（feedbackChart）に寄せる。ゼロ件でも frac は 0。
+    const segments = pieSegments(items, PIE_SLICES);
     let labels = "";
-    for (let i = 0; i < PIE_SLICES; i++) {
+    segments.forEach(({ color, frac, start }, i) => {
       const seg = svg.querySelector('.fb-pie__seg[data-idx="' + i + '"]');
-      if (!seg) continue;
-      const it = items[i];
-      const frac = it && t > 0 ? it.n / t : 0;
-      seg.setAttribute("stroke", it ? it.color : "transparent");
+      if (!seg) return;
+      seg.setAttribute("stroke", color);
       seg.setAttribute("stroke-dasharray", frac * PIE_C + " " + (PIE_C - frac * PIE_C));
-      seg.setAttribute("stroke-dashoffset", String(-acc * PIE_C));
+      seg.setAttribute("stroke-dashoffset", String(-start * PIE_C));
       if (frac >= PIE_MIN_LABEL) {
         // スライス中央角のバンド上に％を重ねる（12時起点・時計回り）
-        const a = (acc + frac / 2) * 2 * Math.PI - Math.PI / 2;
+        const a = (start + frac / 2) * 2 * Math.PI - Math.PI / 2;
         const x = 100 + PIE_R * Math.cos(a);
         const y = 100 + PIE_R * Math.sin(a);
         labels +=
           '<text x="' + x.toFixed(1) + '" y="' + (y + 4.5).toFixed(1) + '">' +
           Math.round(frac * 100) + "%</text>";
       }
-      acc += frac;
-    }
+    });
     const labelsEl = svg.querySelector(".fb-pie__labels");
     if (labelsEl) labelsEl.innerHTML = labels;
     chips.innerHTML = items
@@ -401,12 +377,18 @@ export function initFeedback(): void {
       )
       .join("");
   }
+  // 集計対象がゼロ件のときは円グラフを隠して案内文だけ出す（空のドーナツは故障に見える）。
+  function renderEmptyState(total: number): void {
+    const pies = document.querySelector<HTMLElement>(".slide--fb .fb-pies");
+    const empty = byId("fb-chart-empty");
+    if (pies) pies.hidden = total === 0;
+    if (empty) empty.hidden = total > 0;
+  }
   function renderChart(): void {
+    const total = Object.keys(seenChart).length;
     const totalEl = byId("fb-chart-total");
-    if (totalEl) {
-      const t = Object.keys(seenChart).length;
-      totalEl.textContent = t ? "（全 " + t + " 件）" : "";
-    }
+    if (totalEl) totalEl.textContent = total ? "（直近 1 週間 / 全 " + total + " 件）" : "";
+    renderEmptyState(total);
     renderPie(
       "fb-pie-role",
       "fb-chips-role",
@@ -453,9 +435,17 @@ export function initFeedback(): void {
     if (exp && typeof exp.observedAt === "string") return exp.observedAt;
     return typeof e.id === "string" ? e.id : "";
   }
+  // 直近 1 週間の回答か。createdAt が返らないテナントでも
+  // expectation.observedAt → id 埋め込み時刻の順で判定できる（lib/recency）。
+  const FB_DATE_PROPS = ["createdAt", "expectation.observedAt"];
+  function isRecentFeedback(e: Record<string, unknown>): boolean {
+    return isRecent(e, WEEK_WINDOW_MS, FB_DATE_PROPS);
+  }
   function load(): Promise<void> {
     return db!.getEntities({ type: FB.type, limit: 1000 }).then((res) => {
-      const list = Array.isArray(res) ? res : [];
+      // 集計・件数・既定表示はすべて直近 1 週間の回答のみを使う
+      // （WS でのリアルタイム受信分は当然この窓の中なのでフィルタ不要）。
+      const list = (Array.isArray(res) ? res : []).filter(isRecentFeedback);
       list.forEach((e) => {
         tally(e.id as string);
         chartTally(e);
