@@ -18,6 +18,7 @@ import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { createContributionClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { onSlideChange } from "../lib/slidechange";
+import { waitAuthJitter, withAuthRetry } from "../lib/authGate";
 import { validateContribution, type ContributionInput, type ContributionField } from "./contributionValidation";
 import { buildContributionEntity, CONTRIBUTION_MODEL } from "./contributionEntity";
 
@@ -117,7 +118,10 @@ export function initContribution(): void {
       btn.classList.remove("is-ok", "is-err");
       btn.textContent = "送信中… / Sending…";
     }
-    db.createEntity(entity)
+    const client = db;
+    // 投稿の一波もスロットル (429 / 500) を踏む。参加者に「失敗」と出す前に
+    // バックオフで数回やり直す — 会場では画面を見て諦められてしまうため。
+    withAuthRetry(() => client.createEntity(entity), { label: "contribution:submit", attempts: 3 })
       .then(() => {
         renderJson(entity);
         tally(entity);
@@ -324,8 +328,16 @@ export function initContribution(): void {
     setCount();
     renderChart();
     db = createContributionClient();
-    loadModel();
-    load()
+    // 会場の全員が同じ瞬間にこのスライドを開くと、SDK の認証ハンドシェイク
+    // (/auth/nonce → /oauth/token) が一斉に制御プレーンへ集中して詰まる
+    // (実測: 200 並列で 17.5% しか通らない)。最初のリクエストをランダムに
+    // 遅らせて波を平らにし、それでも 429/5xx で落ちたらバックオフで待ち直す。
+    // 発表者の画面だけ即座に出したいときは URL に ?nojitter を付ける。
+    waitAuthJitter()
+      .then(() => {
+        loadModel();
+        return withAuthRetry(load, { label: "contribution" });
+      })
       .then(connect)
       .catch((err: unknown) => {
         console.error("[contribution]", err);

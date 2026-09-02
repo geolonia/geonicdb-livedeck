@@ -54,6 +54,7 @@ Web 版のスライド構成・ハッシュ番号には影響しない）。
 | `VITE_GEONICDB_KEY` | 全デモ共通の統合キー（統合ポリシー `geonicdb-livedeck-deck`。GET/POST/WS を型別に許可・origin 制限＋DPoP） |
 | `VITE_GEONICDB_CONTRIBUTION_KEY` | 会場投稿(Contribution)専用キー。テナント `foss4g_2026`(ENTERPRISE契約)向け。上記の全デモ共通キーとは別物・別テナント |
 | `VITE_GEOLONIA_API_KEY` | Geolonia Maps（任意。未設定なら `YOUR-API-KEY`） |
+| `VITE_AUTH_JITTER_MS` | 認証ハンドシェイクを散らすジッタの上限（ミリ秒。任意。既定 `8000`、`0` で無効）。会場の一斉アクセスで制御プレーンが詰まるのを防ぐ（[`src/lib/authGate.ts`](src/lib/authGate.ts)） |
 
 非秘密の設定（接続先・テナント・各デモのエンティティ）は `src/lib/config.ts` に直書きしています。
 

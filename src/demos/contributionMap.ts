@@ -12,6 +12,7 @@ import type GeonicDB from "@geolonia/geonicdb-sdk";
 import { createContributionClient } from "../lib/client";
 import { byId, escapeHtml, whenIdle } from "../lib/dom";
 import { resolveOriginCoords } from "../lib/originGeo";
+import { waitAuthJitter, withAuthRetry } from "../lib/authGate";
 
 /** cmd_751 のデータ契約（ashigaru4 subtask_751b 確定版・叩き台段階では暫定）。 */
 export const CONTRIBUTION_TYPE = "Contribution";
@@ -211,8 +212,10 @@ export function initContributionMap(): void {
   function fetchHistory(): void {
     if (historyFetched) return; // WS失敗時のfallbackと'subscribed'の二重発火を防ぐ
     historyFetched = true;
-    db!
-      .getEntities({ type: CONTRIBUTION_TYPE, limit: 1000 })
+    const client = db!;
+    withAuthRetry(() => client.getEntities({ type: CONTRIBUTION_TYPE, limit: 1000 }), {
+      label: "contributionMap",
+    })
       .then((res: unknown) => {
         const list: Record<string, unknown>[] = Array.isArray(res) ? res : [];
         list.forEach((e) => {
@@ -231,6 +234,15 @@ export function initContributionMap(): void {
     if (dataStarted) return;
     dataStarted = true;
     setStatus("読み込み中…");
+    // 会場の全端末が同時にこのタブを開くと SDK の認証ハンドシェイクが
+    // 制御プレーンへ一斉に集中して詰まる (src/lib/authGate.ts 参照)。
+    // WS 接続と初期取得の両方が認証を要するので、その手前でジッタを入れる。
+    void waitAuthJitter().then(() => {
+      subscribeAndConnect();
+    });
+  }
+
+  function subscribeAndConnect(): void {
     // ★先にentityCreated購読を確立してから初期取得する（取得〜購読確立の間に
     // 届いた投稿を取りこぼさぬため）。idベースの上書きゆえ二重計上はしない。
     db!.on("entityCreated", (evt: any) => {
