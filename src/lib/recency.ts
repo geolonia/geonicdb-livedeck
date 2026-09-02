@@ -13,8 +13,17 @@
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
 
-/** 蓄積系デモ（survey / messaging / collab）の初期ロード対象ウィンドウ（直近 24 時間）。 */
+/** 蓄積系デモ（messaging / collab）の初期ロード対象ウィンドウ（直近 24 時間）。 */
 export const RECENT_WINDOW_MS = DAY_MS;
+
+/**
+ * フィードバック（アンケート）の初期ロード・集計対象ウィンドウ（直近 1 週間）。
+ *
+ * 集計の円グラフは「今回の聴衆の傾向」を見せるものなので、過去の登壇分まで
+ * 混ぜると傾向が薄まる。一方で 24 時間だと前日のリハーサル分が落ちるため、
+ * 1 週間を採る。
+ */
+export const WEEK_WINDOW_MS = 7 * DAY_MS;
 
 // 作成時刻の推定に使う日時プロパティ（優先順）。
 // createdAt: NGSI-LD のシステム属性（返れば最も正確）。drawnAt: collab の作図時刻。
@@ -24,6 +33,23 @@ const DEFAULT_DATE_PROPS = ["createdAt", "drawnAt"];
 /** NGSI-LD 属性値（`{ value }` ラッパ）を剥がす。ラッパでなければそのまま返す。 */
 function attrVal(a: unknown): unknown {
   return a && typeof a === "object" && "value" in a ? (a as { value: unknown }).value : a;
+}
+
+/**
+ * `dateProps` の 1 要素を辿って日時候補を取り出す。
+ *
+ * `"createdAt"` のような直下のプロパティに加え、`"expectation.observedAt"` の
+ * ドット区切りで**属性のメタデータ**（NGSI-LD の `observedAt` 等）も指せる。
+ * 途中のセグメントは NGSI-LD 属性オブジェクトそのものを辿り、最後の値だけ
+ * `{ value }` ラッパを剥がす（`expectation` を先に剥がすと数値になってしまう）。
+ */
+function propAt(e: Record<string, unknown>, path: string): unknown {
+  let cur: unknown = e;
+  for (const seg of path.split(".")) {
+    if (cur === null || typeof cur !== "object") return undefined;
+    cur = (cur as Record<string, unknown>)[seg];
+  }
+  return attrVal(cur);
 }
 
 /**
@@ -39,7 +65,7 @@ export function entityCreatedAt(
   dateProps: string[] = DEFAULT_DATE_PROPS,
 ): number {
   for (const p of dateProps) {
-    const v = attrVal(e[p]);
+    const v = propAt(e, p);
     if (v != null) {
       const t = Date.parse(String(v));
       if (!isNaN(t)) return t;

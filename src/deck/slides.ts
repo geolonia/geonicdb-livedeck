@@ -1,7 +1,7 @@
 /* ===================================================================
    GeonicDB Presentation — slide engine
    - 全画面プレゼン（Google スライド風）
-   - 移動: 矢印ボタン / キーボード / 左右の余白クリック
+   - 移動: «（先頭へ）/ 矢印ボタン / キーボード / 左右の余白クリック
      （余白＝スライド枠の空きスペース・レターボックス外周。
        テキスト・ボタン・デモ・地図などコンテンツ上では移動しない）
    - 自動再生: ▶/⏸ ボタン・P キー。一定秒ごとに次へ進み、本編の最終ページ
@@ -119,6 +119,7 @@ export function initDeck(): void {
 
   const progressBar = byId("progressBar");
   const counter = byId("counter");
+  const homeBtn = byId<HTMLButtonElement>("homeBtn");
   const prevBtn = byId<HTMLButtonElement>("prevBtn");
   const nextBtn = byId<HTMLButtonElement>("nextBtn");
   const fsBtn = byId<HTMLButtonElement>("fsBtn");
@@ -149,6 +150,7 @@ export function initDeck(): void {
     });
     if (progressBar) progressBar.style.width = ((current + 1) / total) * 100 + "%";
     if (counter) counter.textContent = current + 1 + " / " + total;
+    if (homeBtn) homeBtn.disabled = current === 0;
     if (prevBtn) prevBtn.disabled = current === 0;
     if (nextBtn) nextBtn.disabled = current === total - 1;
     location.hash = "#" + (current + 1);
@@ -169,6 +171,11 @@ export function initDeck(): void {
   function prev(): void {
     deferAutoplay();
     if (current > 0) go(current - 1);
+  }
+  /** 先頭スライドへ戻る（« ボタン / Home キー）。 */
+  function first(): void {
+    deferAutoplay();
+    go(0);
   }
 
   // ===== 自動再生 =====
@@ -251,8 +258,7 @@ export function initDeck(): void {
         break;
       case "Home":
         e.preventDefault();
-        deferAutoplay();
-        go(0);
+        first();
         break;
       case "End":
         e.preventDefault();
@@ -272,6 +278,7 @@ export function initDeck(): void {
     }
   });
 
+  homeBtn?.addEventListener("click", first);
   nextBtn?.addEventListener("click", next);
   prevBtn?.addEventListener("click", prev);
   fsBtn?.addEventListener("click", toggleFullscreen);

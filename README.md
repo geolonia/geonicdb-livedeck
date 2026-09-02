@@ -114,9 +114,10 @@ gh api -X PUT repos/geolonia/geonicdb-livedeck/pages -f build_type=workflow
 ## 操作
 
 - **→ / Space / PageDown**: 次へ　**← / PageUp**: 戻る　**Home / End**: 先頭・末尾
+- **« ボタン**: 最初のスライドへ戻る（Home キーと同じ。先頭表示中は無効化）
 - **P / ▶ ボタン**: 自動再生の開始・停止（既定 8 秒ごと。**本編の最終ページの次は先頭に戻る**ループ再生。**Appendix 以降は自動再生では回らない**）
 - **F**: 全画面　**Esc**: 解除
-- ページ移動は**矢印ボタン・キーボード・左右端の余白クリック**（スライド枠／`.slide__inner` の余白のうち、左右それぞれ 20% の帯をクリックすると前後へ移動）。テキスト・ボタン・地図などコンテンツ上のクリックとスワイプでは移動しません
+- ページ移動は**« / 矢印ボタン・キーボード・左右端の余白クリック**（スライド枠／`.slide__inner` の余白のうち、左右それぞれ 20% の帯をクリックすると前後へ移動）。テキスト・ボタン・地図などコンテンツ上のクリックとスワイプでは移動しません
 - 自動再生は URL に `?autoplay` を付けると開始状態で開ける。`?autoplay=5` のように秒数指定も可（1〜600 秒にクランプ）。展示・サイネージでの無人ループ用。再生中に手動で送ると、その時点からタイマーを測り直す
 - 自動再生のループ範囲は**先頭から Appendix の区切りページ（`data-slide="appendix"`）の直前まで**。番号ではなくスラグで境界を決めているので、スライドを挿入・並べ替えても追従する。Appendix 以降は矢印ボタン・キーボード・余白クリックで手動でめくる（Appendix 側から再生した場合は先頭に戻る）
 
@@ -134,7 +135,9 @@ gh api -X PUT repos/geolonia/geonicdb-livedeck/pages -f build_type=workflow
 
 ### NGSI-LD フィードバック（`src/demos/feedback.ts`）
 - フォーム送信でカスタムデータモデル `Feedback` の NGSI-LD エンティティを作成 → **WebSocket で受信し件数を集計**。送信前はデフォルトで最新の回答エンティティを表示。
+- 件数・集計・既定表示に使うのは**直近 1 週間の回答のみ**（クライアント側で `createdAt`／`expectation.observedAt`／id 埋め込み時刻でフィルタ。`src/lib/recency.ts` の `WEEK_WINDOW_MS`）。過去の登壇分が混ざって「今回の聴衆の傾向」が薄まるのを防ぐ。
 - 右はタブ切替: 「NGSI-LD エンティティ」（注釈付き JSON）、「カスタムデータモデル」（`GET /custom-data-models/Feedback` の実データ）、「集計結果」（関心・所属・地域の 3 つの円グラフ。WebSocket でリアルタイム更新）。
+- 集計対象がゼロ件のときは円グラフを出さず「直近 1 週間の回答はまだありません」の案内に差し替える（空のドーナツは故障に見える）。割合計算は `src/demos/feedbackChart.ts` に分離し、ゼロ件で 0 除算・NaN を作らないことを単体テストで固定している。
 - 各項目を NGSI-LD の構文要素にマッピング: 所属/期待度 → **Property**（`observedAt` メタデータ）、関心/地域 → **Relationship**（`urn:ngsi-ld:UseCase:*` / `urn:ngsi-ld:AdministrativeArea:*`）、会場位置 → **GeoProperty**。
 - 認可: 統合キー **`geonicdb-livedeck-deck`**（GET|WS + `Feedback` への POST、`/custom-data-models/Feedback` の GET）。
 
@@ -339,10 +342,12 @@ geonic -s miya rules create '{
 | `src/demos/collab.ts` | 共同編集 GIS（作図 + WebSocket・民間ユースケース）デモ |
 | `src/demos/messaging.ts` | メッセージング + ReactiveCore Rules ログ（民間ユースケース）デモ |
 | `src/demos/feedback.ts` | NGSI-LD フィードバック（カスタムデータモデル + WS）デモ |
+| `src/demos/feedbackChart.ts` | フィードバック集計の純粋ロジック（丸め込み・セグメント幾何。ゼロ件安全） |
 | `src/demos/aiNative.ts` | AI ネイティブ（スクリプト化アニメ・ライブ API なし） |
 | `src/lib/client.ts` | GeonicDB SDK クライアントの生成を集約 |
 | `src/lib/config.ts` | 型付き設定（非秘密値＋ env からのキー） |
 | `src/lib/dom.ts` / `slidechange.ts` | 型安全な DOM ヘルパ・型付き slidechange イベント |
+| `src/lib/recency.ts` | 蓄積系デモの初期ロードを直近ウィンドウ（24 時間 / 1 週間）に絞る時刻ヘルパ |
 | `src/styles/styles.css` | テーマ・レイアウト・アニメーション |
 | `public/` | `sw.js`・`manifest.webmanifest`・`assets/`（ロゴ・地図スタイル・スプライト・画像）。ビルドで `dist/` 直下へコピー |
 | `vite.config.ts` / `tsconfig.json` / `.env.example` | ビルド・型・環境変数の設定 |

@@ -1758,6 +1758,12 @@
                     <div id="fb-chips-region" class="fb-pie-chips"></div>
                   </div>
                 </div>
+                <!-- 集計対象（直近 1 週間）がゼロ件のときは円グラフの代わりにこれを出す -->
+                <div id="fb-chart-empty" class="fb-chart__empty" role="status" hidden>
+                  <div class="fb-chart__empty-icon" aria-hidden="true">🗳</div>
+                  <div class="fb-chart__empty-title">直近 1 週間の回答はまだありません</div>
+                  <p class="fb-chart__empty-desc">左のフォームから送信すると、この場で集計に反映されます。</p>
+                </div>
               </div>
             </div>
           </div>
@@ -1765,7 +1771,7 @@
         <div class="demo-note">
           <span class="rsv-live"><span class="rsv-live__dot" id="fb-dot"></span><span id="fb-conn">接続中…</span></span>
           <span class="fb-note-text">回答は GeonicDB に実接続して作成し、WebSocket で受信しています</span>
-          <span id="fb-count" class="fb-count">これまでの回答 0 件</span>
+          <span id="fb-count" class="fb-count">直近 1 週間の回答 0 件</span>
         </div>
       </div>
     </section>
@@ -2617,6 +2623,7 @@
   <div class="ui">
     <div class="ui__progress"><div id="progressBar" class="ui__progress-bar"></div></div>
     <div class="ui__controls">
+      <button id="homeBtn" class="ui__btn ui__btn--home" aria-label="最初のスライド" title="最初のスライド（Home）">«</button>
       <button id="prevBtn" class="ui__btn" aria-label="前のスライド">‹</button>
       <span id="counter" class="ui__counter mono">1 / 12</span>
       <button id="nextBtn" class="ui__btn" aria-label="次のスライド">›</button>
