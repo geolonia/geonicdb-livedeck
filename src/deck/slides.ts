@@ -4,12 +4,14 @@
    - 移動: «（先頭へ）/ 矢印ボタン / キーボード / 左右の余白クリック
      （余白＝スライド枠の空きスペース・レターボックス外周。
        テキスト・ボタン・デモ・地図などコンテンツ上では移動しない）
+   - 目次: ☰ ボタン・ページ番号のクリック・G キー（任意のページへ直接ジャンプ）
    - 自動再生: ▶/⏸ ボタン・P キー。一定秒ごとに次へ進み、本編の最終ページ
      （Appendix の直前）の次は先頭へ戻る。Appendix 以降は自動再生では回さない
-   - キーボード: ← → / Space / PageUp PageDown / Home End / P / F / Esc
+   - キーボード: ← → / Space / PageUp PageDown / Home End / G / P / F / Esc
    =================================================================== */
 import { byId } from "../lib/dom";
 import { emitSlideChange } from "../lib/slidechange";
+import { initToc } from "./toc";
 
 // スライドごとの背景（styles.css の .slide[data-bg=...] と対応）。
 // スライド切替時に <body> へ適用し、スライド外周の色をスライドと揃える。
@@ -149,7 +151,12 @@ export function initDeck(): void {
       else if (i < current) s.classList.add("is-prev");
     });
     if (progressBar) progressBar.style.width = ((current + 1) / total) * 100 + "%";
-    if (counter) counter.textContent = current + 1 + " / " + total;
+    if (counter) {
+      counter.textContent = current + 1 + " / " + total;
+      // ページ番号は目次を開くボタンも兼ねる。静的な aria-label を置くと読み上げが
+      // 「目次を開く」に固定され現在位置が消えるので、毎回ページ番号込みで組み立てる。
+      counter.setAttribute("aria-label", `${current + 1} / ${total} ページ · 目次を開く`);
+    }
     if (homeBtn) homeBtn.disabled = current === 0;
     if (prevBtn) prevBtn.disabled = current === 0;
     if (nextBtn) nextBtn.disabled = current === total - 1;
@@ -222,6 +229,30 @@ export function initDeck(): void {
     if (autoplayTimer !== null) armAutoplay();
   }
 
+  // ===== 目次 =====
+  // 開いている間は自動再生を止め、閉じたら（再生中だったときだけ）その場で再開する。
+  // 再開時に先頭へ戻さないのは、目次で選んだページからそのまま続けられるようにするため。
+  let autoplayWasOn = false;
+  const toc = initToc({
+    slides,
+    getCurrent: () => current,
+    go: (n) => {
+      deferAutoplay();
+      go(n);
+    },
+    onOpen: () => {
+      autoplayWasOn = autoplayTimer !== null;
+      if (autoplayWasOn) stopAutoplay();
+    },
+    onClose: () => {
+      if (autoplayWasOn) {
+        armAutoplay();
+        renderPlayBtn();
+      }
+      autoplayWasOn = false;
+    },
+  });
+
   function toggleFullscreen(): void {
     if (!document.fullscreenElement) {
       void document.documentElement.requestFullscreen?.();
@@ -244,7 +275,14 @@ export function initDeck(): void {
 
   document.addEventListener("keydown", (e) => {
     if (inEditable(e)) return;
+    // 目次を開いている間はページ送りを奪わせない（目次側がキーを処理する）。
+    if (toc.isOpen()) return;
     switch (e.key) {
+      case "g":
+      case "G":
+        e.preventDefault();
+        toc.open();
+        break;
       case "ArrowRight":
       case "PageDown":
       case " ":

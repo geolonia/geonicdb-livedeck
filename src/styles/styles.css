@@ -1100,7 +1100,90 @@ html, body {
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 17px; text-decoration: none; box-sizing: border-box;
 }
-.ui__counter { font-size: 14px; color: rgba(255,255,255,.8); min-width: 64px; text-align: center; }
+/* ページ番号は「目次を開くボタン」も兼ねる（クリック可能であることを hover で示す） */
+.ui__counter {
+  font-size: 14px; color: rgba(255,255,255,.8); min-width: 64px; text-align: center;
+  background: transparent; border: none; font-family: var(--font-mono);
+  padding: 4px 6px; border-radius: 8px; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.ui__counter:hover { background: rgba(255,255,255,.12); color: var(--white); }
+.ui__btn--toc { font-size: 17px; }
+
+/* ===== 目次（Table of Contents）オーバーレイ ===== */
+/* 全ページを一覧して任意のページへジャンプする。既定は hidden 属性で非表示
+   （PDF 生成やプレゼン中に一切干渉しない）。項目は src/deck/toc.ts が生成する。 */
+.toc[hidden] { display: none; }
+.toc {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 3vh 3vw;
+  background: rgba(6, 10, 18, .72);
+  backdrop-filter: blur(6px);
+  animation: toc-in .18s var(--ease);
+}
+@keyframes toc-in { from { opacity: 0; } to { opacity: 1; } }
+.toc__panel {
+  display: flex; flex-direction: column;
+  width: min(1180px, 100%); max-height: 100%;
+  background: linear-gradient(160deg, #22222c 0%, #17171d 100%);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+  overflow: hidden;
+}
+.toc__head {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.toc__title { font-size: 20px; font-weight: 800; letter-spacing: .04em; }
+.toc__keys { font-size: 12px; color: rgba(255,255,255,.45); }
+.toc__close {
+  margin-left: auto; flex: 0 0 auto;
+  width: 34px; height: 34px; border-radius: 9px;
+  background: transparent; border: 1px solid rgba(255,255,255,.14);
+  color: var(--white); font-size: 15px; line-height: 1; cursor: pointer;
+  transition: background .2s;
+}
+.toc__close:hover { background: rgba(255,255,255,.12); }
+.toc__body { overflow-y: auto; padding: 18px 22px 24px; }
+.toc__group + .toc__group { margin-top: 22px; }
+.toc__group-label {
+  font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--cyan-2); margin-bottom: 10px;
+}
+.toc__grid {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.toc__item {
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  padding: 10px 12px; border-radius: 11px; cursor: pointer;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.9); font-family: inherit; font-size: 14px; line-height: 1.4;
+  transition: background .15s, border-color .15s, transform .15s;
+}
+.toc__item:hover { background: rgba(255,255,255,.1); transform: translateY(-1px); }
+.toc__item:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.toc__item.is-current {
+  border-color: var(--cyan);
+  background: linear-gradient(120deg, rgba(252,108,0,.22), rgba(251,164,12,.1));
+}
+.toc__num {
+  flex: 0 0 auto; min-width: 26px; text-align: right;
+  font-size: 12px; color: rgba(255,255,255,.45);
+}
+.toc__item.is-current .toc__num { color: var(--cyan-2); }
+.toc__label {
+  flex: 1 1 auto; overflow: hidden;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+}
+.toc__live {
+  flex: 0 0 auto; font-size: 9px; font-weight: 700; letter-spacing: .1em;
+  padding: 3px 6px; border-radius: 999px;
+  color: #fff; background: linear-gradient(135deg, var(--cyan), var(--coral));
+}
 
 /* ===== Hint ===== */
 .hint {

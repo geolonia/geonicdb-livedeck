@@ -140,7 +140,7 @@ async function main() {
     await page.goto(url, { waitUntil: "networkidle" });
     // ナビゲーション UI（矢印・カウンター・進捗バー・ヒント）と、
     // トップページの PDF ダウンロードボタン（PDF 内では押せないので無意味）は PDF では不要。
-    await page.addStyleTag({ content: `.ui, .hint, .title__pdf-btn { display: none !important; }` });
+    await page.addStyleTag({ content: `.ui, .hint, .toc, .title__pdf-btn { display: none !important; }` });
 
     const total = await page.evaluate(() => document.querySelectorAll(".slide").length);
     if (total < PDF_SLIDE_LIMIT) {

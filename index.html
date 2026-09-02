@@ -562,7 +562,7 @@
     </section>
 
     <!-- 2. What is a Context Broker (illustration, inlined so it uses the deck's fonts) -->
-    <section class="slide slide--illus" data-bg="illus" data-slide="what-is-broker">
+    <section class="slide slide--illus" data-bg="illus" data-slide="what-is-broker" data-toc="コンテキストブローカーとは？">
       <svg class="illus-img illus-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800"
            role="img" aria-label="コンテキストブローカーとは — 街じゅうのデータをつなぐデータの中継役">
   <title>コンテキストブローカーとは — 街じゅうのデータをつなぐデータの中継役</title>
@@ -2349,7 +2349,7 @@
     </section>
 
     <!-- 19. Glossary — page 1 (A–Z) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-1">
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-1" data-toc="用語集 ①（A2A〜JWT）">
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
@@ -2413,7 +2413,7 @@
     </section>
 
     <!-- 20. Glossary — page 2 (A–Z) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-2">
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-2" data-toc="用語集 ②（MCP〜ReDoS）">
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
@@ -2477,7 +2477,7 @@
     </section>
 
     <!-- 21. Glossary — page 3 (A–Z → あいうえお) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-3">
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-3" data-toc="用語集 ③（RTO／RPO〜サーバーレス）">
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
@@ -2541,7 +2541,7 @@
     </section>
 
     <!-- Glossary — page 4 (あいうえお) -->
-    <section class="slide" data-bg="dark" data-slide="glossary-terms-4">
+    <section class="slide" data-bg="dark" data-slide="glossary-terms-4" data-toc="用語集 ④（サブスクリプション〜レート制限）">
       <div class="slide__inner">
         <div class="glossary">
           <div class="glossary__item">
@@ -2625,15 +2625,28 @@
     <div class="ui__controls">
       <button id="homeBtn" class="ui__btn ui__btn--home" aria-label="最初のスライド" title="最初のスライド（Home）">«</button>
       <button id="prevBtn" class="ui__btn" aria-label="前のスライド">‹</button>
-      <span id="counter" class="ui__counter mono">1 / 12</span>
+      <button id="counter" class="ui__counter mono" data-toc-open aria-haspopup="dialog" aria-controls="toc" title="目次（G）">1 / 12</button>
       <button id="nextBtn" class="ui__btn" aria-label="次のスライド">›</button>
       <button id="playBtn" class="ui__btn ui__btn--play" aria-pressed="false" aria-label="自動再生（8 秒ごと）" title="自動再生（8 秒ごと）">▶</button>
+      <button id="tocBtn" class="ui__btn ui__btn--toc" data-toc-open aria-haspopup="dialog" aria-controls="toc" aria-label="目次" title="目次（G）">☰</button>
       <button id="fsBtn" class="ui__btn ui__btn--fs" aria-label="全画面">⛶</button>
       <a id="pdfBtn" class="ui__btn ui__btn--pdf" href="geonicdb-livedeck.pdf" download aria-label="PDFをダウンロード">⇩</a>
     </div>
   </div>
 
-  <div id="hint" class="hint mono">← → / Space で移動 · P で自動再生 · F で全画面 · Esc で解除</div>
+  <!-- ===== 目次（任意のページへジャンプ）。項目は src/deck/toc.ts が実行時に生成する ===== -->
+  <div id="toc" class="toc" role="dialog" aria-modal="true" aria-labelledby="tocTitle" hidden>
+    <div class="toc__panel">
+      <header class="toc__head">
+        <h2 id="tocTitle" class="toc__title">目次</h2>
+        <span class="toc__keys mono">クリック / ↑ ↓ ← → + Enter で移動 · Esc で閉じる</span>
+        <button id="tocClose" class="toc__close" aria-label="目次を閉じる" title="閉じる（Esc）">✕</button>
+      </header>
+      <div id="tocBody" class="toc__body"></div>
+    </div>
+  </div>
+
+  <div id="hint" class="hint mono">← → / Space で移動 · G で目次 · P で自動再生 · F で全画面 · Esc で解除</div>
 
   <!-- 縦持ちスマホ向けの案内。横長レイアウトのため横向きを促す（CSS のみで出し分け） -->
   <div class="rotate-hint" role="alert">
