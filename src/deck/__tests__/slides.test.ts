@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   AUTOPLAY_DEFAULT_SEC,
+  autoplayLastIndex,
   computeScale,
   measureViewport,
   nextSlideIndex,
@@ -47,20 +48,48 @@ describe("measureViewport", () => {
   });
 });
 
+describe("autoplayLastIndex", () => {
+  it("Appendix の区切りページの直前を終端にする", () => {
+    // 本編 3 枚 → 区切り → Appendix 2 枚。終端は本編の最後（index 2）。
+    expect(autoplayLastIndex(["title", "intro", "messaging", "appendix", "catalog", "glossary"])).toBe(2);
+  });
+
+  it("スラグで境界を決めるので、前にスライドを挿入しても追従する", () => {
+    expect(autoplayLastIndex(["title", "new-slide", "intro", "messaging", "appendix", "catalog"])).toBe(3);
+  });
+
+  it("区切りが無ければ全スライドを対象にする", () => {
+    expect(autoplayLastIndex(["title", "intro", "messaging"])).toBe(2);
+  });
+
+  it("スライドが無い・区切りが先頭でも 0 に倒す（負の終端を作らない）", () => {
+    expect(autoplayLastIndex([])).toBe(0);
+    expect(autoplayLastIndex(["appendix", "catalog"])).toBe(0);
+  });
+
+  it("data-slide が無いスライド（null）が混ざっても壊れない", () => {
+    expect(autoplayLastIndex(["title", null, "messaging", "appendix"])).toBe(2);
+  });
+});
+
 describe("nextSlideIndex", () => {
   it("次のスライドへ進む", () => {
-    expect(nextSlideIndex(0, 5)).toBe(1);
-    expect(nextSlideIndex(3, 5)).toBe(4);
+    expect(nextSlideIndex(0, 4)).toBe(1);
+    expect(nextSlideIndex(2, 4)).toBe(3);
   });
 
-  it("最終ページの次は先頭に戻る", () => {
-    expect(nextSlideIndex(4, 5)).toBe(0);
-    expect(nextSlideIndex(0, 1)).toBe(0);
-  });
-
-  it("スライドが無い・番号が壊れているときは先頭に倒す", () => {
+  it("ループ範囲の最終ページの次は先頭に戻る", () => {
+    expect(nextSlideIndex(4, 4)).toBe(0);
     expect(nextSlideIndex(0, 0)).toBe(0);
+  });
+
+  it("Appendix 側（範囲の外）から再生したときも先頭へ戻す", () => {
+    expect(nextSlideIndex(30, 22)).toBe(0);
+  });
+
+  it("番号が壊れているときは先頭に倒す", () => {
     expect(nextSlideIndex(NaN, 5)).toBe(0);
+    expect(nextSlideIndex(3, NaN)).toBe(0);
     expect(nextSlideIndex(-1, 5)).toBe(0);
   });
 });

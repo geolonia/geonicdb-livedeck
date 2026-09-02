@@ -4,7 +4,8 @@
    - 移動: 矢印ボタン / キーボード / 左右の余白クリック
      （余白＝スライド枠の空きスペース・レターボックス外周。
        テキスト・ボタン・デモ・地図などコンテンツ上では移動しない）
-   - 自動再生: ▶/⏸ ボタン・P キー。一定秒ごとに次へ進み、最終ページの次は先頭へ戻る
+   - 自動再生: ▶/⏸ ボタン・P キー。一定秒ごとに次へ進み、本編の最終ページ
+     （Appendix の直前）の次は先頭へ戻る。Appendix 以降は自動再生では回さない
    - キーボード: ← → / Space / PageUp PageDown / Home End / P / F / Esc
    =================================================================== */
 import { byId } from "../lib/dom";
@@ -29,13 +30,31 @@ export const AUTOPLAY_DEFAULT_SEC = 8;
 const AUTOPLAY_MIN_SEC = 1;
 const AUTOPLAY_MAX_SEC = 600;
 
+/** 自動再生のループ範囲の終端を決めるスライド（`data-slide`）。この直前までを回す。 */
+const AUTOPLAY_STOP_SLUG = "appendix";
+
 /**
- * 自動再生で次に表示するスライド番号。最終ページの次は先頭（0）に戻る。
+ * 自動再生でループする範囲の最終スライド番号（0 起点）。
+ *
+ * Appendix の区切りページ（`data-slide="appendix"`）の直前までを本編とみなす。
+ * 番号ではなくスラグで境界を決めるので、スライドを挿入・並べ替えても追従する。
+ * 区切りが見つからないときは全スライドを対象にする。
  */
-export function nextSlideIndex(current: number, total: number): number {
-  if (!(total > 0)) return 0;
-  if (!Number.isFinite(current) || current < 0) return 0;
-  return (Math.floor(current) + 1) % total;
+export function autoplayLastIndex(slugs: (string | null)[]): number {
+  const stop = slugs.indexOf(AUTOPLAY_STOP_SLUG);
+  const last = (stop >= 0 ? stop : slugs.length) - 1;
+  return Math.max(0, last);
+}
+
+/**
+ * 自動再生で次に表示するスライド番号。
+ * `lastIndex`（本編の最終ページ）に達していたら先頭（0）へ戻る。
+ * Appendix 側に手動で移動した状態から再生した場合も先頭へ戻す。
+ */
+export function nextSlideIndex(current: number, lastIndex: number): number {
+  if (!Number.isFinite(current) || !Number.isFinite(lastIndex)) return 0;
+  if (current < 0 || current >= lastIndex) return 0;
+  return Math.floor(current) + 1;
 }
 
 /**
@@ -95,6 +114,9 @@ export function initDeck(): void {
   const hint = byId("hint");
 
   let current = 0;
+
+  // 自動再生でループする範囲（0 〜 autoplayLast）。Appendix 以降は含めない。
+  const autoplayLast = autoplayLastIndex(slides.map((s) => s.getAttribute("data-slide")));
 
   // アスペクト比 16:9 を維持して画面にフィットさせる倍率を CSS 変数へ。
   function fit(): void {
@@ -156,7 +178,7 @@ export function initDeck(): void {
   function armAutoplay(): void {
     if (autoplayTimer !== null) window.clearInterval(autoplayTimer);
     autoplayTimer = window.setInterval(
-      () => go(nextSlideIndex(current, total)),
+      () => go(nextSlideIndex(current, autoplayLast)),
       autoplaySec * 1000,
     );
   }
