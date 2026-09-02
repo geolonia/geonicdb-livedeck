@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { entityCreatedAt, isRecent, RECENT_WINDOW_MS, WEEK_WINDOW_MS } from "../recency";
+import {
+  entityCreatedAt,
+  FUTURE_SKEW_MS,
+  isRecent,
+  RECENT_WINDOW_MS,
+  WEEK_WINDOW_MS,
+} from "../recency";
 
 const NOW = Date.parse("2026-09-03T12:00:00Z");
 const HOUR = 60 * 60 * 1000;
@@ -87,5 +93,22 @@ describe("isRecent", () => {
     freezeNow();
     expect(isRecent({ id: feedbackId(NOW - WEEK_WINDOW_MS) }, WEEK_WINDOW_MS)).toBe(true);
     expect(isRecent({ id: feedbackId(NOW - WEEK_WINDOW_MS - 1) }, WEEK_WINDOW_MS)).toBe(false);
+  });
+
+  it("tolerates a device clock that runs slightly ahead", () => {
+    // 来場者の端末が少し進んでいるだけで、その回答が集計から消えてはいけない。
+    freezeNow();
+    expect(isRecent({ id: feedbackId(NOW + 30 * 1000) }, WEEK_WINDOW_MS)).toBe(true);
+    expect(isRecent({ id: feedbackId(NOW + FUTURE_SKEW_MS) }, WEEK_WINDOW_MS)).toBe(true);
+  });
+
+  it("drops timestamps far in the future so they cannot outlive the window", () => {
+    // 未来日時を無条件に通すと、そのエンティティは窓から永久に落ちなくなる。
+    freezeNow();
+    expect(isRecent({ id: feedbackId(NOW + FUTURE_SKEW_MS + 1) }, WEEK_WINDOW_MS)).toBe(false);
+    expect(isRecent({ id: feedbackId(NOW + 365 * DAY) }, WEEK_WINDOW_MS)).toBe(false);
+    expect(
+      isRecent({ createdAt: new Date(NOW + 30 * DAY).toISOString() }, RECENT_WINDOW_MS),
+    ).toBe(false);
   });
 });

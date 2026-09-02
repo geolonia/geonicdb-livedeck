@@ -10,8 +10,20 @@
  * ここへ抽出し、各デモで再利用できるようにしたもの。
  */
 
-const HOUR_MS = 60 * 60 * 1000;
+const MINUTE_MS = 60 * 1000;
+const HOUR_MS = 60 * MINUTE_MS;
 const DAY_MS = 24 * HOUR_MS;
+
+/**
+ * 未来側に許す時計ずれ。
+ *
+ * 作成時刻は**投稿した端末の時計**（`observedAt` / id 埋め込みの `Date.now()`）なので、
+ * 来場者のスマホが数十秒進んでいるだけで、表示側から見ると未来の投稿になる。
+ * 未来を一律に弾くと、その回答が集計から消えてしまう（登壇中に一番困る壊れ方）。
+ * 一方で、日時を大きく未来にしたエンティティは窓から永久に落ちなくなるため、
+ * 「ずれとしてありえる範囲」だけを許して、それを越える未来は古いものと同様に除外する。
+ */
+export const FUTURE_SKEW_MS = 5 * MINUTE_MS;
 
 /** 蓄積系デモ（messaging / collab）の初期ロード対象ウィンドウ（直近 24 時間）。 */
 export const RECENT_WINDOW_MS = DAY_MS;
@@ -79,11 +91,15 @@ export function entityCreatedAt(
 /**
  * エンティティが直近ウィンドウ内に作成されたか。
  * 初期ロードした一覧を `.filter(isRecent)` で絞る用途を想定。
+ *
+ * 経過時間が `windowMs` 以下であることに加え、**未来に振れすぎていない**ことも見る
+ * （`FUTURE_SKEW_MS` を越える未来の日時は、窓から永久に落ちなくなるので除外する）。
  */
 export function isRecent(
   e: Record<string, unknown>,
   windowMs: number = RECENT_WINDOW_MS,
   dateProps?: string[],
 ): boolean {
-  return Date.now() - entityCreatedAt(e, dateProps) <= windowMs;
+  const age = Date.now() - entityCreatedAt(e, dateProps);
+  return age >= -FUTURE_SKEW_MS && age <= windowMs;
 }
