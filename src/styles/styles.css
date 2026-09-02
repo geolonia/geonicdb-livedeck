@@ -1077,6 +1077,9 @@ html, body {
 }
 .ui__btn:hover { background: rgba(255,255,255,.12); }
 .ui__btn--fs { font-size: 18px; }
+/* 自動再生トグル。再生中は色で状態が分かるようにする（アイコンは ▶ / ⏸ で切り替え） */
+.ui__btn--play { font-size: 15px; }
+.ui__btn--play[aria-pressed="true"] { background: rgba(255,255,255,.18); color: var(--cyan-2); }
 .ui__btn--pdf {
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 17px; text-decoration: none; box-sizing: border-box;

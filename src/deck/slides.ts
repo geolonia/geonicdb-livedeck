@@ -4,7 +4,8 @@
    - 移動: 矢印ボタン / キーボード / 左右の余白クリック
      （余白＝スライド枠の空きスペース・レターボックス外周。
        テキスト・ボタン・デモ・地図などコンテンツ上では移動しない）
-   - キーボード: ← → / Space / PageUp PageDown / Home End / F / Esc
+   - 自動再生: ▶/⏸ ボタン・P キー。一定秒ごとに次へ進み、最終ページの次は先頭へ戻る
+   - キーボード: ← → / Space / PageUp PageDown / Home End / P / F / Esc
    =================================================================== */
 import { byId } from "../lib/dom";
 import { emitSlideChange } from "../lib/slidechange";
@@ -22,6 +23,33 @@ const SLIDE_BG: Record<string, string> = {
 
 const BASE_W = 1280;
 const BASE_H = 720;
+
+/** 自動再生の既定間隔（秒）。`?autoplay=<秒>` で上書きできる。 */
+export const AUTOPLAY_DEFAULT_SEC = 8;
+const AUTOPLAY_MIN_SEC = 1;
+const AUTOPLAY_MAX_SEC = 600;
+
+/**
+ * 自動再生で次に表示するスライド番号。最終ページの次は先頭（0）に戻る。
+ */
+export function nextSlideIndex(current: number, total: number): number {
+  if (!(total > 0)) return 0;
+  if (!Number.isFinite(current) || current < 0) return 0;
+  return (Math.floor(current) + 1) % total;
+}
+
+/**
+ * `?autoplay=<秒>` の解釈。
+ * - 値なし（`?autoplay`）・非数値は既定秒
+ * - 範囲外は 1〜600 秒にクランプ（0 や巨大値で暴走・停止しないように）
+ * パラメータ自体が無いときは null（＝自動再生を開始しない）。
+ */
+export function parseAutoplaySeconds(raw: string | null): number | null {
+  if (raw === null) return null;
+  const n = Number(raw);
+  if (raw.trim() === "" || !Number.isFinite(n)) return AUTOPLAY_DEFAULT_SEC;
+  return Math.min(AUTOPLAY_MAX_SEC, Math.max(AUTOPLAY_MIN_SEC, n));
+}
 
 /**
  * スライド（1280x720）を表示領域に 16:9 のまま収める倍率。
@@ -63,6 +91,7 @@ export function initDeck(): void {
   const prevBtn = byId<HTMLButtonElement>("prevBtn");
   const nextBtn = byId<HTMLButtonElement>("nextBtn");
   const fsBtn = byId<HTMLButtonElement>("fsBtn");
+  const playBtn = byId<HTMLButtonElement>("playBtn");
   const hint = byId("hint");
 
   let current = 0;
@@ -100,10 +129,53 @@ export function initDeck(): void {
     render();
   }
   function next(): void {
+    deferAutoplay();
     if (current < total - 1) go(current + 1);
   }
   function prev(): void {
+    deferAutoplay();
     if (current > 0) go(current - 1);
+  }
+
+  // ===== 自動再生 =====
+  // 一定秒ごとに次のスライドへ。最終ページの次は先頭へ戻る（ループ再生）。
+  // 手動で移動したときはタイマーを張り直し、直後に勝手に送られないようにする。
+  let autoplaySec = AUTOPLAY_DEFAULT_SEC;
+  let autoplayTimer: number | null = null;
+
+  function renderPlayBtn(): void {
+    if (!playBtn) return;
+    const on = autoplayTimer !== null;
+    playBtn.textContent = on ? "⏸" : "▶";
+    playBtn.setAttribute("aria-pressed", String(on));
+    const label = on ? "自動再生を停止" : `自動再生（${autoplaySec} 秒ごと）`;
+    playBtn.setAttribute("aria-label", label);
+    playBtn.title = label;
+  }
+
+  function armAutoplay(): void {
+    if (autoplayTimer !== null) window.clearInterval(autoplayTimer);
+    autoplayTimer = window.setInterval(
+      () => go(nextSlideIndex(current, total)),
+      autoplaySec * 1000,
+    );
+  }
+  function startAutoplay(): void {
+    armAutoplay();
+    renderPlayBtn();
+  }
+  function stopAutoplay(): void {
+    if (autoplayTimer !== null) window.clearInterval(autoplayTimer);
+    autoplayTimer = null;
+    renderPlayBtn();
+  }
+  function toggleAutoplay(): void {
+    if (autoplayTimer === null) startAutoplay();
+    else stopAutoplay();
+  }
+  /** 手動操作でタイマーをリセット（再生中のときだけ）。 */
+  function deferAutoplay(): void {
+    if (autoplayTimer !== null) armAutoplay();
   }
 
   function toggleFullscreen(): void {
@@ -142,11 +214,18 @@ export function initDeck(): void {
         break;
       case "Home":
         e.preventDefault();
+        deferAutoplay();
         go(0);
         break;
       case "End":
         e.preventDefault();
+        deferAutoplay();
         go(total - 1);
+        break;
+      case "p":
+      case "P":
+        e.preventDefault();
+        toggleAutoplay();
         break;
       case "f":
       case "F":
@@ -159,6 +238,7 @@ export function initDeck(): void {
   nextBtn?.addEventListener("click", next);
   prevBtn?.addEventListener("click", prev);
   fsBtn?.addEventListener("click", toggleFullscreen);
+  playBtn?.addEventListener("click", toggleAutoplay);
 
   // 左右端の余白クリックでのページ送り。
   // 送りの対象は「空きスペース（デッキ外周・スライド枠・.slide__inner の余白）」の
@@ -211,4 +291,14 @@ export function initDeck(): void {
   if (!isNaN(fromHash) && fromHash >= 1 && fromHash <= total) current = fromHash - 1;
   fit();
   render();
+
+  // `?autoplay` / `?autoplay=<秒>` が付いていれば、間隔を反映して自動再生を開始する
+  // （展示・サイネージ用途）。無ければ既定秒のまま停止状態で待つ。
+  const fromQuery = parseAutoplaySeconds(new URLSearchParams(location.search).get("autoplay"));
+  if (fromQuery !== null) {
+    autoplaySec = fromQuery;
+    startAutoplay();
+  } else {
+    renderPlayBtn();
+  }
 }
