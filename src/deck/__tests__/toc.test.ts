@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { groupSlides, moveFocus, normalizeTitle, TOC_MAIN_LABEL, type SlideMeta } from "../toc";
+import {
+  groupSlides,
+  moveFocus,
+  normalizeTitle,
+  TOC_MAIN_LABEL,
+  usesGridScope,
+  type SlideMeta,
+} from "../toc";
 
 function meta(slug: string, title: string, extra: Partial<SlideMeta> = {}): SlideMeta {
   return { slug, title, divider: false, live: false, ...extra };
@@ -92,5 +99,19 @@ describe("moveFocus", () => {
 
   it("項目が無ければ -1（フォーカス先なし）", () => {
     expect(moveFocus(0, 0, "ArrowRight", 3)).toBe(-1);
+  });
+});
+
+describe("usesGridScope", () => {
+  it("上下キーは章のグリッド内で動かす（行移動は章をまたぐと意味を失う）", () => {
+    expect(usesGridScope("ArrowUp")).toBe(true);
+    expect(usesGridScope("ArrowDown")).toBe(true);
+  });
+
+  it("左右と Home / End は一覧全体を対象にする（読む順に章をまたいで進む）", () => {
+    expect(usesGridScope("ArrowLeft")).toBe(false);
+    expect(usesGridScope("ArrowRight")).toBe(false);
+    expect(usesGridScope("Home")).toBe(false);
+    expect(usesGridScope("End")).toBe(false);
   });
 });

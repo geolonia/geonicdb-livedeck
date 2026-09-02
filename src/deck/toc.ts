@@ -58,6 +58,16 @@ export function groupSlides(metas: SlideMeta[]): TocGroup[] {
 }
 
 /**
+ * 上下キーか（＝いま居る章のグリッド内で動かすキーか）。
+ *
+ * 上下は「行」の移動なので、行の形（列数）が章ごとに違う以上、章をまたぐと
+ * 意味を失う。左右と Home / End は一覧全体を 1 つの並びとして扱う。
+ */
+export function usesGridScope(key: string): boolean {
+  return key === "ArrowUp" || key === "ArrowDown";
+}
+
+/**
  * 目次内でフォーカスを動かす先の項目番号。
  *
  * 項目はグループをまたいで 1 本のリストとして扱い、端では止まる（回り込まない）。
@@ -313,10 +323,16 @@ export function initToc(ctrl: TocController): Toc {
     if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
     const from = itemBtns.indexOf(document.activeElement as HTMLButtonElement);
-    const anchor = from < 0 ? 0 : from;
-    const next = moveFocus(anchor, itemBtns.length, e.key, columnCount(itemBtns[anchor]));
-    itemBtns[next]?.focus();
-    itemBtns[next]?.scrollIntoView({ block: "nearest" });
+    const item = itemBtns[from < 0 ? 0 : from];
+    // 上下は「いま居る章のグリッド」の中で行移動する。全体を 1 つの並びとして
+    // 歩幅（列数）を足すと、章の切れ目で見た目と無関係な項目へ飛ぶため。
+    // 左右と Home / End は章をまたいで全体を進む（読む順そのもの）。
+    const grid = usesGridScope(e.key) ? item?.closest<HTMLElement>(".toc__grid") : null;
+    const targets = grid ? Array.from(grid.querySelectorAll<HTMLButtonElement>("button")) : itemBtns;
+    const anchor = item ? Math.max(0, targets.indexOf(item)) : 0;
+    const next = moveFocus(anchor, targets.length, e.key, columnCount(item));
+    targets[next]?.focus();
+    targets[next]?.scrollIntoView({ block: "nearest" });
   });
 
   /**
