@@ -47,6 +47,18 @@ export function autoplayLastIndex(slugs: (string | null)[]): number {
 }
 
 /**
+ * 自動再生を開始した瞬間に表示すべきスライド番号。
+ *
+ * ループ範囲の外（Appendix 側）で再生を押した／`#<Appendix のページ>?autoplay` で開いた
+ * ときは、1 周期待たずに即座に先頭へ戻す。範囲内なら現在位置のまま。
+ */
+export function autoplayStartIndex(current: number, lastIndex: number): number {
+  if (!Number.isFinite(current) || !Number.isFinite(lastIndex)) return 0;
+  if (current > lastIndex) return 0;
+  return Math.max(0, Math.floor(current));
+}
+
+/**
  * 自動再生で次に表示するスライド番号。
  * `lastIndex`（本編の最終ページ）に達していたら先頭（0）へ戻る。
  * Appendix 側に手動で移動した状態から再生した場合も先頭へ戻す。
@@ -183,6 +195,9 @@ export function initDeck(): void {
     );
   }
   function startAutoplay(): void {
+    // Appendix 側から再生したときは、1 周期分そこに留まらず即座に先頭へ。
+    const from = autoplayStartIndex(current, autoplayLast);
+    if (from !== current) go(from);
     armAutoplay();
     renderPlayBtn();
   }

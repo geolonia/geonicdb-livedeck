@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   AUTOPLAY_DEFAULT_SEC,
   autoplayLastIndex,
+  autoplayStartIndex,
   computeScale,
   measureViewport,
   nextSlideIndex,
@@ -69,6 +70,26 @@ describe("autoplayLastIndex", () => {
 
   it("data-slide が無いスライド（null）が混ざっても壊れない", () => {
     expect(autoplayLastIndex(["title", null, "messaging", "appendix"])).toBe(2);
+  });
+});
+
+describe("autoplayStartIndex", () => {
+  it("ループ範囲内で再生したら現在位置のまま（勝手に先頭へ飛ばさない）", () => {
+    expect(autoplayStartIndex(0, 22)).toBe(0);
+    expect(autoplayStartIndex(10, 22)).toBe(10);
+    // 本編最終ページは範囲内。ここは 1 周期表示してから先頭へ戻る
+    expect(autoplayStartIndex(22, 22)).toBe(22);
+  });
+
+  it("Appendix 側（範囲の外）で再生したら 1 周期待たず即座に先頭へ", () => {
+    expect(autoplayStartIndex(23, 22)).toBe(0);
+    expect(autoplayStartIndex(37, 22)).toBe(0);
+  });
+
+  it("番号が壊れているときは先頭に倒す", () => {
+    expect(autoplayStartIndex(NaN, 22)).toBe(0);
+    expect(autoplayStartIndex(5, NaN)).toBe(0);
+    expect(autoplayStartIndex(-1, 22)).toBe(0);
   });
 });
 
