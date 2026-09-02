@@ -26,6 +26,8 @@ GeonicDB の製品紹介ライブデッキ（Vite + TypeScript）。`https://geo
 `.slide--dual` / `.slide--map` / `.slide--fb` / `.slide--ai` / `.slide--shelter` / `.slide--collab` / `.slide--msg`
 のクラスで自分のスライドを特定する（`slides.indexOf(...)`）。**スライドを挿入・並べ替えても番号は自動追従するので、ドキュメントでは極力ハードな番号参照を避ける。**
 
+**自動再生のループ範囲も `data-slide` で決まる。** `data-slide="appendix"` の区切りページの直前までを本編とみなし、自動再生はそこで先頭へ戻る（`src/deck/slides.ts` の `AUTOPLAY_STOP_SLUG`）。**Appendix の区切りページのスラグ `appendix` は変えない**こと。変えると Appendix まで自動再生で回るようになる。
+
 ### AI エージェント向けメタデータ（`data-slide` / JSON-LD / llms.txt）
 
 URL の `#N`（先頭から N 番目のスライド）を、AI エージェントがソースを読まずに内容・エンティティ型へ解決できるよう、各 `<section class="slide">` に機械可読メタデータを持たせている。**スライドを追加・並べ替えたら、以下を同時に更新する**こと（番号ではなくスラグで対応づけているので、並べ替え自体はスラグを保てば壊れない）。
