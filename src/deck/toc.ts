@@ -91,11 +91,24 @@ export function moveFocus(
   }
 }
 
+/**
+ * 見出し要素のテキスト。`<br>` は空白として読む。
+ *
+ * 見出しは表示上の改行に `<br>` を使っている（例:「…をなくした<br>FIWARE 互換…」）。
+ * `textContent` は `<br>` に何も入れないため、そのままだと語がくっついた目次名になる。
+ */
+function headingText(heading: Element): string {
+  const clone = heading.cloneNode(true) as Element;
+  clone.querySelectorAll("br").forEach((br) => br.replaceWith(" "));
+  return clone.textContent ?? "";
+}
+
 /** スライド要素 1 枚から目次用のメタ情報を読む（見出しは `data-toc` > h1/h2 > スラグ）。 */
 export function readSlideMeta(slide: HTMLElement, index: number): SlideMeta {
   const slug = slide.getAttribute("data-slide");
   const explicit = slide.getAttribute("data-toc");
-  const heading = slide.querySelector("h1, h2")?.textContent ?? "";
+  const headingEl = slide.querySelector("h1, h2");
+  const heading = headingEl ? headingText(headingEl) : "";
   const title =
     normalizeTitle(explicit ?? "") || normalizeTitle(heading) || slug || `ページ ${index + 1}`;
   return {
@@ -147,7 +160,6 @@ export function initToc(ctrl: TocController): Toc {
 
   // ===== 一覧の組み立て（スライド構成は実行時に固定なので 1 回だけ） =====
   const groups = groupSlides(ctrl.slides.map((s, i) => readSlideMeta(s, i)));
-  const total = ctrl.slides.length;
   const itemBtns: HTMLButtonElement[] = [];
 
   for (const group of groups) {
@@ -216,11 +228,20 @@ export function initToc(ctrl: TocController): Toc {
     return active;
   }
 
+  // 目次を開いている間、背後（スライド・操作 UI）は操作対象から外す。
+  // aria-modal だけでは Tab とスクリーンリーダーが背後へ届いてしまうため。
+  const behind = [byId("deck"), document.querySelector<HTMLElement>(".ui"), byId("hint")].filter(
+    (el): el is HTMLElement => el !== null,
+  );
+
   function setOpenState(next: boolean): void {
     open = next;
     root.hidden = !next;
     root.classList.toggle("is-open", next);
-    document.body.classList.toggle("has-toc", next);
+    behind.forEach((el) => {
+      if (next) el.setAttribute("inert", "");
+      else el.removeAttribute("inert");
+    });
     openBtns.forEach((b) => b.setAttribute("aria-expanded", String(next)));
   }
 
@@ -239,7 +260,9 @@ export function initToc(ctrl: TocController): Toc {
     setOpenState(false);
     ctrl.onClose?.();
     // 目次を開く前にフォーカスしていた要素へ戻す（キーボード操作の迷子を防ぐ）。
-    (lastFocused ?? openBtns[0] ?? null)?.focus?.();
+    // body に落ちていた場合は戻し先が無いので、目次を開くボタンへ寄せる。
+    const restore = lastFocused && lastFocused !== document.body ? lastFocused : openBtns[0];
+    restore?.focus?.();
     lastFocused = null;
   }
 
@@ -261,7 +284,9 @@ export function initToc(ctrl: TocController): Toc {
 
   // ===== 目次内のキーボード操作 =====
   // 開いている間はデッキ側のキー操作（← → / Space 等）より先に処理する。
-  root.addEventListener("keydown", (e) => {
+  // リスナは `#toc` ではなく document に張る。パネルの余白（見出し・空きスペース）を
+  // クリックするとフォーカスが body へ抜け、`#toc` 配下では keydown を受け取れないため。
+  document.addEventListener("keydown", (e) => {
     if (!open) return;
     if (e.key === "Escape") {
       e.preventDefault();
@@ -270,14 +295,16 @@ export function initToc(ctrl: TocController): Toc {
     }
     if (e.key === "Tab") {
       // オーバーレイの外（背後のボタン）へフォーカスが逃げないように回り込ませる。
-      const focusables = [...itemBtns, ...(closeBtn ? [closeBtn] : [])];
+      // ✕ ボタンは項目より前にあるので、配列ではなく DOM 順で端を決める。
+      const focusables = Array.from(root.querySelectorAll<HTMLElement>("button"));
       if (focusables.length === 0) return;
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
-      if (!e.shiftKey && document.activeElement === last) {
+      const active = document.activeElement;
+      if (!e.shiftKey && (active === last || !root.contains(active))) {
         e.preventDefault();
         first.focus();
-      } else if (e.shiftKey && document.activeElement === first) {
+      } else if (e.shiftKey && (active === first || !root.contains(active))) {
         e.preventDefault();
         last.focus();
       }
@@ -286,14 +313,19 @@ export function initToc(ctrl: TocController): Toc {
     if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
     const from = itemBtns.indexOf(document.activeElement as HTMLButtonElement);
-    const next = moveFocus(from < 0 ? 0 : from, itemBtns.length, e.key, columnCount());
+    const anchor = from < 0 ? 0 : from;
+    const next = moveFocus(anchor, itemBtns.length, e.key, columnCount(itemBtns[anchor]));
     itemBtns[next]?.focus();
     itemBtns[next]?.scrollIntoView({ block: "nearest" });
   });
 
-  /** グリッドの列数（上下キーの歩幅）。1 行に並ぶ項目数を実測する。 */
-  function columnCount(): number {
-    const grid = body.querySelector<HTMLElement>(".toc__grid");
+  /**
+   * 上下キーの歩幅にする列数。
+   * 章ごとに項目数が違うので、いま居る項目が属するグリッドで実測する
+   * （項目の少ない章を基準にすると、他の章で歩幅が足りなくなる）。
+   */
+  function columnCount(item?: HTMLElement): number {
+    const grid = item?.closest<HTMLElement>(".toc__grid") ?? body.querySelector<HTMLElement>(".toc__grid");
     if (!grid || grid.children.length === 0) return 1;
     const top = (grid.children[0] as HTMLElement).offsetTop;
     let cols = 0;
@@ -302,11 +334,6 @@ export function initToc(ctrl: TocController): Toc {
       cols++;
     }
     return Math.max(1, cols);
-  }
-
-  // 総ページ数はスライド数と一致する（一覧の取りこぼしに気付けるように）。
-  if (itemBtns.length !== total) {
-    console.warn(`[toc] 目次の項目数 ${itemBtns.length} がスライド数 ${total} と一致しません`);
   }
 
   return { open: openToc, close, toggle, isOpen: () => open };

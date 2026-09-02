@@ -151,7 +151,12 @@ export function initDeck(): void {
       else if (i < current) s.classList.add("is-prev");
     });
     if (progressBar) progressBar.style.width = ((current + 1) / total) * 100 + "%";
-    if (counter) counter.textContent = current + 1 + " / " + total;
+    if (counter) {
+      counter.textContent = current + 1 + " / " + total;
+      // ページ番号は目次を開くボタンも兼ねる。静的な aria-label を置くと読み上げが
+      // 「目次を開く」に固定され現在位置が消えるので、毎回ページ番号込みで組み立てる。
+      counter.setAttribute("aria-label", `${current + 1} / ${total} ページ · 目次を開く`);
+    }
     if (homeBtn) homeBtn.disabled = current === 0;
     if (prevBtn) prevBtn.disabled = current === 0;
     if (nextBtn) nextBtn.disabled = current === total - 1;
