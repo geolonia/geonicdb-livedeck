@@ -847,6 +847,11 @@ html, body {
 /* 図＋カード＋脚注で縦が埋まるページなので、脚注の上余白だけ詰める */
 .footnote--tight { margin-top: 14px; }
 
+/* ===== Notifications スライドの図解 =====
+   1120x200 のインライン SVG。GeonicDB → 3 経路（プッシュ通知・WebSocket・その他）への
+   分岐を、multitenancy スライドの分岐図と同じ構図で示す。 */
+.notif-illus { display: block; width: 100%; max-width: 1120px; height: auto; margin: 10px auto 16px; }
+
 /* ===== Comparison table ===== */
 .cmp {
   width: 100%; border-collapse: collapse; font-size: 17px;
