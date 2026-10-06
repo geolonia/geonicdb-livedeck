@@ -13,6 +13,7 @@
 # 検出して、その PR のレビューに適用する。main へのマージを待つ必要はない。
 # 実測: このファイルを追加した PR #57 自身のレビューが language: ja-JP に従って日本語で
 # 返った (main には .coderabbit.yaml が無い状態だった)。
+inheritance: true
 language: ja-JP
 reviews:
   # PR 作成時・push 時の自動レビューを有効化
